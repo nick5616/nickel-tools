@@ -1,3 +1,17 @@
+// Helper to convert LaTeX units to Pixels (approximate for screen/PDF)
+const parseSize = (latexSize: string): string => {
+    const num = parseFloat(latexSize);
+    if (isNaN(num)) return "12px"; // Default fallback
+
+    if (latexSize.includes("mm")) return `${num * 3.78}px`; // 1mm ≈ 3.78px
+    if (latexSize.includes("cm")) return `${num * 37.8}px`;
+    if (latexSize.includes("in")) return `${num * 96}px`;
+    if (latexSize.includes("pt")) return `${num * 1.33}px`;
+    if (latexSize.includes("em")) return `${num * 16}px`;
+
+    return "12px";
+};
+
 export const parseLatexToHtml = (latexSource: string): string => {
     if (!latexSource) return "";
 
@@ -13,50 +27,63 @@ export const parseLatexToHtml = (latexSource: string): string => {
     // 2. Environments
     html = html.replace(
         /\\begin\{center\}/g,
-        '<div style="text-align: center; margin-bottom: 10px;">'
+        '<div style="text-align: center; margin-bottom: 16px;">'
     );
     html = html.replace(/\\end\{center\}/g, "</div>");
 
     // Lists
     html = html.replace(
-        /\\begin\{itemize\}.*?/g,
-        '<ul style="margin: 4px 0 8px 0; padding-left: 20px; list-style-type: disc;">'
+        new RegExp("\\\\begin\\{itemize\\}(\\s*\\x5B.*?\\x5D)?", "g"),
+        '<ul style="margin: 0; padding-left: 24px; list-style-type: disc;">'
     );
     html = html.replace(/\\end\{itemize\}/g, "</ul>");
-    html = html.replace(/\\item\s*/g, '<li style="margin-bottom: 2px;">');
 
-    // 3. Spacing & Layout (Fixing the run-on text issues)
-    // Convert \\ to breaks
-    html = html.replace(/\\\\(\s*\[.*?\[)?/g, "<br/>");
-    // vspace - make it a block to force separation
+    // List Items
     html = html.replace(
-        /\\vspace\{[\s\S]*?\}/g,
-        '<div style="height: 12px;"></div>'
+        /\\item\s*/g,
+        '<li style="margin-bottom: 4px; padding-left: 4px;">'
     );
 
-    // noindent - just remove it
+    // 3. Spacing & Layout
+
+    // Newlines
+    html = html.replace(
+        new RegExp("\\\\\\\\(\\s*\\x5B.*?\\x5D)?", "g"),
+        "<br/>"
+    );
+
+    // SMART VSPACE: Captures the value inside { } and uses it
+    html = html.replace(/\\vspace\{([^}]+)\}/g, (match, size) => {
+        const px = parseSize(size);
+        return `<div style="height: ${px};"></div>`;
+    });
+
+    // noindent
     html = html.replace(/\\noindent/g, "");
 
-    // hfill - float right
+    // hfill
     html = html.replace(
         /\\hfill\s*([^\n\\<]*)/g,
         '<span style="float: right;">$1</span>'
     );
 
     // 4. Text Formatting
+
+    // Large Name
     html = html.replace(
         /\{\\Large\s+\\textbf\{([\s\S]*?)\}\}/g,
-        '<span style="font-size: 22px; font-weight: bold; line-height: 1.2;">$1</span>'
+        '<span style="font-size: 24px; font-weight: bold; line-height: 1.2; display: inline-block; margin-bottom: 4px;">$1</span>'
     );
 
-    // Section Headers (\textbf{\large ...})
+    // SECTION HEADERS - The Fix
+    // We use padding-bottom AND border-bottom.
+    // We use display: block to ensure it takes full width.
     html = html.replace(
         /\\textbf\{\\large\s+([\s\S]*?)\}/g,
-        // CHANGED: Increased padding-bottom to 5px, added margin-top 24px for breathing room
-        '<div style="font-size: 16px; font-weight: bold; margin-top: 24px; margin-bottom: 8px; border-bottom: 1px solid #000; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;">$1</div>'
+        '<div style="display: block; font-size: 16px; font-weight: bold; margin-top: 24px; margin-bottom: 8px; border-bottom: 2px solid #000; padding-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">$1</div>'
     );
 
-    // Formatting wrappers
+    // Wrappers
     html = html.replace(/\\textbf\{([\s\S]*?)\}/g, "<strong>$1</strong>");
     html = html.replace(/\\textit\{([\s\S]*?)\}/g, "<em>$1</em>");
     html = html.replace(

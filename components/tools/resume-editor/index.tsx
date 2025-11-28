@@ -3,36 +3,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
     Download,
-    Eye,
-    Code,
+    Play,
     FileText,
     Save,
     Upload,
     Trash2,
     AlertCircle,
+    RefreshCw,
+    Loader,
 } from "lucide-react";
 import { DEFAULT_TEMPLATE } from "./constants";
-import { parseLatexToHtml } from "./utils";
+import { useSwiftLatex } from "./useSwiftLatex";
 
 export default function ResumeEditor() {
     const [latexSource, setLatexSource] = useState(DEFAULT_TEMPLATE);
-    const [htmlOutput, setHtmlOutput] = useState("");
-    const [showSource, setShowSource] = useState(false);
     const [saveStatus, setSaveStatus] = useState("");
-    const [isExporting, setIsExporting] = useState(false);
+
+    const { pdfUrl, status, errorLog, compile } = useSwiftLatex();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const previewRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const saved = localStorage.getItem("latex-resume");
         if (saved) setLatexSource(saved);
     }, []);
-
-    useEffect(() => {
-        const html = parseLatexToHtml(latexSource);
-        setHtmlOutput(html);
-    }, [latexSource]);
 
     const saveToLocalStorage = () => {
         localStorage.setItem("latex-resume", latexSource);
@@ -40,36 +34,8 @@ export default function ResumeEditor() {
         setTimeout(() => setSaveStatus(""), 2000);
     };
 
-    const handleDownloadPDF = async () => {
-        const html2pdf = (await import("html2pdf.js")).default;
-
-        if (!previewRef.current) return;
-        setIsExporting(true);
-
-        const element = previewRef.current;
-
-        const opt = {
-            margin: 0,
-            filename: "resume.pdf",
-            // FIX: Add 'as const' here so TS knows it's exactly "jpeg"
-            image: { type: "jpeg" as const, quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            // FIX: Add 'as const' here for strict typing on units/format if needed,
-            // though usually image.type is the main complainer.
-            jsPDF: {
-                unit: "in" as const,
-                format: "letter" as const,
-                orientation: "portrait" as const,
-            },
-        };
-
-        html2pdf()
-            .set(opt)
-            .from(element)
-            .save()
-            .then(() => {
-                setIsExporting(false);
-            });
+    const handleCompile = () => {
+        compile(latexSource);
     };
 
     const downloadLatex = () => {
@@ -78,9 +44,7 @@ export default function ResumeEditor() {
         const a = document.createElement("a");
         a.href = url;
         a.download = "resume.tex";
-        document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
 
@@ -106,11 +70,31 @@ export default function ResumeEditor() {
     return (
         <div className="flex flex-col h-[850px] border border-gray-200 rounded-xl overflow-hidden bg-gray-50 shadow-xl">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm z-10">
+            <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm">
                 <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                    Editor Workspace
+                    LaTeX Editor
+                    {status === "loading" && (
+                        <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">
+                            Loading Engine...
+                        </span>
+                    )}
                 </h2>
                 <div className="flex gap-2">
+                    <button
+                        onClick={handleCompile}
+                        disabled={
+                            status === "compiling" || status === "loading"
+                        }
+                        className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition shadow-sm text-sm font-medium disabled:opacity-50"
+                    >
+                        {status === "compiling" ? (
+                            <RefreshCw className="animate-spin" size={16} />
+                        ) : (
+                            <Play size={16} fill="currentColor" />
+                        )}
+                        {status === "compiling" ? "Compiling..." : "Compile"}
+                    </button>
+
                     <button
                         onClick={saveToLocalStorage}
                         className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 transition shadow-sm text-sm"
@@ -118,26 +102,21 @@ export default function ResumeEditor() {
                         <Save size={16} /> Save{" "}
                         {saveStatus && <span className="text-xs">✓</span>}
                     </button>
-                    <button
-                        onClick={() => setShowSource(!showSource)}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-gray-600 text-white rounded hover:bg-gray-700 transition shadow-sm text-sm"
-                    >
-                        {showSource ? <Eye size={16} /> : <Code size={16} />}{" "}
-                        {showSource ? "Preview" : "HTML"}
-                    </button>
-                    <button
-                        onClick={handleDownloadPDF}
-                        disabled={isExporting}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition shadow-sm text-sm disabled:opacity-50"
-                    >
-                        <Download size={16} />{" "}
-                        {isExporting ? "Generating..." : "Download PDF"}
-                    </button>
+
+                    {pdfUrl && (
+                        <a
+                            href={pdfUrl}
+                            download="resume.pdf"
+                            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition shadow-sm text-sm"
+                        >
+                            <Download size={16} /> Download PDF
+                        </a>
+                    )}
                 </div>
             </div>
 
             {/* Toolbar */}
-            <div className="bg-gray-100 border-b border-gray-200 p-3 flex items-center gap-3 z-10">
+            <div className="bg-gray-100 border-b border-gray-200 p-3 flex items-center gap-3">
                 <button
                     onClick={downloadLatex}
                     className="flex items-center gap-2 px-3 py-1.5 text-xs bg-white border border-gray-300 rounded hover:bg-gray-50 transition"
@@ -174,47 +153,52 @@ export default function ResumeEditor() {
                         onChange={(e) => setLatexSource(e.target.value)}
                         className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none leading-relaxed text-gray-800"
                         spellCheck={false}
-                        placeholder="Type LaTeX here..."
                     />
                 </div>
 
-                {/* Preview (Right) - The "Paper" View */}
-                <div className="w-1/2 bg-slate-200 overflow-auto flex justify-center p-8">
-                    {showSource ? (
-                        <pre className="w-full h-full p-4 text-xs font-mono whitespace-pre-wrap break-words bg-white rounded border border-gray-300 text-gray-800">
-                            {htmlOutput}
-                        </pre>
-                    ) : (
-                        <div className="relative">
-                            {/* Paper Visual Representation */}
-                            <div
-                                ref={previewRef}
-                                className="bg-white shadow-2xl text-black"
-                                style={{
-                                    width: "8.5in",
-                                    minHeight: "11in",
-                                    // THIS IS YOUR MARGIN.
-                                    // It creates internal padding inside the white box.
-                                    padding: "0.5in",
-                                    boxSizing: "border-box", // Ensures padding pushes content in, not box out
-                                    fontFamily: "'Times New Roman', serif",
-                                    fontSize: "11pt",
-                                    lineHeight: "1.4",
-                                }}
-                            >
-                                <div
-                                    dangerouslySetInnerHTML={{
-                                        __html: htmlOutput,
-                                    }}
-                                />
-                            </div>
+                {/* PDF Viewer (Right) */}
+                <div className="w-1/2 bg-slate-100 flex flex-col">
+                    {status === "loading" && (
+                        <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-3">
+                            <Loader className="animate-spin w-8 h-8 text-indigo-600" />
+                            <p className="font-medium">
+                                Loading LaTeX engine...
+                            </p>
+                            <p className="text-xs text-slate-400">
+                                This happens once per session
+                            </p>
+                        </div>
+                    )}
 
-                            {/* Page Break Marker */}
-                            <div className="absolute top-[11in] w-full border-b-2 border-dashed border-red-300 pointer-events-none flex items-center justify-end">
-                                <span className="bg-red-100 text-red-500 text-[10px] px-1 rounded font-bold">
-                                    PAGE 1 END
-                                </span>
+                    {status === "compiling" && (
+                        <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-2">
+                            <RefreshCw className="animate-spin w-8 h-8 text-indigo-600" />
+                            <p>Compiling LaTeX...</p>
+                        </div>
+                    )}
+
+                    {status === "error" && (
+                        <div className="flex-1 p-4 overflow-auto bg-red-50 text-red-900 font-mono text-xs">
+                            <div className="flex items-center gap-2 mb-2 font-bold text-red-700">
+                                <AlertCircle size={16} /> Compilation Error
                             </div>
+                            <pre className="whitespace-pre-wrap">
+                                {errorLog}
+                            </pre>
+                        </div>
+                    )}
+
+                    {status === "ready" && pdfUrl && (
+                        <iframe
+                            src={`${pdfUrl}#toolbar=0&view=FitH`}
+                            className="w-full h-full bg-white"
+                            title="PDF Preview"
+                        />
+                    )}
+
+                    {status === "idle" && !pdfUrl && (
+                        <div className="flex-1 flex items-center justify-center text-slate-400">
+                            <p>Click "Compile" to generate PDF</p>
                         </div>
                     )}
                 </div>

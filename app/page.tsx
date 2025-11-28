@@ -1,100 +1,273 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import { FileText, Calculator, Palette, Search } from "lucide-react";
+import {
+    FileText,
+    Search,
+    ArrowUpRight,
+    Gamepad2,
+    Layers,
+    BookOpen,
+    Users,
+    Palette,
+    Cpu,
+    Command,
+} from "lucide-react";
+
+type Project = {
+    id: string;
+    name: string;
+    subtitle: string;
+    icon: React.ReactNode;
+    href: string;
+    type: "EXTERNAL" | "INTERNAL";
+    category: string;
+    status: "OPERATIONAL" | "IN_DEVELOPMENT" | "CONCEPT";
+};
+
+const PROJECTS: Project[] = [
+    {
+        id: "portfolio",
+        name: "3D_PORTFOLIO",
+        subtitle: "Immersive first-person environment built in Three.js.",
+        icon: <Gamepad2 className="w-4 h-4" />,
+        href: "https://nicolasbelovoskey.com",
+        type: "EXTERNAL",
+        category: "IMMERSIVE WEB",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "friendex",
+        name: "FRIENDEX",
+        subtitle: "A personal CRM and compendium for your social circle.",
+        icon: <Users className="w-4 h-4" />,
+        href: "https://friendex.online",
+        type: "EXTERNAL",
+        category: "SOCIAL TOOL",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "videogamequest",
+        name: "VIDEOGAMEQUEST",
+        subtitle: "Gamified journaling engine using AI to narrate your life.",
+        icon: <BookOpen className="w-4 h-4" />,
+        href: "https://videogamequest.me",
+        type: "EXTERNAL",
+        category: "AI / PRODUCTIVITY",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "tierlistify",
+        name: "TIERLISTIFY",
+        subtitle:
+            "Rank, sort, and share anything. The definitive tier list app.",
+        icon: <Layers className="w-4 h-4" />,
+        href: "https://tierlistify.com",
+        type: "EXTERNAL",
+        category: "SOCIAL APP",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "resume-builder",
+        name: "RESUME_FABRICATOR",
+        subtitle: "WASM-powered LaTeX compiler. Zero config, total privacy.",
+        icon: <FileText className="w-4 h-4" />,
+        href: "/resume-editor",
+        type: "INTERNAL",
+        category: "ENGINEERING",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "color-engine",
+        name: "CHROMATIC_ENGINE",
+        subtitle:
+            "Algorithmic palette generator based on harmonic color theory.",
+        icon: <Palette className="w-4 h-4" />,
+        href: "#",
+        type: "INTERNAL",
+        category: "DESIGN SYSTEM",
+        status: "IN_DEVELOPMENT",
+    },
+    {
+        id: "choice-engine",
+        name: "ENTROPY_GENERATOR",
+        subtitle: "Weighted random selection for indecisive moments.",
+        icon: <Cpu className="w-4 h-4" />,
+        href: "#",
+        type: "INTERNAL",
+        category: "UTILITY",
+        status: "CONCEPT",
+    },
+];
 
 export default function Home() {
-    // As you build more tools, you just add them to this array
-    const tools = [
-        {
-            name: "LaTeX Resume Editor",
-            description:
-                "Build ATS-friendly resumes with real-time preview. No LaTeX installation required.",
-            icon: <FileText className="w-6 h-6 text-blue-600" />,
-            href: "/resume-editor",
-            tag: "Productivity",
-        },
-        // Placeholder for your next tool
-        {
-            name: "Inflation Calculator",
-            description:
-                "Calculate the value of the dollar over time using CPI data.",
-            icon: <Calculator className="w-6 h-6 text-green-600" />,
-            href: "#",
-            tag: "Finance",
-            comingSoon: true,
-        },
-        {
-            name: "Contrast Checker",
-            description:
-                "Ensure your web colors meet WCAG accessibility standards.",
-            icon: <Palette className="w-6 h-6 text-purple-600" />,
-            href: "#",
-            tag: "Design",
-            comingSoon: true,
-        },
-    ];
+    const [query, setQuery] = useState("");
+
+    const filteredProjects = PROJECTS.filter(
+        (p) =>
+            p.name.toLowerCase().includes(query.toLowerCase()) ||
+            p.subtitle.toLowerCase().includes(query.toLowerCase()) ||
+            p.category.toLowerCase().includes(query.toLowerCase())
+    );
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            {/* Hero Section */}
-            <div className="text-center mb-16">
-                <h1 className="text-4xl font-extrabold text-slate-900 sm:text-5xl mb-4">
-                    Useful tools,{" "}
-                    <span className="text-blue-600">simplified.</span>
-                </h1>
-                <p className="text-xl text-slate-500 max-w-2xl mx-auto">
-                    A collection of free, privacy-focused utilities for
-                    developers and creators. No logins, no paywalls, just code.
-                </p>
+        // Base background handles light/dark automatically thanks to Layout
+        <div className="min-h-[calc(100vh-64px)]">
+            <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
+                {/* HERO HEADER */}
+                <header className="mb-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-zinc-200 dark:border-zinc-800 pb-12">
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="h-8 w-8 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black flex items-center justify-center font-bold text-xs font-mono rounded-sm shadow-md">
+                                Ni
+                            </div>
+                            <span className="font-mono text-xs tracking-widest text-zinc-500 uppercase">
+                                Element 28
+                            </span>
+                        </div>
 
-                {/* Search Bar Visual */}
-                <div className="mt-8 max-w-md mx-auto relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-slate-400" />
+                        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4">
+                            NICKEL
+                        </h1>
+                        <p className="text-xl text-zinc-600 dark:text-zinc-400 font-light max-w-lg">
+                            A foundry for digital instruments, creative
+                            experiments, and utility software.
+                        </p>
                     </div>
-                    <input
-                        type="text"
-                        className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-full leading-5 bg-white placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm shadow-sm"
-                        placeholder="Search for a tool..."
-                        readOnly // Make functional later
-                    />
+
+                    {/* SEARCH MODULE */}
+                    <div className="w-full lg:w-96">
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-zinc-400 transition-colors">
+                                <Search size={16} />
+                            </div>
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder="SEARCH DATABASE..."
+                                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 pl-11 pr-4 py-4 shadow-sm focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 transition-all font-mono text-xs tracking-wider"
+                                spellCheck="false"
+                            />
+                            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                <Command
+                                    size={12}
+                                    className="text-zinc-300 dark:text-zinc-600"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* PROJECT GRID */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredProjects.map((project) => (
+                        <MetalCard key={project.id} project={project} />
+                    ))}
+
+                    {/* Empty State */}
+                    {filteredProjects.length === 0 && (
+                        <div className="col-span-full py-24 text-center border border-dashed border-zinc-300 dark:border-zinc-800 rounded-lg">
+                            <p className="font-mono text-zinc-500 text-sm">
+                                NO MATCHING ARTIFACTS FOUND.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function MetalCard({ project }: { project: Project }) {
+    const isClickable = project.status !== "CONCEPT";
+    const Wrapper = isClickable ? Link : "div";
+
+    const linkProps =
+        project.type === "EXTERNAL"
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {};
+
+    return (
+        <Wrapper
+            href={project.href}
+            {...linkProps}
+            className={`
+        group relative h-64 flex flex-col justify-between p-8 overflow-hidden
+        border transition-all duration-300
+        /* LIGHT MODE STYLES */
+        bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50
+        /* DARK MODE STYLES */
+        dark:bg-zinc-900 dark:border-zinc-800/50 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/80 dark:hover:shadow-black/50
+        ${isClickable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}
+      `}
+        >
+            {/* SHINE ANIMATION EFFECT */}
+            {isClickable && (
+                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                </div>
+            )}
+
+            {/* TOP ROW */}
+            <div className="flex justify-between items-start relative z-10">
+                <div
+                    className="p-2 rounded-sm transition-colors border
+          bg-zinc-50 border-zinc-100 text-zinc-500 group-hover:text-zinc-900 group-hover:border-zinc-300
+          dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-400 dark:group-hover:text-white dark:group-hover:border-zinc-600
+        "
+                >
+                    {project.icon}
+                </div>
+
+                <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 flex flex-col items-end gap-1">
+                    <span className="uppercase tracking-wider">
+                        {project.category}
+                    </span>
+                    {project.type === "EXTERNAL" && <ArrowUpRight size={10} />}
                 </div>
             </div>
 
-            {/* Tool Grid */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {tools.map((tool) => (
-                    <Link
-                        key={tool.name}
-                        href={tool.href}
-                        className={`block group relative bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all duration-200 hover:-translate-y-1 ${
-                            tool.comingSoon
-                                ? "opacity-60 cursor-not-allowed pointer-events-none"
-                                : ""
+            {/* BOTTOM ROW */}
+            <div className="relative z-10">
+                <h3
+                    className="text-xl font-bold mb-2 tracking-tight transition-colors
+          text-zinc-900 group-hover:text-black
+          dark:text-zinc-100 dark:group-hover:text-white
+        "
+                >
+                    {project.name}
+                </h3>
+                <p
+                    className="text-sm font-light leading-relaxed transition-colors
+          text-zinc-600 group-hover:text-zinc-800
+          dark:text-zinc-500 dark:group-hover:text-zinc-400
+        "
+                >
+                    {project.subtitle}
+                </p>
+
+                {/* Status Indicator */}
+                <div className="mt-6 flex items-center gap-2">
+                    <div
+                        className={`w-1.5 h-1.5 rounded-full ${
+                            project.status === "OPERATIONAL"
+                                ? "bg-emerald-500"
+                                : "bg-zinc-300 dark:bg-zinc-700"
+                        }`}
+                    ></div>
+                    <span
+                        className={`text-[9px] font-mono tracking-widest uppercase ${
+                            project.status === "OPERATIONAL"
+                                ? "text-emerald-600 dark:text-emerald-500/80"
+                                : "text-zinc-400 dark:text-zinc-600"
                         }`}
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-blue-50 transition-colors">
-                                {tool.icon}
-                            </div>
-                            <span
-                                className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
-                                    tool.comingSoon
-                                        ? "bg-amber-100 text-amber-800"
-                                        : "bg-slate-100 text-slate-600"
-                                }`}
-                            >
-                                {tool.comingSoon ? "Coming Soon" : tool.tag}
-                            </span>
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                            {tool.name}
-                        </h3>
-                        <p className="text-slate-500 text-sm">
-                            {tool.description}
-                        </p>
-                    </Link>
-                ))}
+                        {project.status.replace("_", " ")}
+                    </span>
+                </div>
             </div>
-        </div>
+        </Wrapper>
     );
 }
