@@ -126,10 +126,23 @@ export const PROJECTS: Project[] = [
         subtitle:
             "An online piano that uses the key you're in and the musical context to suggest the next notes to play",
         icon: <Music className="w-4 h-4" />,
-        href: "#",
+        href: "/smart-piano",
         type: "INTERNAL",
         category: "MUSIC",
-        status: "IN_DEVELOPMENT",
+        status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/smartpiano.png",
+    },
+    {
+        id: "saucedog-art",
+        name: "saucedog.art",
+        subtitle:
+            "My art portfolio from 2022-2023. A collection of digital art, illustrations, and creative projects.",
+        icon: <Palette className="w-4 h-4" />,
+        href: "https://saucedog.art",
+        type: "EXTERNAL",
+        category: "ART",
+        status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/oldartportfolio.png",
     },
     {
         id: "brains-games-gauntlet",
