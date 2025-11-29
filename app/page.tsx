@@ -48,7 +48,7 @@ export default function Home() {
                             </span>
                         </div>
 
-                        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-zinc-900 dark:text-white mb-4">
+                        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-4 bg-gradient-to-r from-zinc-300 via-zinc-400 to-zinc-600 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-500 bg-clip-text text-transparent">
                             NICKEL
                         </h1>
                         <p className="text-xl text-zinc-600 dark:text-zinc-400 font-light max-w-lg">
