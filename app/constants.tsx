@@ -9,6 +9,9 @@ import {
     Palette,
     Cpu,
     Command,
+    Music,
+    Brain,
+    Video,
 } from "lucide-react";
 
 export type Project = {
@@ -97,5 +100,49 @@ export const PROJECTS: Project[] = [
         type: "INTERNAL",
         category: "UTILITY",
         status: "CONCEPT",
+    },
+    {
+        id: "passionfruit",
+        name: "Passionfruit",
+        subtitle:
+            "Conveniently track and understand all the projects you are working on",
+        icon: <Layers className="w-4 h-4" />,
+        href: "https://github.com/nick5616/universe",
+        type: "EXTERNAL",
+        category: "CREATIVE PRODUCTIVITY",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "smart-piano",
+        name: "Smart Piano",
+        subtitle:
+            "An online piano that uses the key you're in and the musical context to suggest the next notes to play",
+        icon: <Music className="w-4 h-4" />,
+        href: "#",
+        type: "INTERNAL",
+        category: "MUSIC / AI",
+        status: "IN_DEVELOPMENT",
+    },
+    {
+        id: "brains-games-gauntlet",
+        name: "Brains Games Gauntlet",
+        subtitle:
+            "A series of games designed to improve mental math, working memory, creativity, etc",
+        icon: <Brain className="w-4 h-4" />,
+        href: "#",
+        type: "INTERNAL",
+        category: "EDUCATION / GAMING",
+        status: "IN_DEVELOPMENT",
+    },
+    {
+        id: "chaos",
+        name: "CHAOS",
+        subtitle:
+            "Counter-Strike Highlight Analysis and Organization System. A tool that batch processes video game footage and filters noteworthy in-game moments using machine learning (OCR, Speech-To-Text) (Desktop app on hiatus).",
+        icon: <Video className="w-4 h-4" />,
+        href: "https://github.com/nick5616/CHAOS",
+        type: "EXTERNAL",
+        category: "ML / VIDEO",
+        status: "IN_DEVELOPMENT",
     },
 ];
