@@ -128,7 +128,7 @@ export const PROJECTS: Project[] = [
         icon: <Music className="w-4 h-4" />,
         href: "#",
         type: "INTERNAL",
-        category: "MUSIC / AI",
+        category: "MUSIC",
         status: "IN_DEVELOPMENT",
     },
     {
