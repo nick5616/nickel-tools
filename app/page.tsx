@@ -101,7 +101,8 @@ export default function Home() {
 }
 
 function MetalCard({ project }: { project: Project }) {
-    const isClickable = project.status !== "CONCEPT";
+    const isClickable =
+        project.status !== "CONCEPT" && project.status !== "IN_DEVELOPMENT";
     const Wrapper = isClickable ? Link : "div";
 
     const linkProps =
