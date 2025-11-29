@@ -25,8 +25,9 @@ export type Project = {
 export const PROJECTS: Project[] = [
     {
         id: "portfolio",
-        name: "3D_PORTFOLIO",
-        subtitle: "Immersive first-person environment built in Three.js.",
+        name: "nicolasbelovoskey.com",
+        subtitle:
+            "Immersive first-person art and software engineering portfolio, with interactive games and experiences thrown in for fun. Built in Three.js.",
         icon: <Gamepad2 className="w-4 h-4" />,
         href: "https://nicolasbelovoskey.com",
         type: "EXTERNAL",
@@ -35,8 +36,9 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "friendex",
-        name: "FRIENDEX",
-        subtitle: "A personal CRM and compendium for your social circle.",
+        name: "friendex.online",
+        subtitle:
+            "A pokédex for your friends. Built for Mobile. Prototyped on Web.",
         icon: <Users className="w-4 h-4" />,
         href: "https://friendex.online",
         type: "EXTERNAL",
@@ -45,8 +47,9 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "videogamequest",
-        name: "VIDEOGAMEQUEST",
-        subtitle: "Gamified journaling engine using AI to narrate your life.",
+        name: "videogamequest.me",
+        subtitle:
+            "Convert journal entries into video game quests, and live your life like an RPG.",
         icon: <BookOpen className="w-4 h-4" />,
         href: "https://videogamequest.me",
         type: "EXTERNAL",
@@ -55,9 +58,9 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "tierlistify",
-        name: "TIERLISTIFY",
+        name: "tierlistify.com",
         subtitle:
-            "Rank, sort, and share anything. The definitive tier list app.",
+            "Rank anything, optimized for your phone. I built it because I thought the Tiermaker mobile site could use some improvement. ",
         icon: <Layers className="w-4 h-4" />,
         href: "https://tierlistify.com",
         type: "EXTERNAL",
@@ -66,7 +69,7 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "resume-builder",
-        name: "RESUME_FABRICATOR",
+        name: "Online LaTeX Resume Builder",
         subtitle: "WASM-powered LaTeX compiler. Zero config, total privacy.",
         icon: <FileText className="w-4 h-4" />,
         href: "/resume-editor",
@@ -76,7 +79,7 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "color-engine",
-        name: "CHROMATIC_ENGINE",
+        name: "Advanced Color Scheme Generator",
         subtitle:
             "Algorithmic palette generator based on harmonic color theory.",
         icon: <Palette className="w-4 h-4" />,
@@ -87,8 +90,8 @@ export const PROJECTS: Project[] = [
     },
     {
         id: "choice-engine",
-        name: "ENTROPY_GENERATOR",
-        subtitle: "Weighted random selection for indecisive moments.",
+        name: "Choice Picker",
+        subtitle: "SPIN THE WHEEL...",
         icon: <Cpu className="w-4 h-4" />,
         href: "#",
         type: "INTERNAL",

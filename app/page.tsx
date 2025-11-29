@@ -110,7 +110,7 @@ function MetalCard({ project }: { project: Project }) {
             href={project.href}
             {...linkProps}
             className={`
-        group relative h-64 flex flex-col justify-between p-8 overflow-hidden
+        group relative h-64 flex flex-col justify-between gap-2 p-8 overflow-hidden
         border transition-all duration-300
         /* LIGHT MODE STYLES */
         bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50
@@ -127,43 +127,48 @@ function MetalCard({ project }: { project: Project }) {
             )}
 
             {/* TOP ROW */}
-            <div className="flex justify-between items-start relative z-10">
-                <div
-                    className="p-2 rounded-sm transition-colors border
+            <div className="relative z-10">
+                <div className="flex items-center justify-between gap-2">
+                    <div
+                        className="p-2 rounded-sm transition-colors border
           bg-zinc-50 border-zinc-100 text-zinc-500 group-hover:text-zinc-900 group-hover:border-zinc-300
           dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-400 dark:group-hover:text-white dark:group-hover:border-zinc-600
         "
-                >
-                    {project.icon}
-                </div>
+                    >
+                        {project.icon}
+                    </div>
 
-                <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 flex flex-col items-end gap-1">
-                    <span className="uppercase tracking-wider">
-                        {project.category}
-                    </span>
-                    {project.type === "EXTERNAL" && <ArrowUpRight size={10} />}
+                    <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 flex flex-col items-end gap-1">
+                        <span className="uppercase tracking-wider">
+                            {project.category}
+                        </span>
+                        {project.type === "EXTERNAL" && (
+                            <ArrowUpRight size={10} />
+                        )}
+                    </div>
+                </div>
+                <div className="mt-2">
+                    <h3
+                        className="text-xl font-bold mb-2 tracking-tight transition-colors
+          text-zinc-900 group-hover:text-black
+          dark:text-zinc-100 dark:group-hover:text-white
+        "
+                    >
+                        {project.name}
+                    </h3>
+                    <p
+                        className="text-sm font-light leading-relaxed transition-colors
+          text-zinc-600 group-hover:text-zinc-800
+          dark:text-zinc-500 dark:group-hover:text-zinc-400
+        "
+                    >
+                        {project.subtitle}
+                    </p>
                 </div>
             </div>
 
             {/* BOTTOM ROW */}
             <div className="relative z-10">
-                <h3
-                    className="text-xl font-bold mb-2 tracking-tight transition-colors
-          text-zinc-900 group-hover:text-black
-          dark:text-zinc-100 dark:group-hover:text-white
-        "
-                >
-                    {project.name}
-                </h3>
-                <p
-                    className="text-sm font-light leading-relaxed transition-colors
-          text-zinc-600 group-hover:text-zinc-800
-          dark:text-zinc-500 dark:group-hover:text-zinc-400
-        "
-                >
-                    {project.subtitle}
-                </p>
-
                 {/* Status Indicator */}
                 <div className="mt-6 flex items-center gap-2">
                     <div
