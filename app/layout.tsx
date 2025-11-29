@@ -111,9 +111,9 @@ export default function RootLayout({
                                 Nickel Tools © {new Date().getFullYear()}
                             </p>
                             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
                                 <span className="text-[10px] text-zinc-500 font-mono">
-                                    ALL SYSTEMS OPERATIONAL
+                                    Recording your activity... (Just kidding)
                                 </span>
                             </div>
                         </div>
