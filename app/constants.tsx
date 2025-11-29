@@ -23,6 +23,7 @@ export type Project = {
     type: "EXTERNAL" | "INTERNAL";
     category: string;
     status: "OPERATIONAL" | "IN_DEVELOPMENT" | "CONCEPT";
+    backgroundScreenshotPath?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -36,6 +37,7 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "IMMERSIVE WEB",
         status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/3dportfolio.png",
     },
     {
         id: "friendex",
@@ -47,6 +49,7 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "SOCIAL TOOL",
         status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/friendex.png",
     },
     {
         id: "videogamequest",
@@ -58,6 +61,7 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "AI / PRODUCTIVITY",
         status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/videogamequest.png",
     },
     {
         id: "tierlistify",
@@ -69,6 +73,8 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "SOCIAL APP",
         status: "OPERATIONAL",
+        backgroundScreenshotPath:
+            "/project-screenshots/tierlistifytierlist.png",
     },
     {
         id: "resume-builder",
@@ -79,6 +85,7 @@ export const PROJECTS: Project[] = [
         type: "INTERNAL",
         category: "ENGINEERING",
         status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/latex.png",
     },
     {
         id: "color-engine",
@@ -111,6 +118,7 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "CREATIVE PRODUCTIVITY",
         status: "OPERATIONAL",
+        backgroundScreenshotPath: "/project-screenshots/passionfruit.png",
     },
     {
         id: "smart-piano",
@@ -144,5 +152,6 @@ export const PROJECTS: Project[] = [
         type: "EXTERNAL",
         category: "ML / VIDEO",
         status: "IN_DEVELOPMENT",
+        backgroundScreenshotPath: "/project-screenshots/chaos.png",
     },
 ];

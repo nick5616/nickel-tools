@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
     FileText,
     Search,
@@ -104,11 +105,78 @@ function MetalCard({ project }: { project: Project }) {
     const isClickable =
         project.status !== "CONCEPT" && project.status !== "IN_DEVELOPMENT";
     const Wrapper = isClickable ? Link : "div";
+    const imageRef = useRef<HTMLImageElement>(null);
+    const [imageWidth, setImageWidth] = useState<number | null>(null);
+    const [imageHeight, setImageHeight] = useState<number | null>(null);
 
     const linkProps =
         project.type === "EXTERNAL"
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {};
+
+    useEffect(() => {
+        if (imageRef.current) {
+            const updateDimensions = () => {
+                if (imageRef.current) {
+                    setImageWidth(imageRef.current.offsetWidth);
+                    setImageHeight(imageRef.current.offsetHeight);
+                }
+            };
+            updateDimensions();
+            window.addEventListener("resize", updateDimensions);
+            return () => window.removeEventListener("resize", updateDimensions);
+        }
+    }, [project.backgroundScreenshotPath]);
+
+    // Calculate gradient based on image aspect ratio
+    // Desktop (wider than tall): diagonal gradient (top-left transparent, bottom-right opaque)
+    // Mobile (taller than wide): right-to-left gradient (right transparent, left opaque)
+    const getGradientStyle = () => {
+        if (!imageWidth || !imageHeight) {
+            // Default gradient while loading
+            return {
+                maskImage:
+                    "linear-gradient(to bottom right, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,1) 100%)",
+                WebkitMaskImage:
+                    "linear-gradient(to bottom right, transparent 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,1) 100%)",
+            };
+        }
+
+        const aspectRatio = imageWidth / imageHeight;
+        const isMobile = aspectRatio < 1; // Taller than wide
+
+        if (isMobile) {
+            // Mobile screenshots: left-to-right gradient
+            // Left side: transparent (no image visible)
+            // Right side: fully opaque (image fully visible)
+            return {
+                maskImage:
+                    "linear-gradient(to right, transparent 40%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,1) 80%)",
+                WebkitMaskImage:
+                    "linear-gradient(to right, transparent 40%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,1) 80%)",
+            };
+        } else {
+            // Desktop screenshots: diagonal gradient
+            // Top-left: completely transparent (no image visible)
+            // Bottom-right: fully opaque (image fully visible)
+            const cardHeight = 256;
+            const widthRatio = imageWidth / cardHeight;
+
+            let midOpacity = 0.3;
+            if (widthRatio < 1.2) {
+                // Narrower desktop image - show more of it earlier
+                midOpacity = 0.5;
+            } else if (widthRatio > 1.5) {
+                // Wider desktop image - more aggressive fade from left
+                midOpacity = 0.15;
+            }
+
+            return {
+                maskImage: `linear-gradient(to bottom right, transparent 0%, rgba(0,0,0,${midOpacity}) 50%, rgba(0,0,0,1) 100%)`,
+                WebkitMaskImage: `linear-gradient(to bottom right, transparent 0%, rgba(0,0,0,${midOpacity}) 50%, rgba(0,0,0,1) 100%)`,
+            };
+        }
+    };
 
     return (
         <Wrapper
@@ -124,6 +192,39 @@ function MetalCard({ project }: { project: Project }) {
         ${isClickable ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}
       `}
         >
+            {/* BACKGROUND SCREENSHOT */}
+            {project.backgroundScreenshotPath && (
+                <div className="absolute inset-0 right-0 h-full w-full overflow-hidden">
+                    <div
+                        ref={imageRef}
+                        className="absolute right-0 top-0 h-full w-auto"
+                    >
+                        <div
+                            className="h-full w-auto relative"
+                            style={getGradientStyle()}
+                        >
+                            <Image
+                                src={project.backgroundScreenshotPath}
+                                alt={project.name}
+                                width={400}
+                                height={256}
+                                className="h-full w-auto object-cover object-right"
+                                onLoad={() => {
+                                    if (imageRef.current) {
+                                        setImageWidth(
+                                            imageRef.current.offsetWidth
+                                        );
+                                        setImageHeight(
+                                            imageRef.current.offsetHeight
+                                        );
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* SHINE ANIMATION EFFECT */}
             {isClickable && (
                 <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
@@ -143,7 +244,7 @@ function MetalCard({ project }: { project: Project }) {
                         {project.icon}
                     </div>
 
-                    <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 flex flex-col items-end gap-1">
+                    <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 flex items-center gap-1 bg-zinc-50 dark:bg-zinc-800 rounded-lg p-1">
                         <span className="uppercase tracking-wider">
                             {project.category}
                         </span>
