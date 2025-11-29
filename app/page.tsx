@@ -25,17 +25,11 @@ export default function Home() {
             p.name.toLowerCase().includes(query.toLowerCase()) ||
             p.subtitle.toLowerCase().includes(query.toLowerCase()) ||
             p.category.toLowerCase().includes(query.toLowerCase())
-    )
-        .sort((a, b) => {
-            if (a.name < b.name) return -1;
-            if (a.name > b.name) return 1;
-            return 0;
-        })
-        .sort((a, b) => {
-            if (a.type === "EXTERNAL" && b.type !== "EXTERNAL") return 1;
-            if (a.type !== "EXTERNAL" && b.type === "EXTERNAL") return -1;
-            return 0;
-        });
+    ).sort((a, b) => {
+        if (a.type === "EXTERNAL" && b.type !== "EXTERNAL") return 1;
+        if (a.type !== "EXTERNAL" && b.type === "EXTERNAL") return -1;
+        return 0;
+    });
 
     return (
         // Base background handles light/dark automatically thanks to Layout
