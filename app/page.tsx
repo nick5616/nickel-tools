@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import posthog from 'posthog-js';
 import {
     FileText,
     Search,
@@ -66,7 +67,11 @@ export default function Home() {
                             <input
                                 type="text"
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
+                                onChange={(e) => {
+                                    const newQuery = e.target.value;
+                                    setQuery(newQuery);
+                                    posthog.capture('searched-projects', { search_query: newQuery });
+                                }}
                                 placeholder="SEARCH DATABASE..."
                                 className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 pl-11 pr-4 py-4 shadow-sm focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 transition-all font-mono text-xs tracking-wider"
                                 spellCheck="false"
@@ -182,6 +187,17 @@ function MetalCard({ project }: { project: Project }) {
         <Wrapper
             href={project.href}
             {...linkProps}
+            onClick={() => {
+                if (isClickable) {
+                    posthog.capture('project-card-clicked', {
+                        project_id: project.id,
+                        project_name: project.name,
+                        project_category: project.category,
+                        project_type: project.type,
+                        project_status: project.status,
+                    });
+                }
+            }}
             className={`
         group relative h-64 flex flex-col justify-between gap-2 p-8 overflow-hidden
         border transition-all duration-300

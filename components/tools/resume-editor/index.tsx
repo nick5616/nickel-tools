@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import posthog from 'posthog-js';
 import {
     Download,
     Play,
@@ -35,6 +36,7 @@ export default function ResumeEditor() {
     };
 
     const handleCompile = () => {
+        posthog.capture('resume-compiled', { source_length: latexSource.length });
         compile(latexSource);
     };
 
@@ -62,6 +64,7 @@ export default function ResumeEditor() {
 
     const resetToTemplate = () => {
         if (window.confirm("Reset to default template?")) {
+            posthog.capture('resume-reset-to-template');
             setLatexSource(DEFAULT_TEMPLATE);
             localStorage.removeItem("latex-resume");
         }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import posthog from 'posthog-js';
 
 declare global {
     interface Window {
@@ -72,13 +73,29 @@ export const useSwiftLatex = () => {
                     const url = URL.createObjectURL(blob);
                     setPdfUrl(url);
                     setStatus("ready");
+                    posthog.capture('latex_compiled', {
+                        success: true,
+                        source_length: latexSource.length
+                    });
                 } else {
                     setStatus("error");
-                    setErrorLog(result.log || "Compilation failed");
+                    const errorMessage = result.log || "Compilation failed";
+                    setErrorLog(errorMessage);
+                    posthog.capture('latex_compiled', {
+                        success: false,
+                        source_length: latexSource.length,
+                        error_log: errorMessage
+                    });
                 }
             } catch (error: any) {
                 setStatus("error");
-                setErrorLog(error.message || "Unknown error");
+                const errorMessage = error.message || "Unknown error";
+                setErrorLog(errorMessage);
+                posthog.capture('latex_compiled', {
+                    success: false,
+                    source_length: latexSource.length,
+                    error_log: errorMessage
+                });
             }
         },
         [status]

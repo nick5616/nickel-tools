@@ -1,5 +1,6 @@
 import SmartPiano from "@/components/tools/smart-piano";
 import type { Metadata } from "next";
+import posthog from "posthog-js";
 
 export const metadata: Metadata = {
     title: "Smart Piano | Nickel Tools",
@@ -17,7 +18,16 @@ export default function SmartPianoPage() {
             <div className="max-w-[1600px] mx-auto px-4 py-8">
                 {/* Breadcrumb */}
                 <div className="text-sm text-slate-500 mb-4">
-                    <a href="/" className="hover:text-blue-600">
+                    <a
+                        href="/"
+                        className="hover:text-blue-600"
+                        onClick={() =>
+                            posthog.capture("breadcrumb_link_clicked", {
+                                destination: "/",
+                                text: "Home",
+                            })
+                        }
+                    >
                         Home
                     </a>
                     <span className="mx-2">/</span>
@@ -77,4 +87,3 @@ export default function SmartPianoPage() {
         </div>
     );
 }
-
