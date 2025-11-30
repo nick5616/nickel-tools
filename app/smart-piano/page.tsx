@@ -1,6 +1,6 @@
 import SmartPiano from "@/components/tools/smart-piano";
 import type { Metadata } from "next";
-import posthog from "posthog-js";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 export const metadata: Metadata = {
     title: "Smart Piano | Nickel Tools",
@@ -17,24 +17,7 @@ export default function SmartPianoPage() {
             {/* Tool Container */}
             <div className="max-w-[1600px] mx-auto px-4 py-8">
                 {/* Breadcrumb */}
-                <div className="text-sm text-slate-500 mb-4">
-                    <a
-                        href="/"
-                        className="hover:text-blue-600"
-                        onClick={() =>
-                            posthog.capture("breadcrumb_link_clicked", {
-                                destination: "/",
-                                text: "Home",
-                            })
-                        }
-                    >
-                        Home
-                    </a>
-                    <span className="mx-2">/</span>
-                    <span className="text-slate-900 font-medium">
-                        Smart Piano
-                    </span>
-                </div>
+                <Breadcrumb currentPage="Smart Piano" trackClick={true} />
 
                 {/* The Client Component */}
                 <SmartPiano />
@@ -43,8 +26,8 @@ export default function SmartPianoPage() {
                 <div className="max-w-3xl mx-auto mt-20 prose prose-slate">
                     <h1>Smart Piano</h1>
                     <p>
-                        Welcome to the <strong>Nickel Tools Smart Piano</strong>.
-                        This interactive piano uses musical theory to provide
+                        Welcome to the <strong>Nickel Tools Smart Piano</strong>
+                        . This interactive piano uses musical theory to provide
                         intelligent suggestions based on the key you're playing
                         in and the context of your recent notes.
                     </p>

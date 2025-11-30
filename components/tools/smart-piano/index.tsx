@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import posthog from 'posthog-js';
+import posthog from "posthog-js";
 import {
     ChevronLeft,
     ChevronRight,
@@ -32,8 +32,7 @@ export default function SmartPiano() {
 
     useEffect(() => {
         const AudioContextClass =
-            window.AudioContext ||
-            (window as any).webkitAudioContext;
+            window.AudioContext || (window as any).webkitAudioContext;
         const ctx = new AudioContextClass();
 
         const unlock = () => {
@@ -336,11 +335,13 @@ export default function SmartPiano() {
 
         notes.forEach((note, idx) => {
             const weight = (idx + 1) / notes.length;
-            const interval =
-                Math.abs((lastNote.semitone - note.semitone + 12) % 12);
+            const interval = Math.abs(
+                (lastNote.semitone - note.semitone + 12) % 12
+            );
 
             if ([1, 6].includes(interval)) tensionScore += 40 * weight;
-            else if ([2, 10, 11].includes(interval)) tensionScore += 20 * weight;
+            else if ([2, 10, 11].includes(interval))
+                tensionScore += 20 * weight;
         });
 
         const isStable = [0, 4, 5, 7].includes(lastNote.semitone % 12);
@@ -355,8 +356,7 @@ export default function SmartPiano() {
     };
 
     const categorizeNote = (targetSemi: number) => {
-        if (recentNotes.length === 0)
-            return { category: "neutral", score: 0 };
+        if (recentNotes.length === 0) return { category: "neutral", score: 0 };
 
         const lastNote = recentNotes[recentNotes.length - 1];
         const interval = (targetSemi - lastNote.semitone + 12) % 12;
@@ -369,10 +369,7 @@ export default function SmartPiano() {
         const inKey = isInKey(targetSemi);
 
         const futureTension =
-            tension +
-            tensionAdded +
-            (isStable ? -15 : 10) +
-            (inKey ? 0 : 25);
+            tension + tensionAdded + (isStable ? -15 : 10) + (inKey ? 0 : 25);
 
         if (futureTension < tension - 10)
             return { category: "resolution", score: tension - futureTension };
@@ -562,8 +559,7 @@ export default function SmartPiano() {
             return "bg-yellow-300 text-yellow-900 border-yellow-500";
 
         if (!showSmart || recentNotes.length === 0) {
-            if (note.inKey)
-                return "bg-blue-200 text-blue-900 border-blue-400";
+            if (note.inKey) return "bg-blue-200 text-blue-900 border-blue-400";
             return note.isBlack
                 ? "bg-gray-700 text-white border-2 border-dashed border-gray-500"
                 : "bg-gray-200 text-gray-700 border-2 border-dashed border-gray-400";
@@ -605,12 +601,12 @@ export default function SmartPiano() {
                             toast.color === "purple"
                                 ? "bg-purple-500 text-white"
                                 : toast.color === "green"
-                                  ? "bg-green-500 text-white"
-                                  : toast.color === "blue"
-                                    ? "bg-blue-500 text-white"
-                                    : toast.color === "orange"
-                                      ? "bg-orange-500 text-white"
-                                      : "bg-red-500 text-white"
+                                ? "bg-green-500 text-white"
+                                : toast.color === "blue"
+                                ? "bg-blue-500 text-white"
+                                : toast.color === "orange"
+                                ? "bg-orange-500 text-white"
+                                : "bg-red-500 text-white"
                         }`}
                     >
                         {toast.emoji} {toast.name}!
@@ -623,8 +619,8 @@ export default function SmartPiano() {
                             tension > 70
                                 ? "bg-red-500"
                                 : tension > 40
-                                  ? "bg-orange-500"
-                                  : "bg-blue-500"
+                                ? "bg-orange-500"
+                                : "bg-blue-500"
                         }`}
                         style={{ width: `${tension}%` }}
                     />
@@ -665,7 +661,9 @@ export default function SmartPiano() {
                         value={selectedKey}
                         onChange={(e) => {
                             const newKey = e.target.value;
-                            posthog.capture('piano_key_changed', { key: newKey });
+                            posthog.capture("piano_key_changed", {
+                                key: newKey,
+                            });
                             setSelectedKey(newKey);
                             setRecentNotes([]);
                             setNoteHistory([]);
@@ -683,8 +681,10 @@ export default function SmartPiano() {
 
                     <button
                         onClick={() => {
-                            posthog.capture('piano_smart_mode_toggled', { enabled: !showSmart });
-                            setShowSmart(!showSmart)
+                            posthog.capture("piano_smart_mode_toggled", {
+                                enabled: !showSmart,
+                            });
+                            setShowSmart(!showSmart);
                         }}
                         className={`px-3 py-2 rounded-lg font-semibold ${
                             showSmart
@@ -726,8 +726,8 @@ export default function SmartPiano() {
                                         sugg.category === "resolution"
                                             ? "#a855f7"
                                             : sugg.category === "tension"
-                                              ? "#3b82f6"
-                                              : "#22c55e";
+                                            ? "#3b82f6"
+                                            : "#22c55e";
 
                                     return (
                                         <g key={noteIdx}>
@@ -772,9 +772,15 @@ export default function SmartPiano() {
                                         );
                                     }}
                                     onClick={() =>
-                                        playNote(note.freq, note.note, note.octave)
+                                        playNote(
+                                            note.freq,
+                                            note.note,
+                                            note.octave
+                                        )
                                     }
-                                    className={`w-16 h-48 border-2 active:bg-gray-300 transition-colors rounded-b-lg shadow-lg relative flex-shrink-0 ${getKeyStyle(note)}`}
+                                    className={`w-16 h-48 border-2 active:bg-gray-300 transition-colors rounded-b-lg shadow-lg relative flex-shrink-0 ${getKeyStyle(
+                                        note
+                                    )}`}
                                 >
                                     <span className="block mt-auto mb-2 font-semibold text-sm">
                                         {note.displayName}
@@ -819,9 +825,15 @@ export default function SmartPiano() {
                                             );
                                         }}
                                         onClick={() =>
-                                            playNote(bk.freq, bk.note, bk.octave)
+                                            playNote(
+                                                bk.freq,
+                                                bk.note,
+                                                bk.octave
+                                            )
                                         }
-                                        className={`absolute left-9 w-10 h-32 border-2 active:bg-gray-600 transition-colors rounded-b-lg shadow-xl z-10 pointer-events-auto ${getKeyStyle(bk)}`}
+                                        className={`absolute left-9 w-10 h-32 border-2 active:bg-gray-600 transition-colors rounded-b-lg shadow-xl z-10 pointer-events-auto ${getKeyStyle(
+                                            bk
+                                        )}`}
                                     >
                                         <span className="block mt-auto mb-1 font-semibold text-xs">
                                             {bk.displayName}
@@ -848,19 +860,19 @@ export default function SmartPiano() {
                         sugg.category === "resolution"
                             ? "from-purple-500 to-purple-600"
                             : sugg.category === "tension"
-                              ? "from-blue-500 to-blue-600"
-                              : "from-green-500 to-green-600";
+                            ? "from-blue-500 to-blue-600"
+                            : "from-green-500 to-green-600";
                     return (
                         <button
                             key={idx}
                             onClick={() => {
-                                posthog.capture('piano_chord_played', {
+                                posthog.capture("piano_chord_played", {
                                     chord_name: sugg.name,
                                     notes: sugg.notes,
                                     category: sugg.category,
-                                    current_key: selectedKey
+                                    current_key: selectedKey,
                                 });
-                                playMultiNote(sugg.freqs, sugg.notes)
+                                playMultiNote(sugg.freqs, sugg.notes);
                             }}
                             className={`px-4 py-2 bg-gradient-to-b ${color} text-white rounded-lg font-bold shadow-lg active:opacity-80 flex items-center gap-2`}
                         >
@@ -896,7 +908,9 @@ export default function SmartPiano() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                                    <span className="text-blue-200">Tension</span>
+                                    <span className="text-blue-200">
+                                        Tension
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -910,4 +924,3 @@ export default function SmartPiano() {
         </div>
     );
 }
-
