@@ -103,11 +103,12 @@ export function Desktop({
 
     return (
         <div
-            className="relative h-full overflow-hidden z-10"
+            className="relative h-full overflow-hidden"
             style={{
                 width: "100%",
                 maxWidth: "100vw",
                 position: "relative",
+                zIndex: 1,
             }}
         >
             {content.map((item) => {

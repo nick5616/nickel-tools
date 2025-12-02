@@ -53,7 +53,11 @@ export function DesktopOS() {
       </div>
 
       {/* Dock */}
-      <Dock items={featuredContent} onOpenItem={openWindow} />
+      <Dock 
+        items={windows.map(w => w.content)} 
+        windows={windows}
+        onOpenItem={openWindow} 
+      />
     </div>
   );
 }

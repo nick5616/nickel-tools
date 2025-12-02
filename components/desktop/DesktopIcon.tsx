@@ -15,12 +15,13 @@ interface DesktopIconProps {
 export function DesktopIcon({ content, position, onDoubleClick, onContextMenu }: DesktopIconProps) {
   return (
     <motion.div
-      className="absolute cursor-pointer select-none group"
+      className="absolute cursor-pointer select-none group z-0"
       style={{ 
         left: `${Math.max(10, position.x)}px`, 
         top: `${position.y}px`,
         maxWidth: '96px',
         right: 'auto',
+        zIndex: 1,
       }}
       onDoubleClick={() => onDoubleClick(content)}
       onContextMenu={(e) => onContextMenu?.(e, content)}

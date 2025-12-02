@@ -29,8 +29,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   openWindow: (content) => {
     const existingWindow = get().windows.find(w => w.content.id === content.id);
     if (existingWindow) {
-      // If window exists, just focus it
+      // If window exists, focus it and un-minimize if minimized
       get().focusWindow(existingWindow.id);
+      if (existingWindow.minimized) {
+        get().minimizeWindow(existingWindow.id);
+      }
       return;
     }
 
@@ -87,7 +90,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   getNextZIndex: () => {
-    const maxZ = Math.max(...get().windows.map(w => w.zIndex), 0);
+    const maxZ = Math.max(...get().windows.map(w => w.zIndex), 20);
     return maxZ + 1;
   },
 }));

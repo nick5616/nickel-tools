@@ -72,7 +72,7 @@ export function AppWindow({
                 minWidth={400}
                 minHeight={300}
                 bounds="window"
-                style={{ zIndex: window.zIndex }}
+                style={{ zIndex: window.zIndex, position: "absolute" }}
                 className="app-window"
                 dragHandleClassName="window-titlebar"
             >
