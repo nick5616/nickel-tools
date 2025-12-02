@@ -24,18 +24,6 @@ export function ContentRenderer({ content }: ContentRendererProps) {
     case 'external':
       return (
         <div className="h-full w-full flex flex-col">
-          <div className="p-4 border-b border-zinc-700 bg-zinc-900">
-            <h3 className="text-lg font-semibold text-white mb-2">{content.title}</h3>
-            <p className="text-sm text-zinc-400 mb-4">{content.description}</p>
-            <a
-              href={content.url}
-              target={content.openInNewTab ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-              className="inline-block px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded text-sm text-white transition-colors"
-            >
-              Open {content.title} →
-            </a>
-          </div>
           <div className="flex-1 overflow-hidden">
             <iframe
               src={content.url}

@@ -103,7 +103,7 @@ export function Desktop({
 
     return (
         <div
-            className="relative h-full overflow-hidden"
+            className="relative h-full overflow-hidden z-10"
             style={{
                 width: "100%",
                 maxWidth: "100vw",

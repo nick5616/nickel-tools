@@ -25,7 +25,7 @@ export function DesktopOS() {
       
       {/* Desktop Area */}
       <div 
-        className="pt-12 h-[calc(100vh-48px)] relative overflow-hidden" 
+        className="pt-12 h-[calc(100vh-48px)] relative overflow-hidden z-10" 
         style={{ 
           width: '100vw',
           maxWidth: '100vw',
