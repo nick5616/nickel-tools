@@ -15,6 +15,12 @@ import {
   Music,
   Brain,
   Video,
+  Info,
+  Mail,
+  Settings,
+  Image,
+  Paintbrush,
+  PenTool,
 } from 'lucide-react';
 
 interface IconRendererProps {
@@ -42,6 +48,14 @@ const iconComponentMap: Record<string, React.ComponentType<{ className?: string 
   'chaos': Video,
   'saucedog-art': Palette,
   'passionfruit': Layers,
+  // System windows
+  'about': Info,
+  'contact': Mail,
+  'settings': Settings,
+  // Art galleries
+  'art-digital-art': Image,
+  'art-paintings': Paintbrush,
+  'art-sketches': PenTool,
 };
 
 export function IconRenderer({ content, size = 'md', className = '' }: IconRendererProps) {

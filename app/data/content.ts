@@ -270,6 +270,80 @@ export const NICKEL_SYSTEM: NickelSystem = {
       featured: false,
       tags: ['ml', 'video', 'gaming', 'github'],
     },
+    // System windows
+    {
+      id: 'about',
+      type: 'internal',
+      title: 'About Nickel OS',
+      description: 'System information and bio',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Utility',
+      status: 'operational',
+      route: '/about',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
+    {
+      id: 'contact',
+      type: 'internal',
+      title: 'Contact',
+      description: 'Get in touch',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Utility',
+      status: 'operational',
+      route: '/contact',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
+    {
+      id: 'settings',
+      type: 'internal',
+      title: 'Settings',
+      description: 'System preferences and customization',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Utility',
+      status: 'operational',
+      route: '/settings',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
+    // Art galleries (stubbed for GCP integration)
+    {
+      id: 'art-digital-art',
+      type: 'internal',
+      title: 'Digital Art',
+      description: 'Gallery of digital artwork',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Art',
+      status: 'operational',
+      route: '/art-gallery/digital-art',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
+    {
+      id: 'art-paintings',
+      type: 'internal',
+      title: 'Paintings',
+      description: 'Gallery of paintings',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Art',
+      status: 'operational',
+      route: '/art-gallery/paintings',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
+    {
+      id: 'art-sketches',
+      type: 'internal',
+      title: 'Sketches',
+      description: 'Gallery of sketches',
+      thumbnail: '/project-screenshots/latex.png', // Placeholder
+      category: 'Art',
+      status: 'operational',
+      route: '/art-gallery/sketches',
+      dateAdded: '2024-01-01',
+      featured: false,
+    },
   ],
   featured: ['resume-builder', 'smart-piano', 'portfolio', 'saucedog-art'],
 };

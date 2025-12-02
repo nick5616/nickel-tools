@@ -27,9 +27,19 @@ export function DesktopIcon({ content, position, onDoubleClick, onContextMenu }:
       onContextMenu={(e) => onContextMenu?.(e, content)}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ 
+        opacity: 1, 
+        scale: 1,
+        x: 0,
+        y: 0,
+      }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      layout
+      transition={{ 
+        duration: 0.3,
+        ease: "easeOut",
+      }}
     >
       <div className="flex flex-col items-center w-24 p-2 rounded hover:bg-white/10 dark:hover:bg-white/10 transition-colors">
         <div className="text-4xl mb-1 group-hover:scale-110 transition-transform flex items-center justify-center">

@@ -12,8 +12,23 @@ export interface WindowState {
   minimized: boolean;
 }
 
+export type ViewFilter = 'all' | 'engineering' | 'music' | 'art' | 'immersive-web' | 'social-tools' | 'tools-only';
+export type SortMethod = 'date' | 'category' | 'name';
+
+interface MenuState {
+  viewFilter: ViewFilter;
+  sortMethod: SortMethod;
+  openMenus: {
+    niIcon: boolean;
+    view: boolean;
+    art: boolean;
+    tools: boolean;
+  };
+}
+
 interface AppState {
   windows: WindowState[];
+  menu: MenuState;
   openWindow: (content: Content) => void;
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
@@ -21,10 +36,24 @@ interface AppState {
   updateWindowPosition: (id: string, position: { x: number; y: number }) => void;
   updateWindowSize: (id: string, size: { width: number; height: number }) => void;
   getNextZIndex: () => number;
+  setViewFilter: (filter: ViewFilter) => void;
+  setSortMethod: (method: SortMethod) => void;
+  toggleMenu: (menu: keyof MenuState['openMenus']) => void;
+  closeAllMenus: () => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
   windows: [],
+  menu: {
+    viewFilter: 'all',
+    sortMethod: 'category',
+    openMenus: {
+      niIcon: false,
+      view: false,
+      art: false,
+      tools: false,
+    },
+  },
 
   openWindow: (content) => {
     const existingWindow = get().windows.find(w => w.content.id === content.id);
@@ -92,6 +121,44 @@ export const useAppStore = create<AppState>((set, get) => ({
   getNextZIndex: () => {
     const maxZ = Math.max(...get().windows.map(w => w.zIndex), 20);
     return maxZ + 1;
+  },
+
+  setViewFilter: (filter) => {
+    set({ menu: { ...get().menu, viewFilter: filter } });
+    get().closeAllMenus();
+  },
+
+  setSortMethod: (method) => {
+    set({ menu: { ...get().menu, sortMethod: method } });
+    get().closeAllMenus();
+  },
+
+  toggleMenu: (menu) => {
+    const currentState = get().menu.openMenus[menu];
+    // Close all menus first
+    const newOpenMenus = {
+      niIcon: false,
+      view: false,
+      art: false,
+      tools: false,
+    };
+    // Then toggle the clicked menu
+    newOpenMenus[menu] = !currentState;
+    set({ menu: { ...get().menu, openMenus: newOpenMenus } });
+  },
+
+  closeAllMenus: () => {
+    set({
+      menu: {
+        ...get().menu,
+        openMenus: {
+          niIcon: false,
+          view: false,
+          art: false,
+          tools: false,
+        },
+      },
+    });
   },
 }));
 

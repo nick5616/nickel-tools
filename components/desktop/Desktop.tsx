@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Content } from "@/app/data/content";
 import { DesktopIcon } from "./DesktopIcon";
+import { useAppStore } from "@/app/store/appStore";
 
 interface DesktopProps {
     content: Content[];
@@ -13,7 +15,8 @@ interface DesktopProps {
 // Responsive icon positioning with wrapping
 const getDefaultIconPositions = (
     content: Content[],
-    viewportWidth: number
+    viewportWidth: number,
+    sortMethod: "date" | "category" | "name"
 ): Map<string, { x: number; y: number }> => {
     const positions = new Map<string, { x: number; y: number }>();
 
@@ -36,46 +39,59 @@ const getDefaultIconPositions = (
         columnsPerRow++;
     }
 
-    // Group content by category to keep related items together
-    const contentByCategory = content.reduce((acc, item) => {
-        if (!acc[item.category]) {
-            acc[item.category] = [];
-        }
-        acc[item.category].push(item);
-        return acc;
-    }, {} as Record<string, typeof content>);
+    // Sort and organize content based on sort method
+    let organizedContent: Content[];
+
+    if (sortMethod === "category") {
+        // Group content by category to keep related items together
+        const contentByCategory = content.reduce((acc, item) => {
+            if (!acc[item.category]) {
+                acc[item.category] = [];
+            }
+            acc[item.category].push(item);
+            return acc;
+        }, {} as Record<string, typeof content>);
+
+        organizedContent = Object.entries(contentByCategory)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .flatMap(([, items]) => items);
+    } else if (sortMethod === "date") {
+        // Sort by date (newest first)
+        organizedContent = [...content].sort(
+            (a, b) =>
+                new Date(b.dateAdded).getTime() -
+                new Date(a.dateAdded).getTime()
+        );
+    } else {
+        // Sort by name (alphabetically)
+        organizedContent = [...content].sort((a, b) =>
+            a.title.localeCompare(b.title)
+        );
+    }
 
     // Position icons with wrapping
     let currentRow = 0;
     let currentCol = 0;
 
-    Object.entries(contentByCategory).forEach(([category, items]) => {
-        items.forEach((item) => {
-            // Check if we need to wrap to next row
-            if (currentCol >= columnsPerRow) {
-                currentRow++;
-                currentCol = 0;
-            }
+    organizedContent.forEach((item) => {
+        // Check if we need to wrap to next row
+        if (currentCol >= columnsPerRow) {
+            currentRow++;
+            currentCol = 0;
+        }
 
-            const x = startX + currentCol * columnWidth;
-            const y = startY + currentRow * rowHeight;
+        const x = startX + currentCol * columnWidth;
+        const y = startY + currentRow * rowHeight;
 
-            // Ensure position doesn't exceed viewport
-            const constrainedX = Math.min(
-                x,
-                viewportWidth - iconWidth - padding
-            );
+        // Ensure position doesn't exceed viewport
+        const constrainedX = Math.min(x, viewportWidth - iconWidth - padding);
 
-            positions.set(item.id, {
-                x: constrainedX,
-                y: y,
-            });
-
-            currentCol++;
+        positions.set(item.id, {
+            x: constrainedX,
+            y: y,
         });
 
-        // Add a small gap between categories (optional - can be removed if you want tighter packing)
-        // currentCol++; // Uncomment to add gap between categories
+        currentCol++;
     });
 
     return positions;
@@ -87,6 +103,7 @@ export function Desktop({
     onContextMenu,
 }: DesktopProps) {
     const [viewportWidth, setViewportWidth] = useState(0);
+    const { menu } = useAppStore();
 
     useEffect(() => {
         const updateWidth = () => {
@@ -97,9 +114,40 @@ export function Desktop({
         return () => window.removeEventListener("resize", updateWidth);
     }, []);
 
+    // Filter content based on viewFilter
+    const filteredContent = useMemo(() => {
+        if (menu.viewFilter === "all") {
+            return content;
+        }
+
+        if (menu.viewFilter === "tools-only") {
+            return content.filter((item) => item.type === "internal");
+        }
+
+        // Map filter names to category names
+        const categoryMap: Record<string, string> = {
+            engineering: "Engineering",
+            music: "Music",
+            art: "Art",
+            "immersive-web": "Immersive Web",
+            "social-tools": "Social Tools",
+        };
+
+        const targetCategory = categoryMap[menu.viewFilter];
+        if (!targetCategory) {
+            return content;
+        }
+
+        return content.filter((item) => item.category === targetCategory);
+    }, [content, menu.viewFilter]);
+
     // Use viewport width once available, or fallback to a reasonable default
     const effectiveWidth = viewportWidth || 1920;
-    const iconPositions = getDefaultIconPositions(content, effectiveWidth);
+    const iconPositions = getDefaultIconPositions(
+        filteredContent,
+        effectiveWidth,
+        menu.sortMethod
+    );
 
     return (
         <div
@@ -111,21 +159,23 @@ export function Desktop({
                 zIndex: 1,
             }}
         >
-            {content.map((item) => {
-                const position = iconPositions.get(item.id) || {
-                    x: 50,
-                    y: 100,
-                };
-                return (
-                    <DesktopIcon
-                        key={item.id}
-                        content={item}
-                        position={position}
-                        onDoubleClick={onOpenContent}
-                        onContextMenu={onContextMenu}
-                    />
-                );
-            })}
+            <AnimatePresence mode="popLayout">
+                {filteredContent.map((item) => {
+                    const position = iconPositions.get(item.id) || {
+                        x: 50,
+                        y: 100,
+                    };
+                    return (
+                        <DesktopIcon
+                            key={item.id}
+                            content={item}
+                            position={position}
+                            onDoubleClick={onOpenContent}
+                            onContextMenu={onContextMenu}
+                        />
+                    );
+                })}
+            </AnimatePresence>
         </div>
     );
 }

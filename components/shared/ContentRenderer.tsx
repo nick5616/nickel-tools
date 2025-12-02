@@ -15,6 +15,26 @@ const SmartPiano = dynamic(() => import('@/components/tools/smart-piano'), {
   ssr: false,
 });
 
+const About = dynamic(() => import('@/components/tools/about'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading...</div>,
+  ssr: false,
+});
+
+const Contact = dynamic(() => import('@/components/tools/contact'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading...</div>,
+  ssr: false,
+});
+
+const Settings = dynamic(() => import('@/components/tools/settings'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading...</div>,
+  ssr: false,
+});
+
+const ArtGallery = dynamic(() => import('@/components/tools/art-gallery'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading Gallery...</div>,
+  ssr: false,
+});
+
 interface ContentRendererProps {
   content: Content;
 }
@@ -47,6 +67,35 @@ export function ContentRenderer({ content }: ContentRendererProps) {
         return (
           <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
             <SmartPiano />
+          </div>
+        );
+      }
+      if (content.route === '/about') {
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <About />
+          </div>
+        );
+      }
+      if (content.route === '/contact') {
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <Contact />
+          </div>
+        );
+      }
+      if (content.route === '/settings') {
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <Settings />
+          </div>
+        );
+      }
+      if (content.route?.startsWith('/art-gallery/')) {
+        const folder = content.route.split('/art-gallery/')[1] as 'digital-art' | 'paintings' | 'sketches';
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <ArtGallery folder={folder} />
           </div>
         );
       }
