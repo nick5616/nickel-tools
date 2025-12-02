@@ -3,6 +3,7 @@
 import React from 'react';
 import type { Content, Category } from '@/app/data/content';
 import { getCategoryIcon } from '@/app/data/content';
+import { Favicon } from './Favicon';
 import {
   FileText,
   Gamepad2,
@@ -23,9 +24,9 @@ interface IconRendererProps {
 }
 
 const iconSizeMap = {
-  sm: 'w-4 h-4',
-  md: 'w-6 h-6',
-  lg: 'w-8 h-8',
+  sm: { class: 'w-4 h-4', pixels: 16 },
+  md: { class: 'w-6 h-6', pixels: 24 },
+  lg: { class: 'w-8 h-8', pixels: 32 },
 };
 
 const iconComponentMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -44,9 +45,36 @@ const iconComponentMap: Record<string, React.ComponentType<{ className?: string 
 };
 
 export function IconRenderer({ content, size = 'md', className = '' }: IconRendererProps) {
-  const IconComponent = iconComponentMap[content.id];
-  const sizeClass = iconSizeMap[size];
+  const sizeConfig = iconSizeMap[size];
+  const sizeClass = sizeConfig.class;
 
+  // For external links, use favicon
+  if (content.type === 'external') {
+    const fallback = (() => {
+      const IconComponent = iconComponentMap[content.id];
+      if (IconComponent) {
+        return <IconComponent className={sizeClass} />;
+      }
+      const emoji = getCategoryIcon(content.category);
+      return (
+        <span className={`${sizeClass} flex items-center justify-center text-2xl`}>
+          {emoji}
+        </span>
+      );
+    })();
+
+    return (
+      <Favicon
+        url={content.url}
+        size={sizeConfig.pixels}
+        className={className}
+        fallback={fallback}
+      />
+    );
+  }
+
+  // For internal apps and other types, use the icon component map
+  const IconComponent = iconComponentMap[content.id];
   if (IconComponent) {
     return <IconComponent className={`${sizeClass} ${className}`} />;
   }
