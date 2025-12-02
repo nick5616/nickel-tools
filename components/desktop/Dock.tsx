@@ -13,7 +13,11 @@ interface DockProps {
 export function Dock({ items, onOpenItem }: DockProps) {
   return (
     <motion.div
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-zinc-900/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-700 dark:border-zinc-800 rounded-2xl px-3 py-2 flex gap-2 shadow-2xl z-40"
+      className="fixed bottom-4 bg-zinc-900/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-700 dark:border-zinc-800 rounded-2xl px-3 py-2 flex gap-2 shadow-2xl z-40"
+      style={{ 
+        left: '50%',
+        transform: 'translateX(-50%)',
+      }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}

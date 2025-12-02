@@ -33,9 +33,30 @@
     --accent-glow: 141 141 141 / 0.2;
 }
 
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
 body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     color: rgb(var(--foreground));
     background: rgb(var(--background));
+    position: relative;
 }
 
 /* Nickel Texture */

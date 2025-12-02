@@ -20,11 +20,18 @@ export function DesktopOS() {
   };
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 dark:bg-zinc-950 overflow-hidden relative">
+    <div className="h-screen w-screen bg-zinc-950 dark:bg-zinc-950 overflow-hidden relative" style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}>
       <MenuBar />
       
       {/* Desktop Area */}
-      <div className="pt-12 h-full relative">
+      <div 
+        className="pt-12 h-[calc(100vh-48px)] relative overflow-hidden" 
+        style={{ 
+          width: '100vw',
+          maxWidth: '100vw',
+          position: 'relative',
+        }}
+      >
         <Desktop
           content={allContent}
           onOpenContent={openWindow}

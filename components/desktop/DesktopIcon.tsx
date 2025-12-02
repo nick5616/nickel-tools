@@ -16,7 +16,12 @@ export function DesktopIcon({ content, position, onDoubleClick, onContextMenu }:
   return (
     <motion.div
       className="absolute cursor-pointer select-none group"
-      style={{ left: position.x, top: position.y }}
+      style={{ 
+        left: `${Math.max(10, position.x)}px`, 
+        top: `${position.y}px`,
+        maxWidth: '96px',
+        right: 'auto',
+      }}
       onDoubleClick={() => onDoubleClick(content)}
       onContextMenu={(e) => onContextMenu?.(e, content)}
       whileHover={{ scale: 1.1 }}

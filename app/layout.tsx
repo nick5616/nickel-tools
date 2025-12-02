@@ -35,9 +35,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html
+            lang="en"
+            suppressHydrationWarning
+            className="h-full w-full overflow-hidden"
+        >
+            <head>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+                />
+            </head>
             <body
-                className={`${inter.variable} ${mono.variable} font-sans min-h-screen flex flex-col antialiased bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300`}
+                className={`${inter.variable} ${mono.variable} font-sans h-full w-full overflow-hidden flex flex-col antialiased bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300`}
             >
                 <ThemeProvider
                     attribute="class"
@@ -48,7 +58,9 @@ export default function RootLayout({
                     <div className="bg-noise"></div>
 
                     {/* Main Content - OS interface handles its own layout */}
-                    <main className="flex-grow relative z-10">{children}</main>
+                    <main className="h-full w-full overflow-hidden relative z-10">
+                        {children}
+                    </main>
                 </ThemeProvider>
             </body>
         </html>
