@@ -398,13 +398,18 @@ export default function ResumeEditor() {
                         reader.onload = (e) => {
                             if (typeof e.target?.result === "string") {
                                 if (engine.writeMemFSFile) {
-                                    engine.writeMemFSFile(path, e.target.result);
+                                    engine.writeMemFSFile(
+                                        path,
+                                        e.target.result
+                                    );
                                 } else if (engine.writeFile) {
                                     engine.writeFile(path, e.target.result);
                                 }
                                 resolve();
                             } else {
-                                reject(new Error(`Failed to read ${path} as text`));
+                                reject(
+                                    new Error(`Failed to read ${path} as text`)
+                                );
                             }
                         };
                         reader.onerror = () =>
@@ -417,7 +422,9 @@ export default function ResumeEditor() {
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             if (e.target?.result instanceof ArrayBuffer) {
-                                const uint8Array = new Uint8Array(e.target.result);
+                                const uint8Array = new Uint8Array(
+                                    e.target.result
+                                );
                                 if (engine.writeMemFSFile) {
                                     engine.writeMemFSFile(path, uint8Array);
                                 } else if (engine.writeFile) {
@@ -425,7 +432,11 @@ export default function ResumeEditor() {
                                 }
                                 resolve();
                             } else {
-                                reject(new Error(`Failed to read ${path} as binary`));
+                                reject(
+                                    new Error(
+                                        `Failed to read ${path} as binary`
+                                    )
+                                );
                             }
                         };
                         reader.onerror = () =>
@@ -456,42 +467,44 @@ export default function ResumeEditor() {
                 // Normalize the main file name (remove root directory if present)
                 // This matches the normalization done in uploadProjectFiles
                 let normalizedMainFile = mainFileName;
-                const paths = Array.from(files).map(f => f.webkitRelativePath || f.name);
+                const paths = Array.from(files).map(
+                    (f) => f.webkitRelativePath || f.name
+                );
                 if (paths.length > 0) {
                     const firstPath = paths[0];
                     const firstSlash = firstPath.indexOf("/");
                     if (firstSlash !== -1) {
                         const rootDir = firstPath.substring(0, firstSlash);
                         if (mainFileName.startsWith(rootDir + "/")) {
-                            normalizedMainFile = mainFileName.substring(rootDir.length + 1);
+                            normalizedMainFile = mainFileName.substring(
+                                rootDir.length + 1
+                            );
                         }
                     }
                 }
 
                 // Upload all files to virtual filesystem
                 await uploadProjectFiles(files, mainFileName);
-                
+
                 // Store the normalized main file name for compilation
                 setMainFileName(normalizedMainFile);
-                
+
                 // Update latexSource to show the main file content (optional)
                 // This helps users see what will be compiled
-                const mainFile = Array.from(files).find(
-                    (f) => {
-                        const path = f.webkitRelativePath || f.name;
-                        // Normalize the path (remove root directory if present)
-                        let normalizedPath = path;
-                        const firstSlash = path.indexOf("/");
-                        if (firstSlash !== -1) {
-                            const rootDir = path.substring(0, firstSlash);
-                            if (path.startsWith(rootDir + "/")) {
-                                normalizedPath = path.substring(rootDir.length + 1);
-                            }
+                const mainFile = Array.from(files).find((f) => {
+                    const path = f.webkitRelativePath || f.name;
+                    // Normalize the path (remove root directory if present)
+                    let normalizedPath = path;
+                    const firstSlash = path.indexOf("/");
+                    if (firstSlash !== -1) {
+                        const rootDir = path.substring(0, firstSlash);
+                        if (path.startsWith(rootDir + "/")) {
+                            normalizedPath = path.substring(rootDir.length + 1);
                         }
-                        // Match against normalized main file name
-                        return normalizedPath === normalizedMainFile;
                     }
-                );
+                    // Match against normalized main file name
+                    return normalizedPath === normalizedMainFile;
+                });
                 if (mainFile) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
@@ -609,9 +622,7 @@ export default function ResumeEditor() {
         []
     );
 
-    const loadProjectFolder = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const loadProjectFolder = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
             // Find the main .tex file (resume.tex, main.tex, or first .tex file)
@@ -698,7 +709,9 @@ export default function ResumeEditor() {
             <div className="bg-gray-100 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 p-3 flex items-center gap-3">
                 <select
                     value={compiler}
-                    onChange={(e) => setCompiler(e.target.value as CompilerType)}
+                    onChange={(e) =>
+                        setCompiler(e.target.value as CompilerType)
+                    }
                     disabled={isCompiling}
                     className="px-3 py-1.5 text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 transition disabled:bg-gray-200 dark:disabled:bg-zinc-900 disabled:cursor-not-allowed"
                     title="Select LaTeX compiler"
@@ -751,8 +764,6 @@ export default function ResumeEditor() {
                 <input
                     ref={projectFolderInputRef}
                     type="file"
-                    webkitdirectory=""
-                    directory=""
                     multiple
                     onChange={loadProjectFolder}
                     className="hidden"
