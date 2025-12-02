@@ -16,21 +16,26 @@ import { DEFAULT_TEMPLATE } from "./constants";
 
 declare global {
     interface Window {
-        PdfTeXEngine?: new () => PdfTeXEngineInstance;
+        PdfTeXEngine?: new () => LaTeXEngineInstance;
+        XeTeXEngine?: new () => LaTeXEngineInstance;
         SwiftLaTeX: any;
     }
 }
 
-interface PdfTeXEngineInstance {
+interface LaTeXEngineInstance {
     loadEngine(): Promise<void>;
-    writeMemFSFile?(filename: string, content: string): void;
-    writeFile?(filename: string, content: string): void;
+    writeMemFSFile?(filename: string, content: string | Uint8Array): void;
+    writeFile?(filename: string, content: string | Uint8Array): void;
+    makeMemFSFolder?(folder: string): void;
     setEngineMainFile(filename: string): void;
     compileLaTeX(): Promise<{
         pdf?: Uint8Array;
         log?: string;
+        status?: number;
     }>;
 }
+
+type CompilerType = "pdftex" | "xetex" | "lualatex";
 
 export default function ResumeEditor() {
     const [latexSource, setLatexSource] = useState("");
@@ -41,11 +46,14 @@ export default function ResumeEditor() {
     const [engineLoaded, setEngineLoaded] = useState(false);
     const [engineError, setEngineError] = useState("");
     const [saveStatus, setSaveStatus] = useState("");
+    const [compiler, setCompiler] = useState<CompilerType>("pdftex");
+    const [mainFileName, setMainFileName] = useState<string>("main.tex");
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const engineRef = useRef<PdfTeXEngineInstance | null>(null);
+    const projectFolderInputRef = useRef<HTMLInputElement>(null);
+    const engineRef = useRef<LaTeXEngineInstance | null>(null);
 
     useEffect(() => {
-        loadEngine();
+        loadEngine(compiler);
         const saved = localStorage.getItem("latex-resume");
         if (saved) {
             setLatexSource(saved);
@@ -54,52 +62,108 @@ export default function ResumeEditor() {
         }
     }, []);
 
-    const loadEngine = async () => {
+    // Reload engine when compiler changes
+    useEffect(() => {
+        if (compiler) {
+            loadEngine(compiler);
+        }
+    }, [compiler]);
+
+    const loadEngine = async (engineType: CompilerType) => {
         try {
-            // Load SwiftLaTeX from local files in public directory
-            if (!window.PdfTeXEngine) {
-                const script = document.createElement("script");
-                // Load from local files in public/20-02-2022/
-                script.src = "/20-02-2022/PdfTeXEngine.js";
-                script.async = true;
+            setEngineLoaded(false);
+            engineRef.current = null;
 
-                script.onload = async () => {
-                    try {
-                        // PdfTeXEngine should be available globally after script loads
-                        if (!window.PdfTeXEngine) {
-                            throw new Error(
-                                "PdfTeXEngine not found after script load"
+            if (engineType === "pdftex") {
+                // Load PdfTeX engine
+                if (!window.PdfTeXEngine) {
+                    const script = document.createElement("script");
+                    script.src = "/20-02-2022/PdfTeXEngine.js";
+                    script.async = true;
+
+                    script.onload = async () => {
+                        try {
+                            if (!window.PdfTeXEngine) {
+                                throw new Error(
+                                    "PdfTeXEngine not found after script load"
+                                );
+                            }
+
+                            const engine = new window.PdfTeXEngine();
+                            await engine.loadEngine();
+
+                            engineRef.current = engine;
+                            setEngineLoaded(true);
+                        } catch (err: any) {
+                            setEngineError(
+                                "Failed to initialize PdfTeX engine: " +
+                                    err.message
                             );
+                            console.error("Engine initialization error:", err);
                         }
+                    };
 
-                        const engine = new window.PdfTeXEngine();
-                        await engine.loadEngine();
-
-                        engineRef.current = engine;
-                        setEngineLoaded(true);
-                    } catch (err: any) {
+                    script.onerror = (error) => {
+                        console.error("Script load error:", error);
                         setEngineError(
-                            "Failed to initialize LaTeX engine: " + err.message
+                            "Failed to load PdfTeX engine from local files."
                         );
-                        console.error("Engine initialization error:", err);
-                    }
-                };
+                    };
 
-                script.onerror = (error) => {
-                    console.error("Script load error:", error);
-                    setEngineError(
-                        "Failed to load LaTeX engine from local files. Please ensure PdfTeXEngine.js is in the public/20-02-2022/ directory."
-                    );
-                };
+                    document.body.appendChild(script);
+                } else {
+                    const engine = new window.PdfTeXEngine();
+                    await engine.loadEngine();
+                    engineRef.current = engine;
+                    setEngineLoaded(true);
+                }
+            } else if (engineType === "xetex") {
+                // Load XeTeX engine
+                if (!window.XeTeXEngine) {
+                    const script = document.createElement("script");
+                    script.src = "/20-02-2022/XeTeXEngine.js";
+                    script.async = true;
 
-                document.body.appendChild(script);
+                    script.onload = async () => {
+                        try {
+                            if (!window.XeTeXEngine) {
+                                throw new Error(
+                                    "XeTeXEngine not found after script load"
+                                );
+                            }
+
+                            const engine = new window.XeTeXEngine();
+                            await engine.loadEngine();
+
+                            engineRef.current = engine;
+                            setEngineLoaded(true);
+                        } catch (err: any) {
+                            setEngineError(
+                                "Failed to initialize XeTeX engine: " +
+                                    err.message
+                            );
+                            console.error("Engine initialization error:", err);
+                        }
+                    };
+
+                    script.onerror = (error) => {
+                        console.error("Script load error:", error);
+                        setEngineError(
+                            "Failed to load XeTeX engine from local files."
+                        );
+                    };
+
+                    document.body.appendChild(script);
+                } else {
+                    const engine = new window.XeTeXEngine();
+                    await engine.loadEngine();
+                    engineRef.current = engine;
+                    setEngineLoaded(true);
+                }
             } else {
-                // Engine already loaded
-                const engine = new window.PdfTeXEngine();
-                await engine.loadEngine();
-
-                engineRef.current = engine;
-                setEngineLoaded(true);
+                setEngineError(
+                    `Compiler "${engineType}" is not yet supported.`
+                );
             }
         } catch (err: any) {
             setEngineError("Error loading engine: " + err.message);
@@ -120,16 +184,17 @@ export default function ResumeEditor() {
 
             // Write the LaTeX file to the virtual filesystem
             // Support both API formats for compatibility
+            // Use the stored main file name (defaults to "main.tex" for textarea editing)
             if (engine.writeMemFSFile) {
-                engine.writeMemFSFile("main.tex", latexSource);
+                engine.writeMemFSFile(mainFileName, latexSource);
             } else if (engine.writeFile) {
-                engine.writeFile("main.tex", latexSource);
+                engine.writeFile(mainFileName, latexSource);
             } else {
                 throw new Error("No write method available on engine");
             }
 
             // Set main file and compile
-            engine.setEngineMainFile("main.tex");
+            engine.setEngineMainFile(mainFileName);
             const result = await engine.compileLaTeX();
 
             // Get compilation log
@@ -138,7 +203,13 @@ export default function ResumeEditor() {
             }
 
             // Check if compilation was successful
-            if (result.pdf) {
+            // For XeTeX, status 0 means success even if PDF might be in result.pdf
+            // For pdfTeX, we check result.pdf directly
+            const isSuccess =
+                result.pdf ||
+                (result.status !== undefined && result.status === 0);
+
+            if (isSuccess && result.pdf) {
                 // Convert PDF bytes to blob URL
                 const pdfBlob = new Blob([result.pdf as BlobPart], {
                     type: "application/pdf",
@@ -156,6 +227,19 @@ export default function ResumeEditor() {
                 posthog.capture("latex_compiled", {
                     success: true,
                     source_length: latexSource.length,
+                    compiler: compiler,
+                });
+            } else if (result.status === 0 && !result.pdf) {
+                // Compilation succeeded but no PDF - might be XDV that needs conversion
+                setEngineError(
+                    "Compilation succeeded but PDF not generated. Check the log for details."
+                );
+                setShowLog(true);
+                posthog.capture("latex_compiled", {
+                    success: false,
+                    source_length: latexSource.length,
+                    error_log: "PDF not generated",
+                    compiler: compiler,
                 });
             } else {
                 setEngineError(
@@ -166,6 +250,7 @@ export default function ResumeEditor() {
                     success: false,
                     source_length: latexSource.length,
                     error_log: result.log || "Unknown error",
+                    compiler: compiler,
                 });
             }
         } catch (err: any) {
@@ -179,18 +264,18 @@ export default function ResumeEditor() {
         } finally {
             setIsCompiling(false);
         }
-    }, [latexSource]);
+    }, [latexSource, mainFileName, compiler]);
 
-    // Auto-compile on source change (debounced)
-    useEffect(() => {
-        if (!engineLoaded || !latexSource) return;
-
-        const timer = setTimeout(() => {
-            compileLatex();
-        }, 1500); // Compile 1.5 seconds after user stops typing
-
-        return () => clearTimeout(timer);
-    }, [latexSource, engineLoaded, compileLatex]);
+    // Auto-compile disabled - user must click "Compile Now" button
+    // useEffect(() => {
+    //     if (!engineLoaded || !latexSource) return;
+    //
+    //     const timer = setTimeout(() => {
+    //         compileLatex();
+    //     }, 1500); // Compile 1.5 seconds after user stops typing
+    //
+    //     return () => clearTimeout(timer);
+    // }, [latexSource, engineLoaded, compileLatex]);
 
     const saveToLocalStorage = () => {
         localStorage.setItem("latex-resume", latexSource);
@@ -223,6 +308,7 @@ export default function ResumeEditor() {
     const loadLatexFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            setMainFileName(file.name);
             const reader = new FileReader();
             reader.onload = (e) => {
                 if (typeof e.target?.result === "string") {
@@ -230,6 +316,320 @@ export default function ResumeEditor() {
                 }
             };
             reader.readAsText(file);
+        }
+    };
+
+    // Upload all files from a project folder to the virtual filesystem
+    const uploadProjectFiles = async (
+        files: FileList,
+        mainFileName: string = "resume.tex"
+    ): Promise<void> => {
+        if (!engineRef.current) {
+            throw new Error("Engine not loaded");
+        }
+
+        const engine = engineRef.current;
+        const fileMap = new Map<string, File>();
+
+        // Build a map of all files with their relative paths
+        for (const file of Array.from(files)) {
+            const path = file.webkitRelativePath || file.name;
+            fileMap.set(path, file);
+        }
+
+        // Find the common root directory (the folder name)
+        // This is the first directory component that all files share
+        let rootDir = "";
+        const paths = Array.from(fileMap.keys());
+        if (paths.length > 0) {
+            const firstPath = paths[0];
+            const firstSlash = firstPath.indexOf("/");
+            if (firstSlash !== -1) {
+                rootDir = firstPath.substring(0, firstSlash);
+            }
+        }
+
+        // Strip the root directory from all paths
+        const normalizedPaths = new Map<string, File>();
+        for (const [path, file] of fileMap.entries()) {
+            let normalizedPath = path;
+            if (rootDir && path.startsWith(rootDir + "/")) {
+                normalizedPath = path.substring(rootDir.length + 1);
+            }
+            normalizedPaths.set(normalizedPath, file);
+        }
+
+        // Also normalize the main file name
+        let normalizedMainFile = mainFileName;
+        if (rootDir && mainFileName.startsWith(rootDir + "/")) {
+            normalizedMainFile = mainFileName.substring(rootDir.length + 1);
+        }
+
+        // Create directories and upload files
+        const directories = new Set<string>();
+        for (const path of normalizedPaths.keys()) {
+            const dir = path.substring(0, path.lastIndexOf("/"));
+            if (dir) {
+                directories.add(dir);
+            }
+        }
+
+        // Create all directories first
+        for (const dir of directories) {
+            if (engine.makeMemFSFolder) {
+                engine.makeMemFSFolder(dir);
+            }
+        }
+
+        // Upload all files
+        const uploadPromises = Array.from(normalizedPaths.entries()).map(
+            async ([path, file]) => {
+                const isTextFile =
+                    path.endsWith(".tex") ||
+                    path.endsWith(".cls") ||
+                    path.endsWith(".sty") ||
+                    path.endsWith(".def") ||
+                    path.endsWith(".cfg");
+
+                if (isTextFile) {
+                    // Read as text
+                    return new Promise<void>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            if (typeof e.target?.result === "string") {
+                                if (engine.writeMemFSFile) {
+                                    engine.writeMemFSFile(path, e.target.result);
+                                } else if (engine.writeFile) {
+                                    engine.writeFile(path, e.target.result);
+                                }
+                                resolve();
+                            } else {
+                                reject(new Error(`Failed to read ${path} as text`));
+                            }
+                        };
+                        reader.onerror = () =>
+                            reject(new Error(`Failed to read ${path}`));
+                        reader.readAsText(file);
+                    });
+                } else {
+                    // Read as binary (fonts, images, etc.)
+                    return new Promise<void>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            if (e.target?.result instanceof ArrayBuffer) {
+                                const uint8Array = new Uint8Array(e.target.result);
+                                if (engine.writeMemFSFile) {
+                                    engine.writeMemFSFile(path, uint8Array);
+                                } else if (engine.writeFile) {
+                                    engine.writeFile(path, uint8Array);
+                                }
+                                resolve();
+                            } else {
+                                reject(new Error(`Failed to read ${path} as binary`));
+                            }
+                        };
+                        reader.onerror = () =>
+                            reject(new Error(`Failed to read ${path}`));
+                        reader.readAsArrayBuffer(file);
+                    });
+                }
+            }
+        );
+
+        await Promise.all(uploadPromises);
+
+        // Set the main file (using normalized path)
+        engine.setEngineMainFile(normalizedMainFile);
+    };
+
+    // Upload a project folder (without compiling)
+    const uploadProjectFolder = useCallback(
+        async (files: FileList, mainFileName: string = "resume.tex") => {
+            if (!engineRef.current) {
+                setEngineError("Engine not loaded yet. Please wait...");
+                return;
+            }
+
+            setEngineError("");
+
+            try {
+                // Normalize the main file name (remove root directory if present)
+                // This matches the normalization done in uploadProjectFiles
+                let normalizedMainFile = mainFileName;
+                const paths = Array.from(files).map(f => f.webkitRelativePath || f.name);
+                if (paths.length > 0) {
+                    const firstPath = paths[0];
+                    const firstSlash = firstPath.indexOf("/");
+                    if (firstSlash !== -1) {
+                        const rootDir = firstPath.substring(0, firstSlash);
+                        if (mainFileName.startsWith(rootDir + "/")) {
+                            normalizedMainFile = mainFileName.substring(rootDir.length + 1);
+                        }
+                    }
+                }
+
+                // Upload all files to virtual filesystem
+                await uploadProjectFiles(files, mainFileName);
+                
+                // Store the normalized main file name for compilation
+                setMainFileName(normalizedMainFile);
+                
+                // Update latexSource to show the main file content (optional)
+                // This helps users see what will be compiled
+                const mainFile = Array.from(files).find(
+                    (f) => {
+                        const path = f.webkitRelativePath || f.name;
+                        // Normalize the path (remove root directory if present)
+                        let normalizedPath = path;
+                        const firstSlash = path.indexOf("/");
+                        if (firstSlash !== -1) {
+                            const rootDir = path.substring(0, firstSlash);
+                            if (path.startsWith(rootDir + "/")) {
+                                normalizedPath = path.substring(rootDir.length + 1);
+                            }
+                        }
+                        // Match against normalized main file name
+                        return normalizedPath === normalizedMainFile;
+                    }
+                );
+                if (mainFile) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (typeof e.target?.result === "string") {
+                            setLatexSource(e.target.result);
+                        }
+                    };
+                    reader.readAsText(mainFile);
+                }
+
+                posthog.capture("latex_project_uploaded", {
+                    file_count: files.length,
+                    compiler: compiler,
+                });
+            } catch (err: any) {
+                setEngineError("Upload error: " + err.message);
+                posthog.capture("latex_project_uploaded", {
+                    success: false,
+                    file_count: files.length,
+                    error_log: err.message || "Unknown error",
+                    compiler: compiler,
+                });
+            }
+        },
+        [compiler]
+    );
+
+    // Compile a project folder (legacy - kept for backwards compatibility)
+    const compileProjectFolder = useCallback(
+        async (files: FileList, mainFileName: string = "resume.tex") => {
+            if (!engineRef.current) {
+                setEngineError("Engine not loaded yet. Please wait...");
+                return;
+            }
+
+            setIsCompiling(true);
+            setCompilationLog("");
+            setEngineError("");
+
+            try {
+                // Upload all files to virtual filesystem
+                await uploadProjectFiles(files, mainFileName);
+
+                // Compile
+                const result = await engineRef.current.compileLaTeX();
+
+                // Get compilation log
+                if (result.log) {
+                    setCompilationLog(result.log);
+                }
+
+                // Check if compilation was successful
+                // For XeTeX, status 0 means success even if PDF might be in result.pdf
+                // For pdfTeX, we check result.pdf directly
+                const isSuccess =
+                    result.pdf ||
+                    (result.status !== undefined && result.status === 0);
+
+                if (isSuccess && result.pdf) {
+                    // Convert PDF bytes to blob URL
+                    const pdfBlob = new Blob([result.pdf as BlobPart], {
+                        type: "application/pdf",
+                    });
+                    const url = URL.createObjectURL(pdfBlob);
+
+                    // Revoke old URL if it exists
+                    setPdfUrl((prevUrl) => {
+                        if (prevUrl) {
+                            URL.revokeObjectURL(prevUrl);
+                        }
+                        return url;
+                    });
+
+                    posthog.capture("latex_project_compiled", {
+                        success: true,
+                        file_count: files.length,
+                        compiler: compiler,
+                    });
+                } else if (result.status === 0 && !result.pdf) {
+                    // Compilation succeeded but no PDF - might be XDV that needs conversion
+                    setEngineError(
+                        "Compilation succeeded but PDF not generated. Check the log for details."
+                    );
+                    setShowLog(true);
+                    posthog.capture("latex_project_compiled", {
+                        success: false,
+                        file_count: files.length,
+                        error_log: "PDF not generated",
+                        compiler: compiler,
+                    });
+                } else {
+                    setEngineError(
+                        "Compilation failed. Check the log for details."
+                    );
+                    setShowLog(true);
+                    posthog.capture("latex_project_compiled", {
+                        success: false,
+                        file_count: files.length,
+                        error_log: result.log || "Unknown error",
+                        compiler: compiler,
+                    });
+                }
+            } catch (err: any) {
+                setEngineError("Compilation error: " + err.message);
+                setShowLog(true);
+                posthog.capture("latex_project_compiled", {
+                    success: false,
+                    file_count: files.length,
+                    error_log: err.message || "Unknown error",
+                });
+            } finally {
+                setIsCompiling(false);
+            }
+        },
+        []
+    );
+
+    const loadProjectFolder = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            // Find the main .tex file (resume.tex, main.tex, or first .tex file)
+            let mainFile = "resume.tex";
+            const texFiles = Array.from(files).filter((f) =>
+                f.name.endsWith(".tex")
+            );
+            if (texFiles.length > 0) {
+                const resumeFile = texFiles.find(
+                    (f) => f.name === "resume.tex" || f.name === "main.tex"
+                );
+                mainFile = resumeFile
+                    ? resumeFile.webkitRelativePath || resumeFile.name
+                    : texFiles[0].webkitRelativePath || texFiles[0].name;
+            }
+
+            // Just upload files, don't compile automatically
+            uploadProjectFolder(files, mainFile);
         }
     };
 
@@ -296,6 +696,19 @@ export default function ResumeEditor() {
 
             {/* Toolbar */}
             <div className="bg-gray-100 border-b border-gray-200 p-3 flex items-center gap-3">
+                <select
+                    value={compiler}
+                    onChange={(e) => setCompiler(e.target.value as CompilerType)}
+                    disabled={isCompiling}
+                    className="px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    title="Select LaTeX compiler"
+                >
+                    <option value="pdftex">pdfTeX</option>
+                    <option value="xetex">XeTeX</option>
+                    <option value="lualatex" disabled>
+                        LuaLaTeX (Coming soon)
+                    </option>
+                </select>
                 <button
                     onClick={compileLatex}
                     disabled={!engineLoaded || isCompiling}
@@ -327,6 +740,24 @@ export default function ResumeEditor() {
                     className="hidden"
                 />
                 <button
+                    onClick={() => projectFolderInputRef.current?.click()}
+                    disabled={!engineLoaded || isCompiling}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-purple-500 text-white border border-purple-600 rounded hover:bg-purple-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    title="Upload Overleaf project folder"
+                >
+                    <Upload size={16} />
+                    Upload Project
+                </button>
+                <input
+                    ref={projectFolderInputRef}
+                    type="file"
+                    webkitdirectory=""
+                    directory=""
+                    multiple
+                    onChange={loadProjectFolder}
+                    className="hidden"
+                />
+                <button
                     onClick={resetToTemplate}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition text-red-600"
                     title="Reset to default template"
@@ -343,7 +774,7 @@ export default function ResumeEditor() {
                             ✓ Compiled successfully
                         </span>
                     )}
-                    <span>• Auto-compiles 1.5s after typing</span>
+                    <span>• Click "Compile Now" to compile</span>
                 </div>
             </div>
 
