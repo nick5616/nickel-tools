@@ -20,7 +20,7 @@ export function DesktopOS() {
   };
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 dark:bg-zinc-950 overflow-hidden relative" style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}>
+    <div className="h-screen w-screen bg-zinc-50 dark:bg-zinc-950 overflow-hidden relative" style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}>
       <MenuBar />
       
       {/* Desktop Area */}

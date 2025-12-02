@@ -646,20 +646,20 @@ export default function ResumeEditor() {
     };
 
     return (
-        <div className="flex flex-col h-[850px] border border-gray-200 rounded-xl overflow-hidden bg-gray-50 shadow-xl">
+        <div className="flex flex-col h-[850px] border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden bg-gray-50 dark:bg-zinc-900 shadow-xl">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm">
+            <div className="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 p-4 flex items-center justify-between shadow-sm">
                 <div>
-                    <h2 className="text-xl font-bold text-gray-800">
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-zinc-100">
                         LaTeX Resume Editor
                     </h2>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-zinc-400 mt-1">
                         {engineLoaded ? (
-                            <span className="text-green-600">
+                            <span className="text-green-600 dark:text-green-400">
                                 ✓ Real LaTeX compiler loaded
                             </span>
                         ) : (
-                            <span className="text-orange-600">
+                            <span className="text-orange-600 dark:text-orange-400">
                                 ⏳ Loading LaTeX engine...
                             </span>
                         )}
@@ -668,7 +668,7 @@ export default function ResumeEditor() {
                 <div className="flex gap-2">
                     <button
                         onClick={saveToLocalStorage}
-                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded hover:bg-green-700 dark:hover:bg-green-600 transition shadow-sm"
                         title="Save to browser storage"
                     >
                         <Save size={18} />
@@ -677,7 +677,7 @@ export default function ResumeEditor() {
                     </button>
                     <button
                         onClick={() => setShowLog(!showLog)}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-600 dark:bg-zinc-700 text-white rounded hover:bg-gray-700 dark:hover:bg-zinc-600 transition shadow-sm"
                     >
                         {showLog ? <Eye size={18} /> : <Code size={18} />}
                         {showLog ? "Preview" : "Log"}
@@ -685,7 +685,7 @@ export default function ResumeEditor() {
                     <button
                         onClick={downloadPDF}
                         disabled={!pdfUrl}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-sm disabled:bg-gray-400 dark:disabled:bg-zinc-600 disabled:cursor-not-allowed"
                         title="Download PDF"
                     >
                         <Download size={18} />
@@ -695,12 +695,12 @@ export default function ResumeEditor() {
             </div>
 
             {/* Toolbar */}
-            <div className="bg-gray-100 border-b border-gray-200 p-3 flex items-center gap-3">
+            <div className="bg-gray-100 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 p-3 flex items-center gap-3">
                 <select
                     value={compiler}
                     onChange={(e) => setCompiler(e.target.value as CompilerType)}
                     disabled={isCompiling}
-                    className="px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 transition disabled:bg-gray-200 dark:disabled:bg-zinc-900 disabled:cursor-not-allowed"
                     title="Select LaTeX compiler"
                 >
                     <option value="pdftex">pdfTeX</option>
@@ -712,13 +712,13 @@ export default function ResumeEditor() {
                 <button
                     onClick={compileLatex}
                     disabled={!engineLoaded || isCompiling}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-500 text-white border border-blue-600 rounded hover:bg-blue-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-500 dark:bg-blue-600 text-white border border-blue-600 dark:border-blue-700 rounded hover:bg-blue-600 dark:hover:bg-blue-500 transition disabled:bg-gray-400 dark:disabled:bg-zinc-600 disabled:cursor-not-allowed"
                 >
                     {isCompiling ? "Compiling..." : "Compile Now"}
                 </button>
                 <button
                     onClick={downloadLatex}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 transition"
                     title="Download .tex file"
                 >
                     <FileText size={16} />
@@ -726,7 +726,7 @@ export default function ResumeEditor() {
                 </button>
                 <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 transition"
                     title="Load .tex file"
                 >
                     <Upload size={16} />
@@ -742,7 +742,7 @@ export default function ResumeEditor() {
                 <button
                     onClick={() => projectFolderInputRef.current?.click()}
                     disabled={!engineLoaded || isCompiling}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-purple-500 text-white border border-purple-600 rounded hover:bg-purple-600 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-purple-500 dark:bg-purple-600 text-white border border-purple-600 dark:border-purple-700 rounded hover:bg-purple-600 dark:hover:bg-purple-500 transition disabled:bg-gray-400 dark:disabled:bg-zinc-600 disabled:cursor-not-allowed"
                     title="Upload Overleaf project folder"
                 >
                     <Upload size={16} />
@@ -759,18 +759,18 @@ export default function ResumeEditor() {
                 />
                 <button
                     onClick={resetToTemplate}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition text-red-600"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-white dark:bg-zinc-800 text-red-600 dark:text-red-400 border border-gray-300 dark:border-zinc-600 rounded hover:bg-gray-50 dark:hover:bg-zinc-700 transition"
                     title="Reset to default template"
                 >
                     <Trash2 size={16} />
                     Reset
                 </button>
-                <div className="ml-auto text-xs text-gray-600 flex items-center gap-2">
+                <div className="ml-auto text-xs text-gray-600 dark:text-zinc-400 flex items-center gap-2">
                     {isCompiling && (
                         <span className="animate-pulse">⚙️ Compiling...</span>
                     )}
                     {!isCompiling && pdfUrl && (
-                        <span className="text-green-600">
+                        <span className="text-green-600 dark:text-green-400">
                             ✓ Compiled successfully
                         </span>
                     )}
@@ -780,12 +780,12 @@ export default function ResumeEditor() {
 
             {/* Error banner */}
             {engineError && (
-                <div className="bg-red-50 border-b border-red-200 p-3 flex items-center gap-2 text-red-800">
+                <div className="bg-red-50 dark:bg-red-900/20 border-b border-red-200 dark:border-red-800 p-3 flex items-center gap-2 text-red-800 dark:text-red-300">
                     <AlertCircle size={18} />
                     <span className="text-sm">{engineError}</span>
                     <button
                         onClick={() => setEngineError("")}
-                        className="ml-auto text-red-600 hover:text-red-800"
+                        className="ml-auto text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200"
                     >
                         ✕
                     </button>
@@ -795,29 +795,29 @@ export default function ResumeEditor() {
             {/* Main Content */}
             <div className="flex flex-1 overflow-hidden">
                 {/* Editor */}
-                <div className="w-1/2 border-r border-gray-200 bg-white flex flex-col">
-                    <div className="p-3 bg-gray-100 border-b border-gray-200 font-semibold text-sm text-gray-700 flex items-center justify-between">
+                <div className="w-1/2 border-r border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 flex flex-col">
+                    <div className="p-3 bg-gray-100 dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700 font-semibold text-sm text-gray-700 dark:text-zinc-300 flex items-center justify-between">
                         <span>LaTeX Source</span>
-                        <span className="text-xs font-normal text-gray-500">
+                        <span className="text-xs font-normal text-gray-500 dark:text-zinc-500">
                             {latexSource.length} characters
                         </span>
                     </div>
                     <textarea
                         value={latexSource}
                         onChange={(e) => setLatexSource(e.target.value)}
-                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none leading-relaxed"
+                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none leading-relaxed bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
                         spellCheck={false}
                         placeholder="Start typing your LaTeX resume here..."
                     />
                 </div>
 
                 {/* Preview / Log */}
-                <div className="w-1/2 bg-gray-100 overflow-auto flex flex-col">
-                    <div className="p-3 bg-gray-100 border-b border-gray-200 font-semibold text-sm text-gray-700">
+                <div className="w-1/2 bg-gray-100 dark:bg-zinc-900 overflow-auto flex flex-col">
+                    <div className="p-3 bg-gray-100 dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700 font-semibold text-sm text-gray-700 dark:text-zinc-300">
                         {showLog ? "Compilation Log" : "PDF Preview"}
                     </div>
                     {showLog ? (
-                        <pre className="p-4 text-xs font-mono whitespace-pre-wrap break-words bg-white m-4 rounded border border-gray-300 flex-1 overflow-auto">
+                        <pre className="p-4 text-xs font-mono whitespace-pre-wrap break-words bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100 m-4 rounded border border-gray-300 dark:border-zinc-700 flex-1 overflow-auto">
                             {compilationLog ||
                                 "No compilation log yet. Make changes to trigger compilation."}
                         </pre>
@@ -826,11 +826,11 @@ export default function ResumeEditor() {
                             {pdfUrl ? (
                                 <iframe
                                     src={pdfUrl}
-                                    className="w-full h-full border-2 border-gray-300 rounded shadow-lg bg-white"
+                                    className="w-full h-full border-2 border-gray-300 dark:border-zinc-700 rounded shadow-lg bg-white dark:bg-zinc-800"
                                     title="PDF Preview"
                                 />
                             ) : (
-                                <div className="flex items-center justify-center h-full text-gray-500">
+                                <div className="flex items-center justify-center h-full text-gray-500 dark:text-zinc-400">
                                     <div className="text-center">
                                         <p className="text-lg mb-2">
                                             {!engineLoaded

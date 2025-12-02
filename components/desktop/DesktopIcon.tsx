@@ -33,9 +33,9 @@ export function DesktopIcon({ content, position, onDoubleClick, onContextMenu }:
     >
       <div className="flex flex-col items-center w-24 p-2 rounded hover:bg-white/10 dark:hover:bg-white/10 transition-colors">
         <div className="text-4xl mb-1 group-hover:scale-110 transition-transform flex items-center justify-center">
-          <IconRenderer content={content} size="lg" className="text-zinc-200" />
+          <IconRenderer content={content} size="lg" className="text-zinc-800 dark:text-zinc-200" />
         </div>
-        <div className="text-xs text-center text-white/90 dark:text-white/90 leading-tight px-1">
+        <div className="text-xs text-center text-zinc-900 dark:text-white/90 leading-tight px-1">
           {content.title}
         </div>
       </div>

@@ -77,7 +77,7 @@ export function AppWindow({
                 dragHandleClassName="window-titlebar"
             >
                 <motion.div
-                    className="h-full w-full bg-zinc-800 dark:bg-zinc-800 border border-zinc-700 dark:border-zinc-700 rounded-lg shadow-2xl overflow-hidden flex flex-col"
+                    className="h-full w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg shadow-2xl overflow-hidden flex flex-col"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
@@ -86,28 +86,28 @@ export function AppWindow({
                 >
                     {/* Title Bar */}
                     <div
-                        className="window-titlebar bg-zinc-900 dark:bg-zinc-900 border-b border-zinc-700 dark:border-zinc-700 px-4 py-2 flex items-center justify-between cursor-move select-none overflow-visible"
+                        className="window-titlebar bg-zinc-100 dark:bg-zinc-900 border-b border-zinc-300 dark:border-zinc-700 px-4 py-2 flex items-center justify-between cursor-move select-none overflow-visible"
                         onMouseDown={onFocus}
                     >
                         <div className="flex items-center gap-2">
                             <IconRenderer
                                 content={window.content}
                                 size="sm"
-                                className="text-zinc-300"
+                                className="text-zinc-600 dark:text-zinc-300"
                             />
-                            <span className="text-sm text-white font-medium">
+                            <span className="text-sm text-zinc-900 dark:text-white font-medium">
                                 {window.content.title}
                             </span>
                             <div className="relative group overflow-visible">
                                 <Info
                                     size={14}
-                                    className="text-zinc-400 hover:text-zinc-300 cursor-help transition-colors"
+                                    className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 cursor-help transition-colors"
                                 />
                                 <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-[9999] pointer-events-none w-96">
-                                    <div className="bg-zinc-800 text-zinc-200 text-xs rounded px-2 py-1 shadow-lg border border-zinc-700 whitespace-normal">
+                                    <div className="bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 text-xs rounded px-2 py-1 shadow-lg border border-zinc-300 dark:border-zinc-700 whitespace-normal">
                                         {window.content.description}
                                     </div>
-                                    <div className="absolute left-2 -top-1 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-zinc-800"></div>
+                                    <div className="absolute left-2 -top-1 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-white dark:border-b-zinc-800"></div>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@ export function AppWindow({
                             <button
                                 onClick={handleOpenInNewTab}
                                 onMouseDown={(e) => e.stopPropagation()}
-                                className="w-6 h-6 rounded hover:bg-zinc-700 dark:hover:bg-zinc-600 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+                                className="w-6 h-6 rounded hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
                                 aria-label="Open in new tab"
                                 title="Open in new tab"
                             >
@@ -129,7 +129,7 @@ export function AppWindow({
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 overflow-hidden bg-zinc-900 dark:bg-zinc-900">
+                    <div className="flex-1 overflow-hidden bg-white dark:bg-zinc-900">
                         <ContentRenderer content={window.content} />
                     </div>
                 </motion.div>
