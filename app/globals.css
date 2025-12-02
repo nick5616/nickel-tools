@@ -6,12 +6,31 @@
     /* Light Mode Base */
     --background: 250 250 250;
     --foreground: 24 24 27;
+
+    /* OS Theme Variables - Light Mode */
+    --bg-desktop: 250 250 250;
+    --bg-window: 255 255 255;
+    --border-window: 212 212 216;
+    --text-primary: 24 24 27;
+    --text-secondary: 113 113 122;
+    --accent-nickel: 141 141 141;
+    --accent-glow: 141 141 141 / 0.2;
 }
 
-[data-theme="dark"] {
+[data-theme="dark"],
+.dark {
     /* Dark Mode Base */
     --background: 9 9 11;
     --foreground: 250 250 250;
+
+    /* OS Theme Variables - Dark Mode */
+    --bg-desktop: 9 9 11;
+    --bg-window: 39 39 42;
+    --border-window: 63 63 70;
+    --text-primary: 250 250 250;
+    --text-secondary: 161 161 170;
+    --accent-nickel: 141 141 141;
+    --accent-glow: 141 141 141 / 0.2;
 }
 
 body {
@@ -47,4 +66,42 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
     background-color: #71717a;
+}
+
+/* OS Window Animations */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer 1.5s infinite;
+}
+
+/* Window Styles */
+.app-window {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+        0 10px 10px -5px rgb(0 0 0 / 0.04);
+}
+
+.app-window:hover {
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+/* Glass Morphism for Dock */
+.dock-glass {
+    background: rgba(39, 39, 42, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Metallic Border Effect */
+.metallic-border {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.2);
 }

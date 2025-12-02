@@ -1,0 +1,112 @@
+"use client";
+
+import React from 'react';
+import type { Content } from '@/app/data/content';
+import dynamic from 'next/dynamic';
+
+// Lazy load internal app components
+const ResumeEditor = dynamic(() => import('@/components/tools/resume-editor'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading Resume Editor...</div>,
+  ssr: false,
+});
+
+const SmartPiano = dynamic(() => import('@/components/tools/smart-piano'), {
+  loading: () => <div className="p-4 text-zinc-400">Loading Smart Piano...</div>,
+  ssr: false,
+});
+
+interface ContentRendererProps {
+  content: Content;
+}
+
+export function ContentRenderer({ content }: ContentRendererProps) {
+  switch (content.type) {
+    case 'external':
+      return (
+        <div className="h-full w-full flex flex-col">
+          <div className="p-4 border-b border-zinc-700 bg-zinc-900">
+            <h3 className="text-lg font-semibold text-white mb-2">{content.title}</h3>
+            <p className="text-sm text-zinc-400 mb-4">{content.description}</p>
+            <a
+              href={content.url}
+              target={content.openInNewTab ? '_blank' : '_self'}
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded text-sm text-white transition-colors"
+            >
+              Open {content.title} →
+            </a>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <iframe
+              src={content.url}
+              className="w-full h-full border-0"
+              title={content.title}
+            />
+          </div>
+        </div>
+      );
+
+    case 'internal':
+      // Route to the appropriate internal component
+      if (content.route === '/resume-editor') {
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <ResumeEditor />
+          </div>
+        );
+      }
+      if (content.route === '/smart-piano') {
+        return (
+          <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+            <SmartPiano />
+          </div>
+        );
+      }
+      // Placeholder for other internal apps
+      return (
+        <div className="h-full w-full p-6 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-zinc-400 mb-2">{content.title}</p>
+            <p className="text-sm text-zinc-500">{content.description}</p>
+            <p className="text-xs text-zinc-600 mt-4">Coming soon...</p>
+          </div>
+        </div>
+      );
+
+    case 'media':
+      return (
+        <div className="h-full w-full p-4">
+          {content.mediaType === 'image' && (
+            <img
+              src={content.mediaUrl}
+              alt={content.title}
+              className="max-w-full max-h-full object-contain mx-auto"
+            />
+          )}
+          {content.mediaType === 'video' && (
+            <video
+              src={content.mediaUrl}
+              controls
+              className="max-w-full max-h-full mx-auto"
+            />
+          )}
+        </div>
+      );
+
+    case 'collection':
+      return (
+        <div className="h-full w-full p-4">
+          <p className="text-zinc-400">Collection: {content.title}</p>
+          <p className="text-sm text-zinc-500 mt-2">{content.description}</p>
+        </div>
+      );
+
+    default:
+      return (
+        <div className="h-full w-full p-4">
+          <p className="text-zinc-400">Unknown content type</p>
+        </div>
+      );
+  }
+}
+

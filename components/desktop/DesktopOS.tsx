@@ -1,0 +1,53 @@
+"use client";
+
+import React from 'react';
+import { MenuBar } from './MenuBar';
+import { Desktop } from './Desktop';
+import { Dock } from './Dock';
+import { AppWindow } from './AppWindow';
+import { useAppStore } from '@/app/store/appStore';
+import { getAllContent, getFeaturedContent } from '@/app/data/content';
+import type { Content } from '@/app/data/content';
+
+export function DesktopOS() {
+  const { windows, openWindow, closeWindow, minimizeWindow, focusWindow } = useAppStore();
+  const allContent = getAllContent();
+  const featuredContent = getFeaturedContent();
+
+  const handleContextMenu = (e: React.MouseEvent, content: Content) => {
+    e.preventDefault();
+    // Context menu implementation can be added later
+  };
+
+  return (
+    <div className="h-screen w-screen bg-zinc-950 dark:bg-zinc-950 overflow-hidden relative">
+      <MenuBar />
+      
+      {/* Desktop Area */}
+      <div className="pt-12 h-full relative">
+        <Desktop
+          content={allContent}
+          onOpenContent={openWindow}
+          onContextMenu={handleContextMenu}
+        />
+
+        {/* Windows */}
+        {windows
+          .filter(w => !w.minimized)
+          .map(window => (
+            <AppWindow
+              key={window.id}
+              window={window}
+              onClose={() => closeWindow(window.id)}
+              onMinimize={() => minimizeWindow(window.id)}
+              onFocus={() => focusWindow(window.id)}
+            />
+          ))}
+      </div>
+
+      {/* Dock */}
+      <Dock items={featuredContent} onOpenItem={openWindow} />
+    </div>
+  );
+}
+
