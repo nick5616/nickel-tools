@@ -23,7 +23,8 @@ export function AppWindow({
     onMinimize,
     onFocus,
 }: AppWindowProps) {
-    const { updateWindowPosition, updateWindowSize } = useAppStore();
+    const { updateWindowPosition, updateWindowSize, toggleMaximizeWindow } =
+        useAppStore();
     const [isDragging, setIsDragging] = useState(false);
 
     const handleDragStop = (_e: any, d: { x: number; y: number }) => {
@@ -63,6 +64,8 @@ export function AppWindow({
             <Rnd
                 size={{ width: window.size.width, height: window.size.height }}
                 position={{ x: window.position.x, y: window.position.y }}
+                disableDragging={!!window.maximized}
+                enableResizing={!window.maximized}
                 onDragStart={() => {
                     setIsDragging(true);
                     onFocus();
@@ -71,8 +74,11 @@ export function AppWindow({
                 onResizeStop={handleResizeStop}
                 minWidth={400}
                 minHeight={300}
-                bounds="window"
-                style={{ zIndex: window.zIndex, position: "absolute" }}
+                bounds={window.maximized ? undefined : "parent"}
+                style={{
+                    zIndex: window.zIndex,
+                    position: "absolute",
+                }}
                 className="app-window"
                 dragHandleClassName="window-titlebar"
             >
@@ -123,6 +129,9 @@ export function AppWindow({
                             </button>
                             <WindowControls
                                 onMinimize={onMinimize}
+                                onMaximize={() =>
+                                    toggleMaximizeWindow(window.id)
+                                }
                                 onClose={onClose}
                             />
                         </div>
