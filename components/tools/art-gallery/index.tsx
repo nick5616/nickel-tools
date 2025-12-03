@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { listGCSFolder } from '@/app/utils/gcs';
 
 interface ArtGalleryProps {
   folder: 'digital-art' | 'paintings' | 'sketches';
 }
 
-// Stub data structure - will be replaced with GCP integration
 interface ArtImage {
   id: string;
   url: string;
@@ -17,24 +17,48 @@ interface ArtImage {
   dimensions?: { width: number; height: number };
 }
 
-// Placeholder data - replace with actual GCP fetch
-const getStubImages = (folder: string): ArtImage[] => {
-  // Return empty array for now - GCP integration pending
-  return [];
-};
-
 export default function ArtGallery({ folder }: ArtGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<ArtImage | null>(null);
   const [images, setImages] = useState<ArtImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
-    // Stub: Simulate loading
-    setTimeout(() => {
-      const stubImages = getStubImages(folder);
-      setImages(stubImages);
-      setLoading(false);
-    }, 500);
+    async function fetchImages() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const result = await listGCSFolder(folder);
+        
+        // Filter to only image files and transform to ArtImage format
+        const imageFiles = result.files
+          .filter((file) => {
+            const contentType = file.contentType || '';
+            const filename = file.filename.toLowerCase();
+            return (
+              contentType.startsWith('image/') ||
+              /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(filename)
+            );
+          })
+          .map((file, index) => ({
+            id: file.name,
+            url: file.url,
+            filename: file.filename,
+            date: file.timeCreated,
+            dimensions: undefined, // Could be fetched later if needed
+          }));
+        
+        setImages(imageFiles);
+      } catch (err) {
+        console.error('Error fetching images:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load gallery');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchImages();
   }, [folder]);
 
   const folderNames: Record<string, string> = {
@@ -54,7 +78,27 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
     );
   }
 
-  if (images.length === 0) {
+  if (error) {
+    return (
+      <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">
+            {folderNames[folder]}
+          </h1>
+          <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-12 border border-red-200 dark:border-red-800 text-center">
+            <p className="text-lg text-red-600 dark:text-red-400 mb-2">
+              Error loading gallery
+            </p>
+            <p className="text-sm text-red-500 dark:text-red-500">
+              {error}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (images.length === 0 && !loading) {
     return (
       <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
         <div className="max-w-4xl mx-auto">
@@ -64,10 +108,10 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
           <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-12 border border-zinc-200 dark:border-zinc-700 text-center">
             <ImageIcon size={48} className="text-zinc-400 dark:text-zinc-500 mx-auto mb-4" />
             <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-2">
-              Coming soon
+              No images found
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-500">
-              GCP integration pending. Gallery will display images from {folder} folder.
+              This folder appears to be empty or contains no image files.
             </p>
           </div>
         </div>
