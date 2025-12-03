@@ -14,6 +14,7 @@ interface ArtImage {
     url: string;
     filename: string;
     date?: string;
+    description?: string;
     dimensions?: { width: number; height: number };
 }
 
@@ -41,11 +42,12 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                             /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(filename)
                         );
                     })
-                    .map((file, index) => ({
+                    .map((file) => ({
                         id: file.name,
                         url: file.url,
                         filename: file.filename,
                         date: file.created, // Only use custom "created" metadata if it exists
+                        description: file.description, // Optional description from metadata
                         dimensions: undefined, // Could be fetched later if needed
                     }));
 
@@ -64,12 +66,6 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
 
         fetchImages();
     }, [folder]);
-
-    const folderNames: Record<string, string> = {
-        "digital-art": "Digital Art",
-        paintings: "Paintings",
-        sketches: "Sketches",
-    };
 
     if (loading) {
         return (
@@ -141,11 +137,16 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                         </h2>
                         {selectedImage.date && (
                             <p className="text-sm text-zinc-400">
-                                Date: {selectedImage.date}
+                                Created: {selectedImage.date}
+                            </p>
+                        )}
+                        {selectedImage.description && (
+                            <p className="text-sm text-zinc-300 mt-1">
+                                {selectedImage.description}
                             </p>
                         )}
                         {selectedImage.dimensions && (
-                            <p className="text-sm text-zinc-400">
+                            <p className="text-sm text-zinc-400 mt-1">
                                 Dimensions: {selectedImage.dimensions.width} ×{" "}
                                 {selectedImage.dimensions.height}
                             </p>
@@ -202,3 +203,4 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
         </div>
     );
 }
+
