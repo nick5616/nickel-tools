@@ -170,7 +170,7 @@ export function Desktop({
                             key={item.id}
                             content={item}
                             position={position}
-                            onDoubleClick={onOpenContent}
+                            onClick={onOpenContent}
                             onContextMenu={onContextMenu}
                         />
                     );
