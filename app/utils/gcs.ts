@@ -40,8 +40,7 @@ export async function listGCSFolder(folder: 'digital-art' | 'paintings' | 'sketc
     url: string;
     contentType?: string;
     size?: number;
-    timeCreated?: string;
-    updated?: string;
+    created?: string; // Custom metadata field, only present if set
   }>;
   count: number;
 }> {

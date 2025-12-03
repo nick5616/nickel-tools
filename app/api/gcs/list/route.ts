@@ -12,6 +12,9 @@ interface GCSObject {
   size?: string;
   timeCreated?: string;
   updated?: string;
+  metadata?: {
+    [key: string]: string;
+  };
 }
 
 interface GCSListResponse {
@@ -39,8 +42,10 @@ export async function GET(request: NextRequest) {
     // Ensure it ends with / if it doesn't already
     const prefix = folder.endsWith('/') ? folder : `${folder}/`;
 
-    // Build the API URL with prefix filter
-    const apiUrl = `${GCS_API_BASE}?prefix=${encodeURIComponent(prefix)}&delimiter=/`;
+    // Build the API URL with prefix filter and request metadata fields
+    // fields parameter requests specific fields to reduce response size
+    const fields = 'items(name,contentType,size,metadata)';
+    const apiUrl = `${GCS_API_BASE}?prefix=${encodeURIComponent(prefix)}&delimiter=/&fields=${encodeURIComponent(fields)}`;
 
     // Fetch from GCS JSON API
     const response = await fetch(apiUrl, {
@@ -69,14 +74,16 @@ export async function GET(request: NextRequest) {
       // Construct the public URL (using storage.cloud.google.com format)
       const publicUrl = `${GCS_PUBLIC_URL}/${GCS_BUCKET}/${item.name}`;
 
+      // Extract custom "created" metadata if it exists
+      const createdDate = item.metadata?.created;
+
       return {
         name: item.name,
         filename,
         url: publicUrl,
         contentType: item.contentType,
         size: item.size ? parseInt(item.size, 10) : undefined,
-        timeCreated: item.timeCreated,
-        updated: item.updated,
+        created: createdDate, // Only include if it exists in metadata
       };
     });
 
