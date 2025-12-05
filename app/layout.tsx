@@ -5,6 +5,11 @@ import "./globals.css";
 import { Hexagon, Moon, Sun, Monitor } from "lucide-react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import {
+    loadTheme,
+    applyTheme,
+    isCustomThemeActive,
+} from "@/app/utils/themeUtils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -29,6 +34,25 @@ function ThemeToggle() {
     );
 }
 
+// Component to initialize theme on mount
+function ThemeInitializer() {
+    const { theme, systemTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        if (isCustomThemeActive()) {
+            const savedTheme = loadTheme();
+            const isDarkMode =
+                theme === "dark" ||
+                (theme === "system" && systemTheme === "dark");
+            applyTheme(savedTheme, isDarkMode);
+        }
+    }, [theme, systemTheme]);
+
+    return null;
+}
+
 export default function RootLayout({
     children,
 }: {
@@ -47,13 +71,14 @@ export default function RootLayout({
                 />
             </head>
             <body
-                className={`${inter.variable} ${mono.variable} font-sans h-full w-full overflow-hidden flex flex-col antialiased bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300`}
+                className={`${inter.variable} ${mono.variable} font-sans h-full w-full overflow-hidden flex flex-col antialiased bg-[rgb(var(--bg-desktop))] transition-colors duration-300`}
             >
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
                 >
+                    <ThemeInitializer />
                     {/* Noise Overlay for Industrial Texture */}
                     <div className="bg-noise"></div>
 

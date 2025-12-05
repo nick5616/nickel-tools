@@ -49,18 +49,18 @@ export function ContentRenderer({ content }: ContentRendererProps) {
             // Special handling for GitHub links: don't try to embed in an iframe
             if (content.url.includes("github.com")) {
                 return (
-                    <div className="h-full w-full flex flex-col bg-white dark:bg-zinc-900">
-                        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
-                            <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                    <div className="h-full w-full flex flex-col bg-[rgb(var(--bg-window))]">
+                        <div className="p-6 border-b border-[rgb(var(--border-window))]">
+                            <h1 className="text-lg font-semibold text-[rgb(var(--text-primary))]">
                                 {content.title}
                             </h1>
-                            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
+                            <p className="mt-2 text-sm text-[rgb(var(--text-primary))]">
                                 {content.description}
                             </p>
                         </div>
                         <div className="flex-1 flex items-center justify-center p-6">
                             <div className="max-w-md text-center">
-                                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+                                <p className="text-sm text-[rgb(var(--text-secondary))] mb-4">
                                     This project is not web-based so I can't
                                     embed it here. Click the button below to
                                     open it directly on GitHub.
@@ -77,7 +77,7 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                                             ? "noopener noreferrer"
                                             : undefined
                                     }
-                                    className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
+                                    className="inline-flex items-center justify-center rounded-md bg-[rgb(var(--bg-button))] px-4 py-2 text-sm font-medium text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--bg-button-hover))] transition-colors"
                                 >
                                     Go to GitHub
                                 </a>
@@ -103,35 +103,35 @@ export function ContentRenderer({ content }: ContentRendererProps) {
             // Route to the appropriate internal component
             if (content.route === "/resume-editor") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <ResumeEditor />
                     </div>
                 );
             }
             if (content.route === "/smart-piano") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <SmartPiano />
                     </div>
                 );
             }
             if (content.route === "/about") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <About />
                     </div>
                 );
             }
             if (content.route === "/contact") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <Contact />
                     </div>
                 );
             }
             if (content.route === "/settings") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <Settings />
                     </div>
                 );
@@ -143,7 +143,7 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                     | "sketches"
                     | "lefthanded";
                 return (
-                    <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <ArtGallery folder={folder} />
                     </div>
                 );
@@ -152,11 +152,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
             return (
                 <div className="h-full w-full p-6 flex items-center justify-center">
                     <div className="text-center">
-                        <p className="text-zinc-400 mb-2">{content.title}</p>
-                        <p className="text-sm text-zinc-500">
+                        <p className="text-[rgb(var(--text-secondary))] mb-2">
+                            {content.title}
+                        </p>
+                        <p className="text-sm text-[rgb(var(--text-secondary))]">
                             {content.description}
                         </p>
-                        <p className="text-xs text-zinc-600 mt-4">
+                        <p className="text-xs text-[rgb(var(--text-primary))] mt-4">
                             Coming soon...
                         </p>
                     </div>

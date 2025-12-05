@@ -132,7 +132,7 @@ export function MenuDropdown({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.15 }}
-                className="z-[100] mt-1 bg-zinc-900/95 backdrop-blur-xl rounded-lg shadow-2xl border border-zinc-700 min-w-[180px] py-1"
+                className="z-[100] mt-1 bg-[rgb(var(--bg-dropdown))]/95 backdrop-blur-xl rounded-lg shadow-2xl border border-[rgb(var(--border-dropdown))] min-w-[180px] py-1"
                 style={style}
             >
                 {items.map((item, index) => {
@@ -140,7 +140,7 @@ export function MenuDropdown({
                         return (
                             <div
                                 key={`separator-${index}`}
-                                className="h-px bg-zinc-700 my-1 mx-2"
+                                className="h-px bg-[rgb(var(--border-dropdown))] my-1 mx-2"
                             />
                         );
                     }
@@ -159,25 +159,29 @@ export function MenuDropdown({
                             }}
                             onMouseEnter={() => setFocusedIndex(itemIndex)}
                             className={`
-                w-full text-left px-4 py-2 text-xs text-zinc-300 
+                w-full text-left px-4 py-2 text-xs text-[rgb(var(--text-dropdown))] 
                 flex items-center justify-between gap-4
                 transition-colors
-                ${isFocused ? "bg-zinc-800" : "hover:bg-zinc-800"}
+                ${
+                    isFocused
+                        ? "bg-[rgb(var(--bg-dropdown-hover))]"
+                        : "hover:bg-[rgb(var(--bg-dropdown-hover))]"
+                }
               `}
                         >
                             <div className="flex items-center gap-2">
                                 {item.icon && (
-                                    <span className="text-zinc-400">
+                                    <span className="text-[rgb(var(--text-dropdown))]/70">
                                         {item.icon}
                                     </span>
                                 )}
                                 <span>{item.label}</span>
                             </div>
                             {(item.checked || item.radio) && (
-                                <span className="text-zinc-400 text-xs">
+                                <span className="text-[rgb(var(--text-dropdown))]/70 text-xs">
                                     {item.checked && <Check size={14} />}
                                     {item.radio && (
-                                        <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                                        <span className="w-2 h-2 rounded-full bg-[rgb(var(--text-dropdown))]/70" />
                                     )}
                                 </span>
                             )}

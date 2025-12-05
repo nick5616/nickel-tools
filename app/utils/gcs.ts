@@ -91,4 +91,3 @@ export async function listGCSFolder(
 
     return data;
 }
-

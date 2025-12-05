@@ -14,7 +14,7 @@ export function WindowControls({ onMinimize, onMaximize, onClose }: WindowContro
     <div className="flex items-center gap-1">
       <button
         onClick={onMinimize}
-        className="w-6 h-6 rounded hover:bg-zinc-700 dark:hover:bg-zinc-600 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+        className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
         aria-label="Minimize"
         title="Minimize"
       >
@@ -23,7 +23,7 @@ export function WindowControls({ onMinimize, onMaximize, onClose }: WindowContro
       {onMaximize && (
         <button
           onClick={onMaximize}
-          className="w-6 h-6 rounded hover:bg-zinc-700 dark:hover:bg-zinc-600 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+          className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
           aria-label="Maximize"
           title="Maximize / Restore"
         >
@@ -32,7 +32,7 @@ export function WindowControls({ onMinimize, onMaximize, onClose }: WindowContro
       )}
       <button
         onClick={onClose}
-        className="w-6 h-6 rounded hover:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+        className="w-6 h-6 rounded hover:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-white transition-colors"
         aria-label="Close"
         title="Close"
       >

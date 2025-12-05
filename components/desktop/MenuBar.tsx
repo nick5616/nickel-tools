@@ -161,13 +161,13 @@ export function MenuBar() {
     };
 
     return (
-        <div className="fixed top-0 left-0 right-0 bg-zinc-900/80 dark:bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-700 dark:border-zinc-800 px-4 py-2 flex items-center justify-between z-50 h-12">
+        <div className="fixed top-0 left-0 right-0 bg-[rgb(var(--bg-menubar))]/80 backdrop-blur-xl border-b border-[rgb(var(--border-window))] px-4 py-2 flex items-center justify-between z-50 h-12">
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 relative">
                     <div
                         ref={niIconRef}
                         onClick={() => toggleMenu("niIcon")}
-                        className="w-8 h-8 bg-zinc-700 dark:bg-zinc-800 rounded flex items-center justify-center font-mono text-sm font-bold text-white cursor-pointer hover:bg-zinc-600 dark:hover:bg-zinc-700 transition-colors"
+                        className="w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-menubar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
                     >
                         Ni
                     </div>
@@ -177,15 +177,17 @@ export function MenuBar() {
                         items={niIconMenuItems}
                         position={getMenuPosition(niIconRef)}
                     />
-                    <span className="font-bold text-white">NICKEL</span>
+                    <span className="font-bold text-[rgb(var(--text-menubar))]">
+                        NICKEL
+                    </span>
                 </div>
-                <div className="hidden md:flex items-center gap-4 text-xs font-mono text-zinc-400 relative">
+                <div className="hidden md:flex items-center gap-4 text-xs font-mono text-[rgb(var(--text-menubar))]/70 relative">
                     <button
                         ref={viewMenuRef}
                         onClick={() => toggleMenu("view")}
-                        className={`hover:text-zinc-200 transition-colors px-2 py-1 rounded ${
+                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
                             menu.openMenus.view
-                                ? "bg-zinc-800 text-zinc-200"
+                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
                                 : ""
                         }`}
                     >
@@ -200,9 +202,9 @@ export function MenuBar() {
                     <button
                         ref={artMenuRef}
                         onClick={() => toggleMenu("art")}
-                        className={`hover:text-zinc-200 transition-colors px-2 py-1 rounded ${
+                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
                             menu.openMenus.art
-                                ? "bg-zinc-800 text-zinc-200"
+                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
                                 : ""
                         }`}
                     >
@@ -217,9 +219,9 @@ export function MenuBar() {
                     <button
                         ref={toolsMenuRef}
                         onClick={() => toggleMenu("tools")}
-                        className={`hover:text-zinc-200 transition-colors px-2 py-1 rounded ${
+                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
                             menu.openMenus.tools
-                                ? "bg-zinc-800 text-zinc-200"
+                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
                                 : ""
                         }`}
                     >
@@ -234,19 +236,25 @@ export function MenuBar() {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <span className="text-xs text-zinc-500 font-mono">
+                <span className="text-xs text-[rgb(var(--text-menubar))]/60 font-mono">
                     ELEMENT 28 / FOUNDRY
                 </span>
 
                 <button
                     onClick={toggleTheme}
-                    className="w-8 h-8 rounded hover:bg-zinc-800 dark:hover:bg-zinc-700 flex items-center justify-center transition-colors"
+                    className="w-8 h-8 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors"
                     aria-label="Toggle theme"
                 >
                     {mounted && theme === "dark" ? (
-                        <Sun size={16} className="text-zinc-300" />
+                        <Sun
+                            size={16}
+                            className="text-[rgb(var(--text-menubar))]"
+                        />
                     ) : (
-                        <Moon size={16} className="text-zinc-300" />
+                        <Moon
+                            size={16}
+                            className="text-[rgb(var(--text-menubar))]"
+                        />
                     )}
                 </button>
             </div>

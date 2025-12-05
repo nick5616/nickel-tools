@@ -151,7 +151,7 @@ export function Desktop({
 
     return (
         <div
-            className="relative h-full overflow-hidden bg-zinc-50 dark:bg-zinc-950"
+            className="relative h-full overflow-hidden bg-[rgb(var(--bg-desktop))]"
             style={{
                 width: "100%",
                 maxWidth: "100vw",
