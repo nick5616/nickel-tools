@@ -39,12 +39,13 @@ export function constructGCSUrl(folder: string, filename: string): string {
  * Maps folder names from the app to GCS folder paths
  */
 export function getGCSFolderPath(
-    folder: "digital-art" | "paintings" | "sketches"
+    folder: "digital-art" | "paintings" | "sketches" | "lefthanded"
 ): string {
     const folderMap: Record<string, string> = {
         "digital-art": "digitalart",
         paintings: "paintings",
         sketches: "sketches",
+        lefthanded: "lefthanded",
     };
 
     return folderMap[folder] || folder;
@@ -54,7 +55,7 @@ export function getGCSFolderPath(
  * Fetches all files from a GCS folder
  */
 export async function listGCSFolder(
-    folder: "digital-art" | "paintings" | "sketches"
+    folder: "digital-art" | "paintings" | "sketches" | "lefthanded"
 ): Promise<{
     folder: string;
     files: Array<{

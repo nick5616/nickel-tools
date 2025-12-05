@@ -328,7 +328,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
             dateAdded: "2024-01-01",
             featured: false,
         },
-        // Art galleries (stubbed for GCP integration)
         {
             id: "art-digital-art",
             type: "internal",
@@ -362,6 +361,18 @@ export const NICKEL_SYSTEM: NickelSystem = {
             category: "Art",
             status: "operational",
             route: "/art-gallery/sketches",
+            dateAdded: "2024-01-01",
+            featured: false,
+        },
+        {
+            id: "art-lefthanded",
+            type: "internal",
+            title: "Left-Handed Art",
+            description: "Art created only using my left hand",
+            thumbnail: "/project-screenshots/latex.png", // Placeholder
+            category: "Art",
+            status: "operational",
+            route: "/art-gallery/lefthanded",
             dateAdded: "2024-01-01",
             featured: false,
         },

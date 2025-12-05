@@ -140,7 +140,8 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 const folder = content.route.split("/art-gallery/")[1] as
                     | "digital-art"
                     | "paintings"
-                    | "sketches";
+                    | "sketches"
+                    | "lefthanded";
                 return (
                     <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900">
                         <ArtGallery folder={folder} />

@@ -5,8 +5,24 @@ import { ArrowLeft, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { listGCSFolder } from "@/app/utils/gcs";
 
+const getGalleryDescription = (
+    folder: "digital-art" | "paintings" | "sketches" | "lefthanded"
+) => {
+    switch (folder) {
+        case "digital-art":
+            return "I've been making digital art on the iPad (Procreate) since 2021. Here are some of my favorite pieces I've made throughout the years.";
+        case "paintings":
+            return "I've dabbled (if you can even call it that) in acrylic painting since 2020.";
+        case "lefthanded":
+            return "In 2025, I decided I wanted to learn how to draw with my left (non-dominant) hand. I'm quite the stubborn person, so it's bothered me that my left hand is not as dextrous as my right. I'd like to become ambidextrous :)";
+        case "sketches":
+            return "I've sketched for as long as I can remember. Though, I didn't sketch any in my adult life. Before 2025, the last time I could remember drawing pencil and/or pen on paper was like 2017, and that was on school assignments. In October 2025, I decided I would keep a sketchbook. I'd never had one in my life, and I can proudly say I've filled it out! As of November 2025, I'm on my second sketchbook!";
+        default:
+            return "";
+    }
+};
 interface ArtGalleryProps {
-    folder: "digital-art" | "paintings" | "sketches";
+    folder: "digital-art" | "paintings" | "sketches" | "lefthanded";
 }
 
 interface ArtImage {
@@ -174,9 +190,7 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
         <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
             <div className="max-w-6xl mx-auto">
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-                    I've been making digital art on the iPad (Procreate) since
-                    2021. Here are some of my favorite pieces I've made
-                    throughout the years.
+                    {getGalleryDescription(folder)}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <AnimatePresence>
@@ -203,4 +217,3 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
         </div>
     );
 }
-

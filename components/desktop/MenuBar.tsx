@@ -11,6 +11,7 @@ import {
     Image,
     Paintbrush,
     PenTool,
+    Hand,
     Settings,
 } from "lucide-react";
 import { MenuDropdown, type MenuItem } from "./MenuDropdown";
@@ -128,6 +129,11 @@ export function MenuBar() {
             label: "Sketches",
             onClick: () => handleOpenSystemWindow("art-sketches"),
             icon: <PenTool size={14} />,
+        },
+        {
+            label: "Left-Handed Art",
+            onClick: () => handleOpenSystemWindow("art-lefthanded"),
+            icon: <Hand size={14} />,
         },
     ];
 
