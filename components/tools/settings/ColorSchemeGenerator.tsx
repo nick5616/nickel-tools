@@ -35,6 +35,10 @@ export function ColorSchemeGenerator() {
     const [saturation, setSaturation] = useState(50);
     const [hueOffset, setHueOffset] = useState(0);
     const [visibleRowStart, setVisibleRowStart] = useState(0); // Which row group is visible (0, 3)
+    const [selectedGridPosition, setSelectedGridPosition] = useState<{
+        row: number;
+        col: number;
+    } | null>(null);
 
     // Part 2: Configuration
     const [contrastThreshold, setContrastThreshold] =
@@ -69,6 +73,31 @@ export function ColorSchemeGenerator() {
             setContrastThreshold(savedTheme.contrastThreshold);
             setUseBlackWhiteText(savedTheme.useBlackWhiteText);
             setAllowMixMatch(savedTheme.allowMixMatch);
+            // Find and set grid position for saved color
+            if (savedTheme.baseColor) {
+                const lightnesses = [10, 25, 40, 55, 70, 90];
+                const baseHues = [0, 60, 120, 180, 240, 300];
+                const row = lightnesses.findIndex(
+                    (l) => Math.abs(l - savedTheme.baseColor!.l) < 1
+                );
+                const normalizedHue =
+                    (savedTheme.baseColor.h -
+                        (savedTheme.hueOffset || 0) +
+                        360) %
+                    360;
+                const col = baseHues.findIndex(
+                    (h) => Math.abs(h - normalizedHue) < 1
+                );
+                if (row !== -1 && col !== -1) {
+                    setSelectedGridPosition({ row, col });
+                    // Set visible row based on position
+                    if (row < 3) {
+                        setVisibleRowStart(0);
+                    } else {
+                        setVisibleRowStart(3);
+                    }
+                }
+            }
             if (savedTheme.schemeType) {
                 setSelectedScheme(savedTheme.schemeType);
                 // Apply theme immediately on initial load
@@ -91,10 +120,55 @@ export function ColorSchemeGenerator() {
 
     // Generate color swatch
     const colorSwatch = generateColorSwatch(saturation, hueOffset);
+    const lightnesses = [10, 25, 40, 55, 70, 90];
+    const baseHues = [0, 60, 120, 180, 240, 300];
+
+    // Find grid position from a color
+    const findGridPosition = (
+        color: HSL
+    ): { row: number; col: number } | null => {
+        // Find row by matching lightness
+        const row = lightnesses.findIndex((l) => Math.abs(l - color.l) < 1);
+        if (row === -1) return null;
+
+        // Find column by matching hue (accounting for hueOffset)
+        // We need to find which base hue this corresponds to
+        const normalizedHue = (color.h - hueOffset + 360) % 360;
+        const col = baseHues.findIndex((h) => Math.abs(h - normalizedHue) < 1);
+        if (col === -1) return null;
+
+        return { row, col };
+    };
+
+    // Auto-select color at same grid position when swatch changes
+    useEffect(() => {
+        if (selectedGridPosition && colorSwatch.length > 0 && !isInitialLoad) {
+            const { row, col } = selectedGridPosition;
+            if (row < colorSwatch.length && col < colorSwatch[row].length) {
+                const newColor = colorSwatch[row][col];
+                // Only update if the color actually changed to avoid loops
+                if (
+                    !selectedColor ||
+                    selectedColor.h !== newColor.h ||
+                    selectedColor.s !== newColor.s ||
+                    selectedColor.l !== newColor.l
+                ) {
+                    setSelectedColor(newColor);
+                }
+            }
+        }
+    }, [hueOffset, saturation, selectedGridPosition]);
 
     // Handle color selection
-    const handleColorSelect = (hsl: HSL) => {
+    const handleColorSelect = (hsl: HSL, row: number, col: number) => {
         setSelectedColor(hsl);
+        setSelectedGridPosition({ row, col });
+        // Ensure the row is visible
+        if (row < 3) {
+            setVisibleRowStart(0);
+        } else {
+            setVisibleRowStart(3);
+        }
         setValidationError(null);
         setSuccessMessage(null);
     };
@@ -1095,6 +1169,7 @@ export function ColorSchemeGenerator() {
     const handleReset = () => {
         clearTheme();
         setSelectedColor(null);
+        setSelectedGridPosition(null);
         setSelectedScheme(null);
         setSaturation(50);
         setHueOffset(0);
@@ -1161,6 +1236,56 @@ export function ColorSchemeGenerator() {
                     Select Base Color
                 </h2>
 
+                {/* Color Swatch Grid - Show only 3 rows at a time */}
+                <div className="grid grid-cols-6 gap-2 mb-4">
+                    {colorSwatch
+                        .slice(visibleRowStart, visibleRowStart + 3)
+                        .map((row, rowIdx) =>
+                            row.map((color, colIdx) => {
+                                const actualRowIdx = visibleRowStart + rowIdx;
+                                const isSelected =
+                                    selectedGridPosition &&
+                                    selectedGridPosition.row === actualRowIdx &&
+                                    selectedGridPosition.col === colIdx;
+
+                                return (
+                                    <button
+                                        key={`${actualRowIdx}-${colIdx}`}
+                                        onClick={() =>
+                                            handleColorSelect(
+                                                color,
+                                                actualRowIdx,
+                                                colIdx
+                                            )
+                                        }
+                                        className={`aspect-square rounded border-2 transition-all relative ${
+                                            isSelected
+                                                ? "border-[rgb(var(--text-primary))] scale-110 z-10"
+                                                : "border-[rgb(var(--border-window))] hover:scale-105"
+                                        }`}
+                                        style={{
+                                            backgroundColor: hslToCss(color),
+                                        }}
+                                        title={`H: ${color.h}°, S: ${color.s}%, L: ${color.l}%`}
+                                    >
+                                        {isSelected && (
+                                            <div className="absolute -top-1 -right-1 z-20 pointer-events-none">
+                                                <div className="bg-[rgb(var(--bg-window))] border border-[rgb(var(--border-window))] rounded px-1.5 py-0.5 shadow-lg">
+                                                    <div className="text-[9px] font-mono text-[rgb(var(--text-primary))] leading-tight whitespace-nowrap">
+                                                        <div className="text-[8px]">
+                                                            {color.h}° {color.s}
+                                                            % {color.l}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </button>
+                                );
+                            })
+                        )}
+                </div>
+
                 {/* Hue Shift Controls */}
                 <div className="mb-4 flex items-center gap-4">
                     <div className="flex items-center gap-2">
@@ -1205,58 +1330,6 @@ export function ColorSchemeGenerator() {
                         Rows 4-6
                     </button>
                 </div>
-
-                {/* Color Swatch Grid - Show only 3 rows at a time */}
-                <div className="grid grid-cols-6 gap-2 mb-4">
-                    {colorSwatch
-                        .slice(visibleRowStart, visibleRowStart + 3)
-                        .map((row, rowIdx) =>
-                            row.map((color, colIdx) => {
-                                const isSelected =
-                                    selectedColor &&
-                                    selectedColor.h === color.h &&
-                                    selectedColor.s === color.s &&
-                                    selectedColor.l === color.l;
-
-                                return (
-                                    <button
-                                        key={`${
-                                            visibleRowStart + rowIdx
-                                        }-${colIdx}`}
-                                        onClick={() => handleColorSelect(color)}
-                                        className={`aspect-square rounded border-2 transition-all ${
-                                            isSelected
-                                                ? "border-[rgb(var(--text-primary))] scale-110 z-10"
-                                                : "border-[rgb(var(--border-window))] hover:scale-105"
-                                        }`}
-                                        style={{
-                                            backgroundColor: hslToCss(color),
-                                        }}
-                                        title={`H: ${color.h}°, S: ${color.s}%, L: ${color.l}%`}
-                                    />
-                                );
-                            })
-                        )}
-                </div>
-
-                {/* Selected Color Preview */}
-                {selectedColor && (
-                    <div className="flex items-center gap-4">
-                        <div
-                            className="w-16 h-16 rounded border-2 border-[rgb(var(--border-window))]"
-                            style={{ backgroundColor: hslToCss(selectedColor) }}
-                        />
-                        <div>
-                            <p className="text-sm font-mono text-[rgb(var(--text-primary))]">
-                                HSL: {selectedColor.h}°, {selectedColor.s}%,{" "}
-                                {selectedColor.l}%
-                            </p>
-                            <p className="text-xs text-[rgb(var(--text-secondary))]">
-                                {hslToCss(selectedColor)}
-                            </p>
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* Part 2: Configuration */}
@@ -1385,336 +1458,6 @@ export function ColorSchemeGenerator() {
                         Select Color Scheme
                     </h2>
 
-                    {/* Validation Report */}
-                    {validationDetails && (
-                        <div
-                            className={`mb-4 p-4 border rounded border-[rgb(var(--border-window))] ${
-                                validationError
-                                    ? "bg-[rgb(var(--bg-window))] opacity-90"
-                                    : "bg-[rgb(var(--bg-window))] opacity-90"
-                            }`}
-                        >
-                            {validationError && (
-                                <div className="text-[rgb(var(--text-primary))] text-sm font-semibold mb-3">
-                                    {validationError}
-                                </div>
-                            )}
-                            {successMessage && !validationError && (
-                                <div className="text-[rgb(var(--text-primary))] text-sm font-semibold mb-3">
-                                    {successMessage}
-                                </div>
-                            )}
-
-                            {/* All Color Pairs */}
-                            <div className="space-y-3">
-                                {/* Passing Pairs - Show first when validation succeeds */}
-                                {validationDetails.allPairs.filter(
-                                    (p) =>
-                                        !validationDetails.failedPairs.some(
-                                            (fp) =>
-                                                fp.fg.h === p.fg.h &&
-                                                fp.fg.s === p.fg.s &&
-                                                fp.fg.l === p.fg.l &&
-                                                fp.bg.h === p.bg.h &&
-                                                fp.bg.s === p.bg.s &&
-                                                fp.bg.l === p.bg.l
-                                        )
-                                ).length > 0 && (
-                                    <div>
-                                        <div className="text-[rgb(var(--text-primary))] text-xs font-semibold mb-2">
-                                            Passing Pairs (
-                                            {
-                                                validationDetails.allPairs.filter(
-                                                    (p) =>
-                                                        !validationDetails.failedPairs.some(
-                                                            (fp) =>
-                                                                fp.fg.h ===
-                                                                    p.fg.h &&
-                                                                fp.fg.s ===
-                                                                    p.fg.s &&
-                                                                fp.fg.l ===
-                                                                    p.fg.l &&
-                                                                fp.bg.h ===
-                                                                    p.bg.h &&
-                                                                fp.bg.s ===
-                                                                    p.bg.s &&
-                                                                fp.bg.l ===
-                                                                    p.bg.l
-                                                        )
-                                                ).length
-                                            }
-                                            ):
-                                        </div>
-                                        <div className="space-y-2">
-                                            {validationDetails.allPairs
-                                                .filter(
-                                                    (p) =>
-                                                        !validationDetails.failedPairs.some(
-                                                            (fp) =>
-                                                                fp.fg.h ===
-                                                                    p.fg.h &&
-                                                                fp.fg.s ===
-                                                                    p.fg.s &&
-                                                                fp.fg.l ===
-                                                                    p.fg.l &&
-                                                                fp.bg.h ===
-                                                                    p.bg.h &&
-                                                                fp.bg.s ===
-                                                                    p.bg.s &&
-                                                                fp.bg.l ===
-                                                                    p.bg.l
-                                                        )
-                                                )
-                                                .map((pair, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="flex items-center gap-3 p-2 bg-[rgb(var(--bg-desktop))] rounded border border-[rgb(var(--border-window))]"
-                                                    >
-                                                        <div className="flex gap-2">
-                                                            <div
-                                                                className="w-8 h-8 rounded relative overflow-hidden"
-                                                                style={{
-                                                                    backgroundColor:
-                                                                        hslToCss(
-                                                                            pair.bg
-                                                                        ),
-                                                                }}
-                                                            >
-                                                                <div
-                                                                    className="absolute top-0 left-0 w-full h-full"
-                                                                    style={{
-                                                                        backgroundColor:
-                                                                            hslToCss(
-                                                                                pair.fg
-                                                                            ),
-                                                                        clipPath:
-                                                                            "polygon(0 0, 100% 0, 0 100%)",
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex-1 text-xs text-[rgb(var(--text-primary))]">
-                                                            <div className="font-medium">
-                                                                {pair.label}
-                                                            </div>
-                                                            <div className="text-[rgb(var(--text-secondary))] space-y-1">
-                                                                <div>
-                                                                    Contrast:{" "}
-                                                                    <span className="font-mono">
-                                                                        {pair.contrast.toFixed(
-                                                                            2
-                                                                        )}
-                                                                        :1
-                                                                    </span>
-                                                                </div>
-                                                                <div className="font-mono text-[rgb(var(--text-secondary))]">
-                                                                    FG: HSL(
-                                                                    {pair.fg.h}
-                                                                    °,{" "}
-                                                                    {pair.fg.s}
-                                                                    %,{" "}
-                                                                    {pair.fg.l}
-                                                                    %)
-                                                                </div>
-                                                                <div className="font-mono text-[rgb(var(--text-secondary))]">
-                                                                    BG: HSL(
-                                                                    {pair.bg.h}
-                                                                    °,{" "}
-                                                                    {pair.bg.s}
-                                                                    %,{" "}
-                                                                    {pair.bg.l}
-                                                                    %)
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Failing Pairs */}
-                                {validationDetails.failedPairs.length > 0 && (
-                                    <div>
-                                        <div className="text-[rgb(var(--text-primary))] text-xs font-semibold mb-2">
-                                            Failing Pairs (
-                                            {
-                                                validationDetails.failedPairs
-                                                    .length
-                                            }
-                                            ):
-                                        </div>
-                                        <div className="space-y-2">
-                                            {validationDetails.failedPairs.map(
-                                                (pair, idx) => {
-                                                    const pairInfo =
-                                                        validationDetails.allPairs.find(
-                                                            (p) =>
-                                                                p.fg.h ===
-                                                                    pair.fg.h &&
-                                                                p.fg.s ===
-                                                                    pair.fg.s &&
-                                                                p.fg.l ===
-                                                                    pair.fg.l &&
-                                                                p.bg.h ===
-                                                                    pair.bg.h &&
-                                                                p.bg.s ===
-                                                                    pair.bg.s &&
-                                                                p.bg.l ===
-                                                                    pair.bg.l
-                                                        );
-                                                    return (
-                                                        <div
-                                                            key={idx}
-                                                            className="flex items-center gap-3 p-2 bg-[rgb(var(--bg-desktop))] rounded border border-[rgb(var(--border-window))]"
-                                                        >
-                                                            <div className="flex gap-2">
-                                                                <div
-                                                                    className="w-8 h-8 rounded relative overflow-hidden"
-                                                                    style={{
-                                                                        backgroundColor:
-                                                                            hslToCss(
-                                                                                pair.bg
-                                                                            ),
-                                                                    }}
-                                                                >
-                                                                    <div
-                                                                        className="absolute top-0 left-0 w-full h-full"
-                                                                        style={{
-                                                                            backgroundColor:
-                                                                                hslToCss(
-                                                                                    pair.fg
-                                                                                ),
-                                                                            clipPath:
-                                                                                "polygon(0 0, 100% 0, 0 100%)",
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex-1 text-xs text-[rgb(var(--text-primary))]">
-                                                                <div className="font-medium">
-                                                                    {pairInfo?.label ||
-                                                                        "Color Pair"}
-                                                                </div>
-                                                                <div className="text-[rgb(var(--text-secondary))] space-y-1">
-                                                                    <div>
-                                                                        Contrast:{" "}
-                                                                        <span className="font-mono">
-                                                                            {pair.contrast.toFixed(
-                                                                                2
-                                                                            )}
-                                                                            :1
-                                                                        </span>{" "}
-                                                                        (needs{" "}
-                                                                        {
-                                                                            validationDetails.threshold
-                                                                        }
-                                                                        :1)
-                                                                    </div>
-                                                                    <div className="font-mono text-[rgb(var(--text-secondary))]">
-                                                                        FG: HSL(
-                                                                        {
-                                                                            pair
-                                                                                .fg
-                                                                                .h
-                                                                        }
-                                                                        °,{" "}
-                                                                        {
-                                                                            pair
-                                                                                .fg
-                                                                                .s
-                                                                        }
-                                                                        %,{" "}
-                                                                        {
-                                                                            pair
-                                                                                .fg
-                                                                                .l
-                                                                        }
-                                                                        %)
-                                                                    </div>
-                                                                    <div className="font-mono text-[rgb(var(--text-secondary))]">
-                                                                        BG: HSL(
-                                                                        {
-                                                                            pair
-                                                                                .bg
-                                                                                .h
-                                                                        }
-                                                                        °,{" "}
-                                                                        {
-                                                                            pair
-                                                                                .bg
-                                                                                .s
-                                                                        }
-                                                                        %,{" "}
-                                                                        {
-                                                                            pair
-                                                                                .bg
-                                                                                .l
-                                                                        }
-                                                                        %)
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Bypass Button - Only show when there are errors */}
-                            {validationError &&
-                                validationDetails.failedPairs.length > 0 && (
-                                    <div className="mt-4 pt-3 border-t border-[rgb(var(--border-window))]">
-                                        <button
-                                            onClick={() => {
-                                                if (
-                                                    !selectedColor ||
-                                                    !selectedScheme
-                                                )
-                                                    return;
-                                                const themeConfig = {
-                                                    baseColor: selectedColor,
-                                                    schemeType: selectedScheme,
-                                                    contrastThreshold:
-                                                        contrastThreshold ===
-                                                            "AA" ||
-                                                        contrastThreshold ===
-                                                            "AAA"
-                                                            ? contrastThreshold
-                                                            : customThreshold,
-                                                    useBlackWhiteText,
-                                                    allowMixMatch,
-                                                    saturation,
-                                                    hueOffset,
-                                                };
-                                                saveTheme(themeConfig);
-                                                applyTheme(
-                                                    themeConfig,
-                                                    isDarkMode
-                                                );
-                                                setValidationError(null);
-                                                // Keep validation details but clear error
-                                                setValidationDetails({
-                                                    ...validationDetails,
-                                                    failedPairs: [],
-                                                });
-                                                setSuccessMessage(
-                                                    "Color scheme applied (accessibility warnings bypassed)"
-                                                );
-                                            }}
-                                            className="w-full px-4 py-2 bg-[rgb(var(--bg-button))] hover:bg-[rgb(var(--bg-button-hover))] text-[rgb(var(--text-primary))] border border-[rgb(var(--border-window))] rounded-lg transition-colors text-sm font-medium"
-                                        >
-                                            Apply Theme Anyway (Bypass
-                                            Validation)
-                                        </button>
-                                    </div>
-                                )}
-                        </div>
-                    )}
-
                     {/* Scheme Tiles */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {schemeTypes.map((scheme) => {
@@ -1811,6 +1554,274 @@ export function ColorSchemeGenerator() {
                             );
                         })}
                     </div>
+                </div>
+            )}
+
+            {/* Validation Report */}
+            {validationDetails && (
+                <div
+                    className={`mb-4 p-4 border rounded border-[rgb(var(--border-window))] ${
+                        validationError
+                            ? "bg-[rgb(var(--bg-window))] opacity-90"
+                            : "bg-[rgb(var(--bg-window))] opacity-90"
+                    }`}
+                >
+                    {validationError && (
+                        <div className="text-[rgb(var(--text-primary))] text-sm font-semibold mb-3">
+                            {validationError}
+                        </div>
+                    )}
+                    {successMessage && !validationError && (
+                        <div className="text-[rgb(var(--text-primary))] text-sm font-semibold mb-3">
+                            {successMessage}
+                        </div>
+                    )}
+
+                    {/* All Color Pairs */}
+                    <div className="space-y-3">
+                        {/* Passing Pairs - Show first when validation succeeds */}
+                        {validationDetails.allPairs.filter(
+                            (p) =>
+                                !validationDetails.failedPairs.some(
+                                    (fp) =>
+                                        fp.fg.h === p.fg.h &&
+                                        fp.fg.s === p.fg.s &&
+                                        fp.fg.l === p.fg.l &&
+                                        fp.bg.h === p.bg.h &&
+                                        fp.bg.s === p.bg.s &&
+                                        fp.bg.l === p.bg.l
+                                )
+                        ).length > 0 && (
+                            <div>
+                                <div className="text-[rgb(var(--text-primary))] text-xs font-semibold mb-2">
+                                    Passing Pairs (
+                                    {
+                                        validationDetails.allPairs.filter(
+                                            (p) =>
+                                                !validationDetails.failedPairs.some(
+                                                    (fp) =>
+                                                        fp.fg.h === p.fg.h &&
+                                                        fp.fg.s === p.fg.s &&
+                                                        fp.fg.l === p.fg.l &&
+                                                        fp.bg.h === p.bg.h &&
+                                                        fp.bg.s === p.bg.s &&
+                                                        fp.bg.l === p.bg.l
+                                                )
+                                        ).length
+                                    }
+                                    ):
+                                </div>
+                                <div className="space-y-2">
+                                    {validationDetails.allPairs
+                                        .filter(
+                                            (p) =>
+                                                !validationDetails.failedPairs.some(
+                                                    (fp) =>
+                                                        fp.fg.h === p.fg.h &&
+                                                        fp.fg.s === p.fg.s &&
+                                                        fp.fg.l === p.fg.l &&
+                                                        fp.bg.h === p.bg.h &&
+                                                        fp.bg.s === p.bg.s &&
+                                                        fp.bg.l === p.bg.l
+                                                )
+                                        )
+                                        .map((pair, idx) => (
+                                            <div
+                                                key={idx}
+                                                className="flex items-center gap-3 p-2 bg-[rgb(var(--bg-desktop))] rounded border border-[rgb(var(--border-window))]"
+                                            >
+                                                <div className="flex gap-2">
+                                                    <div
+                                                        className="w-8 h-8 rounded relative overflow-hidden"
+                                                        style={{
+                                                            backgroundColor:
+                                                                hslToCss(
+                                                                    pair.bg
+                                                                ),
+                                                        }}
+                                                    >
+                                                        <div
+                                                            className="absolute top-0 left-0 w-full h-full"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    hslToCss(
+                                                                        pair.fg
+                                                                    ),
+                                                                clipPath:
+                                                                    "polygon(0 0, 100% 0, 0 100%)",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex-1 text-xs text-[rgb(var(--text-primary))]">
+                                                    <div className="font-medium">
+                                                        {pair.label}
+                                                    </div>
+                                                    <div className="text-[rgb(var(--text-secondary))] space-y-1">
+                                                        <div>
+                                                            Contrast:{" "}
+                                                            <span className="font-mono">
+                                                                {pair.contrast.toFixed(
+                                                                    2
+                                                                )}
+                                                                :1
+                                                            </span>
+                                                        </div>
+                                                        <div className="font-mono text-[rgb(var(--text-secondary))]">
+                                                            FG: HSL(
+                                                            {pair.fg.h}
+                                                            °, {pair.fg.s}
+                                                            %, {pair.fg.l}
+                                                            %)
+                                                        </div>
+                                                        <div className="font-mono text-[rgb(var(--text-secondary))]">
+                                                            BG: HSL(
+                                                            {pair.bg.h}
+                                                            °, {pair.bg.s}
+                                                            %, {pair.bg.l}
+                                                            %)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Failing Pairs */}
+                        {validationDetails.failedPairs.length > 0 && (
+                            <div>
+                                <div className="text-[rgb(var(--text-primary))] text-xs font-semibold mb-2">
+                                    Failing Pairs (
+                                    {validationDetails.failedPairs.length}
+                                    ):
+                                </div>
+                                <div className="space-y-2">
+                                    {validationDetails.failedPairs.map(
+                                        (pair, idx) => {
+                                            const pairInfo =
+                                                validationDetails.allPairs.find(
+                                                    (p) =>
+                                                        p.fg.h === pair.fg.h &&
+                                                        p.fg.s === pair.fg.s &&
+                                                        p.fg.l === pair.fg.l &&
+                                                        p.bg.h === pair.bg.h &&
+                                                        p.bg.s === pair.bg.s &&
+                                                        p.bg.l === pair.bg.l
+                                                );
+                                            return (
+                                                <div
+                                                    key={idx}
+                                                    className="flex items-center gap-3 p-2 bg-[rgb(var(--bg-desktop))] rounded border border-[rgb(var(--border-window))]"
+                                                >
+                                                    <div className="flex gap-2">
+                                                        <div
+                                                            className="w-8 h-8 rounded relative overflow-hidden"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    hslToCss(
+                                                                        pair.bg
+                                                                    ),
+                                                            }}
+                                                        >
+                                                            <div
+                                                                className="absolute top-0 left-0 w-full h-full"
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        hslToCss(
+                                                                            pair.fg
+                                                                        ),
+                                                                    clipPath:
+                                                                        "polygon(0 0, 100% 0, 0 100%)",
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 text-xs text-[rgb(var(--text-primary))]">
+                                                        <div className="font-medium">
+                                                            {pairInfo?.label ||
+                                                                "Color Pair"}
+                                                        </div>
+                                                        <div className="text-[rgb(var(--text-secondary))] space-y-1">
+                                                            <div>
+                                                                Contrast:{" "}
+                                                                <span className="font-mono">
+                                                                    {pair.contrast.toFixed(
+                                                                        2
+                                                                    )}
+                                                                    :1
+                                                                </span>{" "}
+                                                                (needs{" "}
+                                                                {
+                                                                    validationDetails.threshold
+                                                                }
+                                                                :1)
+                                                            </div>
+                                                            <div className="font-mono text-[rgb(var(--text-secondary))]">
+                                                                FG: HSL(
+                                                                {pair.fg.h}
+                                                                °, {pair.fg.s}
+                                                                %, {pair.fg.l}
+                                                                %)
+                                                            </div>
+                                                            <div className="font-mono text-[rgb(var(--text-secondary))]">
+                                                                BG: HSL(
+                                                                {pair.bg.h}
+                                                                °, {pair.bg.s}
+                                                                %, {pair.bg.l}
+                                                                %)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Bypass Button - Only show when there are errors */}
+                    {validationError &&
+                        validationDetails.failedPairs.length > 0 && (
+                            <div className="mt-4 pt-3 border-t border-[rgb(var(--border-window))]">
+                                <button
+                                    onClick={() => {
+                                        if (!selectedColor || !selectedScheme)
+                                            return;
+                                        const themeConfig = {
+                                            baseColor: selectedColor,
+                                            schemeType: selectedScheme,
+                                            contrastThreshold:
+                                                contrastThreshold === "AA" ||
+                                                contrastThreshold === "AAA"
+                                                    ? contrastThreshold
+                                                    : customThreshold,
+                                            useBlackWhiteText,
+                                            allowMixMatch,
+                                            saturation,
+                                            hueOffset,
+                                        };
+                                        saveTheme(themeConfig);
+                                        applyTheme(themeConfig, isDarkMode);
+                                        setValidationError(null);
+                                        // Keep validation details but clear error
+                                        setValidationDetails({
+                                            ...validationDetails,
+                                            failedPairs: [],
+                                        });
+                                        setSuccessMessage(
+                                            "Color scheme applied (accessibility warnings bypassed)"
+                                        );
+                                    }}
+                                    className="w-full px-4 py-2 bg-[rgb(var(--bg-button))] hover:bg-[rgb(var(--bg-button-hover))] text-[rgb(var(--text-primary))] border border-[rgb(var(--border-window))] rounded-lg transition-colors text-sm font-medium"
+                                >
+                                    Apply Theme Anyway (Bypass Validation)
+                                </button>
+                            </div>
+                        )}
                 </div>
             )}
 

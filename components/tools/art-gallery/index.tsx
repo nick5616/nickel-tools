@@ -47,15 +47,18 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                 setError(null);
 
                 const result = await listGCSFolder(folder);
-
+                console.log("result files", result.files);
                 // Filter to only image files and transform to ArtImage format
                 const imageFiles = result.files
                     .filter((file) => {
                         const contentType = file.contentType || "";
                         const filename = file.filename.toLowerCase();
                         return (
-                            contentType.startsWith("image/") ||
-                            /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(filename)
+                            (contentType.startsWith("image/") ||
+                                /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(
+                                    filename
+                                )) &&
+                            file.private !== "true"
                         );
                     })
                     .map((file) => ({

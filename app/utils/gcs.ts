@@ -66,6 +66,7 @@ export async function listGCSFolder(
         size?: number;
         created?: string; // Custom metadata field, only present if set
         description?: string; // Optional description from metadata
+        private?: string; // Optional private flag from metadata
     }>;
     count: number;
 }> {

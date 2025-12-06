@@ -79,6 +79,7 @@ export async function GET(request: NextRequest) {
             // Extract custom metadata if it exists
             const createdDate = item.metadata?.created;
             const description = item.metadata?.description;
+            const privateFlag = item.metadata?.private;
 
             return {
                 name: item.name,
@@ -88,6 +89,7 @@ export async function GET(request: NextRequest) {
                 size: item.size ? parseInt(item.size, 10) : undefined,
                 created: createdDate, // Only include if it exists in metadata
                 description, // Optional description field
+                private: privateFlag, // Optional private flag from metadata
             };
         });
 

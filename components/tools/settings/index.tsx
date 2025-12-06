@@ -21,13 +21,13 @@ export default function Settings() {
     return (
         <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))] p-8">
             <div className="max-w-2xl mx-auto">
-                <h1 className="text-3xl font-bold text-[rgb(var(--text-primary))] mb-2">
+                <h1 className="text-3xl font-bold text-[rgb(var(--text-primary))] mb-6">
                     Settings
                 </h1>
 
                 <div className="space-y-6 text-[rgb(var(--text-primary))]">
                     <div className="bg-[rgb(var(--bg-button))] rounded-lg ">
-                        <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
+                        <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2 flex items-center gap-2">
                             Color Scheme Generator
                         </h2>
                         <ColorSchemeGenerator />
