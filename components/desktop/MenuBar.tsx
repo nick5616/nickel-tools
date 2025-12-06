@@ -13,6 +13,8 @@ import {
     PenTool,
     Hand,
     Settings,
+    FileText,
+    Layers,
 } from "lucide-react";
 import { MenuDropdown, type MenuItem } from "./MenuDropdown";
 import { useAppStore } from "@/app/store/appStore";
@@ -134,6 +136,16 @@ export function MenuBar() {
             label: "Left-Handed Art",
             onClick: () => handleOpenSystemWindow("art-lefthanded"),
             icon: <Hand size={14} />,
+        },
+        {
+            label: "Miscellaneous",
+            onClick: () => handleOpenSystemWindow("art-miscellaneous"),
+            icon: <Folder size={14} />,
+        },
+        {
+            label: "Notes App Art",
+            onClick: () => handleOpenSystemWindow("art-notesappart"),
+            icon: <FileText size={14} />,
         },
     ];
 

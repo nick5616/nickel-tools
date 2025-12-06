@@ -376,6 +376,32 @@ export const NICKEL_SYSTEM: NickelSystem = {
             dateAdded: "2024-01-01",
             featured: false,
         },
+        {
+            id: "art-miscellaneous",
+            type: "internal",
+            title: "Miscellaneous",
+            description:
+                "A collection of miscellaneous artwork and creative pieces",
+            thumbnail: "/project-screenshots/latex.png", // Placeholder
+            category: "Art",
+            status: "operational",
+            route: "/art-gallery/miscellaneous",
+            dateAdded: "2024-01-01",
+            featured: false,
+        },
+        {
+            id: "art-notesappart",
+            type: "internal",
+            title: "Notes App Art",
+            description:
+                "Art created in note-taking apps and other digital tools",
+            thumbnail: "/project-screenshots/latex.png", // Placeholder
+            category: "Art",
+            status: "operational",
+            route: "/art-gallery/notesappart",
+            dateAdded: "2024-01-01",
+            featured: false,
+        },
     ],
     featured: ["resume-builder", "smart-piano", "portfolio", "saucedog-art"],
 };

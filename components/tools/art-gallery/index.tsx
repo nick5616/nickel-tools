@@ -6,7 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { listGCSFolder } from "@/app/utils/gcs";
 
 const getGalleryDescription = (
-    folder: "digital-art" | "paintings" | "sketches" | "lefthanded"
+    folder:
+        | "digital-art"
+        | "paintings"
+        | "sketches"
+        | "lefthanded"
+        | "miscellaneous"
+        | "notesappart"
 ) => {
     switch (folder) {
         case "digital-art":
@@ -17,12 +23,22 @@ const getGalleryDescription = (
             return "In 2025, I decided I wanted to learn how to draw with my left (non-dominant) hand. I'm quite the stubborn person, so it's bothered me that my left hand is not as dextrous as my right. I'd like to become ambidextrous :)";
         case "sketches":
             return "I've sketched for as long as I can remember. Though, I didn't sketch any in my adult life. Before 2025, the last time I could remember drawing pencil and/or pen on paper was like 2017, and that was on school assignments. In October 2025, I decided I would keep a sketchbook. I'd never had one in my life, and I can proudly say I've filled it out! As of November 2025, I'm on my second sketchbook!";
+        case "miscellaneous":
+            return "A collection of miscellaneous artwork and creative pieces.";
+        case "notesappart":
+            return "Art created in note-taking apps and other digital tools.";
         default:
             return "";
     }
 };
 interface ArtGalleryProps {
-    folder: "digital-art" | "paintings" | "sketches" | "lefthanded";
+    folder:
+        | "digital-art"
+        | "paintings"
+        | "sketches"
+        | "lefthanded"
+        | "miscellaneous"
+        | "notesappart";
 }
 
 interface ArtImage {

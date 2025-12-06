@@ -141,7 +141,9 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                     | "digital-art"
                     | "paintings"
                     | "sketches"
-                    | "lefthanded";
+                    | "lefthanded"
+                    | "miscellaneous"
+                    | "notesappart";
                 return (
                     <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <ArtGallery folder={folder} />
