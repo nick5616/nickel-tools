@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // GCS configuration
 const GCS_BUCKET = "artandmedia";
-const GCS_PUBLIC_URL = "https://storage.cloud.google.com";
+const GCS_PUBLIC_URL = "https://storage.googleapis.com";
 const GCS_API_BASE = `https://storage.googleapis.com/storage/v1/b/${GCS_BUCKET}/o`;
 
 interface GCSObject {
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
             // Extract filename from full path
             const filename = item.name.split("/").pop() || item.name;
 
-            // Construct the public URL (using storage.cloud.google.com format)
+            // Construct the public URL (using storage.googleapis.com format)
             const publicUrl = `${GCS_PUBLIC_URL}/${GCS_BUCKET}/${item.name}`;
 
             // Extract custom metadata if it exists

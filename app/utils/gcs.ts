@@ -3,7 +3,7 @@
  */
 
 const GCS_BUCKET = "artandmedia";
-const GCS_BASE_URL = "https://storage.cloud.google.com";
+const GCS_BASE_URL = "https://storage.googleapis.com";
 
 // Simple in-memory cache for folder listings (lives for the lifetime of the JS runtime)
 // This avoids re-querying GCS every time the gallery is opened in the same session.
