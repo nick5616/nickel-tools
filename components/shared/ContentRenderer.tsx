@@ -39,6 +39,14 @@ const ArtGallery = dynamic(() => import("@/components/tools/art-gallery"), {
     ssr: false,
 });
 
+const PokemonOrTechnology = dynamic(
+    () => import("@/components/tools/pokemon-or-technology"),
+    {
+        loading: () => <div className="p-4 text-zinc-400">Loading Game...</div>,
+        ssr: false,
+    }
+);
+
 interface ContentRendererProps {
     content: Content;
 }
@@ -147,6 +155,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 return (
                     <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <ArtGallery folder={folder} />
+                    </div>
+                );
+            }
+            if (content.route === "/pokemon-or-technology") {
+                return (
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                        <PokemonOrTechnology />
                     </div>
                 );
             }

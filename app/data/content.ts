@@ -45,6 +45,8 @@ export interface InternalApp extends BaseContent {
     type: "internal";
     route: string; // Next.js route
     openInModal?: boolean; // For tools that work in popups
+    windowWidth?: number; // Custom window width (overrides default)
+    windowHeight?: number; // Custom window height (overrides default)
 }
 
 export interface MediaItem extends BaseContent {
@@ -246,6 +248,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
             dateAdded: "2023-08-10",
             featured: true,
             tags: ["music", "piano", "interactive"],
+            windowWidth: 1400,
         },
         {
             id: "saucedog-art",
@@ -388,6 +391,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
             route: "/art-gallery/miscellaneous",
             dateAdded: "2024-01-01",
             featured: false,
+            windowHeight: 700,
         },
         {
             id: "art-notesappart",
@@ -401,6 +405,22 @@ export const NICKEL_SYSTEM: NickelSystem = {
             route: "/art-gallery/notesappart",
             dateAdded: "2024-01-01",
             featured: false,
+        },
+        {
+            id: "pokemon-or-technology",
+            type: "internal",
+            title: "Pokemon or Technology",
+            description:
+                "Test your knowledge! Can you tell the difference between a Pokémon name and a technology term?",
+            thumbnail: "/project-screenshots/latex.png", // Placeholder
+            category: "Games",
+            status: "operational",
+            route: "/pokemon-or-technology",
+            dateAdded: "2024-01-01",
+            featured: false,
+            tags: ["games", "quiz", "pokemon", "technology"],
+            windowWidth: 300,
+            windowHeight: 400,
         },
     ],
     featured: ["resume-builder", "smart-piano", "portfolio", "saucedog-art"],

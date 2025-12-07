@@ -593,7 +593,7 @@ export default function SmartPiano() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 p-4">
+        <div className="flex flex-col items-center justify-center h-full bg-gradient-to-b from-purple-900 to-indigo-900 p-4">
             <div className="mb-3 flex flex-col gap-2 items-center relative">
                 {toast && (
                     <div

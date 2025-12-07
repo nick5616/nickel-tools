@@ -156,7 +156,7 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
 
     if (selectedImage) {
         return (
-            <div className="h-full w-full overflow-auto bg-black/95 p-8">
+            <div className="h-full w-full overflow-auto bg-black/95 p-4">
                 <div className="max-w-6xl mx-auto">
                     <button
                         onClick={() => setSelectedImage(null)}

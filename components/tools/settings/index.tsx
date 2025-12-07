@@ -1,14 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Palette, Monitor, Image as ImageIcon } from "lucide-react";
 import { ColorSchemeGenerator } from "./ColorSchemeGenerator";
+
+const WINDOW_SIZE_STORAGE_KEY = "nickel-default-window-size";
 
 export default function Settings() {
     const { theme, setTheme } = useTheme();
     const [defaultWindowWidth, setDefaultWindowWidth] = useState(800);
     const [defaultWindowHeight, setDefaultWindowHeight] = useState(600);
+
+    // Load window size from localStorage on mount
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        try {
+            const stored = localStorage.getItem(WINDOW_SIZE_STORAGE_KEY);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (parsed.width) setDefaultWindowWidth(parsed.width);
+                if (parsed.height) setDefaultWindowHeight(parsed.height);
+            }
+        } catch (error) {
+            console.error("Failed to load window size from localStorage:", error);
+        }
+    }, []);
+
+    // Save window size to localStorage when changed
+    const handleWidthChange = (width: number) => {
+        setDefaultWindowWidth(width);
+        saveWindowSize({ width, height: defaultWindowHeight });
+    };
+
+    const handleHeightChange = (height: number) => {
+        setDefaultWindowHeight(height);
+        saveWindowSize({ width: defaultWindowWidth, height });
+    };
+
+    const saveWindowSize = (size: { width: number; height: number }) => {
+        if (typeof window === "undefined") return;
+
+        try {
+            localStorage.setItem(WINDOW_SIZE_STORAGE_KEY, JSON.stringify(size));
+        } catch (error) {
+            console.error("Failed to save window size to localStorage:", error);
+        }
+    };
 
     // Placeholder wallpapers - replace with actual artwork paths
     const wallpapers = [
@@ -53,7 +92,7 @@ export default function Settings() {
                                     step="50"
                                     value={defaultWindowWidth}
                                     onChange={(e) =>
-                                        setDefaultWindowWidth(
+                                        handleWidthChange(
                                             Number(e.target.value)
                                         )
                                     }
@@ -71,7 +110,7 @@ export default function Settings() {
                                     step="50"
                                     value={defaultWindowHeight}
                                     onChange={(e) =>
-                                        setDefaultWindowHeight(
+                                        handleHeightChange(
                                             Number(e.target.value)
                                         )
                                     }

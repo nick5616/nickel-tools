@@ -78,12 +78,55 @@ export const useAppStore = create<AppState>((set, get) => ({
             (w) => w.content.id === content.id
         );
         if (existingWindow) {
-            // If window exists, focus it and un-minimize if minimized
-            get().focusWindow(existingWindow.id);
+            // If window is minimized, un-minimize and focus it
             if (existingWindow.minimized) {
+                get().minimizeWindow(existingWindow.id);
+                get().focusWindow(existingWindow.id);
+            } else {
+                // If window is not minimized, minimize it
                 get().minimizeWindow(existingWindow.id);
             }
             return;
+        }
+
+        // Determine window size with fallback priority:
+        // 1. Content-specific windowWidth/windowHeight (if InternalApp)
+        // 2. localStorage default window size
+        // 3. Default 800x600
+        let windowWidth = 800;
+        let windowHeight = 600;
+
+        const isInternalApp = content.type === "internal";
+        const contentWidth = isInternalApp ? content.windowWidth : undefined;
+        const contentHeight = isInternalApp ? content.windowHeight : undefined;
+
+        if (contentWidth) {
+            windowWidth = contentWidth;
+        }
+        if (contentHeight) {
+            windowHeight = contentHeight;
+        }
+
+        // If content doesn't specify size, check localStorage
+        if (!contentWidth || !contentHeight) {
+            if (typeof window !== "undefined") {
+                try {
+                    const stored = localStorage.getItem(
+                        "nickel-default-window-size"
+                    );
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        if (parsed.width && !contentWidth) {
+                            windowWidth = parsed.width;
+                        }
+                        if (parsed.height && !contentHeight) {
+                            windowHeight = parsed.height;
+                        }
+                    }
+                } catch (error) {
+                    // Ignore localStorage errors, use defaults
+                }
+            }
         }
 
         const newWindow: WindowState = {
@@ -93,7 +136,7 @@ export const useAppStore = create<AppState>((set, get) => ({
                 x: 100 + get().windows.length * 30,
                 y: 100 + get().windows.length * 30,
             },
-            size: { width: 800, height: 600 },
+            size: { width: windowWidth, height: windowHeight },
             zIndex: get().getNextZIndex(),
             minimized: false,
             maximized: false,
