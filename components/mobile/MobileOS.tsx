@@ -116,17 +116,17 @@ export function MobileOS() {
         _event: MouseEvent | TouchEvent | PointerEvent,
         info: PanInfo
     ) => {
-        const threshold = pageWidth * 0.2; // 20% threshold - less sensitive
+        const threshold = pageWidth * 0.1; // 10% threshold - more sensitive
         const velocity = info.velocity.x;
         const offset = info.offset.x;
         const isMouse = _event.type.startsWith("mouse");
 
         // For mouse drags, be more lenient with velocity (mouse drags are slower)
-        const velocityThreshold = isMouse ? 150 : 300;
+        const velocityThreshold = isMouse ? 100 : 150;
 
         let newPageIndex = currentPageIndex;
 
-        // Velocity-based detection
+        // Velocity-based detection - prioritize velocity for quick swipes
         if (Math.abs(velocity) > velocityThreshold) {
             // Fast swipe - change page based on velocity direction
             if (velocity < 0 && currentPageIndex < rightPageIndex) {
@@ -135,7 +135,7 @@ export function MobileOS() {
                 newPageIndex = currentPageIndex - 1;
             }
         } else if (Math.abs(offset) > threshold) {
-            // Distance-based detection
+            // Distance-based detection - more sensitive
             if (offset < 0 && currentPageIndex < rightPageIndex) {
                 newPageIndex = currentPageIndex + 1;
             } else if (offset > 0 && currentPageIndex > leftPageIndex) {
@@ -164,7 +164,7 @@ export function MobileOS() {
                 width: "100vw",
                 height: "100vh",
                 overflowX: "hidden",
-                touchAction: "pan-y pinch-zoom",
+                touchAction: "pan-x",
             }}
         >
             <StatusBar />
@@ -176,7 +176,7 @@ export function MobileOS() {
                     width: "100%",
                     height: "100%",
                     overflowX: "hidden",
-                    touchAction: "pan-x pan-y",
+                    touchAction: "pan-x",
                 }}
             >
                 <motion.div
@@ -185,14 +185,13 @@ export function MobileOS() {
                         x,
                         width: `${totalPages * pageWidth}px`,
                         height: "100%",
-                        touchAction: "pan-x",
                     }}
                     drag="x"
                     dragConstraints={{
                         left: -pageWidth * (totalPages - 1),
                         right: 0,
                     }}
-                    dragElastic={0}
+                    dragElastic={0.1}
                     dragMomentum={false}
                     onDragEnd={handleDragEnd}
                     animate={{ x: -pageWidth * currentPageIndex }}
@@ -201,7 +200,12 @@ export function MobileOS() {
                     {/* Left Panel (Settings/Contact/About) */}
                     <div
                         className="h-full flex-shrink-0 overflow-hidden"
-                        style={{ width: `${pageWidth}px`, height: "100%" }}
+                        style={{
+                            width: `${pageWidth}px`,
+                            height: "100%",
+                            overflowX: "hidden",
+                            touchAction: "pan-y",
+                        }}
                     >
                         <LeftPanel onNiIconClick={handleNiIconClick} />
                     </div>
@@ -211,7 +215,12 @@ export function MobileOS() {
                         <div
                             key={`app-page-${pageIndex}`}
                             className="h-full flex-shrink-0 overflow-hidden"
-                            style={{ width: `${pageWidth}px`, height: "100%" }}
+                            style={{
+                                width: `${pageWidth}px`,
+                                height: "100%",
+                                overflowX: "hidden",
+                                touchAction: "pan-y",
+                            }}
                         >
                             <div className="h-full overflow-hidden pb-20">
                                 <AppGrid
@@ -225,7 +234,12 @@ export function MobileOS() {
                     {/* Right Panel (Search/Categories) */}
                     <div
                         className="h-full flex-shrink-0 overflow-hidden"
-                        style={{ width: `${pageWidth}px`, height: "100%" }}
+                        style={{
+                            width: `${pageWidth}px`,
+                            height: "100%",
+                            overflowX: "hidden",
+                            touchAction: "pan-y",
+                        }}
                     >
                         <RightPanel onOpenItem={handleOpenItem} />
                     </div>

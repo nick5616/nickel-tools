@@ -25,7 +25,14 @@ interface LeftPanelProps {
 
 export function LeftPanel({ onNiIconClick }: LeftPanelProps) {
   return (
-    <div className="h-full w-full bg-[rgb(var(--bg-desktop))] flex flex-col overflow-hidden" style={{ overflowX: 'hidden' }}>
+    <div 
+      className="h-full w-full bg-[rgb(var(--bg-desktop))] flex flex-col overflow-hidden" 
+      style={{ 
+        overflowX: 'hidden',
+        touchAction: 'pan-y',
+        overscrollBehaviorX: 'contain',
+      }}
+    >
       {/* Header with Ni icon */}
       <div className="p-6 border-b border-[rgb(var(--border-window))] flex-shrink-0">
         <div className="flex items-center gap-2">
@@ -44,7 +51,14 @@ export function LeftPanel({ onNiIconClick }: LeftPanelProps) {
       </div>
 
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+      <div 
+        className="flex-1 overflow-y-auto overflow-x-hidden"
+        style={{
+          overflowX: 'hidden',
+          touchAction: 'pan-y',
+          overscrollBehaviorX: 'contain',
+        }}
+      >
         <div className="space-y-6 p-4">
           {/* Settings Section */}
           <div className="bg-[rgb(var(--bg-window))] rounded-lg p-4 border border-[rgb(var(--border-window))]">

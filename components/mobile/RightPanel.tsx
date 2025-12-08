@@ -62,7 +62,14 @@ export function RightPanel({ onOpenItem }: RightPanelProps) {
   }, [allContent]);
 
   return (
-    <div className="h-full w-full bg-[rgb(var(--bg-desktop))] flex flex-col overflow-hidden" style={{ overflowX: 'hidden' }}>
+    <div 
+      className="h-full w-full bg-[rgb(var(--bg-desktop))] flex flex-col overflow-hidden" 
+      style={{ 
+        overflowX: 'hidden',
+        touchAction: 'pan-y',
+        overscrollBehaviorX: 'contain',
+      }}
+    >
       {/* Search Bar */}
       <div className="p-4 border-b border-[rgb(var(--border-window))] flex-shrink-0">
         <div className="relative">
@@ -78,7 +85,14 @@ export function RightPanel({ onOpenItem }: RightPanelProps) {
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-20">
+      <div 
+        className="flex-1 overflow-y-auto overflow-x-hidden pb-20"
+        style={{
+          overflowX: 'hidden',
+          touchAction: 'pan-y',
+          overscrollBehaviorX: 'contain',
+        }}
+      >
         {/* Apps by Category */}
         <div className="p-4 space-y-6">
           {categories.map(category => {
