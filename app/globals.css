@@ -88,9 +88,11 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    overflow-x: hidden;
     color: rgb(var(--foreground));
     background: rgb(var(--background));
     position: relative;
+    touch-action: pan-y; /* Allow vertical scrolling but prevent horizontal */
 }
 
 /* Nickel Texture */

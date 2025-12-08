@@ -11,8 +11,8 @@ interface AppGridProps {
 
 export function AppGrid({ content, onOpenItem }: AppGridProps) {
   return (
-    <div className="p-4 overflow-auto">
-      <div className="grid grid-cols-3 gap-4">
+    <div className="p-4 h-full overflow-hidden">
+      <div className="grid grid-cols-3 gap-4 h-full content-start">
         {content.map((item) => (
           <AppIcon
             key={item.id}

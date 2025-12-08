@@ -1,174 +1,295 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, PanInfo } from 'framer-motion';
-import { StatusBar } from './StatusBar';
-import { AppGrid } from './AppGrid';
-import { LeftPanel } from './LeftPanel';
-import { RightPanel } from './RightPanel';
-import { ContentRenderer } from '@/components/shared/ContentRenderer';
-import { getAllContent } from '@/app/data/content';
-import type { Content } from '@/app/data/content';
-import { X } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import {
+    motion,
+    AnimatePresence,
+    useMotionValue,
+    PanInfo,
+} from "framer-motion";
+import { StatusBar } from "./StatusBar";
+import { AppGrid } from "./AppGrid";
+import { LeftPanel } from "./LeftPanel";
+import { RightPanel } from "./RightPanel";
+import { ContentRenderer } from "@/components/shared/ContentRenderer";
+import { getAllContent } from "@/app/data/content";
+import type { Content } from "@/app/data/content";
+import { X } from "lucide-react";
 
 export function MobileOS() {
-  const allContent = getAllContent();
-  const [selectedContent, setSelectedContent] = useState<Content | null>(null);
-  const [currentPage, setCurrentPage] = useState(0); // -1: left, 0: main, 1: right
-  const [pageWidth, setPageWidth] = useState(375);
-  const x = useMotionValue(0);
+    const allContent = getAllContent();
+    const [selectedContent, setSelectedContent] = useState<Content | null>(
+        null
+    );
+    const [currentSection, setCurrentSection] = useState<
+        "left" | "apps" | "right"
+    >("apps");
+    const [currentAppPage, setCurrentAppPage] = useState(0); // For app grid pagination
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [pageWidth, setPageWidth] = useState(375);
+    const [pageHeight, setPageHeight] = useState(667);
+    const x = useMotionValue(0);
 
-  // Get page width on mount and resize
-  useEffect(() => {
-    const updateWidth = () => {
-      setPageWidth(window.innerWidth);
+    // Calculate how many apps fit per page
+    // Grid is 3 columns, with padding and gaps
+    // Each app icon is roughly: icon (64px) + gap (16px) + text (20px) + padding
+    const appsPerPage = useMemo(() => {
+        const padding = 16; // p-4 = 16px top/bottom
+        const statusBarHeight = 44; // Approximate status bar height
+        const pageIndicatorHeight = 48; // Approximate page indicator height
+        const availableHeight =
+            pageHeight - statusBarHeight - pageIndicatorHeight - padding * 2;
+
+        // Each row: icon (64px) + gap (16px) + text (~20px) = ~100px per row
+        const rowHeight = 100;
+        const rowsPerPage = Math.floor(availableHeight / rowHeight);
+        const appsPerPage = rowsPerPage * 3; // 3 columns
+
+        return Math.max(6, appsPerPage); // Minimum 6 apps per page (2 rows)
+    }, [pageHeight]);
+
+    // Split content into pages
+    const appPages = useMemo(() => {
+        const pages: Content[][] = [];
+        for (let i = 0; i < allContent.length; i += appsPerPage) {
+            pages.push(allContent.slice(i, i + appsPerPage));
+        }
+        return pages;
+    }, [allContent, appsPerPage]);
+
+    // Calculate total pages: left (1) + app pages + right (1)
+    const totalPages = 1 + appPages.length + 1;
+    const leftPageIndex = 0;
+    const rightPageIndex = totalPages - 1;
+    const firstAppPageIndex = 1;
+    const lastAppPageIndex = totalPages - 2;
+
+    // Get current absolute page index
+    const currentPageIndex = useMemo(() => {
+        if (currentSection === "left") return leftPageIndex;
+        if (currentSection === "right") return rightPageIndex;
+        return firstAppPageIndex + currentAppPage;
+    }, [
+        currentSection,
+        currentAppPage,
+        leftPageIndex,
+        rightPageIndex,
+        firstAppPageIndex,
+    ]);
+
+    // Get page width and height on mount and resize - use fixed values
+    useEffect(() => {
+        const updateDimensions = () => {
+            if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                setPageWidth(rect.width);
+                setPageHeight(rect.height);
+            } else {
+                // Fallback to window dimensions
+                setPageWidth(window.innerWidth);
+                setPageHeight(window.innerHeight);
+            }
+        };
+        updateDimensions();
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
+    }, []);
+
+    // Update x position when page changes
+    useEffect(() => {
+        x.set(-pageWidth * currentPageIndex);
+    }, [currentPageIndex, pageWidth, x]);
+
+    const handleOpenItem = (content: Content) => {
+        setSelectedContent(content);
     };
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
 
-  // Update x position when pageWidth or currentPage changes
-  useEffect(() => {
-    x.set(-pageWidth * (currentPage + 1));
-  }, [currentPage, pageWidth, x]);
+    const handleCloseModal = () => {
+        setSelectedContent(null);
+    };
 
-  const handleOpenItem = (content: Content) => {
-    setSelectedContent(content);
-  };
+    const handleNiIconClick = () => {
+        setCurrentSection("right");
+    };
 
-  const handleCloseModal = () => {
-    setSelectedContent(null);
-  };
+    const handleDragEnd = (
+        _event: MouseEvent | TouchEvent | PointerEvent,
+        info: PanInfo
+    ) => {
+        const threshold = pageWidth * 0.2; // 20% threshold - less sensitive
+        const velocity = info.velocity.x;
+        const offset = info.offset.x;
+        const isMouse = _event.type.startsWith("mouse");
 
-  const handleNiIconClick = () => {
-    setCurrentPage(1); // Navigate to right panel (search/categories)
-  };
+        // For mouse drags, be more lenient with velocity (mouse drags are slower)
+        const velocityThreshold = isMouse ? 150 : 300;
 
-  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = pageWidth * 0.15; // 15% threshold - very sensitive
-    const velocity = info.velocity.x;
-    const offset = info.offset.x;
-    const isMouse = _event.type.startsWith('mouse');
+        let newPageIndex = currentPageIndex;
 
-    // For mouse drags, be more lenient with velocity (mouse drags are slower)
-    const velocityThreshold = isMouse ? 100 : 200;
+        // Velocity-based detection
+        if (Math.abs(velocity) > velocityThreshold) {
+            // Fast swipe - change page based on velocity direction
+            if (velocity < 0 && currentPageIndex < rightPageIndex) {
+                newPageIndex = currentPageIndex + 1;
+            } else if (velocity > 0 && currentPageIndex > leftPageIndex) {
+                newPageIndex = currentPageIndex - 1;
+            }
+        } else if (Math.abs(offset) > threshold) {
+            // Distance-based detection
+            if (offset < 0 && currentPageIndex < rightPageIndex) {
+                newPageIndex = currentPageIndex + 1;
+            } else if (offset > 0 && currentPageIndex > leftPageIndex) {
+                newPageIndex = currentPageIndex - 1;
+            }
+        }
 
-    // Velocity-based detection - very sensitive
-    if (Math.abs(velocity) > velocityThreshold) {
-      // Fast swipe - change page based on velocity direction
-      if (velocity < 0 && currentPage < 1) {
-        setCurrentPage(currentPage + 1);
-        return;
-      } else if (velocity > 0 && currentPage > -1) {
-        setCurrentPage(currentPage - 1);
-        return;
-      }
-    }
-    
-    // Distance-based detection - very sensitive threshold
-    if (Math.abs(offset) > threshold) {
-      if (offset < 0 && currentPage < 1) {
-        setCurrentPage(currentPage + 1);
-        return;
-      } else if (offset > 0 && currentPage > -1) {
-        setCurrentPage(currentPage - 1);
-        return;
-      }
-    }
-    
-    // If no change, snap back to current page
-    // The animate prop will handle this automatically
-  };
+        // Update state based on new page index
+        if (newPageIndex !== currentPageIndex) {
+            if (newPageIndex === leftPageIndex) {
+                setCurrentSection("left");
+            } else if (newPageIndex === rightPageIndex) {
+                setCurrentSection("right");
+            } else {
+                setCurrentSection("apps");
+                setCurrentAppPage(newPageIndex - firstAppPageIndex);
+            }
+        }
+    };
 
-  // Update x position when currentPage changes programmatically
-  useEffect(() => {
-    x.set(-pageWidth * (currentPage + 1));
-  }, [currentPage, pageWidth, x]);
-
-  return (
-    <div className="h-screen bg-[rgb(var(--bg-desktop))] text-[rgb(var(--text-primary))] overflow-hidden flex flex-col">
-      <StatusBar />
-
-      {/* Swipeable Container */}
-      <div className="flex-1 overflow-hidden relative">
-        <motion.div
-          className="flex h-full"
-          style={{ x }}
-          drag="x"
-          dragConstraints={{ left: -pageWidth * 2, right: 0 }}
-          dragElastic={0}
-          dragMomentum={false}
-          onDragEnd={handleDragEnd}
-          animate={{ x: -pageWidth * (currentPage + 1) }}
-          transition={{ type: "spring", stiffness: 500, damping: 50 }}
-        >
-          {/* Left Panel (Settings/Contact/About) */}
-          <div className="w-screen h-full flex-shrink-0">
-            <LeftPanel onNiIconClick={handleNiIconClick} />
-          </div>
-
-          {/* Main Grid (App Grid) */}
-          <div className="w-screen h-full flex-shrink-0">
-            <div className="h-full overflow-auto pb-20">
-              <AppGrid content={allContent} onOpenItem={handleOpenItem} />
-            </div>
-          </div>
-
-          {/* Right Panel (Search/Categories) */}
-          <div className="w-screen h-full flex-shrink-0">
-            <RightPanel 
-              onOpenItem={handleOpenItem}
-            />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Page Indicators */}
-      <div className="flex justify-center gap-2 py-2">
-        {[-1, 0, 1].map((page) => (
-          <button
-            key={page}
-            onClick={() => {
-              setCurrentPage(page);
+    return (
+        <div
+            ref={containerRef}
+            className="h-screen w-screen bg-[rgb(var(--bg-desktop))] text-[rgb(var(--text-primary))] overflow-hidden flex flex-col fixed inset-0"
+            style={{
+                width: "100vw",
+                height: "100vh",
+                overflowX: "hidden",
+                touchAction: "pan-y pinch-zoom",
             }}
-            className={`w-2 h-2 rounded-full transition-all ${
-              currentPage === page
-                ? 'bg-[rgb(var(--accent-nickel))] w-6'
-                : 'bg-[rgb(var(--text-secondary))] opacity-50'
-            }`}
-            aria-label={`Go to page ${page + 2}`}
-          />
-        ))}
-      </div>
+        >
+            <StatusBar />
 
-      {/* Full Screen Modal for Content */}
-      <AnimatePresence>
-        {selectedContent && (
-          <motion.div
-            className="fixed inset-0 bg-[rgb(var(--bg-desktop))] z-50 flex flex-col"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="p-4 border-b border-[rgb(var(--border-window))] flex items-center justify-between flex-shrink-0">
-              <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))]">{selectedContent.title}</h2>
-              <button
-                onClick={handleCloseModal}
-                className="w-8 h-8 rounded-full hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
-                aria-label="Close"
-              >
-                <X size={20} />
-              </button>
+            {/* Swipeable Container */}
+            <div
+                className="flex-1 overflow-hidden relative"
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    overflowX: "hidden",
+                    touchAction: "pan-x pan-y",
+                }}
+            >
+                <motion.div
+                    className="flex h-full"
+                    style={{
+                        x,
+                        width: `${totalPages * pageWidth}px`,
+                        height: "100%",
+                        touchAction: "pan-x",
+                    }}
+                    drag="x"
+                    dragConstraints={{
+                        left: -pageWidth * (totalPages - 1),
+                        right: 0,
+                    }}
+                    dragElastic={0}
+                    dragMomentum={false}
+                    onDragEnd={handleDragEnd}
+                    animate={{ x: -pageWidth * currentPageIndex }}
+                    transition={{ type: "spring", stiffness: 500, damping: 50 }}
+                >
+                    {/* Left Panel (Settings/Contact/About) */}
+                    <div
+                        className="h-full flex-shrink-0 overflow-hidden"
+                        style={{ width: `${pageWidth}px`, height: "100%" }}
+                    >
+                        <LeftPanel onNiIconClick={handleNiIconClick} />
+                    </div>
+
+                    {/* App Grid Pages */}
+                    {appPages.map((pageContent, pageIndex) => (
+                        <div
+                            key={`app-page-${pageIndex}`}
+                            className="h-full flex-shrink-0 overflow-hidden"
+                            style={{ width: `${pageWidth}px`, height: "100%" }}
+                        >
+                            <div className="h-full overflow-hidden pb-20">
+                                <AppGrid
+                                    content={pageContent}
+                                    onOpenItem={handleOpenItem}
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    {/* Right Panel (Search/Categories) */}
+                    <div
+                        className="h-full flex-shrink-0 overflow-hidden"
+                        style={{ width: `${pageWidth}px`, height: "100%" }}
+                    >
+                        <RightPanel onOpenItem={handleOpenItem} />
+                    </div>
+                </motion.div>
             </div>
-            <div className="flex-1 overflow-auto">
-              <ContentRenderer content={selectedContent} />
+
+            {/* Page Indicators */}
+            <div className="flex justify-center gap-2 py-2 flex-shrink-0">
+                {Array.from({ length: totalPages }).map((_, index) => {
+                    const isActive = index === currentPageIndex;
+                    return (
+                        <button
+                            key={index}
+                            onClick={() => {
+                                if (index === leftPageIndex) {
+                                    setCurrentSection("left");
+                                } else if (index === rightPageIndex) {
+                                    setCurrentSection("right");
+                                } else {
+                                    setCurrentSection("apps");
+                                    setCurrentAppPage(
+                                        index - firstAppPageIndex
+                                    );
+                                }
+                            }}
+                            className={`h-2 rounded-full transition-all ${
+                                isActive
+                                    ? "bg-[rgb(var(--accent-nickel))] w-6"
+                                    : "bg-[rgb(var(--text-secondary))] opacity-50 w-2"
+                            }`}
+                            aria-label={`Go to page ${index + 1}`}
+                        />
+                    );
+                })}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+
+            {/* Full Screen Modal for Content */}
+            <AnimatePresence>
+                {selectedContent && (
+                    <motion.div
+                        className="fixed inset-0 bg-[rgb(var(--bg-desktop))] z-50 flex flex-col"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <div className="p-4 border-b border-[rgb(var(--border-window))] flex items-center justify-between flex-shrink-0">
+                            <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))]">
+                                {selectedContent.title}
+                            </h2>
+                            <button
+                                onClick={handleCloseModal}
+                                className="w-8 h-8 rounded-full hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
+                                aria-label="Close"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-auto">
+                            <ContentRenderer content={selectedContent} />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
 }
-
