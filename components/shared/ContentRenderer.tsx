@@ -47,6 +47,13 @@ const PokemonOrTechnology = dynamic(
     }
 );
 
+const ChoicePicker = dynamic(() => import("@/components/tools/choice-picker"), {
+    loading: () => (
+        <div className="p-4 text-zinc-400">Loading Choice Picker...</div>
+    ),
+    ssr: false,
+});
+
 interface ContentRendererProps {
     content: Content;
 }
@@ -162,6 +169,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 return (
                     <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <PokemonOrTechnology />
+                    </div>
+                );
+            }
+            if (content.route === "/choice-picker") {
+                return (
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                        <ChoicePicker />
                     </div>
                 );
             }

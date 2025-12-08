@@ -58,70 +58,62 @@ export default function Settings() {
     ];
 
     return (
-        <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))] p-8">
-            <div className="max-w-2xl mx-auto">
-                <h1 className="text-3xl font-bold text-[rgb(var(--text-primary))] mb-6">
-                    Settings
-                </h1>
+        <div className="w-full bg-transparent">
+            <div className="w-full">
+                <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
+                    Color Scheme Generator
+                </h2>
+                <ColorSchemeGenerator />
 
-                <div className="space-y-6 text-[rgb(var(--text-primary))]">
-                    <div className="bg-[rgb(var(--bg-button))] rounded-lg ">
-                        <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2 flex items-center gap-2">
-                            Color Scheme Generator
-                        </h2>
-                        <ColorSchemeGenerator />
-                    </div>
+                <hr className="border-t border-[rgb(var(--border-window))] my-6" />
 
-                    <hr className="border-t border-[rgb(var(--border-window))] dark:border-[rgb(var(--border-window))] my-4" />
+                <div>
+                    <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
+                        <Monitor size={18} />
+                        Default Window Size
+                    </h2>
 
-                    <div className="bg-[rgb(var(--bg-button))] ">
-                        <h2 className="text-l font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
-                            <Monitor size={20} />
-                            Default Window Size
-                        </h2>
-
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
-                                    Width: {defaultWindowWidth}px
-                                </label>
-                                <input
-                                    type="range"
-                                    min="400"
-                                    max="1600"
-                                    step="50"
-                                    value={defaultWindowWidth}
-                                    onChange={(e) =>
-                                        handleWidthChange(
-                                            Number(e.target.value)
-                                        )
-                                    }
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
-                                    Height: {defaultWindowHeight}px
-                                </label>
-                                <input
-                                    type="range"
-                                    min="300"
-                                    max="1200"
-                                    step="50"
-                                    value={defaultWindowHeight}
-                                    onChange={(e) =>
-                                        handleHeightChange(
-                                            Number(e.target.value)
-                                        )
-                                    }
-                                    className="w-full"
-                                />
-                            </div>
-                            <p className="text-xs text-[rgb(var(--text-secondary))]">
-                                This setting will apply to new windows. Existing
-                                windows keep their current size.
-                            </p>
+                    <div className="space-y-5">
+                        <div>
+                            <label className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-3">
+                                Width: {defaultWindowWidth}px
+                            </label>
+                            <input
+                                type="range"
+                                min="400"
+                                max="1600"
+                                step="50"
+                                value={defaultWindowWidth}
+                                onChange={(e) =>
+                                    handleWidthChange(
+                                        Number(e.target.value)
+                                    )
+                                }
+                                className="w-full h-2 touch-none"
+                            />
                         </div>
+                        <div>
+                            <label className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-3">
+                                Height: {defaultWindowHeight}px
+                            </label>
+                            <input
+                                type="range"
+                                min="300"
+                                max="1200"
+                                step="50"
+                                value={defaultWindowHeight}
+                                onChange={(e) =>
+                                    handleHeightChange(
+                                        Number(e.target.value)
+                                    )
+                                }
+                                className="w-full h-2 touch-none"
+                            />
+                        </div>
+                        <p className="text-xs text-[rgb(var(--text-secondary))]">
+                            This setting will apply to new windows. Existing
+                            windows keep their current size.
+                        </p>
                     </div>
                 </div>
             </div>

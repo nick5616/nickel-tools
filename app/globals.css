@@ -137,6 +137,16 @@ body {
     animation: shimmer 1.5s infinite;
 }
 
+/* Revolving Text Animation */
+@keyframes revolve {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
 /* Window Styles */
 .app-window {
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),

@@ -210,14 +210,15 @@ export const NICKEL_SYSTEM: NickelSystem = {
             id: "choice-engine",
             type: "internal",
             title: "Choice Picker",
-            description: "SPIN THE WHEEL...",
+            description:
+                "Spin the wheel to make decisions! Add your options and let chance decide.",
             thumbnail: "/project-screenshots/latex.png", // Placeholder
             category: "Utility",
-            status: "experimental",
-            route: "#",
+            status: "operational",
+            route: "/choice-picker",
             dateAdded: "2024-01-01",
             featured: false,
-            tags: ["utility", "random"],
+            tags: ["utility", "random", "decision"],
         },
         {
             id: "passionfruit",
