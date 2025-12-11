@@ -5,7 +5,7 @@ import { Sparkles, Plus, X, Play } from "lucide-react";
 
 export default function ChoicePicker() {
     const [stage, setStage] = useState<"input" | "spinner">("input");
-    const [options, setOptions] = useState<string[]>([""]);
+    const [options, setOptions] = useState<string[]>(["", "", ""]);
     const [contextInfo, setContextInfo] = useState("");
     const [contextLabel, setContextLabel] = useState("");
     const [spinning, setSpinning] = useState(false);
@@ -185,16 +185,7 @@ export default function ChoicePicker() {
                                     onChange={(e) =>
                                         setContextLabel(e.target.value)
                                     }
-                                    placeholder='e.g., "Bank Account Balance"'
-                                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
-                                />
-                                <input
-                                    type="text"
-                                    value={contextInfo}
-                                    onChange={(e) =>
-                                        setContextInfo(e.target.value)
-                                    }
-                                    placeholder='e.g., "$50,000"'
+                                    placeholder='e.g., "How much of $1000 should I invest?"'
                                     className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
                                 />
                             </div>
@@ -214,7 +205,7 @@ export default function ChoicePicker() {
                                                     e.target.value
                                                 )
                                             }
-                                            placeholder={`Option ${index + 1}`}
+                                            placeholder={`$${index * 500}`}
                                             className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
                                         />
                                         {options.length > 1 && (
@@ -446,4 +437,3 @@ export default function ChoicePicker() {
         </div>
     );
 }
-

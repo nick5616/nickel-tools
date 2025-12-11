@@ -167,8 +167,6 @@ export function MobileOS() {
                 touchAction: "pan-x",
             }}
         >
-            <StatusBar />
-
             {/* Swipeable Container */}
             <div
                 className="flex-1 overflow-hidden relative"

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
         // Build the API URL with prefix filter and request metadata fields
         // fields parameter requests specific fields to reduce response size
-        const fields = "items(name,contentType,size,metadata)";
+        const fields = "items(name,contentType,size,timeCreated,metadata)";
         const apiUrl = `${GCS_API_BASE}?prefix=${encodeURIComponent(
             prefix
         )}&delimiter=/&fields=${encodeURIComponent(fields)}`;
@@ -88,15 +88,43 @@ export async function GET(request: NextRequest) {
                 contentType: item.contentType,
                 size: item.size ? parseInt(item.size, 10) : undefined,
                 created: createdDate, // Only include if it exists in metadata
+                timeCreated: item.timeCreated, // GCS timeCreated field
                 description, // Optional description field
                 private: privateFlag, // Optional private flag from metadata
             };
         });
 
+        // Sort in reverse chronological order (newest first)
+        // Items with created metadata always come before items without it
+        const sortedFiles = files.sort((a, b) => {
+            const hasCreatedA = !!a.created;
+            const hasCreatedB = !!b.created;
+            
+            // If one has created and the other doesn't, prioritize the one with created
+            if (hasCreatedA && !hasCreatedB) {
+                return -1; // a comes before b
+            }
+            if (!hasCreatedA && hasCreatedB) {
+                return 1; // b comes before a
+            }
+            
+            // Both have created or both don't - sort by date
+            // Get sort dates - prefer created metadata, fall back to timeCreated
+            const dateA = a.created 
+                ? new Date(a.created).getTime() 
+                : (a.timeCreated ? new Date(a.timeCreated).getTime() : 0);
+            const dateB = b.created 
+                ? new Date(b.created).getTime() 
+                : (b.timeCreated ? new Date(b.timeCreated).getTime() : 0);
+            
+            // Reverse chronological: newest first (descending order)
+            return dateB - dateA;
+        });
+
         return NextResponse.json({
             folder,
-            files,
-            count: files.length,
+            files: sortedFiles,
+            count: sortedFiles.length,
         });
     } catch (error) {
         console.error("Error listing GCS objects:", error);

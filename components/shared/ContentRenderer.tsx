@@ -54,6 +54,18 @@ const ChoicePicker = dynamic(() => import("@/components/tools/choice-picker"), {
     ssr: false,
 });
 
+const AdvancedColorSchemeGenerator = dynamic(
+    () => import("@/components/tools/advanced-color-scheme-generator"),
+    {
+        loading: () => (
+            <div className="p-4 text-zinc-400">
+                Loading Color Scheme Generator...
+            </div>
+        ),
+        ssr: false,
+    }
+);
+
 interface ContentRendererProps {
     content: Content;
 }
@@ -176,6 +188,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 return (
                     <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <ChoicePicker />
+                    </div>
+                );
+            }
+            if (content.route === "/advanced-color-scheme-generator") {
+                return (
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                        <AdvancedColorSchemeGenerator />
                     </div>
                 );
             }

@@ -8,12 +8,16 @@ import { AppWindow } from "./AppWindow";
 import { useAppStore } from "@/app/store/appStore";
 import { getAllContent, getFeaturedContent } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
+import { useUrlSync } from "@/app/hooks/useUrlSync";
 
 export function DesktopOS() {
     const { windows, openWindow, closeWindow, minimizeWindow, focusWindow } =
         useAppStore();
     const allContent = getAllContent();
     const featuredContent = getFeaturedContent();
+    
+    // Sync window state with URL query params
+    useUrlSync();
 
     const handleContextMenu = (e: React.MouseEvent, content: Content) => {
         e.preventDefault();

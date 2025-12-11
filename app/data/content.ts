@@ -197,12 +197,13 @@ export const NICKEL_SYSTEM: NickelSystem = {
             type: "internal",
             title: "Advanced Color Scheme Generator",
             description:
-                "Algorithmic palette generator based on harmonic color theory.",
+                "Algorithmic palette generator based on harmonic color theory. Generate and export theme JSON.",
             thumbnail: "/project-screenshots/latex.png", // Placeholder
             category: "Design System",
-            status: "in-development",
-            route: "#",
+            status: "operational",
+            route: "/advanced-color-scheme-generator",
             dateAdded: "2024-01-01",
+            windowHeight: 700,
             featured: false,
             tags: ["design", "colors", "algorithm"],
         },
@@ -328,6 +329,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
             thumbnail: "/project-screenshots/latex.png", // Placeholder
             category: "Utility",
             status: "operational",
+            windowHeight: 700,
             route: "/settings",
             dateAdded: "2024-01-01",
             featured: false,

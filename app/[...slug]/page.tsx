@@ -13,8 +13,9 @@ function DesktopOSWithSuspense() {
     );
 }
 
-export default function Home() {
+export default function AppPage() {
     const isMobile = useDeviceType();
 
     return isMobile ? <MobileOS /> : <DesktopOSWithSuspense />;
 }
+
