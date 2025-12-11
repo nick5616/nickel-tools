@@ -91,6 +91,9 @@ export default function Settings() {
                                     handleWidthChange(Number(e.target.value))
                                 }
                                 className="w-full h-2 touch-none"
+                                style={{
+                                    accentColor: `rgb(var(--accent-nickel))`,
+                                }}
                             />
                         </div>
                         <div>
@@ -107,6 +110,9 @@ export default function Settings() {
                                     handleHeightChange(Number(e.target.value))
                                 }
                                 className="w-full h-2 touch-none"
+                                style={{
+                                    accentColor: `rgb(var(--accent-nickel))`,
+                                }}
                             />
                         </div>
                         <p className="text-xs text-[rgb(var(--text-secondary))]">

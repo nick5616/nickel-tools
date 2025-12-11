@@ -12,18 +12,8 @@ import { useAppStore } from "@/app/store/appStore";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 
 function getStatusBadgeColor(status: Content["status"]): string {
-    switch (status) {
-        case "operational":
-            return "bg-green-500/20 text-green-400";
-        case "in-development":
-            return "bg-yellow-500/20 text-yellow-400";
-        case "experimental":
-            return "bg-purple-500/20 text-purple-400";
-        case "archived":
-            return "bg-gray-500/20 text-gray-400";
-        default:
-            return "bg-gray-500/20 text-gray-400";
-    }
+    // Use theme accent color for all status badges
+    return "bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]";
 }
 
 function getStatusLabel(status: Content["status"]): string {
@@ -144,7 +134,7 @@ export default function About() {
                                                                 )}
                                                             </span>
                                                             {item.featured && (
-                                                                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">
+                                                                <span className="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]">
                                                                     Featured
                                                                 </span>
                                                             )}

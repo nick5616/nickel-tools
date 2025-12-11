@@ -22,7 +22,7 @@ export function useUrlSync() {
     // Initialize app from URL on mount
     useEffect(() => {
         if (isInitialized.current) return;
-        
+
         // Extract app ID from pathname (remove leading slash, handle home page)
         const appId = pathname === "/" ? null : pathname.slice(1);
         const maximized = searchParams.get("maximized") === "true";
@@ -47,14 +47,14 @@ export function useUrlSync() {
             if (existingWindow) {
                 // Focus the existing window
                 useAppStore.getState().focusWindow(existingWindow.id);
-                
+
                 // Set maximized state if needed
                 if (maximized && !existingWindow.maximized) {
                     toggleMaximizeWindow(existingWindow.id);
                 } else if (!maximized && existingWindow.maximized) {
                     toggleMaximizeWindow(existingWindow.id);
                 }
-                
+
                 // Mark as initialized
                 isInitialized.current = true;
                 setTimeout(() => {
@@ -63,7 +63,7 @@ export function useUrlSync() {
             } else {
                 // Open new window
                 openWindow(content);
-                
+
                 // Set maximized state after window is created
                 // Use a retry mechanism to ensure window is fully created
                 let retries = 0;
@@ -75,7 +75,7 @@ export function useUrlSync() {
                     if (window) {
                         // Focus it
                         useAppStore.getState().focusWindow(window.id);
-                        
+
                         // Set maximized if needed
                         if (maximized && !window.maximized) {
                             toggleMaximizeWindow(window.id);
@@ -108,12 +108,14 @@ export function useUrlSync() {
     }, [pathname, searchParams, openWindow, toggleMaximizeWindow]);
 
     // Update URL when windows change (track the focused/opened app)
+    // Use window.history.replaceState to avoid triggering Next.js navigation and re-renders
     useEffect(() => {
         if (!isInitialized.current || isUpdatingUrl.current) return;
+        if (typeof window === "undefined") return;
 
         // Get the topmost (highest z-index) non-minimized window
         const visibleWindows = windows.filter((w) => !w.minimized);
-        
+
         let topWindow;
         if (visibleWindows.length > 0) {
             // Find the window with the highest z-index among visible windows
@@ -128,14 +130,15 @@ export function useUrlSync() {
             );
         } else {
             // No windows at all, go to home
-            const newUrl = "/";
-            const currentUrl = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
-            if (newUrl !== currentUrl && currentUrl !== "/") {
+            const newPath = "/";
+            const currentPath = window.location.pathname;
+            if (newPath !== currentPath) {
                 isUpdatingUrl.current = true;
-                router.replace(newUrl, { scroll: false });
+                // Use history API to update URL without triggering navigation/re-render
+                window.history.replaceState(null, "", newPath);
                 setTimeout(() => {
                     isUpdatingUrl.current = false;
-                }, 50);
+                }, 0);
             }
             return;
         }
@@ -154,16 +157,20 @@ export function useUrlSync() {
                 ? `${newPath}?${newSearchParams.toString()}`
                 : newPath;
 
-        // Only update if URL is different
-        const currentUrl = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
+        // Only update if URL is different (compare against actual window.location to avoid stale values)
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
+        const currentUrl = currentPath + currentSearch;
+
         if (newUrl !== currentUrl) {
             isUpdatingUrl.current = true;
-            router.replace(newUrl, { scroll: false });
+            // Use history API to update URL without triggering navigation/re-render
+            window.history.replaceState(null, "", newUrl);
             setTimeout(() => {
                 isUpdatingUrl.current = false;
-            }, 50);
+            }, 0);
         }
-    }, [windows, pathname, router, searchParams]);
+    }, [windows]);
 
     return null;
 }
