@@ -6,14 +6,14 @@ import { Mail, Github, Linkedin, ExternalLink } from "lucide-react";
 export default function Contact() {
     return (
         <div className="w-full bg-transparent">
-            <div className="w-full">
+            <div className="w-full p-4">
                 <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">
                     Contact
                 </h2>
 
                 <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-6">
-                    Get in touch! I'm always open to discussing new
-                    projects, creative ideas, or opportunities.
+                    Get in touch! I'm always open to discussing new projects,
+                    creative ideas, or opportunities.
                 </p>
 
                 <div className="space-y-3">

@@ -24,7 +24,10 @@ export default function Settings() {
                 if (parsed.height) setDefaultWindowHeight(parsed.height);
             }
         } catch (error) {
-            console.error("Failed to load window size from localStorage:", error);
+            console.error(
+                "Failed to load window size from localStorage:",
+                error
+            );
         }
     }, []);
 
@@ -59,7 +62,7 @@ export default function Settings() {
 
     return (
         <div className="w-full bg-transparent">
-            <div className="w-full">
+            <div className="w-full p-4">
                 <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
                     Color Scheme Generator
                 </h2>
@@ -85,9 +88,7 @@ export default function Settings() {
                                 step="50"
                                 value={defaultWindowWidth}
                                 onChange={(e) =>
-                                    handleWidthChange(
-                                        Number(e.target.value)
-                                    )
+                                    handleWidthChange(Number(e.target.value))
                                 }
                                 className="w-full h-2 touch-none"
                             />
@@ -103,9 +104,7 @@ export default function Settings() {
                                 step="50"
                                 value={defaultWindowHeight}
                                 onChange={(e) =>
-                                    handleHeightChange(
-                                        Number(e.target.value)
-                                    )
+                                    handleHeightChange(Number(e.target.value))
                                 }
                                 className="w-full h-2 touch-none"
                             />

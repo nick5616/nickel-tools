@@ -24,6 +24,9 @@ import {
 
 type ContrastThreshold = "AA" | "AAA" | number;
 
+const VISIBLE_ROW_START_STORAGE_KEY = "nickel-color-scheme-visible-row-start";
+const HUE_OFFSET_STORAGE_KEY = "nickel-color-scheme-hue-offset";
+
 export function ColorSchemeGenerator() {
     const { theme, systemTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -62,39 +65,96 @@ export function ColorSchemeGenerator() {
     // Track if we're in initial load to prevent unnecessary recalculations
     const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-    // Load saved theme on mount
+    // Load saved theme and UI preferences on mount
     useEffect(() => {
         setMounted(true);
+
+        // Load UI preferences from localStorage first
+        let loadedHueOffset: number | null = null;
+        let loadedVisibleRowStart: number | null = null;
+
+        if (typeof window !== "undefined") {
+            try {
+                const savedVisibleRowStart = localStorage.getItem(
+                    VISIBLE_ROW_START_STORAGE_KEY
+                );
+                if (savedVisibleRowStart !== null) {
+                    const rowStart = parseInt(savedVisibleRowStart, 10);
+                    if (rowStart === 0 || rowStart === 3) {
+                        loadedVisibleRowStart = rowStart;
+                        setVisibleRowStart(rowStart);
+                    }
+                }
+
+                const savedHueOffset = localStorage.getItem(
+                    HUE_OFFSET_STORAGE_KEY
+                );
+                if (savedHueOffset !== null) {
+                    const hue = parseInt(savedHueOffset, 10);
+                    if (!isNaN(hue) && hue >= 0 && hue < 360) {
+                        loadedHueOffset = hue;
+                        setHueOffset(hue);
+                    }
+                }
+            } catch (error) {
+                console.error(
+                    "Failed to load UI preferences from localStorage:",
+                    error
+                );
+            }
+        }
+
         const savedTheme = loadTheme();
         if (savedTheme.baseColor) {
             setSelectedColor(savedTheme.baseColor);
             setSaturation(savedTheme.saturation);
-            setHueOffset(savedTheme.hueOffset || 0);
+            // Use saved hueOffset from localStorage if available, otherwise use theme's hueOffset
+            const currentHueOffset =
+                loadedHueOffset !== null
+                    ? loadedHueOffset
+                    : savedTheme.hueOffset || 0;
+            if (loadedHueOffset === null) {
+                setHueOffset(currentHueOffset);
+            }
             setContrastThreshold(savedTheme.contrastThreshold);
             setUseBlackWhiteText(savedTheme.useBlackWhiteText);
             setAllowMixMatch(savedTheme.allowMixMatch);
-            // Find and set grid position for saved color
+            // Find and set grid position for saved color using the correct hueOffset
             if (savedTheme.baseColor) {
                 const lightnesses = [10, 25, 40, 55, 70, 90];
                 const baseHues = [0, 60, 120, 180, 240, 300];
                 const row = lightnesses.findIndex(
                     (l) => Math.abs(l - savedTheme.baseColor!.l) < 1
                 );
+                // Normalize hue: subtract the hueOffset to get back to base hue
+                // The color's hue = (baseHue + hueOffset) % 360
+                // So baseHue = (color.hue - hueOffset + 360) % 360
                 const normalizedHue =
-                    (savedTheme.baseColor.h -
-                        (savedTheme.hueOffset || 0) +
-                        360) %
-                    360;
-                const col = baseHues.findIndex(
-                    (h) => Math.abs(h - normalizedHue) < 1
-                );
+                    (savedTheme.baseColor.h - currentHueOffset + 360) % 360;
+                // Find the closest base hue (within 30 degrees tolerance)
+                let col = -1;
+                let minDiff = Infinity;
+                for (let i = 0; i < baseHues.length; i++) {
+                    const diff = Math.min(
+                        Math.abs(normalizedHue - baseHues[i]),
+                        360 - Math.abs(normalizedHue - baseHues[i])
+                    );
+                    if (diff < minDiff && diff < 30) {
+                        minDiff = diff;
+                        col = i;
+                    }
+                }
                 if (row !== -1 && col !== -1) {
                     setSelectedGridPosition({ row, col });
-                    // Set visible row based on position
-                    if (row < 3) {
-                        setVisibleRowStart(0);
-                    } else {
-                        setVisibleRowStart(3);
+                    // Don't override visibleRowStart if it was loaded from localStorage
+                    // Only set it if it wasn't loaded
+                    if (loadedVisibleRowStart === null) {
+                        // Set visible row based on position only if not saved
+                        if (row < 3) {
+                            setVisibleRowStart(0);
+                        } else {
+                            setVisibleRowStart(3);
+                        }
                     }
                 }
             }
@@ -107,6 +167,40 @@ export function ColorSchemeGenerator() {
         // Mark initial load as complete after a brief delay to allow state to settle
         setTimeout(() => setIsInitialLoad(false), 100);
     }, []);
+
+    // Save visibleRowStart to localStorage when it changes
+    useEffect(() => {
+        if (typeof window !== "undefined" && !isInitialLoad) {
+            try {
+                localStorage.setItem(
+                    VISIBLE_ROW_START_STORAGE_KEY,
+                    visibleRowStart.toString()
+                );
+            } catch (error) {
+                console.error(
+                    "Failed to save visibleRowStart to localStorage:",
+                    error
+                );
+            }
+        }
+    }, [visibleRowStart, isInitialLoad]);
+
+    // Save hueOffset to localStorage when it changes
+    useEffect(() => {
+        if (typeof window !== "undefined" && !isInitialLoad) {
+            try {
+                localStorage.setItem(
+                    HUE_OFFSET_STORAGE_KEY,
+                    hueOffset.toString()
+                );
+            } catch (error) {
+                console.error(
+                    "Failed to save hueOffset to localStorage:",
+                    error
+                );
+            }
+        }
+    }, [hueOffset, isInitialLoad]);
 
     // Re-apply theme when dark/light mode changes
     useEffect(() => {
@@ -1180,6 +1274,19 @@ export function ColorSchemeGenerator() {
         setAllowMixMatch(false);
         setValidationError(null);
         setSuccessMessage("Theme reset to default");
+
+        // Clear localStorage preferences
+        if (typeof window !== "undefined") {
+            try {
+                localStorage.removeItem(VISIBLE_ROW_START_STORAGE_KEY);
+                localStorage.removeItem(HUE_OFFSET_STORAGE_KEY);
+            } catch (error) {
+                console.error(
+                    "Failed to clear UI preferences from localStorage:",
+                    error
+                );
+            }
+        }
     };
 
     if (!mounted) {
@@ -1290,9 +1397,10 @@ export function ColorSchemeGenerator() {
                 <div className="mb-4 flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <button
-                            onClick={() =>
-                                setHueOffset((prev) => (prev - 10 + 360) % 360)
-                            }
+                            onClick={() => {
+                                const newHue = (hueOffset - 10 + 360) % 360;
+                                setHueOffset(newHue);
+                            }}
                             className="px-3 py-1 bg-[rgb(var(--bg-button))] hover:bg-[rgb(var(--bg-button-hover))] border border-[rgb(var(--border-window))] rounded text-[rgb(var(--text-primary))] text-sm font-medium transition-colors"
                             title="Shift hues -10°"
                         >
@@ -1302,9 +1410,10 @@ export function ColorSchemeGenerator() {
                             Hue: {hueOffset}°
                         </span>
                         <button
-                            onClick={() =>
-                                setHueOffset((prev) => (prev + 10) % 360)
-                            }
+                            onClick={() => {
+                                const newHue = (hueOffset + 10) % 360;
+                                setHueOffset(newHue);
+                            }}
                             className="px-3 py-1 bg-[rgb(var(--bg-button))] hover:bg-[rgb(var(--bg-button-hover))] border border-[rgb(var(--border-window))] rounded text-[rgb(var(--text-primary))] text-sm font-medium transition-colors"
                             title="Shift hues +10°"
                         >
