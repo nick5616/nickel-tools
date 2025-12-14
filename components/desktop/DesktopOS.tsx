@@ -15,7 +15,7 @@ export function DesktopOS() {
         useAppStore();
     const allContent = getAllContent();
     const featuredContent = getFeaturedContent();
-    
+
     // Sync window state with URL query params
     useUrlSync();
 

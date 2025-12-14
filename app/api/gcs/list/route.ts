@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
         const sortedFiles = files.sort((a, b) => {
             const hasCreatedA = !!a.created;
             const hasCreatedB = !!b.created;
-            
+
             // If one has created and the other doesn't, prioritize the one with created
             if (hasCreatedA && !hasCreatedB) {
                 return -1; // a comes before b
@@ -107,16 +107,20 @@ export async function GET(request: NextRequest) {
             if (!hasCreatedA && hasCreatedB) {
                 return 1; // b comes before a
             }
-            
+
             // Both have created or both don't - sort by date
             // Get sort dates - prefer created metadata, fall back to timeCreated
-            const dateA = a.created 
-                ? new Date(a.created).getTime() 
-                : (a.timeCreated ? new Date(a.timeCreated).getTime() : 0);
-            const dateB = b.created 
-                ? new Date(b.created).getTime() 
-                : (b.timeCreated ? new Date(b.timeCreated).getTime() : 0);
-            
+            const dateA = a.created
+                ? new Date(a.created).getTime()
+                : a.timeCreated
+                ? new Date(a.timeCreated).getTime()
+                : 0;
+            const dateB = b.created
+                ? new Date(b.created).getTime()
+                : b.timeCreated
+                ? new Date(b.timeCreated).getTime()
+                : 0;
+
             // Reverse chronological: newest first (descending order)
             return dateB - dateA;
         });
@@ -134,4 +138,3 @@ export async function GET(request: NextRequest) {
         );
     }
 }
-

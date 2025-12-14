@@ -48,6 +48,7 @@ export default function ResumeEditor() {
     const [saveStatus, setSaveStatus] = useState("");
     const [compiler, setCompiler] = useState<CompilerType>("pdftex");
     const [mainFileName, setMainFileName] = useState<string>("main.tex");
+    const [showTemplateWarning, setShowTemplateWarning] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const projectFolderInputRef = useRef<HTMLInputElement>(null);
     const engineRef = useRef<LaTeXEngineInstance | null>(null);
@@ -57,8 +58,10 @@ export default function ResumeEditor() {
         const saved = localStorage.getItem("latex-resume");
         if (saved) {
             setLatexSource(saved);
+            setShowTemplateWarning(false);
         } else {
             setLatexSource(DEFAULT_TEMPLATE);
+            setShowTemplateWarning(true);
         }
     }, []);
 
@@ -652,6 +655,7 @@ export default function ResumeEditor() {
         ) {
             posthog.capture("resume-reset-to-template");
             setLatexSource(DEFAULT_TEMPLATE);
+            setShowTemplateWarning(true);
             localStorage.removeItem("latex-resume");
         }
     };
@@ -789,6 +793,25 @@ export default function ResumeEditor() {
                 </div>
             </div>
 
+            {/* Template Warning Banner */}
+            {showTemplateWarning && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-200 dark:border-yellow-800 p-3 flex items-center gap-2 text-yellow-800 dark:text-yellow-300">
+                    <AlertCircle size={18} />
+                    <span className="text-sm font-semibold">
+                        ⚠️ TEMPLATE MODE: This is a generic template with
+                        placeholder content. All information shown is
+                        EXAMPLE/TEMPLATE data only and must be replaced with
+                        your own information before use.
+                    </span>
+                    <button
+                        onClick={() => setShowTemplateWarning(false)}
+                        className="ml-auto text-yellow-600 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-200"
+                    >
+                        ✕
+                    </button>
+                </div>
+            )}
+
             {/* Error banner */}
             {engineError && (
                 <div className="bg-red-50 dark:bg-red-900/20 border-b border-red-200 dark:border-red-800 p-3 flex items-center gap-2 text-red-800 dark:text-red-300">
@@ -815,7 +838,16 @@ export default function ResumeEditor() {
                     </div>
                     <textarea
                         value={latexSource}
-                        onChange={(e) => setLatexSource(e.target.value)}
+                        onChange={(e) => {
+                            setLatexSource(e.target.value);
+                            // Hide template warning once user starts editing
+                            if (
+                                showTemplateWarning &&
+                                e.target.value !== DEFAULT_TEMPLATE
+                            ) {
+                                setShowTemplateWarning(false);
+                            }
+                        }}
                         className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none leading-relaxed bg-white dark:bg-zinc-800 text-gray-900 dark:text-zinc-100"
                         spellCheck={false}
                         placeholder="Start typing your LaTeX resume here..."

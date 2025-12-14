@@ -7,7 +7,11 @@ import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 function DesktopOSWithSuspense() {
     return (
-        <Suspense fallback={<div className="h-screen w-screen bg-[rgb(var(--bg-desktop))]" />}>
+        <Suspense
+            fallback={
+                <div className="h-screen w-screen bg-[rgb(var(--bg-desktop))]" />
+            }
+        >
             <DesktopOS />
         </Suspense>
     );
@@ -18,4 +22,3 @@ export default function AppPage() {
 
     return isMobile ? <MobileOS /> : <DesktopOSWithSuspense />;
 }
-
