@@ -6,27 +6,21 @@ import { Mail, Github, Linkedin, ExternalLink } from "lucide-react";
 export default function Contact() {
     return (
         <div className="w-full bg-transparent">
-            <div className="w-full p-4">
-                <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">
+            <div className="w-full py-2">
+                <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2">
                     Contact
                 </h2>
 
-                <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-6">
+                <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-2">
                     Get in touch! I'm always open to discussing new projects,
                     creative ideas, or opportunities.
                 </p>
 
-                <div className="space-y-3">
+                <div>
                     <a
                         href="mailto:nicolasbelovoskey@gmail.com"
-                        className="flex items-center gap-3 p-4 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
+                        className="flex items-center gap-3 py-2 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
                     >
-                        <div className="w-12 h-12 bg-[rgb(var(--bg-window))] rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Mail
-                                size={22}
-                                className="text-[rgb(var(--text-primary))]"
-                            />
-                        </div>
                         <div className="flex-1 min-w-0">
                             <div className="font-medium text-[rgb(var(--text-primary))] text-base">
                                 Email
@@ -41,14 +35,8 @@ export default function Contact() {
                         href="https://github.com/nick5616"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
+                        className="flex items-center gap-3 py-2 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
                     >
-                        <div className="w-12 h-12 bg-[rgb(var(--bg-window))] rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Github
-                                size={22}
-                                className="text-[rgb(var(--text-primary))]"
-                            />
-                        </div>
                         <div className="flex-1 min-w-0">
                             <div className="font-medium text-[rgb(var(--text-primary))] text-base">
                                 GitHub
@@ -67,14 +55,8 @@ export default function Contact() {
                         href="https://linkedin.com/in/nicolasbelovoskey"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
+                        className="flex items-center gap-3 py-2 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
                     >
-                        <div className="w-12 h-12 bg-[rgb(var(--bg-window))] rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Linkedin
-                                size={22}
-                                className="text-[rgb(var(--text-primary))]"
-                            />
-                        </div>
                         <div className="flex-1 min-w-0">
                             <div className="font-medium text-[rgb(var(--text-primary))] text-base">
                                 LinkedIn

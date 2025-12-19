@@ -106,3 +106,42 @@ export async function listGCSFolder(
 
     return data;
 }
+
+/**
+ * Gets a random image URL from a gallery folder to use as a thumbnail
+ */
+export async function getRandomArtThumbnail(
+    folder:
+        | "digital-art"
+        | "paintings"
+        | "sketches"
+        | "lefthanded"
+        | "miscellaneous"
+        | "notesappart"
+): Promise<string | null> {
+    try {
+        const result = await listGCSFolder(folder);
+
+        // Filter to only image files
+        const imageFiles = result.files.filter((file) => {
+            const contentType = file.contentType || "";
+            const filename = file.filename.toLowerCase();
+            return (
+                (contentType.startsWith("image/") ||
+                    /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(filename)) &&
+                file.private !== "true"
+            );
+        });
+
+        if (imageFiles.length === 0) {
+            return null;
+        }
+
+        // Pick a random image
+        const randomIndex = Math.floor(Math.random() * imageFiles.length);
+        return imageFiles[randomIndex].url;
+    } catch (err) {
+        console.error(`Error fetching random thumbnail for ${folder}:`, err);
+        return null;
+    }
+}

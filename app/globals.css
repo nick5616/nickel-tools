@@ -150,6 +150,16 @@ body {
     }
 }
 
+/* Continuous Revolving Text Animation - cycles through entire title */
+@keyframes revolveContinuous {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-1 * var(--text-width, 0px)));
+    }
+}
+
 /* Window Styles */
 .app-window {
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),

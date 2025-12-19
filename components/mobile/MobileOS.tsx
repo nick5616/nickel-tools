@@ -15,6 +15,7 @@ import { ContentRenderer } from "@/components/shared/ContentRenderer";
 import { getAllContent } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
 import { X } from "lucide-react";
+import { AppTray } from "@/components/shared/AppTray";
 
 export function MobileOS() {
     const allContent = getAllContent();
@@ -29,6 +30,9 @@ export function MobileOS() {
     const [pageWidth, setPageWidth] = useState(375);
     const [pageHeight, setPageHeight] = useState(667);
     const x = useMotionValue(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [showIndicators, setShowIndicators] = useState(false);
+    const hideIndicatorsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Calculate how many apps fit per page
     // Grid is 3 columns, with padding and gaps
@@ -37,8 +41,14 @@ export function MobileOS() {
         const padding = 16; // p-4 = 16px top/bottom
         const statusBarHeight = 44; // Approximate status bar height
         const pageIndicatorHeight = 48; // Approximate page indicator height
+        // AppTray: minHeight 80px + padding p-2 (8px top/bottom = 16px) + margin m-2 (8px top/bottom = 16px) = ~112px
+        const appTrayHeight = 112;
         const availableHeight =
-            pageHeight - statusBarHeight - pageIndicatorHeight - padding * 2;
+            pageHeight -
+            statusBarHeight -
+            pageIndicatorHeight -
+            appTrayHeight -
+            padding * 2;
 
         // Each row: icon (64px) + gap (16px) + text (~20px) = ~100px per row
         const rowHeight = 100;
@@ -100,6 +110,15 @@ export function MobileOS() {
         x.set(-pageWidth * currentPageIndex);
     }, [currentPageIndex, pageWidth, x]);
 
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (hideIndicatorsTimeoutRef.current) {
+                clearTimeout(hideIndicatorsTimeoutRef.current);
+            }
+        };
+    }, []);
+
     const handleOpenItem = (content: Content) => {
         setSelectedContent(content);
     };
@@ -112,10 +131,20 @@ export function MobileOS() {
         setCurrentSection("right");
     };
 
+    const handleDragStart = () => {
+        setIsDragging(true);
+        setShowIndicators(true);
+        // Clear any existing timeout
+        if (hideIndicatorsTimeoutRef.current) {
+            clearTimeout(hideIndicatorsTimeoutRef.current);
+        }
+    };
+
     const handleDragEnd = (
         _event: MouseEvent | TouchEvent | PointerEvent,
         info: PanInfo
     ) => {
+        setIsDragging(false);
         const threshold = pageWidth * 0.1; // 10% threshold - more sensitive
         const velocity = info.velocity.x;
         const offset = info.offset.x;
@@ -154,6 +183,11 @@ export function MobileOS() {
                 setCurrentAppPage(newPageIndex - firstAppPageIndex);
             }
         }
+
+        // Hide indicators after 0.25 seconds
+        hideIndicatorsTimeoutRef.current = setTimeout(() => {
+            setShowIndicators(false);
+        }, 250);
     };
 
     return (
@@ -177,6 +211,66 @@ export function MobileOS() {
                     touchAction: "pan-x",
                 }}
             >
+                {/* Page Indicators - Positioned at bottom of app grid area, just above app tray */}
+                {!selectedContent && currentSection === "apps" && (
+                    <AnimatePresence>
+                        {showIndicators && (
+                            <motion.div
+                                className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 pointer-events-none z-10"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                    bottom: "140px", // App tray height (80px minHeight + 16px padding + 16px margin)
+                                }}
+                            >
+                                {Array.from({ length: totalPages }).map(
+                                    (_, index) => {
+                                        const isActive =
+                                            index === currentPageIndex;
+                                        return (
+                                            <button
+                                                key={index}
+                                                onClick={() => {
+                                                    if (
+                                                        index === leftPageIndex
+                                                    ) {
+                                                        setCurrentSection(
+                                                            "left"
+                                                        );
+                                                    } else if (
+                                                        index === rightPageIndex
+                                                    ) {
+                                                        setCurrentSection(
+                                                            "right"
+                                                        );
+                                                    } else {
+                                                        setCurrentSection(
+                                                            "apps"
+                                                        );
+                                                        setCurrentAppPage(
+                                                            index -
+                                                                firstAppPageIndex
+                                                        );
+                                                    }
+                                                }}
+                                                className={`h-2 rounded-full transition-all pointer-events-auto ${
+                                                    isActive
+                                                        ? "bg-[rgb(var(--accent-nickel))] w-6"
+                                                        : "bg-[rgb(var(--text-secondary))] opacity-50 w-2"
+                                                }`}
+                                                aria-label={`Go to page ${
+                                                    index + 1
+                                                }`}
+                                            />
+                                        );
+                                    }
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                )}
                 <motion.div
                     className="flex h-full"
                     style={{
@@ -191,6 +285,7 @@ export function MobileOS() {
                     }}
                     dragElastic={0.1}
                     dragMomentum={false}
+                    onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                     animate={{ x: -pageWidth * currentPageIndex }}
                     transition={{ type: "spring", stiffness: 500, damping: 50 }}
@@ -220,7 +315,7 @@ export function MobileOS() {
                                 touchAction: "pan-y",
                             }}
                         >
-                            <div className="h-full overflow-hidden pb-20">
+                            <div className="h-full">
                                 <AppGrid
                                     content={pageContent}
                                     onOpenItem={handleOpenItem}
@@ -244,35 +339,10 @@ export function MobileOS() {
                 </motion.div>
             </div>
 
-            {/* Page Indicators */}
-            <div className="flex justify-center gap-2 py-2 flex-shrink-0">
-                {Array.from({ length: totalPages }).map((_, index) => {
-                    const isActive = index === currentPageIndex;
-                    return (
-                        <button
-                            key={index}
-                            onClick={() => {
-                                if (index === leftPageIndex) {
-                                    setCurrentSection("left");
-                                } else if (index === rightPageIndex) {
-                                    setCurrentSection("right");
-                                } else {
-                                    setCurrentSection("apps");
-                                    setCurrentAppPage(
-                                        index - firstAppPageIndex
-                                    );
-                                }
-                            }}
-                            className={`h-2 rounded-full transition-all ${
-                                isActive
-                                    ? "bg-[rgb(var(--accent-nickel))] w-6"
-                                    : "bg-[rgb(var(--text-secondary))] opacity-50 w-2"
-                            }`}
-                            aria-label={`Go to page ${index + 1}`}
-                        />
-                    );
-                })}
-            </div>
+            {/* App Tray - Only show on home screen (when no app is selected) and when we are not on the first or last page (left and right screen) */}
+            {!selectedContent &&
+                currentPageIndex !== leftPageIndex &&
+                currentPageIndex !== rightPageIndex && <AppTray />}
 
             {/* Full Screen Modal for Content */}
             <AnimatePresence>
