@@ -7,7 +7,6 @@ import type { WindowState } from '@/app/store/appStore';
 import { IconRenderer } from '@/components/shared/IconRenderer';
 import { getContentById } from '@/app/data/content';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 
 interface DockProps {
   items: Content[];
@@ -51,67 +50,40 @@ export function Dock({ items, windows, onOpenItem }: DockProps) {
       >
         {/* Pinned Apps - Styled like mobile AppTray */}
         {pinnedApps.map((app) => {
-          if (app.type === "external") {
-            return (
-              <motion.a
-                key={app.id}
-                href={app.url}
-                target={app.openInNewTab ? "_blank" : "_self"}
-                rel={app.openInNewTab ? "noopener noreferrer" : undefined}
-                className="w-12 h-12 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center justify-center transition-all relative group"
-                title={app.title}
-                style={{
-                  backgroundColor: "rgb(var(--bg-window) / 0.7)",
-                }}
-                whileHover={{ scale: 1.2, y: -10 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <IconRenderer content={app} size="md" className="text-zinc-900 dark:text-zinc-100" />
-                <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                  {app.title}
-                </div>
-              </motion.a>
-            );
-          }
+          // Check if this app has an open window
+          const hasWindow = windows?.some(w => w.content.id === app.id);
+          const isMinimized = hasWindow ? minimizedMap.get(app.id) || false : false;
+          const isActive = app.type === "internal" && pathname === app.route;
 
-          if (app.type !== "internal") return null;
-
-          const isActive = pathname === app.route;
           return (
-            <motion.div
+            <motion.button
               key={app.id}
+              onClick={() => onOpenItem(app)}
+              className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all relative group ${
+                isActive
+                  ? "bg-zinc-200 dark:bg-zinc-700"
+                  : "hover:bg-zinc-100 dark:hover:bg-zinc-700"
+              } ${isMinimized ? 'opacity-60' : ''}`}
+              title={app.title}
+              style={
+                !isActive
+                  ? {
+                      backgroundColor: "rgb(var(--bg-window) / 0.7)",
+                    }
+                  : {}
+              }
               whileHover={{ scale: 1.2, y: -10 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <Link
-                href={app.route}
-                className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all relative group ${
-                  isActive
-                    ? "bg-zinc-200 dark:bg-zinc-700"
-                    : "hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                }`}
-                title={app.title}
-                style={
-                  !isActive
-                    ? {
-                        backgroundColor: "rgb(var(--bg-window) / 0.7)",
-                      }
-                    : {}
-                }
-                onClick={(e) => {
-                  setTimeout(() => {
-                    (e.currentTarget as HTMLElement).blur();
-                  }, 100);
-                }}
-              >
-                <IconRenderer content={app} size="md" className="text-zinc-900 dark:text-zinc-100" />
-                <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                  {app.title}
-                </div>
-              </Link>
-            </motion.div>
+              <IconRenderer content={app} size="md" className="text-zinc-900 dark:text-zinc-100" />
+              {isMinimized && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[rgb(var(--text-secondary))] rounded-full" />
+              )}
+              <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                {app.title}
+              </div>
+            </motion.button>
           );
         })}
 
