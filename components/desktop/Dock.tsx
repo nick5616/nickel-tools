@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import type { Content } from '@/app/data/content';
 import type { WindowState } from '@/app/store/appStore';
 import { IconRenderer } from '@/components/shared/IconRenderer';
+import { getContentById } from '@/app/data/content';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 interface DockProps {
   items: Content[];
@@ -13,6 +16,17 @@ interface DockProps {
 }
 
 export function Dock({ items, windows, onOpenItem }: DockProps) {
+  const pathname = usePathname();
+  
+  // Get the three pinned apps
+  const portfolio = getContentById("portfolio");
+  const digitalArt = getContentById("art-digital-art");
+  const settings = getContentById("settings");
+  
+  const pinnedApps = [portfolio, digitalArt, settings].filter(
+    (app): app is NonNullable<typeof app> => app !== undefined
+  );
+
   // Create a map to quickly check if a content item has a minimized window
   const minimizedMap = new Map<string, boolean>();
   if (windows) {
@@ -35,6 +49,78 @@ export function Dock({ items, windows, onOpenItem }: DockProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
+        {/* Pinned Apps - Styled like mobile AppTray */}
+        {pinnedApps.map((app) => {
+          if (app.type === "external") {
+            return (
+              <motion.a
+                key={app.id}
+                href={app.url}
+                target={app.openInNewTab ? "_blank" : "_self"}
+                rel={app.openInNewTab ? "noopener noreferrer" : undefined}
+                className="w-12 h-12 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center justify-center transition-all relative group"
+                title={app.title}
+                style={{
+                  backgroundColor: "rgb(var(--bg-window) / 0.7)",
+                }}
+                whileHover={{ scale: 1.2, y: -10 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <IconRenderer content={app} size="md" className="text-zinc-900 dark:text-zinc-100" />
+                <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                  {app.title}
+                </div>
+              </motion.a>
+            );
+          }
+
+          if (app.type !== "internal") return null;
+
+          const isActive = pathname === app.route;
+          return (
+            <motion.div
+              key={app.id}
+              whileHover={{ scale: 1.2, y: -10 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <Link
+                href={app.route}
+                className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all relative group ${
+                  isActive
+                    ? "bg-zinc-200 dark:bg-zinc-700"
+                    : "hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                }`}
+                title={app.title}
+                style={
+                  !isActive
+                    ? {
+                        backgroundColor: "rgb(var(--bg-window) / 0.7)",
+                      }
+                    : {}
+                }
+                onClick={(e) => {
+                  setTimeout(() => {
+                    (e.currentTarget as HTMLElement).blur();
+                  }, 100);
+                }}
+              >
+                <IconRenderer content={app} size="md" className="text-zinc-900 dark:text-zinc-100" />
+                <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                  {app.title}
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
+
+        {/* Separator */}
+        {pinnedApps.length > 0 && items.length > 0 && (
+          <div className="w-px h-8 bg-[rgb(var(--border-dock))] opacity-50 self-center" />
+        )}
+
+        {/* Regular Dock Items */}
         {items.map((item) => {
           const isMinimized = minimizedMap.get(item.id) || false;
           return (

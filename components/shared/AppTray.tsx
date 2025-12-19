@@ -7,6 +7,7 @@ import { IconRenderer } from "@/components/shared/IconRenderer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RevolvingText } from "@/components/shared/RevolvingText";
+import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 interface AppTrayProps {
     variant?: "fixed" | "relative";
@@ -14,6 +15,7 @@ interface AppTrayProps {
 
 export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
     const pathname = usePathname();
+    const isMobile = useDeviceType();
     // Get the three apps for the tray
     const portfolio = getContentById("portfolio");
     const digitalArt = getContentById("art-digital-art");
@@ -56,7 +58,7 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
 
     const containerStyle = {
         position: "fixed" as const,
-        bottom: 0,
+        bottom: isMobile ? 0 : 16, // bottom-0 for mobile, bottom-4 (16px) for desktop
         left: 0,
         right: 0,
         zIndex: 99999,
@@ -64,32 +66,45 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
         height: "auto",
     };
 
+    // Desktop: compact size like Dock, Mobile: full-width
+    const isDesktop = !isMobile;
+    const iconSize = isDesktop ? "md" : "lg";
+    const iconSizePx = isDesktop ? 40 : 48;
+    const containerPadding = isDesktop ? "px-3 py-2" : "p-2 py-4";
+    const containerMargin = isDesktop ? "m-0" : "m-2";
+    const containerMinHeight = isDesktop ? "auto" : "80px";
+    const containerWidth = isDesktop ? "auto" : "100%";
+    const containerMaxWidth = isDesktop ? "none" : "100%";
+    const gapSize = isDesktop ? "gap-2" : "gap-4";
+
     return (
         <div
-            className={`fixed bottom-0 left-0 right-0 flex justify-center pointer-events-none`}
+            className="fixed left-0 right-0 flex justify-center pointer-events-none"
             style={containerStyle}
         >
             <motion.div
-                className="border-t-2 p-2 py-4 m-2 rounded-2xl flex gap-4 shadow-2xl pointer-events-auto w-full relative"
+                className={`border-t-2 ${containerPadding} ${containerMargin} rounded-2xl flex ${gapSize} shadow-2xl pointer-events-auto relative`}
+                style={{
+                    backgroundColor: "rgb(var(--bg-window) / 0.7)",
+                    minHeight: containerMinHeight,
+                    display: "flex",
+                    alignItems: "stretch",
+                    justifyContent: isDesktop ? "center" : "space-around",
+                    width: containerWidth,
+                    maxWidth: containerMaxWidth,
+                }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{
-                    backgroundColor: "rgb(var(--bg-window) / 0.7)",
-                    minHeight: "80px",
-                    display: "flex",
-                    alignItems: "stretch",
-                    justifyContent: "space-around",
-                    width: "100%",
-                    maxWidth: "100%",
-                }}
             >
                 {trayApps.map((app) => {
                     if (app.type === "external") {
                         return (
                             <motion.div
                                 key={app.id}
-                                className="flex-1 flex justify-center gap-2"
+                                className={`${
+                                    isDesktop ? "" : "flex-1"
+                                } flex justify-center gap-2`}
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{
@@ -107,7 +122,13 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
                                             ? "noopener noreferrer"
                                             : undefined
                                     }
-                                    className="w-full max-w-[140px] rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-700 flex flex-col items-center justify-center gap-2 transition-all relative group min-w-[100px]"
+                                    className={`${
+                                        isDesktop ? "w-12 h-12" : "w-full"
+                                    } ${
+                                        !isDesktop
+                                            ? "max-w-[140px] min-w-[100px]"
+                                            : ""
+                                    } rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-700 flex flex-col items-center justify-center gap-2 transition-all relative group`}
                                     title={app.title}
                                 >
                                     <div
@@ -117,15 +138,23 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
                                         <div className="w-full h-full flex items-center justify-center">
                                             <IconRenderer
                                                 content={app}
-                                                size="lg"
+                                                size={iconSize}
                                                 className="text-zinc-900 dark:text-zinc-100"
                                             />
                                         </div>
                                     </div>
-                                    <AppTrayTitle
-                                        text={app.title}
-                                        isExternal={true}
-                                    />
+                                    {!isDesktop && (
+                                        <AppTrayTitle
+                                            text={app.title}
+                                            isExternal={true}
+                                            iconSize={iconSizePx}
+                                        />
+                                    )}
+                                    {isDesktop && (
+                                        <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                                            {app.title}
+                                        </div>
+                                    )}
                                 </a>
                             </motion.div>
                         );
@@ -138,11 +167,17 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
                     return (
                         <motion.div
                             key={app.id}
-                            className="flex-1 flex justify-center gap-2"
+                            className={`${
+                                isDesktop ? "" : "flex-1"
+                            } flex justify-center gap-2`}
                         >
                             <Link
                                 href={app.route}
-                                className={`w-full rounded-xl flex flex-col items-center justify-center gap-2 transition-all relative group min-w-[100px] ${
+                                className={`${
+                                    isDesktop
+                                        ? "w-12 h-12"
+                                        : "w-full min-w-[100px]"
+                                } rounded-xl flex flex-col items-center justify-center gap-2 transition-all relative group ${
                                     isActive
                                         ? "bg-zinc-200 dark:bg-zinc-700"
                                         : "hover:bg-zinc-100 dark:hover:bg-zinc-700 active:bg-zinc-200 dark:active:bg-zinc-600"
@@ -171,15 +206,23 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
                                         <div className="w-full h-full flex items-center justify-center">
                                             <IconRenderer
                                                 content={app}
-                                                size="lg"
+                                                size={iconSize}
                                                 className="text-zinc-900 dark:text-zinc-100"
                                             />
                                         </div>
                                     </div>
-                                    <AppTrayTitle
-                                        text={app.title}
-                                        isActive={isActive}
-                                    />
+                                    {!isDesktop && (
+                                        <AppTrayTitle
+                                            text={app.title}
+                                            isActive={isActive}
+                                            iconSize={iconSizePx}
+                                        />
+                                    )}
+                                    {isDesktop && (
+                                        <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                                            {app.title}
+                                        </div>
+                                    )}
                                 </motion.div>
                             </Link>
                         </motion.div>
@@ -194,14 +237,16 @@ interface AppTrayTitleProps {
     text: string;
     isActive?: boolean;
     isExternal?: boolean;
+    iconSize: number;
 }
 
 function AppTrayTitle({
     text,
     isActive = false,
     isExternal = false,
+    iconSize,
 }: AppTrayTitleProps) {
-    // Icon size "lg" is 48px, so text container should match that width
+    // Text container should match icon width
     const baseClasses = isActive
         ? "text-[rgb(var(--text-primary))] dark:text-[rgb(var(--text-secondary))]"
         : "text-[rgb(var(--text-secondary))] dark:text-[rgb(var(--text-primary))]";
@@ -212,12 +257,12 @@ function AppTrayTitle({
 
     return (
         <div
-            className="w-12 text-xs text-center leading-tight relative"
-            style={{ width: "48px" }}
+            className="text-xs text-center leading-tight relative"
+            style={{ width: `${iconSize}px` }}
         >
             <RevolvingText
                 text={text}
-                containerWidth={48}
+                containerWidth={iconSize}
                 className={`transition-colors ${baseClasses} ${hoverClasses}`}
             />
         </div>

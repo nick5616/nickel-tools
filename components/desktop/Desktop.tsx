@@ -24,8 +24,8 @@ const getDefaultIconPositions = (
     const iconWidth = 96; // Icon width
     const columnWidth = 200; // Horizontal spacing between icons
     const rowHeight = 150; // Vertical spacing between rows
-    const startX = 50;
-    const startY = 100;
+    const startX = 20; // Anchor to top-left
+    const startY = 20; // Anchor to top-left
     const padding = 10; // Padding from edges (reduced to fit more icons)
 
     // Calculate how many columns fit per row
@@ -162,8 +162,8 @@ export function Desktop({
             <AnimatePresence mode="popLayout">
                 {filteredContent.map((item) => {
                     const position = iconPositions.get(item.id) || {
-                        x: 50,
-                        y: 100,
+                        x: 20,
+                        y: 20,
                     };
                     return (
                         <DesktopIcon

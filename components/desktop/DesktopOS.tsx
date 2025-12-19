@@ -9,7 +9,6 @@ import { useAppStore } from "@/app/store/appStore";
 import { getAllContent, getFeaturedContent } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
 import { useUrlSync } from "@/app/hooks/useUrlSync";
-import { AppTray } from "@/components/shared/AppTray";
 
 export function DesktopOS() {
     const { windows, openWindow, closeWindow, minimizeWindow, focusWindow } =
@@ -67,9 +66,6 @@ export function DesktopOS() {
                 windows={windows}
                 onOpenItem={openWindow}
             />
-
-            {/* App Tray - Always visible on home screen */}
-            <AppTray />
         </div>
     );
 }

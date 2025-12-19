@@ -29,11 +29,14 @@ export function RevolvingText({
     // Calculate animation duration based on text length
     // Speed: roughly 25px per second for readability (half speed)
     const animationDuration = needsRevolving
-        ? Math.max(6, ((textWidth + spacing) / 25))
+        ? Math.max(6, (textWidth + spacing) / 25)
         : 0;
 
     return (
-        <div className="overflow-hidden relative" style={{ width: containerWidth }}>
+        <div
+            className="overflow-hidden relative"
+            style={{ width: containerWidth }}
+        >
             {/* Hidden element to measure text width with same styling */}
             <div
                 ref={measureRef}
@@ -48,7 +51,9 @@ export function RevolvingText({
                     needsRevolving
                         ? {
                               animation: `revolveContinuous ${animationDuration}s linear infinite`,
-                              ['--text-width' as string]: `${textWidth + spacing}px`,
+                              ["--text-width" as string]: `${
+                                  textWidth + spacing
+                              }px`,
                           }
                         : {}
                 }
@@ -59,4 +64,3 @@ export function RevolvingText({
         </div>
     );
 }
-
