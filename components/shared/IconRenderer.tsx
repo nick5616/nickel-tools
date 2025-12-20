@@ -5,6 +5,7 @@ import type { Content, Category } from "@/app/data/content";
 import { getCategoryIcon } from "@/app/data/content";
 import { Favicon } from "./Favicon";
 import { useArtGalleryThumbnail } from "@/app/hooks/useArtGalleryThumbnail";
+import { useImageLoader } from "@/app/hooks/useImageLoader";
 import {
     FileText,
     Gamepad2,
@@ -90,9 +91,66 @@ export function IconRenderer({
 }: IconRendererProps) {
     // Check if this is an art gallery and get thumbnail
     const artGalleryThumbnail = useArtGalleryThumbnail(content.id);
+    const { registerImage, markImageLoaded, markImageError } = useImageLoader();
+
+    // Check if this is an art gallery content type
+    const isArtGallery = [
+        "art-digital-art",
+        "art-paintings",
+        "art-sketches",
+        "art-lefthanded",
+        "art-miscellaneous",
+        "art-notesappart",
+    ].includes(content.id);
+
+    // Always call hooks at the top level - never conditionally
+    const imageRef = React.useRef<HTMLImageElement | null>(null);
+    const hasReportedRef = React.useRef(false);
 
     const sizeConfig = getSizeConfig(size, !!artGalleryThumbnail);
     const sizeClass = sizeConfig.class;
+
+    // Register image loading for art galleries
+    React.useEffect(() => {
+        if (isArtGallery) {
+            registerImage(`art-thumbnail-${content.id}`);
+
+            // If thumbnail is null (failed to fetch or not available), mark as error after a delay
+            // This handles the case where the thumbnail fetch fails
+            if (artGalleryThumbnail === null) {
+                const timer = setTimeout(() => {
+                    // Check if it's still null - if so, no image to load
+                    markImageError(`art-thumbnail-${content.id}`);
+                }, 2000); // Give it 2 seconds for the fetch to complete
+                return () => clearTimeout(timer);
+            }
+            // If thumbnail is available, the img tag's onLoad/onError will handle it
+        }
+    }, [
+        isArtGallery,
+        artGalleryThumbnail,
+        content.id,
+        registerImage,
+        markImageError,
+    ]);
+
+    // Reset refs when content changes
+    React.useEffect(() => {
+        hasReportedRef.current = false;
+    }, [content.id]);
+
+    // Check if image is already loaded when component mounts (for art galleries)
+    React.useEffect(() => {
+        if (
+            isArtGallery &&
+            artGalleryThumbnail &&
+            imageRef.current?.complete &&
+            !hasReportedRef.current
+        ) {
+            hasReportedRef.current = true;
+            markImageLoaded(`art-thumbnail-${content.id}`);
+        }
+    }, [isArtGallery, artGalleryThumbnail, content.id, markImageLoaded]);
 
     // For external links, use favicon
     if (content.type === "external") {
@@ -117,6 +175,7 @@ export function IconRenderer({
                 size={sizeConfig.pixels}
                 className={className}
                 fallback={fallback}
+                contentId={content.id}
             />
         );
     }
@@ -125,10 +184,23 @@ export function IconRenderer({
     if (artGalleryThumbnail) {
         return (
             <img
+                ref={imageRef}
                 src={artGalleryThumbnail}
                 alt={content.title}
                 className={`${sizeClass} ${className} object-cover rounded-2xl`}
                 style={{ width: sizeConfig.pixels, height: sizeConfig.pixels }}
+                onLoad={() => {
+                    if (!hasReportedRef.current) {
+                        hasReportedRef.current = true;
+                        markImageLoaded(`art-thumbnail-${content.id}`);
+                    }
+                }}
+                onError={() => {
+                    if (!hasReportedRef.current) {
+                        hasReportedRef.current = true;
+                        markImageError(`art-thumbnail-${content.id}`);
+                    }
+                }}
             />
         );
     }

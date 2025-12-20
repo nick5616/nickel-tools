@@ -10,6 +10,7 @@ import {
     applyTheme,
     isCustomThemeActive,
 } from "@/app/utils/themeUtils";
+import { ImageLoaderProvider } from "@/app/hooks/useImageLoader";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -79,13 +80,15 @@ export default function RootLayout({
                     enableSystem
                 >
                     <ThemeInitializer />
-                    {/* Noise Overlay for Industrial Texture */}
-                    <div className="bg-noise"></div>
+                    <ImageLoaderProvider>
+                        {/* Noise Overlay for Industrial Texture */}
+                        <div className="bg-noise"></div>
 
-                    {/* Main Content - OS interface handles its own layout */}
-                    <main className="h-full w-full overflow-hidden relative z-10">
-                        {children}
-                    </main>
+                        {/* Main Content - OS interface handles its own layout */}
+                        <main className="h-full w-full overflow-hidden relative z-10">
+                            {children}
+                        </main>
+                    </ImageLoaderProvider>
                 </ThemeProvider>
             </body>
         </html>

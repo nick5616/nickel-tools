@@ -1,16 +1,26 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useImageLoader } from '@/app/hooks/useImageLoader';
 
 interface FaviconProps {
   url: string;
   size?: number;
   className?: string;
   fallback?: React.ReactNode;
+  contentId?: string; // Optional content ID for tracking
 }
 
-export function Favicon({ url, size = 32, className = '', fallback }: FaviconProps) {
+export function Favicon({ url, size = 32, className = '', fallback, contentId }: FaviconProps) {
   const [imgError, setImgError] = useState(false);
+  const { registerImage, markImageLoaded, markImageError } = useImageLoader();
+
+  // Register favicon loading if contentId is provided
+  useEffect(() => {
+    if (contentId) {
+      registerImage(`favicon-${contentId}`);
+    }
+  }, [contentId, registerImage]);
 
   // Extract domain from URL
   const getDomain = (urlString: string): string => {
@@ -28,6 +38,19 @@ export function Favicon({ url, size = 32, className = '', fallback }: FaviconPro
   
   // Use Google's favicon service
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`;
+
+  const handleLoad = () => {
+    if (contentId) {
+      markImageLoaded(`favicon-${contentId}`);
+    }
+  };
+
+  const handleError = () => {
+    setImgError(true);
+    if (contentId) {
+      markImageError(`favicon-${contentId}`);
+    }
+  };
 
   if (imgError) {
     return fallback || (
@@ -47,7 +70,8 @@ export function Favicon({ url, size = 32, className = '', fallback }: FaviconPro
       width={size}
       height={size}
       className={`rounded ${className}`}
-      onError={() => setImgError(true)}
+      onLoad={handleLoad}
+      onError={handleError}
       style={{ width: size, height: size, objectFit: 'contain' }}
     />
   );
