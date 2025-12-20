@@ -66,6 +66,9 @@ export function AppTray({ variant = "fixed", onOpenItem }: AppTrayProps = {}) {
         zIndex: 99999,
         width: "100%",
         height: "auto",
+        paddingBottom: isMobile
+            ? "env(safe-area-inset-bottom, 0px)"
+            : undefined, // Add safe area padding for mobile to account for browser controls
     };
 
     // Desktop: compact size like Dock, Mobile: full-width
