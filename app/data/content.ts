@@ -230,7 +230,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
             thumbnail: "/project-screenshots/passionfruit.png",
             category: "Creative Productivity",
             status: "operational",
-            url: "https://github.com/nick5616/universe",
+            url: "https://yieldpassionfruit.netlify.app",
             openInNewTab: true,
             dateAdded: "2023-07-20",
             featured: false,

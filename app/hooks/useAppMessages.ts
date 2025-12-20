@@ -3,12 +3,17 @@
 import { useMemo } from "react";
 import { getAllContent } from "@/app/data/content";
 
+export interface AppMessage {
+    title: string;
+    description: string;
+}
+
 /**
  * Hook that generates revolving messages about apps from the content list
- * Returns an array of messages that can be cycled through
+ * Returns an array of messages with title and description components
  * Used by both the splash screen and About component
  */
-export function useAppMessages(): string[] {
+export function useAppMessages(): AppMessage[] {
     const messages = useMemo(() => {
         const allContent = getAllContent();
 
@@ -19,19 +24,11 @@ export function useAppMessages(): string[] {
                 !["about", "contact", "settings"].includes(item.id)
         );
 
-        // Generate messages about each app using full descriptions
-        const appMessages = apps.flatMap((app) => {
-            // Create different message variations that incorporate the full description
-            const variations = [
-                `${app.title}: ${app.description}`,
-                `Check out ${app.title} - ${app.description}`,
-                `Explore ${app.title}. ${app.description}`,
-            ];
-
-            // Return all variations so we can cycle through them
-            // This gives more variety in the messages while using the full description
-            return variations;
-        });
+        // Generate messages about each app with separate title and description
+        const appMessages: AppMessage[] = apps.map((app) => ({
+            title: app.title,
+            description: app.description,
+        }));
 
         // Shuffle the messages for more variety
         const shuffled = [...appMessages].sort(() => Math.random() - 0.5);

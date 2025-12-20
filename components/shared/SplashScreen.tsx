@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RevolvingText } from "./RevolvingText";
 import { useAppMessages } from "@/app/hooks/useAppMessages";
 
 interface SplashScreenProps {
@@ -24,7 +23,7 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
         return () => clearInterval(interval);
     }, [messages.length]);
 
-    const currentMessage = messages[currentMessageIndex] || "";
+    const currentMessage = messages[currentMessageIndex];
 
     return (
         <AnimatePresence>
@@ -60,7 +59,7 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
                                 Ni
                             </div>
                             <span
-                                className="font-bold text-lg"
+                                className="font-bold text-lg font-bbh-bartle"
                                 style={{
                                     color: "rgb(var(--text-primary))",
                                 }}
@@ -69,10 +68,10 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
                             </span>
                         </motion.div>
 
-                        {/* Revolving message about apps */}
+                        {/* Message about apps - title and description components */}
                         {currentMessage && (
                             <motion.div
-                                className="flex flex-col items-center gap-3"
+                                className="flex flex-col items-center gap-2 px-4"
                                 key={currentMessageIndex}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -81,20 +80,25 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
                                     duration: 0.4,
                                     ease: "easeInOut",
                                 }}
+                                style={{
+                                    maxWidth: "90vw",
+                                }}
                             >
+                                <div
+                                    className="text-base font-semibold text-center font-bbh-bartle"
+                                    style={{
+                                        color: "rgb(var(--text-primary))",
+                                    }}
+                                >
+                                    {currentMessage.title}
+                                </div>
                                 <div
                                     className="text-sm text-center"
                                     style={{
                                         color: "rgb(var(--text-secondary))",
-                                        width: "400px",
-                                        maxWidth: "90vw",
                                     }}
                                 >
-                                    <RevolvingText
-                                        text={currentMessage}
-                                        containerWidth={400}
-                                        className="text-[rgb(var(--text-secondary))]"
-                                    />
+                                    {currentMessage.description}
                                 </div>
                             </motion.div>
                         )}
@@ -137,4 +141,3 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
         </AnimatePresence>
     );
 }
-
