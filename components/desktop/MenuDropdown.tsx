@@ -19,6 +19,7 @@ interface MenuDropdownProps {
     items: MenuItem[];
     position?: { top?: number; left?: number; right?: number };
     align?: "left" | "right";
+    triggerRef?: React.RefObject<HTMLElement | null>;
 }
 
 export function MenuDropdown({
@@ -27,6 +28,7 @@ export function MenuDropdown({
     items,
     position,
     align = "left",
+    triggerRef,
 }: MenuDropdownProps) {
     const menuRef = useRef<HTMLDivElement>(null);
     const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -36,12 +38,17 @@ export function MenuDropdown({
         if (!isOpen) return;
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (
-                menuRef.current &&
-                !menuRef.current.contains(event.target as Node)
-            ) {
-                onClose();
+            const target = event.target as Node;
+            // Don't close if clicking inside the menu
+            if (menuRef.current?.contains(target)) {
+                return;
             }
+            // Don't close if clicking the trigger button
+            if (triggerRef?.current?.contains(target)) {
+                return;
+            }
+            // Close if clicking outside both menu and trigger
+            onClose();
         };
 
         const handleEscape = (event: KeyboardEvent) => {
@@ -57,7 +64,7 @@ export function MenuDropdown({
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleEscape);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, onClose, triggerRef]);
 
     // Keyboard navigation
     useEffect(() => {
@@ -132,7 +139,7 @@ export function MenuDropdown({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.15 }}
-                className="z-[100] mt-1 bg-[rgb(var(--bg-dropdown))]/95 backdrop-blur-xl rounded-lg shadow-2xl border border-[rgb(var(--border-dropdown))] min-w-[180px] py-1"
+                className="z-[100] mt-1 bg-[rgb(var(--bg-dropdown))]/75 backdrop-blur-xl rounded-lg shadow-2xl border border-[rgb(var(--border-dropdown))] min-w-[180px] py-1"
                 style={style}
             >
                 {items.map((item, index) => {
@@ -164,8 +171,8 @@ export function MenuDropdown({
                 transition-colors
                 ${
                     isFocused
-                        ? "bg-[rgb(var(--bg-dropdown-hover))]"
-                        : "hover:bg-[rgb(var(--bg-dropdown-hover))]"
+                        ? "bg-[rgb(var(--bg-dropdown-hover))]/80"
+                        : "hover:bg-[rgb(var(--bg-dropdown-hover))]/80"
                 }
               `}
                         >

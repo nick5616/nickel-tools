@@ -256,17 +256,21 @@ export const useAppStore = create<AppState>((set, get) => ({
     },
 
     toggleMenu: (menu) => {
-        const currentState = get().menu.openMenus[menu];
-        // Close all menus first
-        const newOpenMenus = {
-            niIcon: false,
-            view: false,
-            art: false,
-            tools: false,
-        };
-        // Then toggle the clicked menu
-        newOpenMenus[menu] = !currentState;
-        set({ menu: { ...get().menu, openMenus: newOpenMenus } });
+        set((state) => {
+            const currentState = state.menu.openMenus[menu];
+            // Close all menus first
+            const newOpenMenus = {
+                niIcon: false,
+                view: false,
+                art: false,
+                tools: false,
+            };
+            // Then toggle the clicked menu
+            newOpenMenus[menu] = !currentState;
+            return {
+                menu: { ...state.menu, openMenus: newOpenMenus },
+            };
+        });
     },
 
     closeAllMenus: () => {

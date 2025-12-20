@@ -1,6 +1,6 @@
 "use client"; // Must be client for ThemeProvider
 
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Hexagon, Moon, Sun, Monitor } from "lucide-react";
 import { ThemeProvider, useTheme } from "next-themes";
@@ -14,6 +14,13 @@ import { ImageLoaderProvider } from "@/app/hooks/useImageLoader";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const nunitoSans = Nunito_Sans({
+    subsets: ["latin"],
+    variable: "--font-nunito-sans",
+    weight: ["200", "300", "400", "500", "600", "700", "800", "900", "1000"],
+    style: ["normal", "italic"],
+    // opticalSizing: true,
+});
 
 // Separate component to prevent hydration mismatch on the toggle
 function ThemeToggle() {
@@ -70,9 +77,19 @@ export default function RootLayout({
                     name="viewport"
                     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
                 />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link
+                    rel="preconnect"
+                    href="https://fonts.gstatic.com"
+                    crossOrigin="anonymous"
+                />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+                    rel="stylesheet"
+                />
             </head>
             <body
-                className={`${inter.variable} ${mono.variable} font-sans h-full w-full overflow-hidden flex flex-col antialiased bg-[rgb(var(--bg-desktop))] transition-colors duration-300`}
+                className={`${inter.variable} ${mono.variable} ${nunitoSans.variable} font-sans h-full w-full overflow-hidden flex flex-col antialiased bg-[rgb(var(--bg-desktop))] transition-colors duration-300`}
             >
                 <ThemeProvider
                     attribute="class"

@@ -183,3 +183,17 @@ body {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
         0 1px 2px rgba(0, 0, 0, 0.2);
 }
+
+/* Font Utilities */
+.nunito-sans {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+}
+
+.bbh-bartle-regular {
+    font-family: "BBH Bartle", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}

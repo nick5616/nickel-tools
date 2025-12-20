@@ -70,11 +70,7 @@ export default function About() {
 
     return (
         <div className="w-full bg-transparent">
-            <div className="w-full p-6">
-                <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">
-                    About Nickel OS
-                </h2>
-
+            <div className="w-full py-2 md:p-6">
                 <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-6">
                     I made this website to chuck anything I want onto it. So far
                     we have {NICKEL_SYSTEM.content.length} apps and tools.
@@ -91,11 +87,6 @@ export default function About() {
                             ([category, items]) => (
                                 <div key={category} className="space-y-3">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-xl">
-                                            {getCategoryIcon(
-                                                category as Category
-                                            )}
-                                        </span>
                                         <h4 className="text-base font-semibold text-[rgb(var(--text-primary))]">
                                             {category}
                                         </h4>
@@ -103,14 +94,14 @@ export default function About() {
                                             ({items.length})
                                         </span>
                                     </div>
-                                    <div className="space-y-2 pl-2">
+                                    <div className="space-y-2">
                                         {items.map((item) => (
                                             <button
                                                 key={item.id}
                                                 onClick={() =>
                                                     handleItemClick(item)
                                                 }
-                                                className="w-full text-left p-3 rounded-lg bg-[rgb(var(--bg-button))] hover:bg-[rgb(var(--bg-button-hover))] active:bg-[rgb(var(--bg-button-hover))] transition-colors group"
+                                                className="w-full text-left mb-2 rounded-lg bg-[rgb(var(--bg-button))] transition-colors group"
                                             >
                                                 <div className="flex items-start gap-3">
                                                     <div className="flex-shrink-0 mt-0.5">
@@ -124,21 +115,8 @@ export default function About() {
                                                             <h5 className="text-sm font-medium text-[rgb(var(--text-primary))] group-hover:underline">
                                                                 {item.title}
                                                             </h5>
-                                                            <span
-                                                                className={`text-xs px-2 py-0.5 rounded-full ${getStatusBadgeColor(
-                                                                    item.status
-                                                                )}`}
-                                                            >
-                                                                {getStatusLabel(
-                                                                    item.status
-                                                                )}
-                                                            </span>
-                                                            {item.featured && (
-                                                                <span className="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]">
-                                                                    Featured
-                                                                </span>
-                                                            )}
                                                         </div>
+
                                                         <p className="text-xs text-[rgb(var(--text-secondary))] line-clamp-2">
                                                             {item.description}
                                                         </p>
@@ -164,6 +142,21 @@ export default function About() {
                                                                     )}
                                                                 </div>
                                                             )}
+
+                                                        <span
+                                                            className={`text-xs px-2 py-0.5 rounded-full ${getStatusBadgeColor(
+                                                                item.status
+                                                            )}`}
+                                                        >
+                                                            {getStatusLabel(
+                                                                item.status
+                                                            )}
+                                                        </span>
+                                                        {item.featured && (
+                                                            <span className="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]">
+                                                                Featured
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     <div className="flex-shrink-0">
                                                         {item.type ===
@@ -187,7 +180,7 @@ export default function About() {
                 </div>
 
                 {/* Connect Section */}
-                <div className="pt-4 mt-6 border-t border-[rgb(var(--border-window))]">
+                <div className="pt-4 mt-6">
                     <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4">
                         Connect
                     </h3>
@@ -196,7 +189,7 @@ export default function About() {
                             href="https://github.com/nick5616"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-4 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
+                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
                         >
                             <Github size={20} />
                             <span className="text-base">GitHub</span>
@@ -209,7 +202,7 @@ export default function About() {
                             href="https://linkedin.com/in/nicolasbelovoskey"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-4 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
+                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
                         >
                             <Linkedin size={20} />
                             <span className="text-base">LinkedIn</span>
@@ -220,7 +213,7 @@ export default function About() {
                         </a>
                         <a
                             href="mailto:nicolasbelovoskey@gmail.com"
-                            className="flex items-center gap-3 px-4 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
+                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
                         >
                             <Mail size={20} />
                             <span className="text-base">Email</span>

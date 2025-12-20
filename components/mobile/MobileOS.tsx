@@ -16,6 +16,7 @@ import { getAllContent } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
 import { X } from "lucide-react";
 import { AppTray } from "@/components/shared/AppTray";
+import { RevolvingText } from "@/components/shared/RevolvingText";
 
 export function MobileOS() {
     const allContent = getAllContent();
@@ -33,6 +34,8 @@ export function MobileOS() {
     const [isDragging, setIsDragging] = useState(false);
     const [showIndicators, setShowIndicators] = useState(false);
     const hideIndicatorsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const modalHeaderRef = useRef<HTMLDivElement>(null);
+    const [titleContainerWidth, setTitleContainerWidth] = useState(0);
 
     // Calculate how many apps fit per page
     // Grid is 3 columns, with padding and gaps
@@ -118,6 +121,24 @@ export function MobileOS() {
             }
         };
     }, []);
+
+    // Calculate available width for title in modal header
+    useEffect(() => {
+        const updateTitleWidth = () => {
+            if (modalHeaderRef.current && selectedContent) {
+                const headerWidth = modalHeaderRef.current.offsetWidth;
+                const padding = 32; // p-4 = 16px on each side = 32px total
+                const buttonWidth = 32; // w-8 = 32px
+                const gap = 16; // gap between title and button (flex gap)
+                const availableWidth =
+                    headerWidth - padding - buttonWidth - gap;
+                setTitleContainerWidth(Math.max(0, availableWidth));
+            }
+        };
+        updateTitleWidth();
+        window.addEventListener("resize", updateTitleWidth);
+        return () => window.removeEventListener("resize", updateTitleWidth);
+    }, [selectedContent]);
 
     const handleOpenItem = (content: Content) => {
         setSelectedContent(content);
@@ -342,7 +363,9 @@ export function MobileOS() {
             {/* App Tray - Only show on home screen (when no app is selected) and when we are not on the first or last page (left and right screen) */}
             {!selectedContent &&
                 currentPageIndex !== leftPageIndex &&
-                currentPageIndex !== rightPageIndex && <AppTray />}
+                currentPageIndex !== rightPageIndex && (
+                    <AppTray onOpenItem={handleOpenItem} />
+                )}
 
             {/* Full Screen Modal for Content */}
             <AnimatePresence>
@@ -354,13 +377,22 @@ export function MobileOS() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <div className="p-4 border-b border-[rgb(var(--border-window))] flex items-center justify-between flex-shrink-0">
-                            <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))]">
-                                {selectedContent.title}
-                            </h2>
+                        <div
+                            ref={modalHeaderRef}
+                            className="p-4 border-b border-[rgb(var(--border-window))] flex items-center justify-between gap-4 flex-shrink-0"
+                        >
+                            <div className="flex-1 min-w-0">
+                                {titleContainerWidth > 0 && (
+                                    <RevolvingText
+                                        text={selectedContent.title}
+                                        containerWidth={titleContainerWidth}
+                                        className="text-lg font-bbh-bartle font-semibold text-[rgb(var(--text-primary))]"
+                                    />
+                                )}
+                            </div>
                             <button
                                 onClick={handleCloseModal}
-                                className="w-8 h-8 rounded-full hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
+                                className="w-8 h-8 flex-shrink-0 rounded-full hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
                                 aria-label="Close"
                             >
                                 <X size={20} />

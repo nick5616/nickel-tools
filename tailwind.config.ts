@@ -10,8 +10,11 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["var(--font-inter)"],
+                sans: ["var(--font-nunito-sans)", "Nunito Sans", "sans-serif"],
                 mono: ["var(--font-mono)"],
+                "nunito-sans": ["var(--font-nunito-sans)", "Nunito Sans", "sans-serif"],
+                "bbh-bartle": ['"BBH Bartle"', "sans-serif"],
+                inter: ["var(--font-inter)"],
             },
             animation: {
                 shimmer: "shimmer 2s infinite linear",

@@ -11,7 +11,7 @@ import { getAllContent } from "@/app/data/content";
 export function useAppMessages(): string[] {
     const messages = useMemo(() => {
         const allContent = getAllContent();
-        
+
         // Filter to only operational apps (exclude system windows like about, contact, settings)
         const apps = allContent.filter(
             (item) =>
@@ -19,19 +19,17 @@ export function useAppMessages(): string[] {
                 !["about", "contact", "settings"].includes(item.id)
         );
 
-        // Generate messages about each app with varied phrasing
+        // Generate messages about each app using full descriptions
         const appMessages = apps.flatMap((app) => {
-            // Create different message variations for each app
+            // Create different message variations that incorporate the full description
             const variations = [
-                `Check out ${app.title}`,
-                `Explore ${app.title}`,
-                `Try ${app.title}`,
-                `Discover ${app.title}`,
-                `Visit ${app.title}`,
+                `${app.title}: ${app.description}`,
+                `Check out ${app.title} - ${app.description}`,
+                `Explore ${app.title}. ${app.description}`,
             ];
-            
+
             // Return all variations so we can cycle through them
-            // This gives more variety in the messages
+            // This gives more variety in the messages while using the full description
             return variations;
         });
 
@@ -43,4 +41,3 @@ export function useAppMessages(): string[] {
 
     return messages;
 }
-

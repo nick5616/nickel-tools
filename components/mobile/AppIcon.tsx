@@ -15,7 +15,7 @@ export function AppIcon({ content, onClick }: AppIconProps) {
     return (
         <motion.button
             onClick={onClick}
-            className="flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-[rgb(var(--bg-button-hover))] transition-colors w-full"
+            className="flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-[rgb(var(--bg-button-hover))] transition-colors w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-nickel))] focus-visible:ring-offset-2"
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

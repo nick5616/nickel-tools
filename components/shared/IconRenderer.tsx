@@ -44,7 +44,7 @@ const getPixels = (size: "sm" | "md" | "lg", isArtThumbnail: boolean) => {
             if (isArtThumbnail) {
                 return 32;
             }
-            return 16;
+            return 32;
         case "md":
             if (isArtThumbnail) {
                 return 48;
@@ -106,50 +106,72 @@ export function IconRenderer({
     // Always call hooks at the top level - never conditionally
     const imageRef = React.useRef<HTMLImageElement | null>(null);
     const hasReportedRef = React.useRef(false);
+    const thumbnailFetchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
     const sizeConfig = getSizeConfig(size, !!artGalleryThumbnail);
     const sizeClass = sizeConfig.class;
 
-    // Register image loading for art galleries
+    // Register image loading for art galleries IMMEDIATELY (don't wait for thumbnail URL)
     React.useEffect(() => {
         if (isArtGallery) {
+            // Register immediately so the image loader knows to wait for this image
             registerImage(`art-thumbnail-${content.id}`);
-
-            // If thumbnail is null (failed to fetch or not available), mark as error after a delay
-            // This handles the case where the thumbnail fetch fails
-            if (artGalleryThumbnail === null) {
-                const timer = setTimeout(() => {
-                    // Check if it's still null - if so, no image to load
-                    markImageError(`art-thumbnail-${content.id}`);
-                }, 2000); // Give it 2 seconds for the fetch to complete
-                return () => clearTimeout(timer);
-            }
-            // If thumbnail is available, the img tag's onLoad/onError will handle it
         }
-    }, [
-        isArtGallery,
-        artGalleryThumbnail,
-        content.id,
-        registerImage,
-        markImageError,
-    ]);
+    }, [isArtGallery, content.id, registerImage]);
+
+    // Handle thumbnail fetch state - wait for thumbnail to be fetched
+    React.useEffect(() => {
+        if (!isArtGallery) return;
+
+        // Clear any existing timeout
+        if (thumbnailFetchTimeoutRef.current) {
+            clearTimeout(thumbnailFetchTimeoutRef.current);
+            thumbnailFetchTimeoutRef.current = null;
+        }
+
+        // If thumbnail is null, wait for it to be fetched (or timeout if it fails)
+        if (artGalleryThumbnail === null) {
+            // Give it time to fetch - if still null after 5 seconds, mark as error
+            thumbnailFetchTimeoutRef.current = setTimeout(() => {
+                // Re-check if thumbnail is still null after timeout
+                // If it's still null, there's no image to load (fetch failed or no images available)
+                markImageError(`art-thumbnail-${content.id}`);
+            }, 5000); // Give it 5 seconds for the fetch to complete
+        }
+        // If thumbnail is available, the img tag's onLoad/onError will handle it
+
+        return () => {
+            if (thumbnailFetchTimeoutRef.current) {
+                clearTimeout(thumbnailFetchTimeoutRef.current);
+            }
+        };
+    }, [isArtGallery, artGalleryThumbnail, content.id, markImageError]);
 
     // Reset refs when content changes
     React.useEffect(() => {
         hasReportedRef.current = false;
     }, [content.id]);
 
-    // Check if image is already loaded when component mounts (for art galleries)
+    // Check if image is already loaded when thumbnail becomes available (for art galleries)
+    // This handles cases where the image is cached and loads instantly
     React.useEffect(() => {
-        if (
-            isArtGallery &&
-            artGalleryThumbnail &&
-            imageRef.current?.complete &&
-            !hasReportedRef.current
-        ) {
-            hasReportedRef.current = true;
-            markImageLoaded(`art-thumbnail-${content.id}`);
-        }
+        if (!isArtGallery || !artGalleryThumbnail) return;
+
+        // Give the image element a moment to render and start loading
+        const checkImageLoaded = () => {
+            if (imageRef.current?.complete && !hasReportedRef.current) {
+                hasReportedRef.current = true;
+                markImageLoaded(`art-thumbnail-${content.id}`);
+            }
+        };
+
+        // Check immediately (in case it's already loaded from cache)
+        checkImageLoaded();
+
+        // Also check after a short delay to catch images that load very quickly
+        const timeoutId = setTimeout(checkImageLoaded, 100);
+
+        return () => clearTimeout(timeoutId);
     }, [isArtGallery, artGalleryThumbnail, content.id, markImageLoaded]);
 
     // For external links, use favicon

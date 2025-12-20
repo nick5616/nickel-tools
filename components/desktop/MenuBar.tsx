@@ -179,7 +179,7 @@ export function MenuBar() {
                     <div
                         ref={niIconRef}
                         onClick={() => toggleMenu("niIcon")}
-                        className="w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-menubar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
+                        className=" w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-menubar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
                     >
                         Ni
                     </div>
@@ -188,12 +188,13 @@ export function MenuBar() {
                         onClose={() => toggleMenu("niIcon")}
                         items={niIconMenuItems}
                         position={getMenuPosition(niIconRef)}
+                        triggerRef={niIconRef}
                     />
-                    <span className="font-bold text-[rgb(var(--text-menubar))]">
+                    <span className="font-bold font-bbh-bartle text-[rgb(var(--text-menubar))]">
                         NICKEL
                     </span>
                 </div>
-                <div className="hidden md:flex items-center gap-4 text-xs font-mono text-[rgb(var(--text-menubar))]/70 relative">
+                <div className="hidden md:flex items-center gap-4 text-s text-[rgb(var(--text-menubar))]/70 relative">
                     <button
                         ref={viewMenuRef}
                         onClick={() => toggleMenu("view")}
@@ -210,6 +211,7 @@ export function MenuBar() {
                         onClose={() => toggleMenu("view")}
                         items={viewMenuItems}
                         position={getMenuPosition(viewMenuRef)}
+                        triggerRef={viewMenuRef}
                     />
                     <button
                         ref={artMenuRef}
@@ -227,6 +229,7 @@ export function MenuBar() {
                         onClose={() => toggleMenu("art")}
                         items={artMenuItems}
                         position={getMenuPosition(artMenuRef)}
+                        triggerRef={artMenuRef}
                     />
                     <button
                         ref={toolsMenuRef}
@@ -244,12 +247,13 @@ export function MenuBar() {
                         onClose={() => toggleMenu("tools")}
                         items={toolsMenuItems}
                         position={getMenuPosition(toolsMenuRef)}
+                        triggerRef={toolsMenuRef}
                     />
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <span className="text-xs text-[rgb(var(--text-menubar))]/60 font-mono">
-                    ELEMENT 28 / FOUNDRY
+                <span className="text-xs font-bbh-bartle text-[rgb(var(--text-menubar))]/60">
+                    ELEMENT 28
                 </span>
 
                 <button

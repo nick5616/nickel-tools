@@ -86,12 +86,13 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
                                     className="text-sm text-center"
                                     style={{
                                         color: "rgb(var(--text-secondary))",
-                                        width: "300px",
+                                        width: "400px",
+                                        maxWidth: "90vw",
                                     }}
                                 >
                                     <RevolvingText
                                         text={currentMessage}
-                                        containerWidth={300}
+                                        containerWidth={400}
                                         className="text-[rgb(var(--text-secondary))]"
                                     />
                                 </div>

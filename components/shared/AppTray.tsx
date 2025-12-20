@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { getContentById } from "@/app/data/content";
+import type { Content } from "@/app/data/content";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,9 +12,10 @@ import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 interface AppTrayProps {
     variant?: "fixed" | "relative";
+    onOpenItem?: (content: Content) => void;
 }
 
-export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
+export function AppTray({ variant = "fixed", onOpenItem }: AppTrayProps = {}) {
     const pathname = usePathname();
     const isMobile = useDeviceType();
     // Get the three apps for the tray
@@ -70,7 +72,7 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
     const isDesktop = !isMobile;
     const iconSize = isDesktop ? "md" : "lg";
     const iconSizePx = isDesktop ? 40 : 48;
-    const containerPadding = isDesktop ? "px-3 py-2" : "p-2 py-4";
+    const containerPadding = isDesktop ? "px-3 py-2" : "p-2";
     const containerMargin = isDesktop ? "m-0" : "m-2";
     const containerMinHeight = isDesktop ? "auto" : "80px";
     const containerWidth = isDesktop ? "auto" : "100%";
@@ -83,7 +85,7 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
             style={containerStyle}
         >
             <motion.div
-                className={`border-t-2 ${containerPadding} ${containerMargin} rounded-2xl flex ${gapSize} shadow-2xl pointer-events-auto relative`}
+                className={`${containerPadding} ${containerMargin} rounded-2xl flex ${gapSize} shadow-2xl pointer-events-auto relative`}
                 style={{
                     backgroundColor: "rgb(var(--bg-window) / 0.7)",
                     minHeight: containerMinHeight,
@@ -99,6 +101,61 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
             >
                 {trayApps.map((app) => {
                     if (app.type === "external") {
+                        // External apps should open in window/modal if onOpenItem is provided
+                        if (onOpenItem) {
+                            return (
+                                <motion.div
+                                    key={app.id}
+                                    className={`${
+                                        isDesktop ? "" : "flex-1"
+                                    } flex justify-center gap-2`}
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 300,
+                                    }}
+                                >
+                                    <button
+                                        onClick={() => onOpenItem(app)}
+                                        className={`${
+                                            isDesktop ? "w-12 h-12" : "w-full"
+                                        } ${
+                                            !isDesktop
+                                                ? "max-w-[140px] min-w-[100px]"
+                                                : ""
+                                        } rounded-xl flex flex-col items-center justify-center gap-2 transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500 focus-visible:ring-offset-2`}
+                                        title={app.title}
+                                    >
+                                        <div
+                                            className="flex-1 flex items-center justify-center w-full"
+                                            style={{ minHeight: 0 }}
+                                        >
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                <IconRenderer
+                                                    content={app}
+                                                    size={iconSize}
+                                                    className="text-zinc-900 dark:text-zinc-100"
+                                                />
+                                            </div>
+                                        </div>
+                                        {!isDesktop && (
+                                            <AppTrayTitle
+                                                text={app.title}
+                                                isExternal={true}
+                                                iconSize={iconSizePx}
+                                            />
+                                        )}
+                                        {isDesktop && (
+                                            <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                                                {app.title}
+                                            </div>
+                                        )}
+                                    </button>
+                                </motion.div>
+                            );
+                        }
+                        // Fallback to opening in new tab if onOpenItem is not provided
                         return (
                             <motion.div
                                 key={app.id}
@@ -163,6 +220,60 @@ export function AppTray({ variant = "fixed" }: AppTrayProps = {}) {
                     // Only internal apps have routes
                     if (app.type !== "internal") return null;
 
+                    // Internal apps should open in window/modal if onOpenItem is provided
+                    if (onOpenItem) {
+                        return (
+                            <motion.div
+                                key={app.id}
+                                className={`${
+                                    isDesktop ? "" : "flex-1"
+                                } flex justify-center gap-2`}
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                }}
+                            >
+                                <button
+                                    onClick={() => onOpenItem(app)}
+                                    className={`${
+                                        isDesktop
+                                            ? "w-12 h-12"
+                                            : "w-full min-w-[100px]"
+                                    } rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-700 active:bg-zinc-200 dark:active:bg-zinc-600 flex flex-col items-center justify-center gap-2 transition-all relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500 focus-visible:ring-offset-2`}
+                                    title={app.title}
+                                >
+                                    <div
+                                        className="flex-1 flex items-center justify-center w-full"
+                                        style={{ minHeight: 0 }}
+                                    >
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <IconRenderer
+                                                content={app}
+                                                size={iconSize}
+                                                className="text-zinc-900 dark:text-zinc-100"
+                                            />
+                                        </div>
+                                    </div>
+                                    {!isDesktop && (
+                                        <AppTrayTitle
+                                            text={app.title}
+                                            isActive={false}
+                                            iconSize={iconSizePx}
+                                        />
+                                    )}
+                                    {isDesktop && (
+                                        <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                                            {app.title}
+                                        </div>
+                                    )}
+                                </button>
+                            </motion.div>
+                        );
+                    }
+
+                    // Fallback to Link if onOpenItem is not provided
                     const isActive = pathname === app.route;
                     return (
                         <motion.div
