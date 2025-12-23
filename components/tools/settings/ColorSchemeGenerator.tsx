@@ -1381,13 +1381,8 @@ export function ColorSchemeGenerator() {
         },
         {
             type: "square",
-            label: "Square",
+            label: "Tetradic",
             description: "Four evenly spaced colors (90°)",
-        },
-        {
-            type: "rectangular",
-            label: "Rectangular",
-            description: "Four colors (60° and 180°)",
         },
     ];
 
