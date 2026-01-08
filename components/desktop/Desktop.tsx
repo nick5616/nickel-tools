@@ -131,6 +131,7 @@ export function Desktop({
             art: "Art",
             "immersive-web": "Immersive Web",
             "social-tools": "Social Tools",
+            "ai-tools": "AI / Productivity",
         };
 
         const targetCategory = categoryMap[menu.viewFilter];

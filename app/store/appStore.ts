@@ -23,6 +23,7 @@ export type ViewFilter =
     | "art"
     | "immersive-web"
     | "social-tools"
+    | "ai-tools"
     | "tools-only";
 export type SortMethod = "date" | "category" | "name";
 
@@ -33,7 +34,6 @@ interface MenuState {
         niIcon: boolean;
         view: boolean;
         art: boolean;
-        tools: boolean;
     };
 }
 
@@ -64,12 +64,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     windows: [],
     menu: {
         viewFilter: "all",
-        sortMethod: "category",
+        sortMethod: "name",
         openMenus: {
             niIcon: false,
             view: false,
             art: false,
-            tools: false,
         },
     },
 
@@ -263,7 +262,6 @@ export const useAppStore = create<AppState>((set, get) => ({
                 niIcon: false,
                 view: false,
                 art: false,
-                tools: false,
             };
             // Then toggle the clicked menu
             newOpenMenus[menu] = !currentState;
@@ -281,7 +279,6 @@ export const useAppStore = create<AppState>((set, get) => ({
                     niIcon: false,
                     view: false,
                     art: false,
-                    tools: false,
                 },
             },
         });

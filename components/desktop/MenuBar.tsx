@@ -71,29 +71,34 @@ export function MenuBar() {
             checked: menu.viewFilter === "all",
         },
         {
-            label: "Engineering Only",
+            label: "Engineering",
             onClick: () => setViewFilter("engineering"),
             checked: menu.viewFilter === "engineering",
         },
         {
-            label: "Music Only",
+            label: "Music",
             onClick: () => setViewFilter("music"),
             checked: menu.viewFilter === "music",
         },
         {
-            label: "Art Only",
+            label: "Art",
             onClick: () => setViewFilter("art"),
             checked: menu.viewFilter === "art",
         },
         {
-            label: "Immersive Web Only",
+            label: "Immersive Web",
             onClick: () => setViewFilter("immersive-web"),
             checked: menu.viewFilter === "immersive-web",
         },
         {
-            label: "Social Tools Only",
+            label: "Social Tools",
             onClick: () => setViewFilter("social-tools"),
             checked: menu.viewFilter === "social-tools",
+        },
+        {
+            label: "AI Tools",
+            onClick: () => setViewFilter("ai-tools"),
+            checked: menu.viewFilter === "ai-tools",
         },
         { separator: true },
         {
@@ -230,24 +235,6 @@ export function MenuBar() {
                         items={artMenuItems}
                         position={getMenuPosition(artMenuRef)}
                         triggerRef={artMenuRef}
-                    />
-                    <button
-                        ref={toolsMenuRef}
-                        onClick={() => toggleMenu("tools")}
-                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
-                            menu.openMenus.tools
-                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
-                                : ""
-                        }`}
-                    >
-                        Tools
-                    </button>
-                    <MenuDropdown
-                        isOpen={menu.openMenus.tools}
-                        onClose={() => toggleMenu("tools")}
-                        items={toolsMenuItems}
-                        position={getMenuPosition(toolsMenuRef)}
-                        triggerRef={toolsMenuRef}
                     />
                 </div>
             </div>

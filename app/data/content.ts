@@ -1,3 +1,6 @@
+import React from "react";
+import { BatchAnalyzerDescription } from "@/components/descriptions/BatchAnalyzerDescription";
+
 // Core content types
 export type ContentType = "external" | "internal" | "media" | "collection";
 export type Status =
@@ -33,6 +36,8 @@ interface BaseContent {
     dateAdded: string;
     featured?: boolean;
     tags?: string[];
+    hasContentfulDescription?: boolean; // If true, modal shows React component instead of description
+    contentfulDescription?: ContentfulDescriptionComponent; // React component to render in modal
 }
 
 export interface ExternalLink extends BaseContent {
@@ -62,6 +67,11 @@ export interface Collection extends BaseContent {
 }
 
 export type Content = ExternalLink | InternalApp | MediaItem | Collection;
+
+// Type for contentful description renderer (defined after Content to avoid circular reference)
+export type ContentfulDescriptionComponent = React.ComponentType<{
+    content: Content;
+}>;
 
 // The master content array
 export interface NickelSystem {
@@ -424,6 +434,23 @@ export const NICKEL_SYSTEM: NickelSystem = {
             tags: ["games", "quiz", "pokemon", "technology"],
             windowWidth: 300,
             windowHeight: 400,
+        },
+        {
+            id: "batch-analyzer",
+            type: "external",
+            title: "Batch Analyzer",
+            description:
+                "Batch analyze product images by sending the same queries (like 'How many books are in the image?') to each image in the batch. Plug and play with your own LLM, or use a key to my LLM instance (gpt-40-mini) available below. Please don't steal it. You would only get like $4 worth of tokens and then my thing would be broken.",
+            thumbnail: "/project-screenshots/latex.png", // Placeholder
+            category: "AI / Productivity",
+            status: "operational",
+            url: "https://batch-analyzer.netlify.app/",
+            openInNewTab: true,
+            dateAdded: "2024-01-15",
+            featured: false,
+            tags: ["ai", "image-analysis", "batch-processing", "llm"],
+            hasContentfulDescription: true,
+            contentfulDescription: BatchAnalyzerDescription,
         },
     ],
     featured: ["resume-builder", "smart-piano", "portfolio", "saucedog-art"],
