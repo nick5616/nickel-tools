@@ -144,24 +144,29 @@ export function AppWindow({
                                 {window.content.title}
                             </span>
                             <div className="relative group overflow-visible">
-                                <Info
-                                    size={14}
-                                    onClick={
-                                        window.content.hasContentfulDescription
-                                            ? handleInfoClick
-                                            : undefined
-                                    }
-                                    className={`text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors ${
-                                        window.content.hasContentfulDescription
-                                            ? "cursor-pointer"
-                                            : "cursor-help"
-                                    }`}
+                                <span
                                     title={
                                         window.content.hasContentfulDescription
                                             ? "Click me for more info!"
                                             : undefined
                                     }
-                                />
+                                >
+                                    <Info
+                                        size={14}
+                                        onClick={
+                                            window.content
+                                                .hasContentfulDescription
+                                                ? handleInfoClick
+                                                : undefined
+                                        }
+                                        className={`text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors ${
+                                            window.content
+                                                .hasContentfulDescription
+                                                ? "cursor-pointer"
+                                                : "cursor-help"
+                                        }`}
+                                    />
+                                </span>
                                 {!window.content.hasContentfulDescription && (
                                     <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-[9999] pointer-events-none w-96">
                                         <div className="bg-[rgb(var(--bg-window))] text-[rgb(var(--text-primary))] text-xs rounded px-2 py-1 shadow-lg border border-[rgb(var(--border-window))] whitespace-normal">
@@ -222,87 +227,108 @@ export function AppWindow({
                                     transition={{ duration: 0.2 }}
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                {/* Modal Header */}
-                                <div className="bg-[rgb(var(--bg-titlebar))] border-b border-[rgb(var(--border-window))] px-4 py-3 flex items-center justify-between">
-                                    <h3 className="text-sm font-medium text-[rgb(var(--text-titlebar))]">
-                                        {window.content.title}
-                                    </h3>
-                                    <button
-                                        onClick={() => setIsInfoModalOpen(false)}
-                                        className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
-                                        aria-label="Close"
-                                    >
-                                        <X size={16} />
-                                    </button>
-                                </div>
+                                    {/* Modal Header */}
+                                    <div className="bg-[rgb(var(--bg-titlebar))] border-b border-[rgb(var(--border-window))] px-4 py-3 flex items-center justify-between">
+                                        <h3 className="text-sm font-medium text-[rgb(var(--text-titlebar))]">
+                                            {window.content.title}
+                                        </h3>
+                                        <button
+                                            onClick={() =>
+                                                setIsInfoModalOpen(false)
+                                            }
+                                            className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
+                                            aria-label="Close"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
 
-                                {/* Modal Content */}
-                                <div className="flex-1 overflow-auto p-4">
-                                    {window.content.hasContentfulDescription ? (
-                                        <ContentfulDescriptionRenderer
-                                            content={window.content}
-                                        />
-                                    ) : (
-                                        <div className="space-y-4">
-                                            <div>
-                                                <h4 className="text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
-                                                    Description
-                                                </h4>
-                                                <div className="bg-[rgb(var(--bg-desktop))] rounded p-3 border border-[rgb(var(--border-window))]">
-                                                    <p className="text-sm text-[rgb(var(--text-primary))] whitespace-pre-wrap break-words">
-                                                        {window.content.description}
-                                                    </p>
-                                                </div>
-                                                <button
-                                                    onClick={handleCopyDescription}
-                                                    className="mt-2 flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
-                                                >
-                                                    {copied ? (
-                                                        <>
-                                                            <Check size={14} />
-                                                            <span>Copied!</span>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <Copy size={14} />
-                                                            <span>
-                                                                Copy description
-                                                            </span>
-                                                        </>
-                                                    )}
-                                                </button>
-                                            </div>
-
-                                            {/* Security Warning */}
-                                            {window.content.description.includes(
-                                                "sk-"
-                                            ) && (
-                                                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-3">
-                                                    <h4 className="text-sm font-medium text-yellow-600 dark:text-yellow-400 mb-2">
-                                                        ⚠️ Security Warning
+                                    {/* Modal Content */}
+                                    <div className="flex-1 overflow-auto p-4">
+                                        {window.content
+                                            .hasContentfulDescription ? (
+                                            <ContentfulDescriptionRenderer
+                                                content={window.content}
+                                            />
+                                        ) : (
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
+                                                        Description
                                                     </h4>
-                                                    <p className="text-xs text-yellow-700 dark:text-yellow-300">
-                                                        This description contains
-                                                        an API key. Sending API
-                                                        keys through client-side
-                                                        code is inherently
-                                                        insecure and should never
-                                                        be done in production
-                                                        applications. API keys
-                                                        can be easily extracted
-                                                        from client code and used
-                                                        maliciously. Always use
-                                                        server-side endpoints or
-                                                        environment variables for
-                                                        sensitive credentials.
-                                                    </p>
+                                                    <div className="bg-[rgb(var(--bg-desktop))] rounded p-3 border border-[rgb(var(--border-window))]">
+                                                        <p className="text-sm text-[rgb(var(--text-primary))] whitespace-pre-wrap break-words">
+                                                            {
+                                                                window.content
+                                                                    .description
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={
+                                                            handleCopyDescription
+                                                        }
+                                                        className="mt-2 flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
+                                                    >
+                                                        {copied ? (
+                                                            <>
+                                                                <Check
+                                                                    size={14}
+                                                                />
+                                                                <span>
+                                                                    Copied!
+                                                                </span>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <Copy
+                                                                    size={14}
+                                                                />
+                                                                <span>
+                                                                    Copy
+                                                                    description
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                    </button>
                                                 </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        </div>
+
+                                                {/* Security Warning */}
+                                                {window.content.description.includes(
+                                                    "sk-"
+                                                ) && (
+                                                    <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-3">
+                                                        <h4 className="text-sm font-medium text-yellow-600 dark:text-yellow-400 mb-2">
+                                                            ⚠️ Security Warning
+                                                        </h4>
+                                                        <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                                                            This description
+                                                            contains an API key.
+                                                            Sending API keys
+                                                            through client-side
+                                                            code is inherently
+                                                            insecure and should
+                                                            never be done in
+                                                            production
+                                                            applications. API
+                                                            keys can be easily
+                                                            extracted from
+                                                            client code and used
+                                                            maliciously. Always
+                                                            use server-side
+                                                            endpoints or
+                                                            environment
+                                                            variables for
+                                                            sensitive
+                                                            credentials.
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            </div>
                         </>
                     )}
                 </AnimatePresence>
