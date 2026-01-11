@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Metallic gradient for industrial look -->
+    <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5a6578;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#3d4858;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#2a3444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a202c;stop-opacity:1" />
+    </linearGradient>
+    <!-- Highlight gradient for metallic shine -->
+    <linearGradient id="metalHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8a95a8;stop-opacity:0.4" />
+      <stop offset="50%" style="stop-color:#4a5568;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#1a202c;stop-opacity:0" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-opacity="0.4"/>
+    </filter>
+    <filter id="textShadow">
+      <feDropShadow dx="0.5" dy="0.5" stdDeviation="0.5" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  
+  <!-- Metallic background circle - industrial tag base -->
+  <circle cx="32" cy="32" r="30" fill="url(#metalGradient)" stroke="#1a202c" stroke-width="2"/>
+  
+  <!-- Metallic highlight overlay -->
+  <circle cx="32" cy="32" r="30" fill="url(#metalHighlight)"/>
+  
+  <!-- Industrial rim/border -->
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#6b7280" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#1a202c" stroke-width="0.5" opacity="0.3"/>
+  
+  <!-- Ni chemical symbol text - N uppercase, i lowercase at half height -->
+  <text 
+    x="24" 
+    y="42" 
+    font-family="Arial, 'Helvetica Neue', sans-serif" 
+    font-size="26" 
+    font-weight="900" 
+    fill="#f1f5f9" 
+    text-anchor="middle" 
+    filter="url(#textShadow)"
+    style="font-stretch: condensed;">
+    N
+  </text>
+  <!-- Lowercase i with explicit dot -->
+  <text 
+    x="40" 
+    y="42" 
+    font-family="Arial, 'Helvetica Neue', sans-serif" 
+    font-size="13" 
+    font-weight="900" 
+    fill="#f1f5f9" 
+    text-anchor="middle" 
+    filter="url(#textShadow)"
+    style="font-stretch: condensed;">
+    i
+  </text>
+  <!-- Dot above the i -->
+  <circle 
+    cx="40" 
+    cy="28" 
+    r="2.5" 
+    fill="#f1f5f9" 
+    filter="url(#textShadow)"/>
+</svg>
+
