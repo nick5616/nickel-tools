@@ -22,7 +22,7 @@ const getDefaultIconPositions = (
 
     // Fixed spacing values
     const iconWidth = 96; // Icon width
-    const columnWidth = 200; // Horizontal spacing between icons
+    const columnWidth = 150; // Horizontal spacing between icons
     const rowHeight = 150; // Vertical spacing between rows
     const startX = 20; // Anchor to top-left
     const startY = 20; // Anchor to top-left
