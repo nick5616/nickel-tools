@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import type { Content } from "@/app/data/content";
 import { DesktopIcon } from "./DesktopIcon";
 import { useAppStore } from "@/app/store/appStore";
@@ -103,15 +103,18 @@ export function Desktop({
     onContextMenu,
 }: DesktopProps) {
     const [viewportWidth, setViewportWidth] = useState(0);
-    const { menu } = useAppStore();
+    const [viewportHeight, setViewportHeight] = useState(0);
+    const { menu, desktopPage, setDesktopPage, setDesktopTotalPages } =
+        useAppStore();
 
     useEffect(() => {
-        const updateWidth = () => {
+        const updateDimensions = () => {
             setViewportWidth(window.innerWidth);
+            setViewportHeight(window.innerHeight);
         };
-        updateWidth();
-        window.addEventListener("resize", updateWidth);
-        return () => window.removeEventListener("resize", updateWidth);
+        updateDimensions();
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
     }, []);
 
     // Filter content based on viewFilter
@@ -142,12 +145,65 @@ export function Desktop({
         return content.filter((item) => item.category === targetCategory);
     }, [content, menu.viewFilter]);
 
-    // Use viewport width once available, or fallback to a reasonable default
+    // Use viewport dimensions once available, or fallback to reasonable defaults
     const effectiveWidth = viewportWidth || 1920;
-    const iconPositions = getDefaultIconPositions(
+    const effectiveHeight = viewportHeight || 1080;
+
+    // Calculate rows per page based on viewport height
+    // Desktop area is h-[calc(100vh-48px)], so we subtract 48px for menu bar
+    // Also account for startY padding (20px) and some bottom padding (20px)
+    const rowHeight = 150;
+    const startY = 20;
+    const menuBarHeight = 48;
+    const bottomPadding = 20;
+    const availableHeight =
+        effectiveHeight - menuBarHeight - startY - bottomPadding;
+    const rowsPerPage = Math.max(1, Math.floor(availableHeight / rowHeight));
+
+    // Get all icon positions first
+    const allIconPositions = getDefaultIconPositions(
         filteredContent,
         effectiveWidth,
         menu.sortMethod
+    );
+
+    // Calculate total pages based on the maximum row number
+    const iconRows = Array.from(allIconPositions.values()).map((pos) => {
+        // Calculate which row this position is on
+        return Math.floor((pos.y - startY) / rowHeight);
+    });
+    const maxRow = iconRows.length > 0 ? Math.max(...iconRows) : -1;
+    const totalPages = Math.max(1, Math.ceil((maxRow + 1) / rowsPerPage));
+
+    // Update total pages in store
+    useEffect(() => {
+        setDesktopTotalPages(totalPages);
+    }, [totalPages, setDesktopTotalPages]);
+
+    // Reset to page 1 if current page exceeds total pages (e.g., after filtering)
+    useEffect(() => {
+        if (desktopPage > totalPages && totalPages > 0) {
+            setDesktopPage(1);
+        }
+    }, [totalPages, desktopPage, setDesktopPage]);
+
+    // Filter icon positions to only show current page
+    const currentPageStartRow = (desktopPage - 1) * rowsPerPage;
+    const currentPageEndRow = currentPageStartRow + rowsPerPage;
+
+    const iconPositions = new Map<string, { x: number; y: number }>();
+    allIconPositions.forEach((pos, id) => {
+        const row = Math.floor((pos.y - startY) / rowHeight);
+        if (row >= currentPageStartRow && row < currentPageEndRow) {
+            // Adjust y position to be relative to the current page
+            const adjustedY = pos.y - currentPageStartRow * rowHeight;
+            iconPositions.set(id, { x: pos.x, y: adjustedY });
+        }
+    });
+
+    // Filter content to only show items on current page
+    const visibleContent = filteredContent.filter((item) =>
+        iconPositions.has(item.id)
     );
 
     return (
@@ -161,7 +217,7 @@ export function Desktop({
             }}
         >
             <AnimatePresence mode="popLayout">
-                {filteredContent.map((item) => {
+                {visibleContent.map((item) => {
                     const position = iconPositions.get(item.id) || {
                         x: 20,
                         y: 20,

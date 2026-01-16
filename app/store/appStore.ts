@@ -40,6 +40,10 @@ interface MenuState {
 interface AppState {
     windows: WindowState[];
     menu: MenuState;
+    desktopPage: number;
+    desktopTotalPages: number;
+    setDesktopPage: (page: number) => void;
+    setDesktopTotalPages: (pages: number) => void;
     openWindow: (content: Content) => void;
     closeWindow: (id: string) => void;
     minimizeWindow: (id: string) => void;
@@ -71,6 +75,10 @@ export const useAppStore = create<AppState>((set, get) => ({
             art: false,
         },
     },
+    desktopPage: 1,
+    desktopTotalPages: 1,
+    setDesktopPage: (page) => set({ desktopPage: page }),
+    setDesktopTotalPages: (pages) => set({ desktopTotalPages: pages }),
 
     openWindow: (content) => {
         const existingWindow = get().windows.find(
@@ -245,7 +253,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     },
 
     setViewFilter: (filter) => {
-        set({ menu: { ...get().menu, viewFilter: filter } });
+        set({ menu: { ...get().menu, viewFilter: filter }, desktopPage: 1 });
         get().closeAllMenus();
     },
 

@@ -19,6 +19,7 @@ import {
 import { MenuDropdown, type MenuItem } from "./MenuDropdown";
 import { useAppStore } from "@/app/store/appStore";
 import { getContentById } from "@/app/data/content";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function MenuBar() {
     const { theme, setTheme } = useTheme();
@@ -28,8 +29,16 @@ export function MenuBar() {
     const artMenuRef = useRef<HTMLButtonElement>(null);
     const toolsMenuRef = useRef<HTMLButtonElement>(null);
 
-    const { menu, toggleMenu, setViewFilter, setSortMethod, openWindow } =
-        useAppStore();
+    const {
+        menu,
+        toggleMenu,
+        setViewFilter,
+        setSortMethod,
+        openWindow,
+        desktopPage,
+        desktopTotalPages,
+        setDesktopPage,
+    } = useAppStore();
 
     React.useEffect(() => {
         setMounted(true);
@@ -239,6 +248,41 @@ export function MenuBar() {
                 </div>
             </div>
             <div className="flex items-center gap-4">
+                {desktopTotalPages > 1 && (
+                    <div className="flex items-center gap-2 px-2 py-1 rounded bg-[rgb(var(--bg-menubar-hover))]/50">
+                        <button
+                            onClick={() =>
+                                setDesktopPage(Math.max(1, desktopPage - 1))
+                            }
+                            disabled={desktopPage === 1}
+                            className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            aria-label="Previous page"
+                        >
+                            <ChevronLeft
+                                size={14}
+                                className="text-[rgb(var(--text-menubar))]"
+                            />
+                        </button>
+                        <span className="text-xs text-[rgb(var(--text-menubar))]/70 min-w-[3rem] text-center">
+                            {desktopPage} / {desktopTotalPages}
+                        </span>
+                        <button
+                            onClick={() =>
+                                setDesktopPage(
+                                    Math.min(desktopTotalPages, desktopPage + 1)
+                                )
+                            }
+                            disabled={desktopPage === desktopTotalPages}
+                            className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            aria-label="Next page"
+                        >
+                            <ChevronRight
+                                size={14}
+                                className="text-[rgb(var(--text-menubar))]"
+                            />
+                        </button>
+                    </div>
+                )}
                 <span className="text-xs font-bbh-bartle text-[rgb(var(--text-menubar))]/60">
                     ELEMENT 28
                 </span>
