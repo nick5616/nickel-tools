@@ -107,6 +107,7 @@ export function Dock({ items, windows, onOpenItem }: DockProps) {
 
                 {/* Regular Dock Items */}
                 {items.map((item) => {
+                    console.log("item", item);
                     const isMinimized = minimizedMap.get(item.id) || false;
                     return (
                         <motion.button

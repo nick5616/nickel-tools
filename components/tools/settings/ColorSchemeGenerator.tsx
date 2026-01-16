@@ -192,11 +192,14 @@ export function ColorSchemeGenerator() {
     // Update selected color from grid position when hue offset or saturation changes
     // This keeps the same grid position but updates the color to match the new swatch
     useEffect(() => {
-        if (!isInitialLoad && selectedGridPosition && colorSwatch.length > 0) {
-            const { row, col } = selectedGridPosition;
-            if (row < colorSwatch.length && col < colorSwatch[row].length) {
-                const newColor = colorSwatch[row][col];
-                setSelectedColor(newColor);
+        if (!isInitialLoad && selectedGridPosition) {
+            const swatch = generateColorSwatch(saturation, hueOffset);
+            if (swatch.length > 0) {
+                const { row, col } = selectedGridPosition;
+                if (row < swatch.length && col < swatch[row].length) {
+                    const newColor = swatch[row][col];
+                    setSelectedColor(newColor);
+                }
             }
         }
     }, [hueOffset, saturation, isInitialLoad, selectedGridPosition]);
@@ -222,19 +225,22 @@ export function ColorSchemeGenerator() {
     // Restore selected color from grid position when swatch is ready
     // This runs during initial load and whenever grid position or swatch parameters change
     useEffect(() => {
-        if (selectedGridPosition && colorSwatch.length > 0) {
-            const { row, col } = selectedGridPosition;
-            if (
-                row >= 0 &&
-                row < colorSwatch.length &&
-                col >= 0 &&
-                col < colorSwatch[row].length
-            ) {
-                const color = colorSwatch[row][col];
-                setSelectedColor(color);
+        if (selectedGridPosition) {
+            const swatch = generateColorSwatch(saturation, hueOffset);
+            if (swatch.length > 0) {
+                const { row, col } = selectedGridPosition;
+                if (
+                    row >= 0 &&
+                    row < swatch.length &&
+                    col >= 0 &&
+                    col < swatch[row].length
+                ) {
+                    const color = swatch[row][col];
+                    setSelectedColor(color);
+                }
             }
         }
-    }, [selectedGridPosition, saturation, hueOffset, colorSwatch]);
+    }, [selectedGridPosition, saturation, hueOffset]);
 
     // Find grid position from a color
     const findGridPosition = (
@@ -310,6 +316,10 @@ export function ColorSchemeGenerator() {
 
     // Handle color selection
     const handleColorSelect = (hsl: HSL, row: number, col: number) => {
+        console.log("hsl", hsl);
+        console.log("row", row);
+        console.log("col", col);
+        console.log("handleing color select");
         setSelectedColor(hsl);
         setSelectedGridPosition({ row, col });
         // Ensure the row is visible
@@ -317,6 +327,10 @@ export function ColorSchemeGenerator() {
             setVisibleRowStart(0);
         } else {
             setVisibleRowStart(3);
+        }
+        // Default to monochromatic if no scheme is selected (first time selecting a color)
+        if (!selectedScheme) {
+            setSelectedScheme("monochromatic");
         }
         setValidationError(null);
         setSuccessMessage(null);
@@ -1297,11 +1311,23 @@ export function ColorSchemeGenerator() {
     ]);
 
     // Recalculate whenever form state changes (but not during initial load)
+    // Use the actual dependencies instead of the function to prevent infinite loops
     useEffect(() => {
-        if (!isInitialLoad) {
+        if (!isInitialLoad && selectedColor && selectedScheme) {
             recalculateColorScheme();
         }
-    }, [recalculateColorScheme, isInitialLoad]);
+    }, [
+        selectedColor,
+        selectedScheme,
+        contrastThreshold,
+        customThreshold,
+        useBlackWhiteText,
+        allowMixMatch,
+        saturation,
+        hueOffset,
+        isDarkMode,
+        isInitialLoad,
+    ]);
 
     // Handle scheme selection and application
     const handleSchemeSelect = (schemeType: ColorSchemeType) => {
