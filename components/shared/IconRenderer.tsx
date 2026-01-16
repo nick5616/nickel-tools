@@ -23,6 +23,7 @@ import {
     Image,
     Paintbrush,
     PenTool,
+    Grid,
 } from "lucide-react";
 
 interface IconRendererProps {
@@ -73,6 +74,7 @@ const iconComponentMap: Record<
     chaos: Video,
     "saucedog-art": Palette,
     passionfruit: Layers,
+    "batch-analyzer": Grid,
     // System windows
     about: Info,
     contact: Mail,
@@ -173,22 +175,22 @@ export function IconRenderer({
         return () => clearTimeout(timeoutId);
     }, [isArtGallery, artGalleryThumbnail, content.id, markImageLoaded]);
 
-    // For external links, use favicon
+    // For external links, always try to fetch website icon first
     if (content.type === "external") {
-        const fallback = (() => {
-            const IconComponent = iconComponentMap[content.id];
-            if (IconComponent) {
-                return <IconComponent className={sizeClass} />;
-            }
-            const emoji = getCategoryIcon(content.category);
-            return (
-                <span
-                    className={`${sizeClass} flex items-center justify-center text-2xl`}
-                >
-                    {emoji}
-                </span>
-            );
-        })();
+        const IconComponent = iconComponentMap[content.id];
+        const fallback = IconComponent ? (
+            <div
+                className={`${className} flex items-center justify-center`}
+                style={{
+                    width: sizeConfig.pixels,
+                    height: sizeConfig.pixels,
+                }}
+            >
+                <IconComponent
+                    className={`${sizeClass} rounded-2xl text-[rgb(var(--text-primary))]`}
+                />
+            </div>
+        ) : null;
 
         return (
             <div
@@ -198,8 +200,8 @@ export function IconRenderer({
                     url={content.url}
                     size={sizeConfig.pixels}
                     className={className}
-                    fallback={fallback}
                     contentId={content.id}
+                    fallback={fallback}
                 />
             </div>
         );
