@@ -32,28 +32,27 @@ interface IconRendererProps {
 }
 
 const getSizeConfig = (size: "sm" | "md" | "lg", isArtThumbnail: boolean) => {
+    const pixels = getPixels(size, isArtThumbnail);
     return {
-        class: `w-${size} h-${size}`,
-        pixels: getPixels(size, isArtThumbnail),
+        pixels,
+        // Use explicit Tailwind classes that work at build time
+        class:
+            size === "sm"
+                ? "w-8 h-8"
+                : size === "md"
+                ? "w-12 h-12"
+                : "w-16 h-16",
     };
 };
 
 const getPixels = (size: "sm" | "md" | "lg", isArtThumbnail: boolean) => {
     switch (size) {
         case "sm":
-            if (isArtThumbnail) {
-                return 32;
-            }
-            return 32;
-        case "md":
-            if (isArtThumbnail) {
-                return 48;
-            }
             return 24;
+        case "md":
+            return 32;
         case "lg":
-            if (isArtThumbnail) {
-                return 64;
-            }
+            // All large icons should be 64x64 for consistency
             return 48;
     }
 };
@@ -192,13 +191,17 @@ export function IconRenderer({
         })();
 
         return (
-            <Favicon
-                url={content.url}
-                size={sizeConfig.pixels}
-                className={className}
-                fallback={fallback}
-                contentId={content.id}
-            />
+            <div
+                style={{ width: sizeConfig.pixels, height: sizeConfig.pixels }}
+            >
+                <Favicon
+                    url={content.url}
+                    size={sizeConfig.pixels}
+                    className={className}
+                    fallback={fallback}
+                    contentId={content.id}
+                />
+            </div>
         );
     }
 
@@ -231,9 +234,14 @@ export function IconRenderer({
     const IconComponent = iconComponentMap[content.id];
     if (IconComponent) {
         return (
-            <IconComponent
-                className={`${sizeClass} ${className} rounded-2xl text-[rgb(var(--text-primary))]`}
-            />
+            <div
+                className={`${className} flex items-center justify-center`}
+                style={{ width: sizeConfig.pixels, height: sizeConfig.pixels }}
+            >
+                <IconComponent
+                    className={`${sizeClass} rounded-2xl text-[rgb(var(--text-primary))]`}
+                />
+            </div>
         );
     }
 
@@ -242,6 +250,7 @@ export function IconRenderer({
     return (
         <span
             className={`${sizeClass} ${className} flex items-center justify-center text-2xl text-[rgb(var(--text-secondary))]`}
+            style={{ width: sizeConfig.pixels, height: sizeConfig.pixels }}
         >
             {emoji}
         </span>

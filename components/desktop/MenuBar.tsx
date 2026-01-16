@@ -184,7 +184,7 @@ export function MenuBar() {
                     <div
                         ref={niIconRef}
                         onClick={() => toggleMenu("niIcon")}
-                        className=" w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-menubar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
+                        className=" w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-titlebar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
                     >
                         Ni
                     </div>
@@ -195,11 +195,11 @@ export function MenuBar() {
                         position={getMenuPosition(niIconRef)}
                         triggerRef={niIconRef}
                     />
-                    <span className="font-bold font-bbh-bartle text-[rgb(var(--text-menubar))]">
-                        NICKEL
-                    </span>
+                    {/* <span className="font-bold font-bbh-bartle text-[rgb(var(--text-menubar))]">
+                        Nickel Tools
+                    </span> */}
                 </div>
-                <div className="hidden md:flex items-center gap-4 text-s text-[rgb(var(--text-menubar))]/70 relative">
+                <div className="hidden md:flex items-center gap-4 text-xs text-[rgb(var(--text-menubar))]/70 relative">
                     <button
                         ref={viewMenuRef}
                         onClick={() => toggleMenu("view")}

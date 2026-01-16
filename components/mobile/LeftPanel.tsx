@@ -60,7 +60,7 @@ export function LeftPanel({ onNiIconClick }: LeftPanelProps) {
                             NICKEL
                         </div>
                         <div className="text-xs text-[rgb(var(--text-secondary))] font-mono">
-                            ELEMENT 28 / FOUNDRY
+                            ELEMENT 28
                         </div>
                     </div>
                 </div>
