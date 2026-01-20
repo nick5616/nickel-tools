@@ -140,9 +140,9 @@ export default function PortfolioPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
                         <Link
                             href="/portfolio/ux"
-                            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-400/30 p-12 hover:scale-105 transition-transform duration-300"
+                            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-blue-400/30 p-12 hover:scale-105 transition-transform duration-300"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             <h2 className="text-4xl md:text-5xl font-bold text-white relative z-10 text-center">
                                 Design
                             </h2>
