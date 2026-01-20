@@ -143,7 +143,7 @@ export default function PortfolioPage() {
                             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-400/30 p-12 hover:scale-105 transition-transform duration-300"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <h2 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-white relative z-10 text-center">
+                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-white relative z-10 text-center">
                                 Design
                             </h2>
                         </Link>
@@ -153,7 +153,7 @@ export default function PortfolioPage() {
                             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/20 to-teal-500/20 border border-green-400/30 p-12 hover:scale-105 transition-transform duration-300"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <h2 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-white relative z-10 text-center">
+                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-white relative z-10 text-center">
                                 Software
                             </h2>
                         </Link>
@@ -163,7 +163,7 @@ export default function PortfolioPage() {
                             className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 border border-pink-400/30 p-12 hover:scale-105 transition-transform duration-300"
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <h2 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-white relative z-10 text-center">
+                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-white relative z-10 text-center">
                                 Art
                             </h2>
                         </Link>

@@ -34,4 +34,3 @@ function OSContent() {
 export default function DesktopPage() {
     return <OSContent />;
 }
-

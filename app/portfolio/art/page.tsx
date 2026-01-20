@@ -5,23 +5,6 @@ import Link from "next/link";
 
 const projects = [
     {
-        id: "saucedog-art",
-        title: "saucedog.art",
-        description:
-            "My digital art portfolio from 2022-2023, featuring a collection of digital illustrations, character designs, and creative experiments. A showcase of my journey exploring digital art and visual storytelling.",
-        why: "I created saucedog.art as a dedicated space to showcase my digital art work. It represents a period of intense creative exploration where I was learning new techniques, developing my style, and creating pieces that combined my interests in technology and art.",
-        tech: [
-            "Digital Art",
-            "Illustration",
-            "Character Design",
-            "Visual Storytelling",
-        ],
-        url: "https://saucedog.art",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
-    },
-    {
         id: "art-digital-art",
         title: "Digital Art Gallery",
         description:
@@ -62,6 +45,23 @@ const projects = [
         borderColor: "border-amber-400/30",
         blobColor: "#f59e0b",
     },
+    {
+        id: "saucedog-art",
+        title: "saucedog.art",
+        description:
+            "My digital art portfolio from 2022-2023, featuring a collection of digital illustrations, character designs, and creative experiments. A showcase of my journey exploring digital art and visual storytelling.",
+        why: "I created saucedog.art as a dedicated space to showcase my digital art work. It represents a period of intense creative exploration where I was learning new techniques, developing my style, and creating pieces that combined my interests in technology and art.",
+        tech: [
+            "Digital Art",
+            "Illustration",
+            "Character Design",
+            "Visual Storytelling",
+        ],
+        url: "https://saucedog.art",
+        color: "from-rose-500/20 to-pink-500/20",
+        borderColor: "border-rose-400/30",
+        blobColor: "#f43f5e",
+    },
 ];
 
 const specialProjects = [
@@ -83,7 +83,7 @@ const specialProjects = [
         id: "art-miscellaneous",
         title: "Miscellaneous",
         description:
-            "A collection of miscellaneous artwork and creative pieces that don't fit into other categories—experiments, one-offs, and creative explorations.",
+            "A collection of miscellaneous artwork and creative pieces that don't fit into other categories—experiments, one-offs, and creative explorations. ",
         route: "/art-gallery/miscellaneous",
     },
 ];
@@ -126,18 +126,16 @@ export default function ArtPortfolioPage() {
                 {/* Bio Section */}
                 <section className="px-8 py-16 md:py-24 max-w-4xl mx-auto">
                     <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-pink-200/50 dark:border-pink-800/50">
-                        <h1 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6">
+                        <h1 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6">
                             Artist & Creative
                         </h1>
                         <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed">
                             My art practice spans digital illustration,
-                            traditional painting, and experimental mediums. I'm
-                            interested in the intersection of technology and
-                            art, exploring how digital tools can enhance
-                            traditional techniques and how constraints can spark
-                            creativity. My work often explores themes of
-                            identity, experimentation, and the playful side of
-                            creation.
+                            traditional painting, and experimental mediums. My
+                            work often explores themes of identity,
+                            experimentation, and the playful side of creation. I
+                            often find myself exploring the intersection of
+                            technology and art.
                         </p>
                     </div>
                 </section>
@@ -166,7 +164,7 @@ export default function ArtPortfolioPage() {
                                                 fill={project.blobColor}
                                             />
                                         </svg>
-                                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
+                                        <h2 className="text-2xl md:text-3xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
                                             {project.title}
                                         </h2>
                                     </div>
@@ -239,9 +237,16 @@ export default function ArtPortfolioPage() {
                 {/* Special Projects Grid */}
                 <section className="px-8 pb-24">
                     <div className="max-w-7xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-12 text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6 text-center">
                             Special Collections
                         </h2>
+                        <p className="text-zinc-700 dark:text-zinc-300 text-md leading-relaxed mb-12 text-center">
+                            I'm fascinated by how constraints can spark
+                            creativity. Some of my best work comes from
+                            constraint-heavy situations I like to challenge
+                            myself with. Here are some of my favorite projects
+                            in these collections.
+                        </p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {specialProjects.map((project) => (
                                 <Link

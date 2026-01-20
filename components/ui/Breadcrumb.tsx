@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import posthog from "posthog-js";
 
 interface BreadcrumbProps {
@@ -11,6 +12,20 @@ export default function Breadcrumb({
     currentPage,
     trackClick = false,
 }: BreadcrumbProps) {
+    const [isInIframe, setIsInIframe] = useState(false);
+    console.log("isInIframe", isInIframe);
+    console.log("window.self", window.self);
+    useEffect(() => {
+        // Check if we're running inside an iframe
+        setIsInIframe(window.self !== window.top);
+    }, []);
+
+    // Hide breadcrumb when in iframe
+    if (isInIframe) {
+        console.log("returning null");
+        return null;
+    }
+
     return (
         <div className="text-sm text-slate-500 mb-4">
             <a

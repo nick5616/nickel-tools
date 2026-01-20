@@ -9,17 +9,17 @@ export default function Home() {
             <div className="max-w-4xl w-full space-y-8">
                 <div className="text-center space-y-4">
                     <h1 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-                        Nick Iannuzzi
+                        Nick Belovoskey
                     </h1>
                     <p className="text-xl text-zinc-600 dark:text-zinc-400">
-                        Designer, Developer, Creator
+                        Developer, Designer, Creator
                     </p>
                 </div>
 
                 <div className="prose prose-zinc dark:prose-invert max-w-none text-center">
                     <p className="text-lg text-zinc-700 dark:text-zinc-300">
-                        Welcome to my digital space. I build interactive experiences,
-                        design systems, and creative tools.
+                        Welcome to my digital space. I build interactive
+                        experiences, design systems, and creative tools.
                     </p>
                 </div>
 
@@ -32,7 +32,8 @@ export default function Home() {
                             Portfolio
                         </h2>
                         <p className="text-zinc-600 dark:text-zinc-400">
-                            Explore my work in UI/UX Design, Software Development, and Art
+                            Explore my work in UI/UX Design, Software
+                            Development, and Art
                         </p>
                     </Link>
 
@@ -44,7 +45,8 @@ export default function Home() {
                             Tools & Apps
                         </h2>
                         <p className="text-zinc-600 dark:text-zinc-400">
-                            Interactive desktop experience with all my tools and projects
+                            Interactive desktop experience with all my tools and
+                            projects
                         </p>
                     </Link>
                 </div>

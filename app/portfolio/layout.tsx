@@ -11,8 +11,8 @@ export default function PortfolioLayout({
         // Override root layout's overflow-hidden for portfolio pages
         const html = document.documentElement;
         const body = document.body;
-        const main = document.querySelector('main');
-        
+        const main = document.querySelector("main");
+
         html.style.overflow = "auto";
         html.style.height = "auto";
         body.style.overflow = "auto";
@@ -21,7 +21,7 @@ export default function PortfolioLayout({
             main.style.overflow = "visible";
             main.style.height = "auto";
         }
-        
+
         return () => {
             // Restore on unmount
             html.style.overflow = "";
@@ -35,10 +35,5 @@ export default function PortfolioLayout({
         };
     }, []);
 
-    return (
-        <div className="w-full">
-            {children}
-        </div>
-    );
+    return <div className="w-full">{children}</div>;
 }
-
