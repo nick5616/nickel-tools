@@ -47,60 +47,6 @@ export function BatchAnalyzerDescription({
                     {content.description}
                 </p>
             </div>
-
-            <div>
-                <h4 className="text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
-                    API Key
-                </h4>
-                <div className="bg-[rgb(var(--bg-desktop))] rounded p-3 border border-[rgb(var(--border-window))] flex items-center justify-between gap-2">
-                    <code className="text-xs text-[rgb(var(--text-primary))] font-mono break-all flex-1">
-                        {BATCH_ANALYZER_API_KEY}
-                    </code>
-                    <button
-                        onClick={handleCopyApiKey}
-                        className="flex-shrink-0 w-8 h-8 rounded hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
-                        title="Copy API key"
-                    >
-                        {apiKeyCopied ? (
-                            <Check size={14} />
-                        ) : (
-                            <Copy size={14} />
-                        )}
-                    </button>
-                </div>
-            </div>
-
-            <button
-                onClick={handleCopyDescription}
-                className="flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
-            >
-                {copied ? (
-                    <>
-                        <Check size={14} />
-                        <span>Copied!</span>
-                    </>
-                ) : (
-                    <>
-                        <Copy size={14} />
-                        <span>Copy full description</span>
-                    </>
-                )}
-            </button>
-
-            {/* Security Warning */}
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-3">
-                <h4 className="text-sm font-medium text-yellow-600 dark:text-yellow-400 mb-2">
-                    ⚠️ Security Warning
-                </h4>
-                <p className="text-xs text-yellow-700 dark:text-yellow-300">
-                    This description contains an API key. Sending API keys
-                    through client-side code is inherently insecure and should
-                    never be done in production applications. API keys can be
-                    easily extracted from client code and used maliciously.
-                    Always use server-side endpoints or environment variables
-                    for sensitive credentials.
-                </p>
-            </div>
         </div>
     );
 }

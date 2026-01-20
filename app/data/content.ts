@@ -440,7 +440,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
             type: "external",
             title: "Batch Analyzer",
             description:
-                "Batch analyze product images by sending the same queries (like 'How many books are in the image?') to each image in the batch. Plug and play with your own LLM, or use a key to my LLM instance (gpt-40-mini) available below. Please don't steal it. You would only get like $4 worth of tokens and then my thing would be broken.",
+                "Batch analyze product images by sending the same queries (like 'How many books are in the image?') to each image in the batch. Plug and play with your own LLM.",
             thumbnail: "/project-screenshots/latex.png", // Placeholder
             category: "AI / Productivity",
             status: "operational",

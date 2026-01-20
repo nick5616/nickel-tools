@@ -102,7 +102,7 @@ export function Dock({ items, windows, onOpenItem }: DockProps) {
 
                 {/* Separator */}
                 {pinnedApps.length > 0 && items.length > 0 && (
-                    <div className="w-px h-8 bg-[rgb(var(--border-dock))] opacity-50 self-center" />
+                    <div className="w-px h-8 bg-[rgb(var(--border-dock))] self-center" />
                 )}
 
                 {/* Regular Dock Items */}
@@ -113,7 +113,7 @@ export function Dock({ items, windows, onOpenItem }: DockProps) {
                         <motion.button
                             key={item.id}
                             onClick={() => onOpenItem(item)}
-                            className={`w-12 h-12 rounded-xl hover:bg-[rgb(var(--bg-dock-hover))] flex items-center justify-center text-2xl hover:scale-110 transition-all relative group ${
+                            className={`w-12 h-12 rounded-xl bg-[rgb(var(--accent-glow))] hover:bg-[rgb(var(--bg-dock-hover))] flex items-center justify-center text-2xl hover:scale-110 transition-all relative group ${
                                 isMinimized ? "opacity-60" : ""
                             }`}
                             title={item.title}
