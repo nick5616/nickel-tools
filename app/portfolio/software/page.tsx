@@ -47,6 +47,72 @@ const projects = [
         borderColor: "border-rose-400/30",
         blobColor: "#f43f5e",
     },
+    {
+        id: "friendex",
+        title: "friendex.online",
+        description: "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
+        why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
+        tech: ["React", "Mobile-First", "Social App", "Web Development"],
+        url: "https://friendex.online",
+        color: "from-sky-500/20 to-cyan-500/20",
+        borderColor: "border-sky-400/30",
+        blobColor: "#0ea5e9",
+    },
+    {
+        id: "videogamequest",
+        title: "videogamequest.me",
+        description: "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
+        why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
+        tech: ["React", "AI Integration", "Productivity Tools", "Gamification", "Journaling"],
+        url: "https://videogamequest.me",
+        color: "from-indigo-500/20 to-purple-500/20",
+        borderColor: "border-indigo-400/30",
+        blobColor: "#6366f1",
+    },
+    {
+        id: "tierlistify",
+        title: "tierlistify.com",
+        description: "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
+        why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
+        tech: ["React", "Mobile UX", "Touch Interactions", "Drag & Drop", "Progressive Web App"],
+        url: "https://tierlistify.com",
+        color: "from-purple-500/20 to-pink-500/20",
+        borderColor: "border-purple-400/30",
+        blobColor: "#a855f7",
+    },
+    {
+        id: "passionfruit",
+        title: "Passionfruit",
+        description: "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your development activity.",
+        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects. It aggregates information from GitHub and other sources to give you a clear view of what you're working on and how active each project is.",
+        tech: ["React", "GitHub API", "Project Management", "Data Visualization", "Productivity"],
+        url: "https://yieldpassionfruit.netlify.app",
+        color: "from-yellow-500/20 to-orange-500/20",
+        borderColor: "border-yellow-400/30",
+        blobColor: "#eab308",
+    },
+    {
+        id: "choice-engine",
+        title: "Choice Picker",
+        description: "Spin the wheel to make decisions! Add your options and let chance decide. A simple, fun utility for when you can't choose between options.",
+        why: "I built this as a quick utility tool for decision-making. Sometimes you just need a random picker, and I wanted something clean and simple without the clutter of other decision-making apps.",
+        tech: ["TypeScript", "React", "Next.js", "Utility Tools", "Interactive UI"],
+        route: "/choice-picker",
+        color: "from-lime-500/20 to-green-500/20",
+        borderColor: "border-lime-400/30",
+        blobColor: "#84cc16",
+    },
+    {
+        id: "pokemon-or-technology",
+        title: "Pokemon or Technology",
+        description: "Test your knowledge! Can you tell the difference between a Pokémon name and a technology term? A fun quiz game that challenges your ability to distinguish between these two worlds.",
+        why: "I created this as a fun, lighthearted game that combines two of my interests—Pokémon and technology. It's a simple concept but surprisingly challenging and entertaining.",
+        tech: ["TypeScript", "React", "Next.js", "Game Logic", "Quiz App"],
+        route: "/pokemon-or-technology",
+        color: "from-red-500/20 to-orange-500/20",
+        borderColor: "border-red-400/30",
+        blobColor: "#ef4444",
+    },
 ];
 
 export default function SoftwarePortfolioPage() {
@@ -78,7 +144,7 @@ export default function SoftwarePortfolioPage() {
                 {/* Bio Section */}
                 <section className="px-8 py-16 md:py-24 max-w-4xl mx-auto">
                     <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-green-200/50 dark:border-green-800/50">
-                        <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">
+                        <h1 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6">
                             Software Developer
                         </h1>
                         <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed">
@@ -118,7 +184,7 @@ export default function SoftwarePortfolioPage() {
                                                 fill={project.blobColor}
                                             />
                                         </svg>
-                                        <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
                                             {project.title}
                                         </h2>
                                     </div>
@@ -156,36 +222,30 @@ export default function SoftwarePortfolioPage() {
                                         index % 2 === 0 ? "lg:order-2" : "lg:order-1"
                                     }`}
                                 >
-                                    <div
-                                        className={`rounded-2xl ${project.color} ${project.borderColor} border-2 p-4 shadow-2xl backdrop-blur-sm`}
-                                    >
-                                        <div className="bg-white dark:bg-zinc-900 rounded-lg overflow-hidden shadow-inner">
-                                            {project.route ? (
-                                                <iframe
-                                                    src={project.route}
-                                                    className="w-full h-[600px] border-0"
-                                                    title={project.title}
-                                                    loading="lazy"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
-                                                    <div className="text-center space-y-4 p-8">
-                                                        <p className="text-zinc-600 dark:text-zinc-400">
-                                                            External Project
-                                                        </p>
-                                                        <a
-                                                            href={project.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-block px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-teal-600 transition-colors"
-                                                        >
-                                                            Visit Project →
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            )}
+                                    {project.route ? (
+                                        <iframe
+                                            src={project.route}
+                                            className="w-full h-[600px] border-0 rounded-lg shadow-xl"
+                                            title={project.title}
+                                            loading="lazy"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                            <div className="text-center space-y-4 p-8">
+                                                <p className="text-zinc-600 dark:text-zinc-400">
+                                                    External Project
+                                                </p>
+                                                <a
+                                                    href={project.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-block px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-teal-600 transition-colors"
+                                                >
+                                                    Visit Project →
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

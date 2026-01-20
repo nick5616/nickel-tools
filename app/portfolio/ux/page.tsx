@@ -51,25 +51,25 @@ const projects = [
 
 export default function UXPortfolioPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950">
+        <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-50 to-amber-50 dark:from-yellow-800 dark:via-yellow-700 dark:to-amber-700">
             {/* Background SVG Blobs */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
                 <svg className="absolute top-20 left-10 w-96 h-96 opacity-20" viewBox="0 0 400 400">
                     <path
                         d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                        fill="#6366f1"
+                        fill="#f59e0b"
                     />
                 </svg>
                 <svg className="absolute top-1/3 right-20 w-80 h-80 opacity-15" viewBox="0 0 400 400">
                     <path
                         d="M200,200 Q180,120 200,40 Q220,120 280,80 Q260,160 200,200 Q120,240 40,200 Q120,180 200,200 Q280,220 360,200 Q280,220 200,200"
-                        fill="#8b5cf6"
+                        fill="#eab308"
                     />
                 </svg>
                 <svg className="absolute bottom-1/4 left-1/4 w-72 h-72 opacity-25" viewBox="0 0 400 400">
                     <path
                         d="M200,200 Q240,160 280,200 Q240,240 200,200 Q160,160 120,200 Q160,240 200,200"
-                        fill="#3b82f6"
+                        fill="#f97316"
                     />
                 </svg>
             </div>
@@ -77,8 +77,8 @@ export default function UXPortfolioPage() {
             <div className="relative z-10">
                 {/* Bio Section */}
                 <section className="px-8 py-16 md:py-24 max-w-4xl mx-auto">
-                    <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-blue-200/50 dark:border-blue-800/50">
-                        <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">
+                    <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-amber-200/50 dark:border-amber-800/50">
+                        <h1 className="text-4xl md:text-5xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6">
                             UI/UX Designer
                         </h1>
                         <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed">
@@ -112,7 +112,7 @@ export default function UXPortfolioPage() {
                                                 fill={project.blobColor}
                                             />
                                         </svg>
-                                        <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+                                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
                                             {project.title}
                                         </h2>
                                     </div>
@@ -150,36 +150,30 @@ export default function UXPortfolioPage() {
                                         index % 2 === 0 ? "lg:order-2" : "lg:order-1"
                                     }`}
                                 >
-                                    <div
-                                        className={`rounded-2xl ${project.color} ${project.borderColor} border-2 p-4 shadow-2xl backdrop-blur-sm`}
-                                    >
-                                        <div className="bg-white dark:bg-zinc-900 rounded-lg overflow-hidden shadow-inner">
-                                            {project.route ? (
-                                                <iframe
-                                                    src={project.route}
-                                                    className="w-full h-[600px] border-0"
-                                                    title={project.title}
-                                                    loading="lazy"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800">
-                                                    <div className="text-center space-y-4 p-8">
-                                                        <p className="text-zinc-600 dark:text-zinc-400">
-                                                            External Project
-                                                        </p>
-                                                        <a
-                                                            href={project.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-colors"
-                                                        >
-                                                            Visit Project →
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            )}
+                                    {project.route ? (
+                                        <iframe
+                                            src={project.route}
+                                            className="w-full h-[600px] border-0 rounded-lg shadow-xl"
+                                            title={project.title}
+                                            loading="lazy"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                            <div className="text-center space-y-4 p-8">
+                                                <p className="text-zinc-600 dark:text-zinc-400">
+                                                    External Project
+                                                </p>
+                                                <a
+                                                    href={project.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-block px-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:from-amber-600 hover:to-yellow-600 transition-colors"
+                                                >
+                                                    Visit Project →
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
