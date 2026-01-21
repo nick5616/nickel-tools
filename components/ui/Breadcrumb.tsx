@@ -13,8 +13,6 @@ export default function Breadcrumb({
     trackClick = false,
 }: BreadcrumbProps) {
     const [isInIframe, setIsInIframe] = useState(false);
-    console.log("isInIframe", isInIframe);
-    console.log("window.self", window.self);
     useEffect(() => {
         // Check if we're running inside an iframe
         setIsInIframe(window.self !== window.top);
