@@ -4,9 +4,10 @@ import React, { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import {
-    TECH_STACK_OPTIONS,
-    TechStackOption,
-    normalizeTechTag,
+    Technology,
+    Tag,
+    normalizeTechnology,
+    normalizeTag,
 } from "@/app/portfolio/techStack";
 
 const projects = [
@@ -16,13 +17,8 @@ const projects = [
         description:
             "An algorithmic color palette generator based on harmonic color theory. Create beautiful, mathematically sound color schemes and export them as theme JSON for use in design systems and applications.",
         why: "I built this because I was tired of manually creating color palettes and wanted a tool that could generate harmonious color schemes based on established color theory principles. It's particularly useful for creating accessible, visually pleasing design systems with proper contrast ratios.",
-        tech: [
-            "TypeScript",
-            "React",
-            "Color Theory Algorithms",
-            "Canvas API",
-            "Next.js",
-        ],
+        tech: ["TypeScript", "React", "Canvas API", "Next.js"],
+        tags: ["Color Theory Algorithms"],
         route: "/advanced-color-scheme-generator",
         color: "from-indigo-500/20 to-purple-500/20",
         borderColor: "border-indigo-400/30",
@@ -34,13 +30,8 @@ const projects = [
         description:
             "An immersive first-person portfolio experience built in Three.js. Navigate through a 3D space to explore my work, with interactive games and experiences integrated throughout the journey.",
         why: "I wanted to create a portfolio that was more than just a collection of links. The first-person 3D experience makes exploring my work feel like an adventure, and it showcases both my technical skills and creative vision in one cohesive experience.",
-        tech: [
-            "Three.js",
-            "WebGL",
-            "JavaScript",
-            "3D Design",
-            "Interactive Design",
-        ],
+        tech: ["Three.js", "WebGL", "JavaScript"],
+        tags: ["3D Design", "Interactive Design"],
         url: "https://nicolasbelovoskey.com",
         color: "from-violet-500/20 to-fuchsia-500/20",
         borderColor: "border-violet-400/30",
@@ -52,7 +43,8 @@ const projects = [
         description:
             "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
         why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
-        tech: ["React", "Mobile-First Design", "Responsive UI", "Social UX"],
+        tech: ["React"],
+        tags: ["Mobile-First", "Responsive UI", "Social App"],
         url: "https://friendex.online",
         color: "from-blue-500/20 to-cyan-500/20",
         borderColor: "border-blue-400/30",
@@ -64,8 +56,8 @@ const projects = [
         description:
             "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
         why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
-        tech: [
-            "React",
+        tech: ["React"],
+        tags: [
             "Mobile UX",
             "Touch Interactions",
             "Drag & Drop",
@@ -79,41 +71,65 @@ const projects = [
 ];
 
 export default function UXPortfolioPage() {
-    const [selectedTech, setSelectedTech] = useState<Set<TechStackOption>>(
+    const [selectedTech, setSelectedTech] = useState<Set<Technology>>(
         new Set()
     );
+    const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
 
-    // Normalize tech tags for each project
-    const projectsWithNormalizedTech = useMemo(() => {
+    // Normalize technologies and tags for each project
+    const projectsWithNormalized = useMemo(() => {
         return projects.map((project) => ({
             ...project,
-            normalizedTech: project.tech
-                .map((tag) => normalizeTechTag(tag))
-                .filter((tag): tag is TechStackOption => tag !== null),
+            normalizedTech: (project.tech || [])
+                .map((t) => normalizeTechnology(t))
+                .filter((t): t is Technology => t !== null),
+            normalizedTags: (project.tags || [])
+                .map((t) => normalizeTag(t))
+                .filter((t): t is Tag => t !== null),
         }));
     }, []);
 
-    // Filter projects based on selected tech (inclusive OR logic)
+    // Filter projects based on selected tech and tags (inclusive OR logic)
     const filteredProjects = useMemo(() => {
-        if (selectedTech.size === 0) {
-            return projectsWithNormalizedTech;
+        if (selectedTech.size === 0 && selectedTags.size === 0) {
+            return projectsWithNormalized;
         }
 
-        return projectsWithNormalizedTech.filter((project) => {
-            // Check if project has ANY of the selected tech tags
-            return project.normalizedTech.some((tech) =>
-                selectedTech.has(tech)
-            );
-        });
-    }, [projectsWithNormalizedTech, selectedTech]);
+        return projectsWithNormalized.filter((project) => {
+            // Check if project has ANY of the selected technologies
+            const matchesTech =
+                selectedTech.size === 0 ||
+                project.normalizedTech.some((tech) => selectedTech.has(tech));
 
-    const handleToggleTech = (tech: TechStackOption) => {
+            // Check if project has ANY of the selected tags
+            const matchesTags =
+                selectedTags.size === 0 ||
+                project.normalizedTags.some((tag) => selectedTags.has(tag));
+
+            // Project matches if it has any selected tech OR any selected tag
+            return matchesTech || matchesTags;
+        });
+    }, [projectsWithNormalized, selectedTech, selectedTags]);
+
+    const handleToggleTech = (tech: Technology) => {
         setSelectedTech((prev) => {
             const next = new Set(prev);
             if (next.has(tech)) {
                 next.delete(tech);
             } else {
                 next.add(tech);
+            }
+            return next;
+        });
+    };
+
+    const handleToggleTag = (tag: Tag) => {
+        setSelectedTags((prev) => {
+            const next = new Set(prev);
+            if (next.has(tag)) {
+                next.delete(tag);
+            } else {
+                next.add(tag);
             }
             return next;
         });
@@ -175,7 +191,10 @@ export default function UXPortfolioPage() {
                 <section className="px-8 py-8 max-w-7xl mx-auto">
                     <TechStackFilter
                         selectedTech={selectedTech}
+                        selectedTags={selectedTags}
                         onToggleTech={handleToggleTech}
+                        onToggleTag={handleToggleTag}
+                        numProjects={filteredProjects.length}
                     />
                 </section>
 
@@ -226,21 +245,44 @@ export default function UXPortfolioPage() {
                                                 {project.why}
                                             </p>
                                         </div>
-                                        <div className="space-y-3">
-                                            <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                                Technologies & Tools
-                                            </h3>
-                                            <div className="flex flex-wrap gap-2">
-                                                {project.tech.map((tech) => (
-                                                    <span
-                                                        key={tech}
-                                                        className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
-                                                    >
-                                                        {tech}
-                                                    </span>
-                                                ))}
+                                        {project.normalizedTech.length > 0 && (
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    Technologies
+                                                </h3>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.normalizedTech.map(
+                                                        (tech) => (
+                                                            <span
+                                                                key={tech}
+                                                                className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                                                            >
+                                                                {tech}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+                                        {project.normalizedTags.length > 0 && (
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    Tags
+                                                </h3>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.normalizedTags.map(
+                                                        (tag) => (
+                                                            <span
+                                                                key={tag}
+                                                                className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                                                            >
+                                                                {tag}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Iframe Side */}

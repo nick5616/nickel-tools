@@ -1,5 +1,5 @@
-// Common tech stack options for portfolio filtering
-export const TECH_STACK_OPTIONS = [
+// Technologies - actual programming languages, frameworks, libraries, and APIs
+export const TECHNOLOGIES = [
     "TypeScript",
     "JavaScript",
     "React",
@@ -9,6 +9,13 @@ export const TECH_STACK_OPTIONS = [
     "LaTeX",
     "Web Audio API",
     "LLM APIs",
+    "Three.js",
+    "WebGL",
+    "Canvas API",
+] as const;
+
+// Tags - categories, features, design patterns, algorithms, processing types, and other attributes
+export const TAGS = [
     "Machine Learning",
     "OCR",
     "Speech-to-Text",
@@ -16,9 +23,6 @@ export const TECH_STACK_OPTIONS = [
     "Computer Vision",
     "Image Processing",
     "Batch Processing",
-    "Three.js",
-    "WebGL",
-    "Canvas API",
     "Music Theory Algorithms",
     "Color Theory Algorithms",
     "Mobile-First",
@@ -38,17 +42,41 @@ export const TECH_STACK_OPTIONS = [
     "Interactive Design",
 ] as const;
 
+// Legacy: Keep for backward compatibility during migration
+export const TECH_STACK_OPTIONS = [...TECHNOLOGIES, ...TAGS] as const;
+
+export type Technology = (typeof TECHNOLOGIES)[number];
+export type Tag = (typeof TAGS)[number];
 export type TechStackOption = (typeof TECH_STACK_OPTIONS)[number];
 
-// Helper function to normalize tech tags to match the standard list
-export function normalizeTechTag(tag: string): string | null {
+// Helper function to normalize technology tags to match the standard list
+export function normalizeTechnology(tag: string): Technology | null {
     // Try exact match first
-    if (TECH_STACK_OPTIONS.includes(tag as TechStackOption)) {
-        return tag;
+    if (TECHNOLOGIES.includes(tag as Technology)) {
+        return tag as Technology;
     }
 
     // Try case-insensitive match
-    const normalized = TECH_STACK_OPTIONS.find(
+    const normalized = TECHNOLOGIES.find(
+        (option) => option.toLowerCase() === tag.toLowerCase()
+    );
+    if (normalized) {
+        return normalized;
+    }
+
+    // If no match found, return null
+    return null;
+}
+
+// Helper function to normalize tag strings to match the standard list
+export function normalizeTag(tag: string): Tag | null {
+    // Try exact match first
+    if (TAGS.includes(tag as Tag)) {
+        return tag as Tag;
+    }
+
+    // Try case-insensitive match
+    const normalized = TAGS.find(
         (option) => option.toLowerCase() === tag.toLowerCase()
     );
     if (normalized) {
@@ -56,7 +84,7 @@ export function normalizeTechTag(tag: string): string | null {
     }
 
     // Try partial matches for common variations
-    const partialMatches: Record<string, TechStackOption> = {
+    const partialMatches: Record<string, Tag> = {
         "mobile-first design": "Mobile-First",
         "mobile-first": "Mobile-First",
         "mobile first": "Mobile-First",
@@ -84,5 +112,14 @@ export function normalizeTechTag(tag: string): string | null {
     }
 
     // If no match found, return null (tag won't be filterable but will still display)
+    return null;
+}
+
+// Legacy: Keep for backward compatibility during migration
+export function normalizeTechTag(tag: string): TechStackOption | null {
+    const tech = normalizeTechnology(tag);
+    if (tech) return tech;
+    const tagResult = normalizeTag(tag);
+    if (tagResult) return tagResult;
     return null;
 }

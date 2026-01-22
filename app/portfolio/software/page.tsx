@@ -4,9 +4,10 @@ import React, { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import {
-    TECH_STACK_OPTIONS,
-    TechStackOption,
-    normalizeTechTag,
+    Technology,
+    Tag,
+    normalizeTechnology,
+    normalizeTag,
 } from "@/app/portfolio/techStack";
 
 // Layout types enum
@@ -117,79 +118,13 @@ function getProjectLayout(
 
 const projects = [
     {
-        id: "resume-builder",
-        title: "Online LaTeX Resume Builder",
-        description:
-            "A privacy-first resume builder that compiles LaTeX directly in your browser using WebAssembly. No server-side processing, no data collection—just you and your resume.",
-        why: "I built this because I was frustrated with resume builders that required accounts, stored your data, or had limited formatting options. LaTeX produces beautiful, professional resumes, but the setup barrier is high. This tool removes that barrier entirely.",
-        tech: ["TypeScript", "React", "WebAssembly", "LaTeX", "Next.js"],
-        route: "/resume-editor",
-        color: "from-emerald-500/20 to-teal-500/20",
-        borderColor: "border-emerald-400/30",
-        blobColor: "#10b981",
-    },
-    {
-        id: "smart-piano",
-        title: "Smart Piano",
-        description:
-            "An intelligent web-based piano that analyzes musical context and suggests harmonically appropriate next notes based on the key you're playing in.",
-        why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
-        tech: [
-            "TypeScript",
-            "React",
-            "Web Audio API",
-            "Music Theory Algorithms",
-            "Next.js",
-        ],
-        route: "/smart-piano",
-        color: "from-cyan-500/20 to-blue-500/20",
-        borderColor: "border-cyan-400/30",
-        blobColor: "#06b6d4",
-    },
-    {
-        id: "batch-analyzer",
-        title: "Batch Analyzer",
-        description:
-            "A tool that batch processes product images by sending the same queries to each image in a batch using Large Language Models. Perfect for e-commerce teams analyzing product catalogs at scale.",
-        why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
-        tech: [
-            "TypeScript",
-            "React",
-            "LLM APIs",
-            "Image Processing",
-            "Batch Processing",
-        ],
-        url: "https://batch-analyzer.netlify.app/",
-        color: "from-violet-500/20 to-purple-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
-    },
-    {
-        id: "chaos",
-        title: "CHAOS",
-        description:
-            "Counter-Strike Highlight Analysis and Organization System. A desktop application that batch processes video game footage and automatically identifies noteworthy moments using machine learning (OCR and Speech-to-Text).",
-        why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
-        tech: [
-            "Python",
-            "Machine Learning",
-            "OCR",
-            "Speech-to-Text",
-            "Video Processing",
-            "Computer Vision",
-        ],
-        url: "https://github.com/nick5616/CHAOS",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
-    },
-    {
         id: "friendex",
         title: "Friendex",
         description:
             "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
         why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
-        tech: ["React", "Mobile-First", "Social App", "Web Development"],
+        tech: ["React"],
+        tags: ["Mobile-First", "Social App", "Web Development"],
         url: "https://friendex.online",
         color: "from-sky-500/20 to-cyan-500/20",
         borderColor: "border-sky-400/30",
@@ -201,8 +136,8 @@ const projects = [
         description:
             "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
         why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
-        tech: [
-            "React",
+        tech: ["React"],
+        tags: [
             "AI Integration",
             "Productivity Tools",
             "Gamification",
@@ -214,13 +149,72 @@ const projects = [
         blobColor: "#6366f1",
     },
     {
+        id: "smart-piano",
+        title: "Smart Piano",
+        description:
+            "An intelligent web-based piano that analyzes musical context and suggests harmonically appropriate next notes based on the key you're playing in.",
+        why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
+        tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
+        tags: ["Music Theory Algorithms"],
+        route: "/smart-piano",
+        color: "from-cyan-500/20 to-blue-500/20",
+        borderColor: "border-cyan-400/30",
+        blobColor: "#06b6d4",
+    },
+    {
+        id: "batch-analyzer",
+        title: "Batch Analyzer",
+        description:
+            "A tool that batch processes product images by sending the same queries to each image in a batch using Large Language Models. Perfect for e-commerce teams analyzing product catalogs at scale.",
+        why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
+        tech: ["TypeScript", "React", "LLM APIs"],
+        tags: ["Image Processing", "Batch Processing"],
+        url: "https://batch-analyzer.netlify.app/",
+        color: "from-violet-500/20 to-purple-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#8b5cf6",
+    },
+    {
+        id: "resume-builder",
+        title: "Online LaTeX Resume Builder",
+        description:
+            "A privacy-first resume builder that compiles LaTeX directly in your browser using WebAssembly. No server-side processing, no data collection—just you and your resume.",
+        why: "I built this because I was frustrated with resume builders that required accounts, stored your data, or had limited formatting options. LaTeX produces beautiful, professional resumes, but the setup barrier is high. This tool removes that barrier entirely.",
+        tech: ["TypeScript", "React", "WebAssembly", "LaTeX", "Next.js"],
+        tags: [],
+        route: "/resume-editor",
+        color: "from-emerald-500/20 to-teal-500/20",
+        borderColor: "border-emerald-400/30",
+        blobColor: "#10b981",
+    },
+    {
+        id: "chaos",
+        title: "CHAOS",
+        description:
+            "Counter-Strike Highlight Analysis and Organization System. A desktop application that batch processes video game footage and automatically identifies noteworthy moments using machine learning (OCR and Speech-to-Text).",
+        why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
+        tech: ["Python"],
+        tags: [
+            "Machine Learning",
+            "OCR",
+            "Speech-to-Text",
+            "Video Processing",
+            "Computer Vision",
+        ],
+        url: "https://github.com/nick5616/CHAOS",
+        color: "from-rose-500/20 to-pink-500/20",
+        borderColor: "border-rose-400/30",
+        blobColor: "#f43f5e",
+    },
+
+    {
         id: "tierlistify",
         title: "Tierlistify",
         description:
             "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
         why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
-        tech: [
-            "React",
+        tech: ["React"],
+        tags: [
             "Mobile UX",
             "Touch Interactions",
             "Drag & Drop",
@@ -237,7 +231,8 @@ const projects = [
         description:
             "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
         why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
-        tech: ["React", "Project Management", "Productivity"],
+        tech: ["React"],
+        tags: ["Project Management", "Productivity Tools"],
         url: "https://yieldpassionfruit.netlify.app",
         color: "from-yellow-500/20 to-orange-500/20",
         borderColor: "border-yellow-400/30",
@@ -250,6 +245,7 @@ const projects = [
             "Spin the wheel to make decisions! Add your options and let chance decide. A simple, fun utility for when you can't choose between options.",
         why: "I built this as a quick utility tool for decision-making. Sometimes you just need a random picker, and I wanted something clean and simple without the clutter of other decision-making apps.",
         tech: ["TypeScript", "React", "Next.js"],
+        tags: [],
         route: "/choice-picker",
         color: "from-lime-500/20 to-green-500/20",
         borderColor: "border-lime-400/30",
@@ -262,6 +258,7 @@ const projects = [
             "Test your knowledge! Can you tell the difference between a Pokémon name and a technology term? A fun quiz game that challenges your ability to distinguish between these two worlds.",
         why: "I created this as a fun, lighthearted game that combines two of my interests—Pokémon and technology. It's a simple concept but surprisingly challenging and entertaining.",
         tech: ["TypeScript", "React", "Next.js"],
+        tags: [],
         route: "/pokemon-or-technology",
         color: "from-red-500/20 to-orange-500/20",
         borderColor: "border-red-400/30",
@@ -270,43 +267,65 @@ const projects = [
 ];
 
 export default function SoftwarePortfolioPage() {
-    const [selectedTech, setSelectedTech] = useState<Set<TechStackOption>>(
+    const [selectedTech, setSelectedTech] = useState<Set<Technology>>(
         new Set()
     );
+    const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
 
-    // Normalize tech tags for each project
-    const projectsWithNormalizedTech = useMemo(() => {
+    // Normalize technologies and tags for each project
+    const projectsWithNormalized = useMemo(() => {
         return projects.map((project) => ({
             ...project,
-            normalizedTech: project.tech
-                .map((tag) => normalizeTechTag(tag))
-                .filter((tag): tag is TechStackOption => tag !== null),
+            normalizedTech: (project.tech || [])
+                .map((t) => normalizeTechnology(t))
+                .filter((t): t is Technology => t !== null),
+            normalizedTags: (project.tags || [])
+                .map((t) => normalizeTag(t))
+                .filter((t): t is Tag => t !== null),
         }));
     }, []);
 
-    // Filter projects based on selected tech (inclusive OR logic)
+    // Filter projects based on selected tech and tags (inclusive OR logic)
     const filteredProjects = useMemo(() => {
-        if (selectedTech.size === 0) {
-            return projectsWithNormalizedTech;
+        if (selectedTech.size === 0 && selectedTags.size === 0) {
+            return projectsWithNormalized;
         }
 
-        return projectsWithNormalizedTech.filter((project) => {
-            // Check if project has ANY of the selected tech tags
-            return project.normalizedTech.some((tech) =>
-                selectedTech.has(tech)
-            );
+        return projectsWithNormalized.filter((project) => {
+            // Check if project has ANY of the selected technologies
+            const matchesTech =
+                selectedTech.size === 0 ||
+                project.normalizedTech.some((tech) => selectedTech.has(tech));
+
+            // Check if project has ANY of the selected tags
+            const matchesTags =
+                selectedTags.size === 0 ||
+                project.normalizedTags.some((tag) => selectedTags.has(tag));
+
+            // Project matches if it has any selected tech OR any selected tag
+            return matchesTech || matchesTags;
         });
-    }, [projectsWithNormalizedTech, selectedTech]);
+    }, [projectsWithNormalized, selectedTech, selectedTags]);
 
-    console.log("filteredProjects", filteredProjects);
-
-    const handleToggleTech = (tech: TechStackOption) => {
+    const handleToggleTech = (tech: Technology) => {
         setSelectedTech((prev) => {
             const next = new Set(prev);
             if (next.has(tech)) {
                 next.delete(tech);
             } else {
                 next.add(tech);
+            }
+            return next;
+        });
+    };
+
+    const handleToggleTag = (tag: Tag) => {
+        setSelectedTags((prev) => {
+            const next = new Set(prev);
+            if (next.has(tag)) {
+                next.delete(tag);
+            } else {
+                next.add(tag);
             }
             return next;
         });
@@ -381,15 +400,14 @@ export default function SoftwarePortfolioPage() {
                             </span>
                             .
                         </p>
+                        <TechStackFilter
+                            selectedTech={selectedTech}
+                            selectedTags={selectedTags}
+                            onToggleTech={handleToggleTech}
+                            onToggleTag={handleToggleTag}
+                            numProjects={filteredProjects.length}
+                        />
                     </div>
-                </section>
-
-                {/* Tech Stack Filter */}
-                <section className="px-8 py-8 max-w-7xl mx-auto">
-                    <TechStackFilter
-                        selectedTech={selectedTech}
-                        onToggleTech={handleToggleTech}
-                    />
                 </section>
 
                 {/* Projects Section */}
@@ -480,23 +498,46 @@ export default function SoftwarePortfolioPage() {
                                                     {project.why}
                                                 </p>
                                             </div>
-                                            <div className="space-y-3">
-                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                                    Tech Stack
-                                                </h3>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {project.tech.map(
-                                                        (tech) => (
-                                                            <span
-                                                                key={tech}
-                                                                className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
-                                                            >
-                                                                {tech}
-                                                            </span>
-                                                        )
-                                                    )}
+                                            {project.normalizedTech.length >
+                                                0 && (
+                                                <div className="space-y-3">
+                                                    <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                        Technologies
+                                                    </h3>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {project.normalizedTech.map(
+                                                            (tech) => (
+                                                                <span
+                                                                    key={tech}
+                                                                    className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                                                                >
+                                                                    {tech}
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
+                                            {project.normalizedTags.length >
+                                                0 && (
+                                                <div className="space-y-3">
+                                                    <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                        Tags
+                                                    </h3>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {project.normalizedTags.map(
+                                                            (tag) => (
+                                                                <span
+                                                                    key={tag}
+                                                                    className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                                                                >
+                                                                    {tag}
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
 
                                         {/* Iframe/CTA Side */}
