@@ -7,7 +7,7 @@ import { getContentById } from "@/app/data/content";
 
 /**
  * Hook to sync window state with URL.
- * Uses route format: /app-id?maximized=true
+ * Uses route format: /desktop/app-id?maximized=true
  * Tracks the last opened/focused app in the URL.
  */
 export function useUrlSync() {
@@ -23,11 +23,21 @@ export function useUrlSync() {
     useEffect(() => {
         if (isInitialized.current) return;
 
-        // Extract app ID from pathname (remove leading slash, handle home page)
-        const appId = pathname === "/" ? null : pathname.slice(1);
+        // Extract app ID from pathname
+        // Handle both /desktop/app-name and /app-name formats for backwards compatibility
+        let appId: string | null = null;
+        if (pathname === "/" || pathname === "/desktop") {
+            appId = null;
+        } else if (pathname.startsWith("/desktop/")) {
+            // Extract app ID from /desktop/app-name format
+            appId = pathname.slice("/desktop/".length);
+        } else {
+            // Legacy format: /app-name (for backwards compatibility)
+            appId = pathname.slice(1);
+        }
         const maximized = searchParams.get("maximized") === "true";
 
-        // If no app ID in URL (home page), don't do anything (let user start fresh)
+        // If no app ID in URL (home page or desktop page), don't do anything (let user start fresh)
         if (!appId) {
             isInitialized.current = true;
             isUpdatingUrl.current = false;
@@ -129,8 +139,8 @@ export function useUrlSync() {
                 current.zIndex > prev.zIndex ? current : prev
             );
         } else {
-            // No windows at all, go to home
-            const newPath = "/";
+            // No windows at all, go to desktop
+            const newPath = "/desktop";
             const currentPath = window.location.pathname;
             if (newPath !== currentPath) {
                 isUpdatingUrl.current = true;
@@ -146,8 +156,8 @@ export function useUrlSync() {
         const appId = topWindow.content.id;
         const isMaximized = topWindow.maximized ?? false;
 
-        // Build new URL
-        const newPath = `/${appId}`;
+        // Build new URL with /desktop prefix
+        const newPath = `/desktop/${appId}`;
         const newSearchParams = new URLSearchParams();
         if (isMaximized) {
             newSearchParams.set("maximized", "true");

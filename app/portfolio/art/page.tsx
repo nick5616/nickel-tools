@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import ProjectIframe from "@/components/ui/ProjectIframe";
 
 const projects = [
     {
@@ -205,14 +206,12 @@ export default function ArtPortfolioPage() {
                                     }`}
                                 >
                                     {project.route ? (
-                                        <iframe
+                                        <ProjectIframe
                                             src={project.route}
-                                            className="w-full h-[600px] border-0 rounded-lg shadow-xl"
                                             title={project.title}
-                                            loading="lazy"
                                         />
-                                    ) : (
-                                        <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                    ) : project.url?.includes("github.com") ? (
+                                        <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
                                             <div className="text-center space-y-4 p-8">
                                                 <p className="text-zinc-600 dark:text-zinc-400 mb-4">
                                                     External Portfolio
@@ -227,7 +226,12 @@ export default function ArtPortfolioPage() {
                                                 </a>
                                             </div>
                                         </div>
-                                    )}
+                                    ) : project.url ? (
+                                        <ProjectIframe
+                                            src={project.url}
+                                            title={project.title}
+                                        />
+                                    ) : null}
                                 </div>
                             </div>
                         </div>

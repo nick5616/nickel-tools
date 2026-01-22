@@ -1,6 +1,119 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
+import ProjectIframe from "@/components/ui/ProjectIframe";
+import TechStackFilter from "@/components/ui/TechStackFilter";
+import {
+    TECH_STACK_OPTIONS,
+    TechStackOption,
+    normalizeTechTag,
+} from "@/app/portfolio/techStack";
+
+// Layout types enum
+export type ProjectLayoutType =
+    | "desktop"
+    | "single-mobile"
+    | "double-mobile"
+    | "no-iframe";
+
+interface ProjectLayoutConfig {
+    layout: ProjectLayoutType;
+    sources: string[]; // For double-mobile, this will have 2 sources
+}
+
+// Function to map project ID to layout configuration
+function getProjectLayout(
+    projectId: string,
+    route?: string,
+    url?: string
+): ProjectLayoutConfig {
+    // Handle internal routes
+    if (route) {
+        switch (projectId) {
+            case "pokemon-or-technology":
+                return {
+                    layout: "desktop",
+                    sources: [route],
+                };
+            case "choice-engine":
+                return {
+                    layout: "desktop",
+                    sources: [route],
+                };
+            case "resume-builder":
+                return {
+                    layout: "desktop",
+                    sources: [route],
+                };
+            case "smart-piano":
+                return {
+                    layout: "desktop",
+                    sources: [route],
+                };
+            default:
+                return {
+                    layout: "desktop",
+                    sources: [route],
+                };
+        }
+    }
+
+    // Handle external URLs
+    if (url) {
+        switch (projectId) {
+            case "friendex":
+                return {
+                    layout: "double-mobile",
+                    sources: [
+                        "https://friendex.online/",
+                        "https://friendex.online/demo",
+                    ],
+                };
+            case "tierlistify":
+                return {
+                    layout: "single-mobile",
+                    sources: [
+                        "https://tierlistify.com/",
+                        "https://tierlistify.com/",
+                    ],
+                };
+            case "videogamequest":
+                return {
+                    layout: "double-mobile",
+                    sources: [
+                        "https://videogamequest.me/",
+                        "https://videogamequest.me/demo",
+                    ],
+                };
+            case "passionfruit":
+                return {
+                    layout: "desktop",
+                    sources: [url],
+                };
+            case "batch-analyzer":
+                return {
+                    layout: "desktop",
+                    sources: [url],
+                };
+            case "chaos":
+                return {
+                    layout: "no-iframe",
+                    sources: [],
+                };
+            default:
+                return {
+                    layout: "desktop",
+                    sources: [url],
+                };
+        }
+    }
+
+    // Default fallback
+    return {
+        layout: "desktop",
+        sources: [],
+    };
+}
 
 const projects = [
     {
@@ -72,7 +185,7 @@ const projects = [
     },
     {
         id: "friendex",
-        title: "friendex.online",
+        title: "Friendex",
         description:
             "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
         why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
@@ -84,7 +197,7 @@ const projects = [
     },
     {
         id: "videogamequest",
-        title: "videogamequest.me",
+        title: "RPG Quests",
         description:
             "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
         why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
@@ -102,7 +215,7 @@ const projects = [
     },
     {
         id: "tierlistify",
-        title: "tierlistify.com",
+        title: "Tierlistify",
         description:
             "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
         why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
@@ -157,6 +270,48 @@ const projects = [
 ];
 
 export default function SoftwarePortfolioPage() {
+    const [selectedTech, setSelectedTech] = useState<Set<TechStackOption>>(
+        new Set()
+    );
+
+    // Normalize tech tags for each project
+    const projectsWithNormalizedTech = useMemo(() => {
+        return projects.map((project) => ({
+            ...project,
+            normalizedTech: project.tech
+                .map((tag) => normalizeTechTag(tag))
+                .filter((tag): tag is TechStackOption => tag !== null),
+        }));
+    }, []);
+
+    // Filter projects based on selected tech (inclusive OR logic)
+    const filteredProjects = useMemo(() => {
+        if (selectedTech.size === 0) {
+            return projectsWithNormalizedTech;
+        }
+
+        return projectsWithNormalizedTech.filter((project) => {
+            // Check if project has ANY of the selected tech tags
+            return project.normalizedTech.some((tech) =>
+                selectedTech.has(tech)
+            );
+        });
+    }, [projectsWithNormalizedTech, selectedTech]);
+
+    console.log("filteredProjects", filteredProjects);
+
+    const handleToggleTech = (tech: TechStackOption) => {
+        setSelectedTech((prev) => {
+            const next = new Set(prev);
+            if (next.has(tech)) {
+                next.delete(tech);
+            } else {
+                next.add(tech);
+            }
+            return next;
+        });
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-green-950 dark:via-teal-950 dark:to-cyan-950">
             {/* Background SVG Blobs */}
@@ -229,98 +384,200 @@ export default function SoftwarePortfolioPage() {
                     </div>
                 </section>
 
+                {/* Tech Stack Filter */}
+                <section className="px-8 py-8 max-w-7xl mx-auto">
+                    <TechStackFilter
+                        selectedTech={selectedTech}
+                        onToggleTech={handleToggleTech}
+                    />
+                </section>
+
                 {/* Projects Section */}
                 <section className="px-8 pb-24 space-y-24">
-                    {projects.map((project, index) => (
-                        <div key={project.id} className="max-w-7xl mx-auto">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                                {/* Description Side */}
-                                <div
-                                    className={`space-y-6 order-2 ${
-                                        index % 2 === 0
-                                            ? "lg:order-1"
-                                            : "lg:order-2"
-                                    }`}
-                                >
-                                    <div className="relative">
-                                        {/* Background blob for this project */}
-                                        <svg
-                                            className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
-                                            viewBox="0 0 400 400"
-                                        >
-                                            <path
-                                                d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                                                fill={project.blobColor}
-                                            />
-                                        </svg>
-                                        <h2 className="text-2xl md:text-3xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
-                                            {project.title}
-                                        </h2>
-                                    </div>
-                                    <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                                        {project.description}
-                                    </p>
-                                    <div className="space-y-3">
-                                        <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                            Why I Built It
-                                        </h3>
-                                        <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                                            {project.why}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-3">
-                                        <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                            Tech Stack
-                                        </h3>
-                                        <div className="flex flex-wrap gap-2">
-                                            {project.tech.map((tech) => (
-                                                <span
-                                                    key={tech}
-                                                    className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
-                                                >
-                                                    {tech}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+                    {filteredProjects.length === 0 ? (
+                        <div className="max-w-7xl mx-auto text-center py-16">
+                            <p className="text-lg text-zinc-600 dark:text-zinc-400">
+                                No projects match the selected filters. Try
+                                selecting different tech stack options.
+                            </p>
+                        </div>
+                    ) : (
+                        filteredProjects.map((project, index) => {
+                            const layoutConfig = getProjectLayout(
+                                project.id,
+                                project.route,
+                                project.url
+                            );
 
-                                {/* Iframe Side */}
+                            // Determine column widths based on layout
+                            const getColumnClasses = () => {
+                                switch (layoutConfig.layout) {
+                                    case "desktop":
+                                        return {
+                                            description: "lg:col-span-3",
+                                            iframe: "lg:col-span-7",
+                                        };
+                                    case "single-mobile":
+                                        return {
+                                            description: "lg:col-span-4",
+                                            iframe: "lg:col-span-6",
+                                        };
+                                    case "double-mobile":
+                                        return {
+                                            description: "lg:col-span-3",
+                                            iframe: "lg:col-span-7",
+                                        };
+                                    case "no-iframe":
+                                        return {
+                                            description: "lg:col-span-5",
+                                            iframe: "lg:col-span-5",
+                                        };
+                                }
+                            };
+
+                            const columnClasses = getColumnClasses();
+                            const isEven = index % 2 === 0;
+
+                            return (
                                 <div
-                                    className={`order-1 relative ${
-                                        index % 2 === 0
-                                            ? "lg:order-2"
-                                            : "lg:order-1"
-                                    }`}
+                                    key={project.id}
+                                    className="max-w-7xl mx-auto"
                                 >
-                                    {project.route ? (
-                                        <iframe
-                                            src={project.route}
-                                            className="w-full h-[600px] border-0 rounded-lg shadow-xl"
-                                            title={project.title}
-                                            loading="lazy"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
-                                            <div className="text-center space-y-4 p-8">
-                                                <p className="text-zinc-600 dark:text-zinc-400">
-                                                    External Project
-                                                </p>
-                                                <a
-                                                    href={project.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-block px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-teal-600 transition-colors"
+                                    <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-12 items-start">
+                                        {/* Description Side */}
+                                        <div
+                                            className={`space-y-6 order-2 ${
+                                                columnClasses.description
+                                            } ${
+                                                isEven
+                                                    ? "lg:order-1"
+                                                    : "lg:order-2"
+                                            }`}
+                                        >
+                                            <div className="relative">
+                                                {/* Background blob for this project */}
+                                                <svg
+                                                    className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
+                                                    viewBox="0 0 400 400"
                                                 >
-                                                    Visit Project →
-                                                </a>
+                                                    <path
+                                                        d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
+                                                        fill={project.blobColor}
+                                                    />
+                                                </svg>
+                                                <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
+                                                    {project.title}
+                                                </h2>
+                                            </div>
+                                            <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                                                {project.description}
+                                            </p>
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    Why I Built It
+                                                </h3>
+                                                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                                    {project.why}
+                                                </p>
+                                            </div>
+                                            <div className="space-y-3">
+                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    Tech Stack
+                                                </h3>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.tech.map(
+                                                        (tech) => (
+                                                            <span
+                                                                key={tech}
+                                                                className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                                                            >
+                                                                {tech}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                    )}
+
+                                        {/* Iframe/CTA Side */}
+                                        {layoutConfig.layout === "no-iframe" ? (
+                                            <div className="lg:col-span-5 order-1">
+                                                <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                                    <div className="text-center space-y-4 p-8">
+                                                        <p className="text-zinc-600 dark:text-zinc-400">
+                                                            External Project
+                                                        </p>
+                                                        <a
+                                                            href={project.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-block px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-teal-600 transition-colors"
+                                                        >
+                                                            Visit Project →
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : layoutConfig.layout ===
+                                          "double-mobile" ? (
+                                            <div
+                                                className={`order-1 relative ${
+                                                    columnClasses.iframe
+                                                } ${
+                                                    isEven
+                                                        ? "lg:order-2"
+                                                        : "lg:order-1"
+                                                }`}
+                                            >
+                                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                                                    {layoutConfig.sources.map(
+                                                        (source, idx) => (
+                                                            <ProjectIframe
+                                                                key={idx}
+                                                                src={source}
+                                                                title={`${
+                                                                    project.title
+                                                                } - View ${
+                                                                    idx + 1
+                                                                }`}
+                                                                mobileDimensions={
+                                                                    true
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className={`order-1 relative ${
+                                                    columnClasses.iframe
+                                                } ${
+                                                    isEven
+                                                        ? "lg:order-2"
+                                                        : "lg:order-1"
+                                                }`}
+                                            >
+                                                {layoutConfig.sources[0] && (
+                                                    <ProjectIframe
+                                                        src={
+                                                            layoutConfig
+                                                                .sources[0]
+                                                        }
+                                                        title={project.title}
+                                                        mobileDimensions={
+                                                            layoutConfig.layout ===
+                                                            "single-mobile"
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                            );
+                        })
+                    )}
                 </section>
             </div>
         </div>

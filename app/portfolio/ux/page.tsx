@@ -1,6 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
+import ProjectIframe from "@/components/ui/ProjectIframe";
+import TechStackFilter from "@/components/ui/TechStackFilter";
+import {
+    TECH_STACK_OPTIONS,
+    TechStackOption,
+    normalizeTechTag,
+} from "@/app/portfolio/techStack";
 
 const projects = [
     {
@@ -72,6 +79,46 @@ const projects = [
 ];
 
 export default function UXPortfolioPage() {
+    const [selectedTech, setSelectedTech] = useState<Set<TechStackOption>>(
+        new Set()
+    );
+
+    // Normalize tech tags for each project
+    const projectsWithNormalizedTech = useMemo(() => {
+        return projects.map((project) => ({
+            ...project,
+            normalizedTech: project.tech
+                .map((tag) => normalizeTechTag(tag))
+                .filter((tag): tag is TechStackOption => tag !== null),
+        }));
+    }, []);
+
+    // Filter projects based on selected tech (inclusive OR logic)
+    const filteredProjects = useMemo(() => {
+        if (selectedTech.size === 0) {
+            return projectsWithNormalizedTech;
+        }
+
+        return projectsWithNormalizedTech.filter((project) => {
+            // Check if project has ANY of the selected tech tags
+            return project.normalizedTech.some((tech) =>
+                selectedTech.has(tech)
+            );
+        });
+    }, [projectsWithNormalizedTech, selectedTech]);
+
+    const handleToggleTech = (tech: TechStackOption) => {
+        setSelectedTech((prev) => {
+            const next = new Set(prev);
+            if (next.has(tech)) {
+                next.delete(tech);
+            } else {
+                next.add(tech);
+            }
+            return next;
+        });
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-50 to-amber-50 dark:from-yellow-800 dark:via-yellow-700 dark:to-amber-700">
             {/* Background SVG Blobs */}
@@ -124,98 +171,120 @@ export default function UXPortfolioPage() {
                     </div>
                 </section>
 
+                {/* Tech Stack Filter */}
+                <section className="px-8 py-8 max-w-7xl mx-auto">
+                    <TechStackFilter
+                        selectedTech={selectedTech}
+                        onToggleTech={handleToggleTech}
+                    />
+                </section>
+
                 {/* Projects Section */}
                 <section className="px-8 pb-24 space-y-24">
-                    {projects.map((project, index) => (
-                        <div key={project.id} className="max-w-7xl mx-auto">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                                {/* Description Side */}
-                                <div
-                                    className={`space-y-6 order-2 ${
-                                        index % 2 === 0
-                                            ? "lg:order-1"
-                                            : "lg:order-2"
-                                    }`}
-                                >
-                                    <div className="relative">
-                                        {/* Background blob for this project */}
-                                        <svg
-                                            className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
-                                            viewBox="0 0 400 400"
-                                        >
-                                            <path
-                                                d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                                                fill={project.blobColor}
-                                            />
-                                        </svg>
-                                        <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
-                                            {project.title}
-                                        </h2>
-                                    </div>
-                                    <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                                        {project.description}
-                                    </p>
-                                    <div className="space-y-3">
-                                        <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                            Design Approach
-                                        </h3>
-                                        <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                                            {project.why}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-3">
-                                        <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
-                                            Technologies & Tools
-                                        </h3>
-                                        <div className="flex flex-wrap gap-2">
-                                            {project.tech.map((tech) => (
-                                                <span
-                                                    key={tech}
-                                                    className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
-                                                >
-                                                    {tech}
-                                                </span>
-                                            ))}
+                    {filteredProjects.length === 0 ? (
+                        <div className="max-w-7xl mx-auto text-center py-16">
+                            <p className="text-lg text-zinc-600 dark:text-zinc-400">
+                                No projects match the selected filters. Try
+                                selecting different tech stack options.
+                            </p>
+                        </div>
+                    ) : (
+                        filteredProjects.map((project, index) => (
+                            <div key={project.id} className="max-w-7xl mx-auto">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                                    {/* Description Side */}
+                                    <div
+                                        className={`space-y-6 order-2 ${
+                                            index % 2 === 0
+                                                ? "lg:order-1"
+                                                : "lg:order-2"
+                                        }`}
+                                    >
+                                        <div className="relative">
+                                            {/* Background blob for this project */}
+                                            <svg
+                                                className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
+                                                viewBox="0 0 400 400"
+                                            >
+                                                <path
+                                                    d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
+                                                    fill={project.blobColor}
+                                                />
+                                            </svg>
+                                            <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
+                                                {project.title}
+                                            </h2>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {/* Iframe Side */}
-                                <div
-                                    className={`order-1 relative ${
-                                        index % 2 === 0
-                                            ? "lg:order-2"
-                                            : "lg:order-1"
-                                    }`}
-                                >
-                                    {project.route ? (
-                                        <iframe
-                                            src={project.route}
-                                            className="w-full h-[600px] border-0 rounded-lg shadow-xl"
-                                            title={project.title}
-                                            loading="lazy"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
-                                            <div className="text-center space-y-4 p-8">
-                                                <p className="text-zinc-600 dark:text-zinc-400">
-                                                    External Project
-                                                </p>
-                                                <a
-                                                    href={project.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-block px-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:from-amber-600 hover:to-yellow-600 transition-colors"
-                                                >
-                                                    Visit Project →
-                                                </a>
+                                        <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                                            {project.description}
+                                        </p>
+                                        <div className="space-y-3">
+                                            <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                Design Approach
+                                            </h3>
+                                            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                                {project.why}
+                                            </p>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                Technologies & Tools
+                                            </h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {project.tech.map((tech) => (
+                                                    <span
+                                                        key={tech}
+                                                        className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                                                    >
+                                                        {tech}
+                                                    </span>
+                                                ))}
                                             </div>
                                         </div>
-                                    )}
+                                    </div>
+
+                                    {/* Iframe Side */}
+                                    <div
+                                        className={`order-1 relative ${
+                                            index % 2 === 0
+                                                ? "lg:order-2"
+                                                : "lg:order-1"
+                                        }`}
+                                    >
+                                        {project.route ? (
+                                            <ProjectIframe
+                                                src={project.route}
+                                                title={project.title}
+                                            />
+                                        ) : project.url?.includes(
+                                              "github.com"
+                                          ) ? (
+                                            <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                                <div className="text-center space-y-4 p-8">
+                                                    <p className="text-zinc-600 dark:text-zinc-400">
+                                                        External Project
+                                                    </p>
+                                                    <a
+                                                        href={project.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-block px-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:from-amber-600 hover:to-yellow-600 transition-colors"
+                                                    >
+                                                        Visit Project →
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ) : project.url ? (
+                                            <ProjectIframe
+                                                src={project.url}
+                                                title={project.title}
+                                            />
+                                        ) : null}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </section>
             </div>
         </div>

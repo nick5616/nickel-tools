@@ -31,7 +31,7 @@ export const PROJECTS: Project[] = [
         id: "portfolio",
         name: "nicolasbelovoskey.com",
         subtitle:
-            "Immersive first-person art and software engineering portfolio, with interactive games and experiences thrown in for fun. Built in Three.js.",
+            "Immersive first-person sandbox, with interactive games and experiences. Built in Three.js and React. Built for fun.",
         icon: <Gamepad2 className="w-4 h-4" />,
         href: "https://nicolasbelovoskey.com",
         type: "EXTERNAL",

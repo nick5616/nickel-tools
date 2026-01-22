@@ -165,18 +165,18 @@ export default function ChoicePicker() {
 
     if (stage === "input") {
         return (
-            <div className="h-full flex items-center justify-center p-8 my-8">
+            <div className="w-full flex items-start justify-center p-4 md:p-8 py-8">
                 <div className="w-full max-w-2xl">
-                    <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 md:p-12">
+                    <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-800/90 rounded-3xl shadow-2xl border border-gray-300 dark:border-slate-600/50 p-6 md:p-8 lg:p-12">
                         <div className="flex items-center gap-3 mb-8">
-                            <h1 className="text-4xl font-bold text-white">
+                            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
                                 Decision Spinner
                             </h1>
                         </div>
 
                         <div className="space-y-6">
                             <div className="space-y-3">
-                                <label className="block text-sm font-medium text-white/90">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-white/90">
                                     Context Info (Optional)
                                 </label>
                                 <input
@@ -186,12 +186,12 @@ export default function ChoicePicker() {
                                         setContextLabel(e.target.value)
                                     }
                                     placeholder='e.g., "How much of $1000 should I invest?"'
-                                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
+                                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
                                 />
                             </div>
 
                             <div className="space-y-3">
-                                <label className="block text-sm font-medium text-white/90">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-white/90">
                                     Your Options
                                 </label>
                                 {options.map((option, index) => (
@@ -206,14 +206,14 @@ export default function ChoicePicker() {
                                                 )
                                             }
                                             placeholder={`$${index * 500}`}
-                                            className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
+                                            className="flex-1 px-4 py-3 rounded-xl bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-yellow-300/50 transition"
                                         />
                                         {options.length > 1 && (
                                             <button
                                                 onClick={() =>
                                                     removeOption(index)
                                                 }
-                                                className="px-3 py-3 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-300/30 text-red-200 transition"
+                                                className="px-3 py-3 rounded-xl bg-red-100 dark:bg-red-500/20 hover:bg-red-200 dark:hover:bg-red-500/30 border border-red-300 dark:border-red-300/30 text-red-700 dark:text-red-200 transition"
                                             >
                                                 <X className="w-5 h-5" />
                                             </button>
@@ -224,7 +224,7 @@ export default function ChoicePicker() {
 
                             <button
                                 onClick={addOption}
-                                className="w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white transition flex items-center justify-center gap-2"
+                                className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-slate-700/50 hover:bg-gray-200 dark:hover:bg-slate-600/50 border border-gray-300 dark:border-slate-600/50 text-gray-900 dark:text-white transition flex items-center justify-center gap-2"
                             >
                                 <Plus className="w-5 h-5" />
                                 Add Option
@@ -267,15 +267,15 @@ export default function ChoicePicker() {
     const blurAmount = Math.min((velocity / 50) * maxBlur, maxBlur);
 
     return (
-        <div className="h-full flex flex-col p-8">
+        <div className="w-full min-h-full flex flex-col p-4 md:p-8">
             {/* Context Info at Top */}
             <div className="w-full flex justify-center mb-8">
                 {contextLabel && contextInfo && (
-                    <div className="backdrop-blur-xl bg-white/10 rounded-2xl px-8 py-4 border border-white/20">
-                        <p className="text-white/70 text-sm text-center">
+                    <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-800/90 rounded-2xl px-8 py-4 border border-gray-300 dark:border-slate-600/50">
+                        <p className="text-gray-600 dark:text-white/70 text-sm text-center">
                             {contextLabel}
                         </p>
-                        <p className="text-white text-3xl font-bold text-center">
+                        <p className="text-gray-900 dark:text-white text-3xl font-bold text-center">
                             {contextInfo}
                         </p>
                     </div>
@@ -349,8 +349,8 @@ export default function ChoicePicker() {
                 {/* Spinner Track */}
                 <div className="relative w-full h-64">
                     {/* Top and bottom fade */}
-                    <div className="absolute left-0 top-0 w-1/4 h-full bg-gradient-to-r from-indigo-900 to-transparent z-20 pointer-events-none" />
-                    <div className="absolute right-0 top-0 w-1/4 h-full bg-gradient-to-l from-indigo-900 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute left-0 top-0 w-1/4 h-full bg-gradient-to-r from-slate-50 dark:from-indigo-900 to-transparent z-20 pointer-events-none" />
+                    <div className="absolute right-0 top-0 w-1/4 h-full bg-gradient-to-l from-slate-50 dark:from-indigo-900 to-transparent z-20 pointer-events-none" />
 
                     {/* Items container - centered on screen */}
                     <div
@@ -382,15 +382,15 @@ export default function ChoicePicker() {
             <div className="w-full flex flex-col items-center gap-6 mt-8">
                 {selectedIndex !== null && (
                     <div
-                        className="backdrop-blur-xl bg-white/10 rounded-2xl px-12 py-6 border border-white/20 text-center"
+                        className="backdrop-blur-xl bg-white/80 dark:bg-slate-800/90 rounded-2xl px-12 py-6 border border-gray-300 dark:border-slate-600/50 text-center"
                         style={{
                             animation: "bounce 0.5s ease-out 2",
                         }}
                     >
-                        <p className="text-white/70 text-lg mb-2">
+                        <p className="text-gray-600 dark:text-white/70 text-lg mb-2">
                             Your Decision:
                         </p>
-                        <p className="text-white text-4xl font-bold">
+                        <p className="text-gray-900 dark:text-white text-4xl font-bold">
                             {options[selectedIndex]}
                         </p>
                     </div>
@@ -407,7 +407,7 @@ export default function ChoicePicker() {
                 <button
                     onClick={spinReel}
                     disabled={spinning}
-                    className="px-12 py-6 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-white font-bold text-2xl shadow-2xl transition-all disabled:opacity-70 disabled:cursor-not-allowed border-4 border-white/30 flex items-center gap-4"
+                    className="px-12 py-6 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 text-white font-bold text-2xl shadow-2xl transition-all disabled:opacity-70 disabled:cursor-not-allowed border-4 border-gray-300 dark:border-white/30 flex items-center gap-4"
                     style={{
                         boxShadow: spinning
                             ? "0 0 60px rgba(250, 204, 21, 0.8)"
@@ -429,7 +429,7 @@ export default function ChoicePicker() {
 
                 <button
                     onClick={reset}
-                    className="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white transition font-medium"
+                    className="px-8 py-3 rounded-xl bg-gray-100 dark:bg-slate-700/50 hover:bg-gray-200 dark:hover:bg-slate-600/50 border border-gray-300 dark:border-slate-600/50 text-gray-900 dark:text-white transition font-medium"
                 >
                     Start Over
                 </button>
