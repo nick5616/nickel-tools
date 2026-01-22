@@ -4,7 +4,8 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 
 export const metadata: Metadata = {
     title: "Choice Picker | Nickel Tools",
-    description: "Spin the wheel to make decisions! Add your options and let chance decide.",
+    description:
+        "Spin the wheel to make decisions! Add your options and let chance decide.",
     alternates: {
         canonical: "/choice-picker",
     },
@@ -59,8 +60,8 @@ export default function ChoicePickerPage() {
                         need at least 2 options to spin. Optionally, add context
                         information that will be displayed at the top during the
                         spin. Once you&apos;re ready, click &quot;Let&apos;s
-                        Spin!&quot; and then hit the &quot;SPIN!&quot; button
-                        to see the wheel in action. The selected option will be
+                        Spin!&quot; and then hit the &quot;SPIN!&quot; button to
+                        see the wheel in action. The selected option will be
                         highlighted when the spin completes.
                     </p>
                 </div>
@@ -68,5 +69,3 @@ export default function ChoicePickerPage() {
         </div>
     );
 }
-
-

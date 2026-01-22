@@ -25,8 +25,10 @@ interface AppPageProps {
 export default function AppPage(props: AppPageProps) {
     // Unwrap params and searchParams if they exist (Next.js 15+)
     const params = props.params ? use(props.params) : undefined;
-    const searchParams = props.searchParams ? use(props.searchParams) : undefined;
-    
+    const searchParams = props.searchParams
+        ? use(props.searchParams)
+        : undefined;
+
     const isMobile = useDeviceType();
 
     return isMobile ? <MobileOS /> : <DesktopOSWithSuspense />;

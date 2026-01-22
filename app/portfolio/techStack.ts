@@ -63,17 +63,17 @@ export function normalizeTechTag(tag: string): string | null {
         "social ux": "Social App",
         "social app": "Social App",
         "responsive ui": "Responsive UI",
-        "responsive": "Responsive UI",
+        responsive: "Responsive UI",
         "web development": "Web Development",
         "web dev": "Web Development",
         "productivity tools": "Productivity Tools",
-        "productivity": "Productivity Tools",
+        productivity: "Productivity Tools",
         "project management": "Project Management",
         "3d design": "3D Design",
         "interactive design": "Interactive Design",
-        "interactive": "Interactive Design",
+        interactive: "Interactive Design",
         "ai integration": "AI Integration",
-        "ai": "AI Integration",
+        ai: "AI Integration",
     };
 
     const lowerTag = tag.toLowerCase();
@@ -86,4 +86,3 @@ export function normalizeTechTag(tag: string): string | null {
     // If no match found, return null (tag won't be filterable but will still display)
     return null;
 }
-
