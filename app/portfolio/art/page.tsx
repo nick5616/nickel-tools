@@ -209,6 +209,7 @@ export default function ArtPortfolioPage() {
                                         <ProjectIframe
                                             src={project.route}
                                             title={project.title}
+                                            mobileDimensions={false}
                                         />
                                     ) : project.url?.includes("github.com") ? (
                                         <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">

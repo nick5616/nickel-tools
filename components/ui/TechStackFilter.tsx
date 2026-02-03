@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TECHNOLOGIES, TAGS, Technology, Tag } from "@/app/portfolio/techStack";
 
@@ -21,10 +21,11 @@ export default function TechStackFilter({
 }: TechStackFilterProps) {
     const [isOpen, setIsOpen] = useState(false);
     const hasActiveFilters = selectedTech.size > 0 || selectedTags.size > 0;
-    console.log("numProjects", numProjects);
+
     return (
         <div className="mt-6">
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between text-left rounded-lg transition-colors pb-3"
             >
@@ -56,6 +57,7 @@ export default function TechStackFilter({
                                 return (
                                     <button
                                         key={tech}
+                                        type="button"
                                         onClick={() => onToggleTech(tech)}
                                         className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
                                             isSelected
@@ -81,6 +83,7 @@ export default function TechStackFilter({
                                 return (
                                     <button
                                         key={tag}
+                                        type="button"
                                         onClick={() => onToggleTag(tag)}
                                         className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
                                             isSelected
@@ -98,6 +101,7 @@ export default function TechStackFilter({
                     {hasActiveFilters && (
                         <div className="flex justify-between">
                             <button
+                                type="button"
                                 onClick={() => {
                                     selectedTech.forEach((tech) =>
                                         onToggleTech(tech)

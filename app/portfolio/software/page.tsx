@@ -1,14 +1,29 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
+import SlideIn from "@/components/ui/SlideIn";
 import {
     Technology,
     Tag,
     normalizeTechnology,
     normalizeTag,
 } from "@/app/portfolio/techStack";
+
+// Pre-computed blob paths using superformula-inspired polar coordinates
+// Generated with: seed, size=400, complexity, variance
+// Formula: r = size + sin(θ*c)*size*0.15 + cos(θ*(c-2)+seed)*size*0.1 + sin(θ*c*2+seed*2)*size*0.05 + noise
+const BLOB_PATHS = {
+    // seed=1.618 (φ), complexity=5
+    phi: "M 459 0 Q 459 0 456 26 Q 454 52 446 77 Q 438 102 425 125 Q 411 148 393 168 Q 374 189 352 206 Q 329 223 304 236 Q 278 249 251 257 Q 223 266 195 269 Q 166 273 137 271 Q 108 269 80 262 Q 52 254 27 242 Q 1 229 -22 212 Q -46 195 -66 174 Q -87 153 -103 129 Q -120 105 -131 79 Q -143 52 -149 24 Q -155 -4 -155 -32 Q -156 -61 -150 -89 Q -145 -117 -134 -143 Q -122 -170 -106 -194 Q -89 -218 -68 -238 Q -48 -259 -24 -275 Q 0 -292 26 -304 Q 53 -316 81 -323 Q 109 -330 138 -331 Q 167 -333 196 -329 Q 224 -325 252 -316 Q 279 -306 304 -292 Q 329 -277 351 -258 Q 373 -239 391 -217 Q 409 -194 423 -169 Q 436 -143 445 -116 Q 453 -88 457 -59 Q 460 -30 459 0 Z",
+    // seed=2.718 (e), complexity=7
+    euler: "M 449 0 Q 449 0 443 29 Q 437 58 424 85 Q 411 111 393 134 Q 374 157 351 176 Q 327 194 301 208 Q 274 221 245 230 Q 216 238 186 241 Q 156 244 126 241 Q 96 238 67 230 Q 38 221 12 208 Q -15 194 -38 176 Q -62 157 -81 134 Q -101 111 -115 85 Q -129 58 -137 29 Q -145 0 -147 -30 Q -149 -60 -144 -90 Q -140 -119 -129 -147 Q -118 -175 -101 -200 Q -84 -225 -62 -247 Q -40 -268 -14 -285 Q 12 -302 40 -314 Q 69 -325 99 -331 Q 130 -337 161 -337 Q 192 -337 222 -331 Q 252 -325 281 -314 Q 309 -302 334 -285 Q 359 -268 380 -247 Q 401 -225 417 -200 Q 433 -175 444 -147 Q 454 -119 459 -90 Q 463 -60 461 -30 Q 459 0 449 0 Z",
+    // seed=3.141 (π), complexity=6
+    pi: "M 454 0 Q 454 0 449 28 Q 444 56 433 83 Q 421 109 404 132 Q 386 156 364 175 Q 341 195 315 210 Q 288 225 259 235 Q 230 245 199 250 Q 169 254 138 253 Q 107 251 77 244 Q 48 236 20 223 Q -7 210 -32 193 Q -57 175 -78 153 Q -99 131 -116 106 Q -132 80 -143 52 Q -154 24 -159 -5 Q -165 -35 -164 -65 Q -164 -95 -157 -124 Q -150 -153 -138 -181 Q -125 -208 -107 -232 Q -89 -256 -67 -277 Q -44 -297 -18 -313 Q 8 -328 37 -339 Q 66 -349 96 -354 Q 127 -359 158 -358 Q 189 -357 219 -350 Q 249 -343 277 -331 Q 305 -318 330 -301 Q 354 -283 375 -261 Q 395 -239 411 -213 Q 426 -187 437 -159 Q 447 -130 452 -100 Q 457 -70 457 -40 Q 457 -10 454 0 Z",
+    // seed=0.577 (γ), complexity=8
+    gamma: "M 445 0 Q 445 0 438 27 Q 431 54 418 79 Q 405 104 387 126 Q 369 148 347 167 Q 324 185 299 200 Q 273 214 245 224 Q 217 233 188 238 Q 158 242 129 241 Q 99 240 70 234 Q 42 227 15 216 Q -12 204 -36 188 Q -60 172 -81 152 Q -101 132 -118 109 Q -134 85 -145 59 Q -157 33 -163 5 Q -169 -23 -169 -51 Q -169 -80 -163 -108 Q -157 -136 -145 -162 Q -133 -189 -116 -213 Q -99 -237 -78 -258 Q -56 -278 -32 -295 Q -7 -311 20 -323 Q 48 -334 77 -341 Q 107 -347 137 -348 Q 167 -349 197 -344 Q 227 -340 256 -330 Q 284 -319 310 -304 Q 335 -289 357 -269 Q 379 -250 397 -227 Q 414 -203 427 -177 Q 439 -150 447 -122 Q 454 -93 456 -63 Q 458 -33 455 -3 Q 452 27 445 0 Z",
+} as const;
 
 // Layout types enum
 export type ProjectLayoutType =
@@ -175,18 +190,31 @@ const projects = [
         blobColor: "#8b5cf6",
     },
     {
-        id: "resume-builder",
-        title: "Online LaTeX Resume Builder",
+        id: "passionfruit",
+        title: "Passionfruit",
         description:
-            "A privacy-first resume builder that compiles LaTeX directly in your browser using WebAssembly. No server-side processing, no data collection—just you and your resume.",
-        why: "I built this because I was frustrated with resume builders that required accounts, stored your data, or had limited formatting options. LaTeX produces beautiful, professional resumes, but the setup barrier is high. This tool removes that barrier entirely.",
-        tech: ["TypeScript", "React", "WebAssembly", "LaTeX", "Next.js"],
-        tags: [],
-        route: "/resume-editor",
-        color: "from-emerald-500/20 to-teal-500/20",
-        borderColor: "border-emerald-400/30",
-        blobColor: "#10b981",
+            "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
+        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
+        tech: ["React"],
+        tags: ["Project Management", "Productivity Tools"],
+        url: "https://yieldpassionfruit.netlify.app",
+        color: "from-yellow-500/20 to-orange-500/20",
+        borderColor: "border-yellow-400/30",
+        blobColor: "#eab308",
     },
+    // {
+    //     id: "resume-builder",
+    //     title: "Online LaTeX Resume Builder",
+    //     description:
+    //         "A privacy-first resume builder that compiles LaTeX directly in your browser using WebAssembly. No server-side processing, no data collection—just you and your resume.",
+    //     why: "I built this because I was frustrated with resume builders that required accounts, stored your data, or had limited formatting options. LaTeX produces beautiful, professional resumes, but the setup barrier is high. This tool removes that barrier entirely.",
+    //     tech: ["TypeScript", "React", "WebAssembly", "LaTeX", "Next.js"],
+    //     tags: [],
+    //     route: "/resume-editor",
+    //     color: "from-emerald-500/20 to-teal-500/20",
+    //     borderColor: "border-emerald-400/30",
+    //     blobColor: "#10b981",
+    // },
     {
         id: "chaos",
         title: "CHAOS",
@@ -225,32 +253,20 @@ const projects = [
         borderColor: "border-purple-400/30",
         blobColor: "#a855f7",
     },
-    {
-        id: "passionfruit",
-        title: "Passionfruit",
-        description:
-            "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
-        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
-        tech: ["React"],
-        tags: ["Project Management", "Productivity Tools"],
-        url: "https://yieldpassionfruit.netlify.app",
-        color: "from-yellow-500/20 to-orange-500/20",
-        borderColor: "border-yellow-400/30",
-        blobColor: "#eab308",
-    },
-    {
-        id: "choice-engine",
-        title: "Choice Picker",
-        description:
-            "Spin the wheel to make decisions! Add your options and let chance decide. A simple, fun utility for when you can't choose between options.",
-        why: "I built this as a quick utility tool for decision-making. Sometimes you just need a random picker, and I wanted something clean and simple without the clutter of other decision-making apps.",
-        tech: ["TypeScript", "React", "Next.js"],
-        tags: [],
-        route: "/choice-picker",
-        color: "from-lime-500/20 to-green-500/20",
-        borderColor: "border-lime-400/30",
-        blobColor: "#84cc16",
-    },
+    
+    // {
+    //     id: "choice-engine",
+    //     title: "Choice Picker",
+    //     description:
+    //         "Spin the wheel to make decisions! Add your options and let chance decide. A simple, fun utility for when you can't choose between options.",
+    //     why: "I built this as a quick utility tool for decision-making. Sometimes you just need a random picker, and I wanted something clean and simple without the clutter of other decision-making apps.",
+    //     tech: ["TypeScript", "React", "Next.js"],
+    //     tags: [],
+    //     route: "/choice-picker",
+    //     color: "from-lime-500/20 to-green-500/20",
+    //     borderColor: "border-lime-400/30",
+    //     blobColor: "#84cc16",
+    // },
     {
         id: "pokemon-or-technology",
         title: "Pokemon or Technology",
@@ -293,17 +309,32 @@ export default function SoftwarePortfolioPage() {
 
         return projectsWithNormalized.filter((project) => {
             // Check if project has ANY of the selected technologies
-            const matchesTech =
-                selectedTech.size === 0 ||
-                project.normalizedTech.some((tech) => selectedTech.has(tech));
+            const matchesTech = project.normalizedTech.some((tech) =>
+                selectedTech.has(tech)
+            );
 
             // Check if project has ANY of the selected tags
-            const matchesTags =
-                selectedTags.size === 0 ||
-                project.normalizedTags.some((tag) => selectedTags.has(tag));
+            const matchesTags = project.normalizedTags.some((tag) =>
+                selectedTags.has(tag)
+            );
 
-            // Project matches if it has any selected tech OR any selected tag
-            return matchesTech || matchesTags;
+            // If both filters are active, project matches if it has any selected tech OR any selected tag
+            if (selectedTech.size > 0 && selectedTags.size > 0) {
+                return matchesTech || matchesTags;
+            }
+
+            // If only tech is selected, require tech match
+            if (selectedTech.size > 0) {
+                return matchesTech;
+            }
+
+            // If only tags are selected, require tag match
+            if (selectedTags.size > 0) {
+                return matchesTags;
+            }
+
+            // Should not reach here, but return false as fallback
+            return false;
         });
     }, [projectsWithNormalized, selectedTech, selectedTags]);
 
@@ -333,34 +364,66 @@ export default function SoftwarePortfolioPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-green-950 dark:via-teal-950 dark:to-cyan-950">
-            {/* Background SVG Blobs */}
+            {/* Background SVG Blobs - Large, edge-positioned, flowing off page */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+                {/* Left edge blob - emerald/teal, top half */}
                 <svg
-                    className="absolute top-20 left-10 w-96 h-96 opacity-20"
-                    viewBox="0 0 400 400"
+                    className="absolute -left-[40%] top-[5%] w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] opacity-[0.12]"
+                    viewBox="-500 -500 1000 1000"
+                    preserveAspectRatio="xMidYMid slice"
                 >
-                    <path
-                        d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                        fill="#10b981"
-                    />
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#10b981" />
+                            <stop offset="100%" stopColor="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                    <path d={BLOB_PATHS.phi} fill="url(#grad1)" />
                 </svg>
+
+                {/* Right edge blob - cyan/blue, middle */}
                 <svg
-                    className="absolute top-1/3 right-20 w-80 h-80 opacity-15"
-                    viewBox="0 0 400 400"
+                    className="absolute -right-[35%] top-[30%] w-[70vw] h-[70vw] max-w-[1000px] max-h-[1000px] opacity-[0.10]"
+                    viewBox="-500 -500 1000 1000"
+                    preserveAspectRatio="xMidYMid slice"
                 >
-                    <path
-                        d="M200,200 Q180,120 200,40 Q220,120 280,80 Q260,160 200,200 Q120,240 40,200 Q120,180 200,200 Q280,220 360,200 Q280,220 200,200"
-                        fill="#06b6d4"
-                    />
+                    <defs>
+                        <linearGradient id="grad2" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#06b6d4" />
+                            <stop offset="100%" stopColor="#3b82f6" />
+                        </linearGradient>
+                    </defs>
+                    <path d={BLOB_PATHS.euler} fill="url(#grad2)" />
                 </svg>
+
+                {/* Left edge blob - violet/purple, bottom half */}
                 <svg
-                    className="absolute bottom-1/4 left-1/4 w-72 h-72 opacity-25"
-                    viewBox="0 0 400 400"
+                    className="absolute -left-[45%] top-[55%] w-[90vw] h-[90vw] max-w-[1400px] max-h-[1400px] opacity-[0.08]"
+                    viewBox="-500 -500 1000 1000"
+                    preserveAspectRatio="xMidYMid slice"
                 >
-                    <path
-                        d="M200,200 Q240,160 280,200 Q240,240 200,200 Q160,160 120,200 Q160,240 200,200"
-                        fill="#8b5cf6"
-                    />
+                    <defs>
+                        <linearGradient id="grad3" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="#8b5cf6" />
+                            <stop offset="100%" stopColor="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                    <path d={BLOB_PATHS.pi} fill="url(#grad3)" />
+                </svg>
+
+                {/* Right edge blob - teal/emerald, bottom */}
+                <svg
+                    className="absolute -right-[50%] top-[75%] w-[85vw] h-[85vw] max-w-[1300px] max-h-[1300px] opacity-[0.09]"
+                    viewBox="-500 -500 1000 1000"
+                    preserveAspectRatio="xMidYMid slice"
+                >
+                    <defs>
+                        <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#14b8a6" />
+                            <stop offset="100%" stopColor="#10b981" />
+                        </linearGradient>
+                    </defs>
+                    <path d={BLOB_PATHS.gamma} fill="url(#grad4)" />
                 </svg>
             </div>
 
@@ -464,7 +527,7 @@ export default function SoftwarePortfolioPage() {
                                     <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-12 items-start">
                                         {/* Description Side */}
                                         <div
-                                            className={`space-y-6 order-2 ${
+                                            className={`order-2 ${
                                                 columnClasses.description
                                             } ${
                                                 isEven
@@ -472,21 +535,10 @@ export default function SoftwarePortfolioPage() {
                                                     : "lg:order-2"
                                             }`}
                                         >
-                                            <div className="relative">
-                                                {/* Background blob for this project */}
-                                                <svg
-                                                    className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
-                                                    viewBox="0 0 400 400"
-                                                >
-                                                    <path
-                                                        d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                                                        fill={project.blobColor}
-                                                    />
-                                                </svg>
-                                                <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
-                                                    {project.title}
-                                                </h2>
-                                            </div>
+                                            <SlideIn from={isEven ? "left" : "right"} className="space-y-6">
+                                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
+                                                {project.title}
+                                            </h2>
                                             <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
                                                 {project.description}
                                             </p>
@@ -538,6 +590,7 @@ export default function SoftwarePortfolioPage() {
                                                     </div>
                                                 </div>
                                             )}
+                                            </SlideIn>
                                         </div>
 
                                         {/* Iframe/CTA Side */}
@@ -584,6 +637,7 @@ export default function SoftwarePortfolioPage() {
                                                                 mobileDimensions={
                                                                     true
                                                                 }
+                                                                slideFrom={isEven ? "right" : "left"}
                                                             />
                                                         )
                                                     )}
@@ -610,6 +664,7 @@ export default function SoftwarePortfolioPage() {
                                                             layoutConfig.layout ===
                                                             "single-mobile"
                                                         }
+                                                        slideFrom={isEven ? "right" : "left"}
                                                     />
                                                 )}
                                             </div>

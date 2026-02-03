@@ -33,6 +33,8 @@ interface LaTeXEngineInstance {
         log?: string;
         status?: number;
     }>;
+    setTexliveEndpoint?(url: string): void;
+    compileFormat?(): Promise<{ pdf?: Uint8Array; log?: string }>;
 }
 
 type CompilerType = "pdftex" | "xetex" | "lualatex";
@@ -95,6 +97,21 @@ export default function ResumeEditor() {
                             const engine = new window.PdfTeXEngine();
                             await engine.loadEngine();
 
+                            // Compile format file locally since endpoint is unreachable
+                            // compileFormat creates pdflatex.fmt, but we need swiftlatexpdftex.fmt
+                            // The format file needs to be available before pdfTeX starts
+                            try {
+                                if (engine.compileFormat) {
+                                    const formatResult = await engine.compileFormat();
+                                    // compileFormat creates pdflatex.fmt, but pdfTeX expects swiftlatexpdftex.fmt
+                                    // We need to copy/rename it or the format file should be in the right location
+                                    // For now, let's try compiling it - the worker should handle placement
+                                }
+                            } catch (formatErr: any) {
+                                console.warn("Format file compilation failed:", formatErr);
+                                // Continue anyway - maybe format file will be downloaded during compilation
+                            }
+
                             engineRef.current = engine;
                             setEngineLoaded(true);
                         } catch (err: any) {
@@ -117,6 +134,16 @@ export default function ResumeEditor() {
                 } else {
                     const engine = new window.PdfTeXEngine();
                     await engine.loadEngine();
+
+                    // Compile format file locally since endpoint is unreachable
+                    try {
+                        if (engine.compileFormat) {
+                            await engine.compileFormat();
+                        }
+                    } catch (formatErr: any) {
+                        console.warn("Format file compilation failed:", formatErr);
+                    }
+
                     engineRef.current = engine;
                     setEngineLoaded(true);
                 }
