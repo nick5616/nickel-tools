@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import SlideIn from "@/components/ui/SlideIn";
+import LaserRoomPreview from "@/components/ui/LaserRoomPreview";
 import {
     Technology,
     Tag,
@@ -30,7 +31,8 @@ export type ProjectLayoutType =
     | "desktop"
     | "single-mobile"
     | "double-mobile"
-    | "no-iframe";
+    | "no-iframe"
+    | "laser-room";
 
 interface ProjectLayoutConfig {
     layout: ProjectLayoutType;
@@ -76,6 +78,11 @@ function getProjectLayout(
 
     // Handle external URLs
     if (url) {
+        // All nicolebelovoskey.com projects are 3D environments
+        if (url.includes("nicolebelovoskey.com")) {
+            return { layout: "laser-room", sources: [url] };
+        }
+
         switch (projectId) {
             case "friendex":
                 return {
@@ -133,11 +140,11 @@ function getProjectLayout(
 
 const projects = [
     {
-        id: "3d-portfolio",
-        title: "3D Portfolio",
+        id: "3d-website",
+        title: "3D Website",
         description:
-            "An immersive 3D web portfolio — a navigable virtual environment built entirely in the browser. Walk through interconnected rooms and spaces to discover projects, artwork, and creative experiments.",
-        why: "I wanted my portfolio to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance in ways a conventional site never would have.",
+            "An immersive 3D web environment — a navigable virtual environment built entirely in the browser. Walk through interconnected rooms and spaces to discover artwork, software projects, and creative experiments.",
+        why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance in ways a conventional site never would have.",
         tech: ["Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         url: "https://nicolebelovoskey.com",
@@ -149,8 +156,8 @@ const projects = [
         id: "nickel-tools",
         title: "Nickel Tools",
         description:
-            "This very portfolio — a browser-based desktop OS experience with a swipeable mobile mode, app grid, app tray, and full-screen app windows. The portfolio is itself a project.",
-        why: "I wanted the portfolio to demonstrate what I can build, not just describe it. Making the container a desktop OS meant every interaction — the swipe gestures, window animations, status bar — is part of the work.",
+            "A browser-based desktop OS experience with a swipeable mobile mode, app grid, app tray, and full-screen app windows. ",
+        why: "I wanted a website that was \"a website of websites\" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since the average users can explore apps within a desktop OS.",
         tech: ["TypeScript", "React", "Next.js"],
         tags: ["Interactive Design"],
         url: "https://nickeltools.dev/desktop",
@@ -597,6 +604,11 @@ export default function SoftwarePortfolioPage() {
                                             description: "lg:col-span-5",
                                             iframe: "lg:col-span-5",
                                         };
+                                    case "laser-room":
+                                        return {
+                                            description: "lg:col-span-3",
+                                            iframe: "lg:col-span-7",
+                                        };
                                 }
                             };
 
@@ -678,7 +690,17 @@ export default function SoftwarePortfolioPage() {
                                         </div>
 
                                         {/* Iframe/CTA Side */}
-                                        {layoutConfig.layout === "no-iframe" ? (
+                                        {layoutConfig.layout === "laser-room" ? (
+                                            <div
+                                                className={`order-1 relative ${columnClasses.iframe} ${isEven ? "lg:order-2" : "lg:order-1"}`}
+                                            >
+                                                <SlideIn from={isEven ? "right" : "left"} className="h-full">
+                                                    <div className="w-full h-[400px] md:h-[560px] rounded-lg overflow-hidden">
+                                                        <LaserRoomPreview src={layoutConfig.sources[0]} />
+                                                    </div>
+                                                </SlideIn>
+                                            </div>
+                                        ) : layoutConfig.layout === "no-iframe" ? (
                                             <div className="lg:col-span-5 order-1">
                                                 <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
                                                     <div className="text-center space-y-4 p-8">
