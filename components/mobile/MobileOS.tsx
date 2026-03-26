@@ -12,14 +12,16 @@ import { AppGrid } from "./AppGrid";
 import { LeftPanel } from "./LeftPanel";
 import { RightPanel } from "./RightPanel";
 import { ContentRenderer } from "@/components/shared/ContentRenderer";
-import { getAllContent } from "@/app/data/content";
+import { getAllContent, getContentById } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { AppTray } from "@/components/shared/AppTray";
 import { RevolvingText } from "@/components/shared/RevolvingText";
 
 export function MobileOS() {
     const allContent = getAllContent();
+    const pathname = usePathname();
     const [selectedContent, setSelectedContent] = useState<Content | null>(
         null
     );
@@ -139,6 +141,21 @@ export function MobileOS() {
         window.addEventListener("resize", updateTitleWidth);
         return () => window.removeEventListener("resize", updateTitleWidth);
     }, [selectedContent]);
+
+    // Open app from URL on mount (e.g. /desktop/{app-id})
+    useEffect(() => {
+        let appId: string | null = null;
+        if (pathname.startsWith("/desktop/")) {
+            appId = pathname.slice("/desktop/".length);
+        } else if (pathname !== "/" && pathname !== "/desktop") {
+            appId = pathname.slice(1);
+        }
+        if (appId) {
+            const content = getContentById(appId);
+            if (content) setSelectedContent(content);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleOpenItem = (content: Content) => {
         setSelectedContent(content);

@@ -133,6 +133,45 @@ function getProjectLayout(
 
 const projects = [
     {
+        id: "3d-portfolio",
+        title: "3D Portfolio",
+        description:
+            "An immersive 3D web portfolio — a navigable virtual environment built entirely in the browser. Walk through interconnected rooms and spaces to discover projects, artwork, and creative experiments.",
+        why: "I wanted my portfolio to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance in ways a conventional site never would have.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com",
+        color: "from-violet-500/20 to-purple-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#7c3aed",
+    },
+    {
+        id: "nickel-tools",
+        title: "Nickel Tools",
+        description:
+            "This very portfolio — a browser-based desktop OS experience with a swipeable mobile mode, app grid, app tray, and full-screen app windows. The portfolio is itself a project.",
+        why: "I wanted the portfolio to demonstrate what I can build, not just describe it. Making the container a desktop OS meant every interaction — the swipe gestures, window animations, status bar — is part of the work.",
+        tech: ["TypeScript", "React", "Next.js"],
+        tags: ["Interactive Design"],
+        url: "https://nickeltools.dev/desktop",
+        color: "from-zinc-500/20 to-slate-500/20",
+        borderColor: "border-zinc-400/30",
+        blobColor: "#71717a",
+    },
+    {
+        id: "passionfruit",
+        title: "Passionfruit",
+        description:
+            "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
+        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
+        tech: ["React"],
+        tags: ["Project Management", "Productivity Tools"],
+        url: "https://yieldpassionfruit.netlify.app",
+        color: "from-yellow-500/20 to-orange-500/20",
+        borderColor: "border-yellow-400/30",
+        blobColor: "#eab308",
+    },
+    {
         id: "friendex",
         title: "Friendex",
         description:
@@ -144,6 +183,108 @@ const projects = [
         color: "from-sky-500/20 to-cyan-500/20",
         borderColor: "border-sky-400/30",
         blobColor: "#0ea5e9",
+    },
+    {
+        id: "tierlistify",
+        title: "Tierlistify",
+        description:
+            "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
+        why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
+        tech: ["React"],
+        tags: [
+            "Mobile UX",
+            "Touch Interactions",
+            "Drag & Drop",
+            "Progressive Web App",
+        ],
+        url: "https://tierlistify.com",
+        color: "from-purple-500/20 to-pink-500/20",
+        borderColor: "border-purple-400/30",
+        blobColor: "#a855f7",
+    },
+    {
+        id: "chaos",
+        title: "CHAOS",
+        description:
+            "Counter-Strike Highlight Analysis and Organization System. A desktop application that batch processes video game footage and automatically identifies noteworthy moments using machine learning (OCR and Speech-to-Text).",
+        why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
+        tech: ["Python"],
+        tags: [
+            "Machine Learning",
+            "OCR",
+            "Speech-to-Text",
+            "Video Processing",
+            "Computer Vision",
+        ],
+        url: "https://github.com/nick5616/CHAOS",
+        color: "from-rose-500/20 to-pink-500/20",
+        borderColor: "border-rose-400/30",
+        blobColor: "#f43f5e",
+    },
+    {
+        id: "courage-computer",
+        title: "Courage Computer Room",
+        description:
+            "An interactive 3D room inside the holodeck — a retro computer lab environment you can freely explore in the browser. Inspired by the aesthetic of early personal computing.",
+        why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
+        color: "from-orange-500/20 to-amber-500/20",
+        borderColor: "border-orange-400/30",
+        blobColor: "#f97316",
+    },
+    {
+        id: "art-room",
+        title: "Art Room",
+        description:
+            "A 3D art gallery room inside the holodeck where paintings and artwork are displayed in a navigable virtual space. A personal gallery you can walk through.",
+        why: "I wanted a way to display 2D art in a spatial context — mounting pieces on walls you can approach and step back from changes how you experience them compared to a flat grid.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/art",
+        color: "from-pink-500/20 to-rose-500/20",
+        borderColor: "border-pink-400/30",
+        blobColor: "#ec4899",
+    },
+    {
+        id: "math-room",
+        title: "Math Room",
+        description:
+            "An immersive 3D room dedicated to mathematical visualization — equations, shapes, and concepts brought to life as explorable objects inside the holodeck.",
+        why: "Math is inherently spatial and I wanted to explore what it looks like to present mathematical ideas as environments rather than notation on a page.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/math",
+        color: "from-blue-500/20 to-indigo-500/20",
+        borderColor: "border-blue-400/30",
+        blobColor: "#3b82f6",
+    },
+    {
+        id: "art-museum",
+        title: "Art Museum",
+        description:
+            "A large-scale 3D museum experience inside the holodeck — a multi-room virtual gallery housing a curated collection you can browse at your own pace.",
+        why: "Scaling up from the art room into a full museum allowed me to think about wayfinding, pacing, and spatial narrative at a larger architectural scale — all within the browser.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/art-museum",
+        color: "from-amber-500/20 to-yellow-500/20",
+        borderColor: "border-amber-400/30",
+        blobColor: "#f59e0b",
+    },
+    {
+        id: "software-showroom",
+        title: "Software Showroom",
+        description:
+            "A 3D showroom inside the holodeck where software projects are displayed as interactive exhibits in a navigable virtual space.",
+        why: "I liked the idea of presenting software projects spatially — as things you encounter and walk up to rather than items on a list. The showroom format makes the work feel tangible.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/software-showroom",
+        color: "from-emerald-500/20 to-teal-500/20",
+        borderColor: "border-emerald-400/30",
+        blobColor: "#10b981",
     },
     {
         id: "videogamequest",
@@ -189,19 +330,6 @@ const projects = [
         borderColor: "border-violet-400/30",
         blobColor: "#8b5cf6",
     },
-    {
-        id: "passionfruit",
-        title: "Passionfruit",
-        description:
-            "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
-        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
-        tech: ["React"],
-        tags: ["Project Management", "Productivity Tools"],
-        url: "https://yieldpassionfruit.netlify.app",
-        color: "from-yellow-500/20 to-orange-500/20",
-        borderColor: "border-yellow-400/30",
-        blobColor: "#eab308",
-    },
     // {
     //     id: "resume-builder",
     //     title: "Online LaTeX Resume Builder",
@@ -215,45 +343,6 @@ const projects = [
     //     borderColor: "border-emerald-400/30",
     //     blobColor: "#10b981",
     // },
-    {
-        id: "chaos",
-        title: "CHAOS",
-        description:
-            "Counter-Strike Highlight Analysis and Organization System. A desktop application that batch processes video game footage and automatically identifies noteworthy moments using machine learning (OCR and Speech-to-Text).",
-        why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
-        tech: ["Python"],
-        tags: [
-            "Machine Learning",
-            "OCR",
-            "Speech-to-Text",
-            "Video Processing",
-            "Computer Vision",
-        ],
-        url: "https://github.com/nick5616/CHAOS",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
-    },
-
-    {
-        id: "tierlistify",
-        title: "Tierlistify",
-        description:
-            "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
-        why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
-        tech: ["React"],
-        tags: [
-            "Mobile UX",
-            "Touch Interactions",
-            "Drag & Drop",
-            "Progressive Web App",
-        ],
-        url: "https://tierlistify.com",
-        color: "from-purple-500/20 to-pink-500/20",
-        borderColor: "border-purple-400/30",
-        blobColor: "#a855f7",
-    },
-    
     // {
     //     id: "choice-engine",
     //     title: "Choice Picker",
@@ -444,18 +533,13 @@ export default function SoftwarePortfolioPage() {
                             <span className="font-semibold text-green-600 dark:text-green-400">
                                 DoorDash
                             </span>
-                            , as well as early-stage startups like{" "}
+                            , as well as{" "}
                             <span className="font-semibold text-teal-600 dark:text-teal-400">
-                                Integrate
-                            </span>
-                            ,{" "}
-                            <span className="font-semibold text-teal-600 dark:text-teal-400">
-                                Story Health
-                            </span>
-                            , and{" "}
-                            <span className="font-semibold text-teal-600 dark:text-teal-400">
-                                Curie
-                            </span>
+                                several
+                            </span>{" "}
+                            early-stage startups{" "}
+                            
+                            
                             . I hold a Bachelor's degree in Computer Science
                             from{" "}
                             <span className="font-semibold text-cyan-600 dark:text-cyan-400">

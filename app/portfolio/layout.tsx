@@ -4,7 +4,7 @@ export default function PortfolioLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="fixed inset-0 overflow-auto">
+        <div className="fixed inset-0 overflow-y-auto overflow-x-hidden">
             {children}
         </div>
     );
