@@ -153,6 +153,19 @@ const projects = [
         blobColor: "#7c3aed",
     },
     {
+        id: "passionfruit",
+        title: "Passionfruit",
+        description:
+            "A project tracking tool that helps you conveniently track and understand all the projects you're working on.",
+        why: "I have a lot of infrequent hobbies that I like to switch between. I noticed I was feeling overwhelmed by all the projects I was working on, so I built Passionfruit to help me keep track of them in a way that wouldn't stifle my creativity.",
+        tech: ["React"],
+        tags: ["Project Management", "Productivity Tools"],
+        url: "https://yieldpassionfruit.netlify.app",
+        color: "from-yellow-500/20 to-orange-500/20",
+        borderColor: "border-yellow-400/30",
+        blobColor: "#eab308",
+    },
+    {
         id: "nickel-tools",
         title: "Nickel Tools",
         description:
@@ -166,17 +179,22 @@ const projects = [
         blobColor: "#71717a",
     },
     {
-        id: "passionfruit",
-        title: "Passionfruit",
+        id: "videogamequest",
+        title: "RPG Quests",
         description:
-            "A project tracking tool that helps you conveniently track and understand all the projects you're working on. Integrates with GitHub to provide insights into your activity.",
-        why: "I created Passionfruit to solve my own problem of keeping track of multiple projects.",
+            "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
+        why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
         tech: ["React"],
-        tags: ["Project Management", "Productivity Tools"],
-        url: "https://yieldpassionfruit.netlify.app",
-        color: "from-yellow-500/20 to-orange-500/20",
-        borderColor: "border-yellow-400/30",
-        blobColor: "#eab308",
+        tags: [
+            "AI Integration",
+            "Productivity Tools",
+            "Gamification",
+            "Journaling",
+        ],
+        url: "https://videogamequest.me",
+        color: "from-indigo-500/20 to-purple-500/20",
+        borderColor: "border-indigo-400/30",
+        blobColor: "#6366f1",
     },
     {
         id: "friendex",
@@ -229,17 +247,17 @@ const projects = [
         blobColor: "#f43f5e",
     },
     {
-        id: "courage-computer",
-        title: "Courage Computer Room",
+        id: "batch-analyzer",
+        title: "Batch Analyzer",
         description:
-            "An interactive 3D room inside the holodeck — a retro computer lab environment you can freely explore in the browser. Inspired by the aesthetic of early personal computing.",
-        why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
-        tech: ["Three.js", "WebGL"],
-        tags: ["3D Design", "Interactive Design"],
-        url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
-        color: "from-orange-500/20 to-amber-500/20",
-        borderColor: "border-orange-400/30",
-        blobColor: "#f97316",
+            "(Requires your own API key, I built this as a proof-of-concept with no backend.) A tool that batch processes product images by sending the same queries to each image in a batch using Large Language Models. Perfect for e-commerce teams analyzing product catalogs at scale.",
+        why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
+        tech: ["TypeScript", "React", "LLM APIs"],
+        tags: ["Image Processing", "Batch Processing"],
+        url: "https://batch-analyzer.netlify.app/",
+        color: "from-violet-500/20 to-purple-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#8b5cf6",
     },
     {
         id: "art-room",
@@ -254,6 +272,20 @@ const projects = [
         borderColor: "border-pink-400/30",
         blobColor: "#ec4899",
     },
+    {
+        id: "courage-computer",
+        title: "Courage Computer Room",
+        description:
+            "An interactive 3D room inside the holodeck — a retro computer lab environment you can freely explore in the browser. Inspired by the aesthetic of early personal computing.",
+        why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
+        color: "from-orange-500/20 to-amber-500/20",
+        borderColor: "border-orange-400/30",
+        blobColor: "#f97316",
+    },
+    
     {
         id: "math-room",
         title: "Math Room",
@@ -293,24 +325,7 @@ const projects = [
         borderColor: "border-emerald-400/30",
         blobColor: "#10b981",
     },
-    {
-        id: "videogamequest",
-        title: "RPG Quests",
-        description:
-            "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
-        why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
-        tech: ["React"],
-        tags: [
-            "AI Integration",
-            "Productivity Tools",
-            "Gamification",
-            "Journaling",
-        ],
-        url: "https://videogamequest.me",
-        color: "from-indigo-500/20 to-purple-500/20",
-        borderColor: "border-indigo-400/30",
-        blobColor: "#6366f1",
-    },
+    
     {
         id: "smart-piano",
         title: "Smart Piano",
@@ -324,19 +339,7 @@ const projects = [
         borderColor: "border-cyan-400/30",
         blobColor: "#06b6d4",
     },
-    {
-        id: "batch-analyzer",
-        title: "Batch Analyzer",
-        description:
-            "A tool that batch processes product images by sending the same queries to each image in a batch using Large Language Models. Perfect for e-commerce teams analyzing product catalogs at scale.",
-        why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
-        tech: ["TypeScript", "React", "LLM APIs"],
-        tags: ["Image Processing", "Batch Processing"],
-        url: "https://batch-analyzer.netlify.app/",
-        color: "from-violet-500/20 to-purple-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
-    },
+    
     // {
     //     id: "resume-builder",
     //     title: "Online LaTeX Resume Builder",
