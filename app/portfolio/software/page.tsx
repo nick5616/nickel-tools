@@ -335,7 +335,7 @@ const projects = [
         why: "I liked the idea of presenting software projects spatially — as things you encounter and walk up to rather than items on a list. The showroom format makes the work feel tangible.",
         tech: ["Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        url: "https://nicolebelovoskey.com/holodeck/software",
+        url: "https://nicolebelovoskey.com/software",
         color: "from-emerald-500/20 to-teal-500/20",
         borderColor: "border-emerald-400/30",
         blobColor: "#10b981",
