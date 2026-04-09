@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
-import TechStackFilter from "@/components/ui/TechStackFilter";
+import TechStackFilter, { type ViewMode } from "@/components/ui/TechStackFilter";
 import {
     Technology,
     Tag,
@@ -75,6 +75,7 @@ export default function UXPortfolioPage() {
         new Set()
     );
     const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
+    const [viewMode, setViewMode] = useState<ViewMode>("curated");
 
     // Normalize technologies and tags for each project
     const projectsWithNormalized = useMemo(() => {
@@ -195,6 +196,8 @@ export default function UXPortfolioPage() {
                         onToggleTech={handleToggleTech}
                         onToggleTag={handleToggleTag}
                         numProjects={filteredProjects.length}
+                        viewMode={viewMode}
+                        onViewModeChange={setViewMode}
                     />
                 </section>
 
