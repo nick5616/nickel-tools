@@ -125,6 +125,11 @@ function getProjectLayout(
                     layout: "no-iframe",
                     sources: [],
                 };
+            case "sphere":
+                return {
+                    layout: "desktop",
+                    sources: [url],
+                };
             default:
                 return {
                     layout: "desktop",
@@ -563,9 +568,9 @@ export default function SoftwarePortfolioPage() {
 
             <div className="relative z-10">
                 {/* Bio Section */}
-                <section className="px-8 py-16 md:py-24 max-w-4xl mx-auto">
-                    <div className="bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-green-800/50">
-                        <h1 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-100 mb-6">
+                <section className="px-2 py-16 md:py-24 max-w-4xl mx-auto">
+                    <div className="bg-zinc-900/80 backdrop-blur-sm rounded-2xl py-8 px-4 md:p-12 shadow-xl border border-green-800/50">
+                        <h1 className="text-xl md:text-3xl font-bold font-bbh-bartle text-zinc-100 mb-6">
                             Software Engineering
                         </h1>
                         <p className="text-lg md:text-xl text-zinc-300 leading-relaxed">

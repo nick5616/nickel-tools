@@ -30,7 +30,7 @@ export default function TechStackFilter({
 
     return (
         <div className="mt-6">
-            <div className="w-full flex items-center gap-3 pb-3">
+            <div className="w-full flex flex-col gap-2 pb-3">
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
@@ -50,7 +50,7 @@ export default function TechStackFilter({
                         <ChevronDown className="w-4 h-4 text-zinc-400" />
                     )}
                 </button>
-                <div className="flex items-center gap-1 ml-auto">
+                <div className="flex items-center gap-1">
                     {(["curated", "mobile", "desktop"] as ViewMode[]).map((mode) => (
                         <button
                             key={mode}
