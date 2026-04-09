@@ -11,6 +11,7 @@ import {
     normalizeTechnology,
     normalizeTag,
 } from "@/app/portfolio/techStack";
+import { type ViewMode } from "@/components/ui/TechStackFilter";
 
 // Pre-computed blob paths using superformula-inspired polar coordinates
 // Generated with: seed, size=400, complexity, variance
@@ -386,6 +387,7 @@ export default function SoftwarePortfolioPage() {
         new Set()
     );
     const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
+    const [viewMode, setViewMode] = useState<ViewMode>("curated");
 
     // Normalize technologies and tags for each project
     const projectsWithNormalized = useMemo(() => {
@@ -462,7 +464,7 @@ export default function SoftwarePortfolioPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-green-950 dark:via-teal-950 dark:to-cyan-950">
+        <div className="min-h-screen bg-gradient-to-br from-green-950 via-teal-950 to-cyan-950">
             {/* Background SVG Blobs - Large, edge-positioned, flowing off page */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
                 {/* Left edge blob - emerald/teal, top half */}
@@ -529,30 +531,30 @@ export default function SoftwarePortfolioPage() {
             <div className="relative z-10">
                 {/* Bio Section */}
                 <section className="px-8 py-16 md:py-24 max-w-4xl mx-auto">
-                    <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-green-200/50 dark:border-green-800/50">
-                        <h1 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-6">
+                    <div className="bg-zinc-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-green-800/50">
+                        <h1 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-100 mb-6">
                             Software Engineering
                         </h1>
-                        <p className="text-lg md:text-xl text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                        <p className="text-lg md:text-xl text-zinc-300 leading-relaxed">
                             I'm a software developer with experience across big
                             tech at{" "}
-                            <span className="font-semibold text-green-600 dark:text-green-400">
+                            <span className="font-semibold text-green-400">
                                 Microsoft
                             </span>{" "}
                             and{" "}
-                            <span className="font-semibold text-green-600 dark:text-green-400">
+                            <span className="font-semibold text-green-400">
                                 DoorDash
                             </span>
                             , as well as{" "}
-                            <span className="font-semibold text-teal-600 dark:text-teal-400">
+                            <span className="font-semibold text-teal-400">
                                 several
                             </span>{" "}
                             early-stage startups{" "}
-                            
-                            
+
+
                             . I hold a Bachelor's degree in Computer Science
                             from{" "}
-                            <span className="font-semibold text-cyan-600 dark:text-cyan-400">
+                            <span className="font-semibold text-cyan-400">
                                 Texas A&M University
                             </span>
                             .
@@ -563,6 +565,8 @@ export default function SoftwarePortfolioPage() {
                             onToggleTech={handleToggleTech}
                             onToggleTag={handleToggleTag}
                             numProjects={filteredProjects.length}
+                            viewMode={viewMode}
+                            onViewModeChange={setViewMode}
                         />
                     </div>
                 </section>
@@ -571,18 +575,37 @@ export default function SoftwarePortfolioPage() {
                 <section className="px-8 pb-24 space-y-24">
                     {filteredProjects.length === 0 ? (
                         <div className="max-w-7xl mx-auto text-center py-16">
-                            <p className="text-lg text-zinc-600 dark:text-zinc-400">
+                            <p className="text-lg text-zinc-400">
                                 No projects match the selected filters. Try
                                 selecting different tech stack options.
                             </p>
                         </div>
                     ) : (
                         filteredProjects.map((project, index) => {
-                            const layoutConfig = getProjectLayout(
+                            const baseLayout = getProjectLayout(
                                 project.id,
                                 project.route,
                                 project.url
                             );
+
+                            // Override layout based on viewMode
+                            const layoutConfig = (() => {
+                                if (viewMode === "curated") return baseLayout;
+                                // no-iframe has no frame to resize
+                                if (baseLayout.layout === "no-iframe") return baseLayout;
+                                // laser-room keeps its layout type but rendering uses viewMode directly
+                                if (baseLayout.layout === "laser-room") return baseLayout;
+                                if (viewMode === "mobile") {
+                                    return { layout: "single-mobile" as const, sources: [baseLayout.sources[0]] };
+                                }
+                                if (viewMode === "desktop") {
+                                    return { layout: "desktop" as const, sources: [baseLayout.sources[0]] };
+                                }
+                                return baseLayout;
+                            })();
+
+                            // 3D frames: mobile by default (curated + mobile), desktop only when explicitly chosen
+                            const laserRoomMobile = layoutConfig.layout === "laser-room" && viewMode !== "desktop";
 
                             // Determine column widths based on layout
                             const getColumnClasses = () => {
@@ -608,10 +631,9 @@ export default function SoftwarePortfolioPage() {
                                             iframe: "lg:col-span-5",
                                         };
                                     case "laser-room":
-                                        return {
-                                            description: "lg:col-span-3",
-                                            iframe: "lg:col-span-7",
-                                        };
+                                        return laserRoomMobile
+                                            ? { description: "lg:col-span-4", iframe: "lg:col-span-6" }
+                                            : { description: "lg:col-span-3", iframe: "lg:col-span-7" };
                                 }
                             };
 
@@ -635,24 +657,24 @@ export default function SoftwarePortfolioPage() {
                                             }`}
                                         >
                                             <SlideIn from={isEven ? "left" : "right"} className="space-y-6">
-                                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
+                                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-100 mb-4">
                                                 {project.title}
                                             </h2>
-                                            <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                                            <p className="text-lg text-zinc-300 leading-relaxed">
                                                 {project.description}
                                             </p>
                                             <div className="space-y-3">
-                                                <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                     Why I Built It
                                                 </h3>
-                                                <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                                <p className="text-zinc-400 leading-relaxed">
                                                     {project.why}
                                                 </p>
                                             </div>
                                             {project.normalizedTech.length >
                                                 0 && (
                                                 <div className="space-y-3">
-                                                    <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                         Technologies
                                                     </h3>
                                                     <div className="flex flex-wrap gap-2">
@@ -660,7 +682,7 @@ export default function SoftwarePortfolioPage() {
                                                             (tech) => (
                                                                 <span
                                                                     key={tech}
-                                                                    className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                                                                    className="px-3 py-1 bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-300 border border-zinc-700"
                                                                 >
                                                                     {tech}
                                                                 </span>
@@ -672,7 +694,7 @@ export default function SoftwarePortfolioPage() {
                                             {project.normalizedTags.length >
                                                 0 && (
                                                 <div className="space-y-3">
-                                                    <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+                                                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                         Tags
                                                     </h3>
                                                     <div className="flex flex-wrap gap-2">
@@ -680,7 +702,7 @@ export default function SoftwarePortfolioPage() {
                                                             (tag) => (
                                                                 <span
                                                                     key={tag}
-                                                                    className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                                                                    className="px-3 py-1 bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-300 border border-blue-800"
                                                                 >
                                                                     {tag}
                                                                 </span>
@@ -698,16 +720,16 @@ export default function SoftwarePortfolioPage() {
                                                 className={`order-1 relative ${columnClasses.iframe} ${isEven ? "lg:order-2" : "lg:order-1"}`}
                                             >
                                                 <SlideIn from={isEven ? "right" : "left"} className="h-full">
-                                                    <div className="w-full h-[400px] md:h-[560px] rounded-lg overflow-hidden">
+                                                    <div className={`${laserRoomMobile ? "w-[300px] md:w-[400px]" : "w-full"} h-[400px] md:h-[560px] rounded-lg overflow-hidden`}>
                                                         <LaserRoomPreview src={layoutConfig.sources[0]} />
                                                     </div>
                                                 </SlideIn>
                                             </div>
                                         ) : layoutConfig.layout === "no-iframe" ? (
                                             <div className="lg:col-span-5 order-1">
-                                                <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl">
+                                                <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-800 rounded-lg shadow-xl">
                                                     <div className="text-center space-y-4 p-8">
-                                                        <p className="text-zinc-600 dark:text-zinc-400">
+                                                        <p className="text-zinc-400">
                                                             External Project
                                                         </p>
                                                         <a
