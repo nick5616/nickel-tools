@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import SlideIn from "@/components/ui/SlideIn";
@@ -12,6 +12,7 @@ import {
     normalizeTag,
 } from "@/app/portfolio/techStack";
 import { type ViewMode } from "@/components/ui/TechStackFilter";
+import Clarity from "@microsoft/clarity";
 
 // Pre-computed blob paths using superformula-inspired polar coordinates
 // Generated with: seed, size=400, complexity, variance
@@ -79,8 +80,8 @@ function getProjectLayout(
 
     // Handle external URLs
     if (url) {
-        // All nicolebelovoskey.com projects are 3D environments
-        if (url.includes("nicolebelovoskey.com")) {
+        // 3D web environments
+        if (url.includes("nicolebelovoskey.com") || url.includes("sphere.saucedog.art")) {
             return { layout: "laser-room", sources: [url] };
         }
 
@@ -140,6 +141,19 @@ function getProjectLayout(
 }
 
 const projects = [
+    {
+        id: "sphere",
+        title: "Sphere",
+        description:
+            "An immersive 3D sphere environment built entirely in the browser. A navigable spatial experience that works seamlessly on both desktop and mobile.",
+        why: "I wanted to push what's possible with 3D in the browser and create something that feels truly immersive regardless of your device. The sphere format creates a unique enclosed spatial experience that's different from a typical flat web page.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://sphere.saucedog.art",
+        color: "from-violet-500/20 to-indigo-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#8b5cf6",
+    },
     {
         id: "3d-website",
         title: "3D Website",
@@ -389,6 +403,15 @@ export default function SoftwarePortfolioPage() {
     const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
     const [viewMode, setViewMode] = useState<ViewMode>("curated");
 
+    // Init Clarity once
+    useEffect(() => {
+        const id = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+        if (id) {
+            Clarity.init(id);
+            Clarity.setTag("page", "software-portfolio");
+        }
+    }, []);
+
     // Normalize technologies and tags for each project
     const projectsWithNormalized = useMemo(() => {
         return projects.map((project) => ({
@@ -446,6 +469,8 @@ export default function SoftwarePortfolioPage() {
                 next.delete(tech);
             } else {
                 next.add(tech);
+                Clarity.event("filter_tech");
+                Clarity.setTag("filtered_tech", tech);
             }
             return next;
         });
@@ -458,9 +483,17 @@ export default function SoftwarePortfolioPage() {
                 next.delete(tag);
             } else {
                 next.add(tag);
+                Clarity.event("filter_tag");
+                Clarity.setTag("filtered_tag", tag);
             }
             return next;
         });
+    };
+
+    const handleViewModeChange = (mode: ViewMode) => {
+        setViewMode(mode);
+        Clarity.event("view_mode_changed");
+        Clarity.setTag("view_mode", mode);
     };
 
     return (
@@ -566,7 +599,7 @@ export default function SoftwarePortfolioPage() {
                             onToggleTag={handleToggleTag}
                             numProjects={filteredProjects.length}
                             viewMode={viewMode}
-                            onViewModeChange={setViewMode}
+                            onViewModeChange={handleViewModeChange}
                         />
                     </div>
                 </section>
