@@ -51,7 +51,7 @@ export default function TechStackFilter({
                     )}
                 </button>
                 <div className="flex items-center gap-1">
-                    {(["curated", "mobile", "desktop"] as ViewMode[]).map((mode) => (
+                    <div className="text-xs">View projects as</div> {(["curated", "mobile", "desktop"] as ViewMode[]).map((mode) => (
                         <button
                             key={mode}
                             type="button"

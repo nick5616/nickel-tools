@@ -148,19 +148,7 @@ function getProjectLayout(
 }
 
 const projects = [
-    {
-        id: "sphere",
-        title: "Plasma Sphere",
-        description:
-            "Like that one toy. You can play with it. Hold click and drag on the ball to attract the electricity! Desktop and mobile. ",
-        why: "I fucking love electricity.",
-        tech: ["Three.js", "WebGL"],
-        tags: ["3D Design", "Interactive Design"],
-        url: "https://sphere.saucedog.art",
-        color: "from-violet-500/20 to-indigo-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
-    },
+    
     {
         id: "3d-website",
         title: "3D Website",
@@ -186,6 +174,32 @@ const projects = [
         color: "from-yellow-500/20 to-orange-500/20",
         borderColor: "border-yellow-400/30",
         blobColor: "#eab308",
+    },
+    {
+        id: "life-graph",
+        title: "Life Graph",
+        description:
+            "A 3D visualization of your life goals and their relationships.",
+        why: "I wanted to model relationships between my goals and their prerequisites, and how my goals are related to each other. I've made it generic so you can use it for your own goals. It's intended to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
+        tech: ["Three.js", "WebGL", "React"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://yieldpassionfruit.netlify.app/life-graph",
+        color: "from-emerald-500/20 to-teal-500/20",
+        borderColor: "border-emerald-400/30",
+        blobColor: "#10b981",
+    },
+    {
+        id: "sphere",
+        title: "Plasma Sphere",
+        description:
+            "Like that one toy. You can play with it. Hold click and drag on the ball to attract the electricity! Desktop and mobile. ",
+        why: "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for  the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other.",
+        tech: ["Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        url: "https://sphere.saucedog.art",
+        color: "from-violet-500/20 to-indigo-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#8b5cf6",
     },
     {
         id: "nickel-tools",
@@ -338,9 +352,9 @@ const projects = [
         id: "software-showroom",
         title: "Software Showroom",
         description:
-            "A 3D showroom inside the holodeck where software projects are displayed as interactive exhibits in a navigable virtual space.",
-        why: "I liked the idea of presenting software projects spatially — as things you encounter and walk up to rather than items on a list. The showroom format makes the work feel tangible.",
-        tech: ["Three.js", "WebGL"],
+            "A software showroom where you can explore my projects in a 3D environment. Walk up to the screens and interact with them. Access your cursor by pressing escape.",
+        why: "It seemed like a really sci-fi way to showcase my projects.",
+        tech: ["Three.js", "WebGL", "React-Three-Fiber"],
         tags: ["3D Design", "Interactive Design"],
         url: "https://nicolebelovoskey.com/software",
         color: "from-emerald-500/20 to-teal-500/20",
@@ -392,8 +406,8 @@ const projects = [
         id: "pokemon-or-technology",
         title: "Pokemon or Technology",
         description:
-            "Test your knowledge! Can you tell the difference between a Pokémon name and a technology term? A fun quiz game that challenges your ability to distinguish between these two worlds.",
-        why: "I created this as a fun, lighthearted game that combines two of my interests—Pokémon and technology. It's a simple concept but surprisingly challenging and entertaining.",
+            "Quiz yourself on what is a Pokemon and what is a Technology.",
+        why: "One day I observed Pokemon and Technology have similar sounding names, so I made this quiz game.",
         tech: ["TypeScript", "React", "Next.js"],
         tags: [],
         route: "/pokemon-or-technology",
@@ -707,9 +721,11 @@ export default function SoftwarePortfolioPage() {
                                                 <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                     Why I Built It
                                                 </h3>
-                                                <p className="text-zinc-400 leading-relaxed">
-                                                    {project.why}
-                                                </p>
+                                                <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                                                    <p className="text-zinc-400 leading-relaxed">
+                                                        {project.why}
+                                                    </p>
+                                                </div>
                                             </div>
                                             {project.normalizedTech.length >
                                                 0 && (

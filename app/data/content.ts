@@ -247,6 +247,21 @@ export const NICKEL_SYSTEM: NickelSystem = {
             tags: ["productivity", "tracking", "github"],
         },
         {
+            id: "life-graph",
+            type: "external",
+            title: "Life Graph",
+            description:
+                "A 3D visualization of your life — map experiences, milestones, and relationships across time.",
+            thumbnail: "/project-screenshots/latex.png",
+            category: "Creative Productivity",
+            status: "operational",
+            url: "https://yieldpassionfruit.netlify.app/life-graph",
+            openInNewTab: false,
+            dateAdded: "2026-04-10",
+            featured: false,
+            tags: ["3d", "visualization", "life", "interactive"],
+        },
+        {
             id: "smart-piano",
             type: "internal",
             title: "Smart Piano",
@@ -290,6 +305,21 @@ export const NICKEL_SYSTEM: NickelSystem = {
             dateAdded: "2024-01-01",
             featured: false,
             tags: ["games", "education", "brain-training"],
+        },
+        {
+            id: "plasma-sphere",
+            type: "external",
+            title: "Plasma Sphere",
+            description:
+                "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
+            thumbnail: "/project-screenshots/latex.png",
+            category: "Experiments",
+            status: "operational",
+            url: "https://sphere.saucedog.art",
+            openInNewTab: false,
+            dateAdded: "2026-04-10",
+            featured: false,
+            tags: ["3d", "webgl", "interactive", "three.js"],
         },
         {
             id: "chaos",
