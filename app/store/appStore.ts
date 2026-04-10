@@ -99,9 +99,14 @@ export const useAppStore = create<AppState>((set, get) => ({
         // Determine window size with fallback priority:
         // 1. Content-specific windowWidth/windowHeight (if InternalApp)
         // 2. localStorage default window size
-        // 3. Default 800x600
-        let windowWidth = 800;
-        let windowHeight = 600;
+        // 3. Viewport-relative default (70vw × 72vh, min 600×450)
+        const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
+        const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+        const menuBarHeight = 48;
+        const availableHeight = vh - menuBarHeight;
+
+        let windowWidth = Math.max(600, Math.round(vw * 0.7));
+        let windowHeight = Math.max(450, Math.round(availableHeight * 0.72));
 
         const isInternalApp = content.type === "internal";
         const contentWidth = isInternalApp ? content.windowWidth : undefined;

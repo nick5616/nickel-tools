@@ -101,17 +101,16 @@ export default function LaserRoomPreview({ src }: LaserRoomPreviewProps) {
                 bl: { x: cx - bw / 2, y: cy + bh / 2 },
             };
 
-            const mg = 3;
-            const front: Record<string, Point2D> = {
-                tl: { x: mg, y: mg }, tr: { x: w - mg, y: mg },
-                br: { x: w - mg, y: h - mg }, bl: { x: mg, y: h - mg },
-            };
-
             const c1 = `hsl(140,100%,62%)`;
             const g1 = `hsl(140,100%,75%)`;
 
             const spreadMul = hoveredRef.current ? 1.6 : 1.0;
             const bSpread = Math.min(w, h) * 0.04 * spreadMul;
+            const mg = bSpread * 1.5;
+            const front: Record<string, Point2D> = {
+                tl: { x: mg, y: mg }, tr: { x: w - mg, y: mg },
+                br: { x: w - mg, y: h - mg }, bl: { x: mg, y: h - mg },
+            };
             drawArcLine(ctx, front.tl, front.tr, c1, g1, bSpread);
             drawArcLine(ctx, front.tr, front.br, c1, g1, bSpread);
             drawArcLine(ctx, front.br, front.bl, c1, g1, bSpread);
@@ -129,18 +128,24 @@ export default function LaserRoomPreview({ src }: LaserRoomPreviewProps) {
             drawArcLine(ctx, front.br, back.br, c1, g1, tunnelSpread);
             drawArcLine(ctx, front.bl, back.bl, c1, g1, tunnelSpread);
 
-            const is = depthScale * 0.55;
-            const inner: Record<string, Point2D> = {
-                tl: { x: cx - w * is * 0.5, y: cy - h * is * 0.5 },
-                tr: { x: cx + w * is * 0.5, y: cy - h * is * 0.5 },
-                br: { x: cx + w * is * 0.5, y: cy + h * is * 0.5 },
-                bl: { x: cx - w * is * 0.5, y: cy + h * is * 0.5 },
-            };
-            const innerSpread = Math.min(w * is, h * is) * 0.1 * spreadMul;
-            drawArcLine(ctx, inner.tl, inner.tr, c1, g1, innerSpread, 0.5);
-            drawArcLine(ctx, inner.tr, inner.br, c1, g1, innerSpread, 0.5);
-            drawArcLine(ctx, inner.br, inner.bl, c1, g1, innerSpread, 0.5);
-            drawArcLine(ctx, inner.bl, inner.tl, c1, g1, innerSpread, 0.5);
+            // Cursor on the back wall — sized to fit inside the back rect, tip offset to center it visually
+            const cSize = Math.min(bw, bh) * (0.72 + Math.sin(t * 0.73) * 0.04 + pulse * 0.12 * Math.sin(pulse * Math.PI));
+            const cW = cSize * 0.60;
+            const tipX = cx - cW * 0.25;
+            const tipY = cy - cSize * 0.38;
+            const cursorVerts: Point2D[] = [
+                { x: tipX,              y: tipY },                       // tip
+                { x: tipX - cW * 0.05,              y: tipY + cSize * 0.78 },        // bottom-left of body
+                { x: tipX + cW * 0.33,  y: tipY + cSize * 0.58 },       // notch
+                { x: tipX + cW * 0.76,  y: tipY + cSize },               // tail bottom (more vertical from notch)
+                { x: tipX + cW * 0.9,  y: tipY + cSize * 0.8 },        // tail right (slightly less correction)
+                { x: tipX + cW * 0.56,  y: tipY + cSize * 0.50 },        // above notch
+                { x: tipX + cW,         y: tipY + cSize * 0.35 },        // right shoulder
+            ];
+            const cSpread = cSize * 0.028 * spreadMul;
+            for (let i = 0; i < cursorVerts.length; i++) {
+                drawArcLine(ctx, cursorVerts[i], cursorVerts[(i + 1) % cursorVerts.length], c1, g1, cSpread);
+            }
         };
 
         animRef.current = requestAnimationFrame(animate);
@@ -207,13 +212,13 @@ export default function LaserRoomPreview({ src }: LaserRoomPreviewProps) {
                 <iframe
                     src={src}
                     title="Project preview"
-                    className="absolute inset-0 w-full h-full border-0 z-20"
+                    className="absolute inset-0 w-full h-full border-0 z-20 rounded-lg"
                     sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
                 />
             )}
 
             {!showIframe && (
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none z-30">
+                <div className="absolute bottom-12 left-0 right-0 flex justify-center pointer-events-none z-30">
                     <span className="text-xs text-green-400/40 tracking-widest uppercase">
                         click to explore
                     </span>

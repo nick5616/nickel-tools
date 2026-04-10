@@ -84,6 +84,8 @@ function getProjectLayout(
         if (url.includes("nicolebelovoskey.com") || url.includes("sphere.saucedog.art")) {
             return { layout: "laser-room", sources: [url] };
         }
+        console.log("projectId", projectId);
+        console.log("url", url);
 
         switch (projectId) {
             case "friendex":
@@ -148,10 +150,10 @@ function getProjectLayout(
 const projects = [
     {
         id: "sphere",
-        title: "Sphere",
+        title: "Plasma Sphere",
         description:
-            "An immersive 3D sphere environment built entirely in the browser. A navigable spatial experience that works seamlessly on both desktop and mobile.",
-        why: "I wanted to push what's possible with 3D in the browser and create something that feels truly immersive regardless of your device. The sphere format creates a unique enclosed spatial experience that's different from a typical flat web page.",
+            "Like that one toy. You can play with it. Hold click and drag on the ball to attract the electricity! Desktop and mobile. ",
+        why: "I fucking love electricity.",
         tech: ["Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         url: "https://sphere.saucedog.art",
@@ -642,8 +644,8 @@ export default function SoftwarePortfolioPage() {
                                 return baseLayout;
                             })();
 
-                            // 3D frames: mobile by default (curated + mobile), desktop only when explicitly chosen
-                            const laserRoomMobile = layoutConfig.layout === "laser-room" && viewMode !== "desktop";
+                            // 3D frames: desktop by default (curated + desktop), mobile only when explicitly chosen or on mobile
+                            const laserRoomMobile = layoutConfig.layout === "laser-room" && viewMode === "mobile";
 
                             // Determine column widths based on layout
                             const getColumnClasses = () => {
@@ -758,7 +760,7 @@ export default function SoftwarePortfolioPage() {
                                                 className={`order-1 relative ${columnClasses.iframe} ${isEven ? "lg:order-2" : "lg:order-1"}`}
                                             >
                                                 <SlideIn from={isEven ? "right" : "left"} className="h-full">
-                                                    <div className={`${laserRoomMobile ? "w-[300px] md:w-[400px]" : "w-full"} h-[400px] md:h-[560px] rounded-lg overflow-hidden`}>
+                                                    <div className={`${laserRoomMobile ? "w-[300px] md:w-[400px]" : "w-full"} h-[400px] md:h-[560px] rounded-lg`}>
                                                         <LaserRoomPreview src={layoutConfig.sources[0]} />
                                                     </div>
                                                 </SlideIn>
