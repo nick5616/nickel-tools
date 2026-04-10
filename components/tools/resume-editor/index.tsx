@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import posthog from "posthog-js";
 import {
     Download,
     Eye,
@@ -254,43 +253,21 @@ export default function ResumeEditor() {
                     return url;
                 });
 
-                posthog.capture("latex_compiled", {
-                    success: true,
-                    source_length: latexSource.length,
-                    compiler: compiler,
-                });
             } else if (result.status === 0 && !result.pdf) {
                 // Compilation succeeded but no PDF - might be XDV that needs conversion
                 setEngineError(
                     "Compilation succeeded but PDF not generated. Check the log for details."
                 );
                 setShowLog(true);
-                posthog.capture("latex_compiled", {
-                    success: false,
-                    source_length: latexSource.length,
-                    error_log: "PDF not generated",
-                    compiler: compiler,
-                });
             } else {
                 setEngineError(
                     "Compilation failed. Check the log for details."
                 );
                 setShowLog(true);
-                posthog.capture("latex_compiled", {
-                    success: false,
-                    source_length: latexSource.length,
-                    error_log: result.log || "Unknown error",
-                    compiler: compiler,
-                });
             }
         } catch (err: any) {
             setEngineError("Compilation error: " + err.message);
             setShowLog(true);
-            posthog.capture("latex_compiled", {
-                success: false,
-                source_length: latexSource.length,
-                error_log: err.message || "Unknown error",
-            });
         } finally {
             setIsCompiling(false);
         }
@@ -545,18 +522,8 @@ export default function ResumeEditor() {
                     reader.readAsText(mainFile);
                 }
 
-                posthog.capture("latex_project_uploaded", {
-                    file_count: files.length,
-                    compiler: compiler,
-                });
             } catch (err: any) {
                 setEngineError("Upload error: " + err.message);
-                posthog.capture("latex_project_uploaded", {
-                    success: false,
-                    file_count: files.length,
-                    error_log: err.message || "Unknown error",
-                    compiler: compiler,
-                });
             }
         },
         [compiler]
@@ -608,43 +575,21 @@ export default function ResumeEditor() {
                         return url;
                     });
 
-                    posthog.capture("latex_project_compiled", {
-                        success: true,
-                        file_count: files.length,
-                        compiler: compiler,
-                    });
                 } else if (result.status === 0 && !result.pdf) {
                     // Compilation succeeded but no PDF - might be XDV that needs conversion
                     setEngineError(
                         "Compilation succeeded but PDF not generated. Check the log for details."
                     );
                     setShowLog(true);
-                    posthog.capture("latex_project_compiled", {
-                        success: false,
-                        file_count: files.length,
-                        error_log: "PDF not generated",
-                        compiler: compiler,
-                    });
                 } else {
                     setEngineError(
                         "Compilation failed. Check the log for details."
                     );
                     setShowLog(true);
-                    posthog.capture("latex_project_compiled", {
-                        success: false,
-                        file_count: files.length,
-                        error_log: result.log || "Unknown error",
-                        compiler: compiler,
-                    });
                 }
             } catch (err: any) {
                 setEngineError("Compilation error: " + err.message);
                 setShowLog(true);
-                posthog.capture("latex_project_compiled", {
-                    success: false,
-                    file_count: files.length,
-                    error_log: err.message || "Unknown error",
-                });
             } finally {
                 setIsCompiling(false);
             }
@@ -680,8 +625,7 @@ export default function ResumeEditor() {
                 "Reset to default template? Your current work will be lost unless saved."
             )
         ) {
-            posthog.capture("resume-reset-to-template");
-            setLatexSource(DEFAULT_TEMPLATE);
+setLatexSource(DEFAULT_TEMPLATE);
             setShowTemplateWarning(true);
             localStorage.removeItem("latex-resume");
         }

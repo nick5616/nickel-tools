@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TECHNOLOGIES, TAGS, Technology, Tag } from "@/app/portfolio/techStack";
+import { useUrlSync } from "@/app/hooks/useUrlSync";
 
 export type ViewMode = "curated" | "mobile" | "desktop";
 
@@ -27,6 +28,10 @@ export default function TechStackFilter({
 }: TechStackFilterProps) {
     const [isOpen, setIsOpen] = useState(false);
     const hasActiveFilters = selectedTech.size > 0 || selectedTags.size > 0;
+    
+    const viewOptions: ViewMode[] = ['curated', 'desktop', 'mobile']
+    const isMobile = useUrlSync()
+    console.log("isMobile", isMobile)
 
     return (
         <div className="mt-6">
@@ -50,8 +55,8 @@ export default function TechStackFilter({
                         <ChevronDown className="w-4 h-4 text-zinc-400" />
                     )}
                 </button>
-                <div className="flex items-center gap-1">
-                    <div className="text-xs">View projects as</div> {(["curated", "mobile", "desktop"] as ViewMode[]).map((mode) => (
+                {isMobile && <div className="flex items-center gap-1">
+                    <div className="text-xs mr-1">View projects as</div> {(viewOptions as ViewMode[]).map((mode) => (
                         <button
                             key={mode}
                             type="button"
@@ -65,7 +70,7 @@ export default function TechStackFilter({
                             {mode}
                         </button>
                     ))}
-                </div>
+                </div>}
             </div>
 
             {isOpen && (

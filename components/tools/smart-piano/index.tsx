@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import posthog from "posthog-js";
 import {
     ChevronLeft,
     ChevronRight,
@@ -661,10 +660,7 @@ export default function SmartPiano() {
                         value={selectedKey}
                         onChange={(e) => {
                             const newKey = e.target.value;
-                            posthog.capture("piano_key_changed", {
-                                key: newKey,
-                            });
-                            setSelectedKey(newKey);
+setSelectedKey(newKey);
                             setRecentNotes([]);
                             setNoteHistory([]);
                             setTension(0);
@@ -681,10 +677,7 @@ export default function SmartPiano() {
 
                     <button
                         onClick={() => {
-                            posthog.capture("piano_smart_mode_toggled", {
-                                enabled: !showSmart,
-                            });
-                            setShowSmart(!showSmart);
+setShowSmart(!showSmart);
                         }}
                         className={`px-3 py-2 rounded-lg font-semibold ${
                             showSmart
@@ -866,12 +859,6 @@ export default function SmartPiano() {
                         <button
                             key={idx}
                             onClick={() => {
-                                posthog.capture("piano_chord_played", {
-                                    chord_name: sugg.name,
-                                    notes: sugg.notes,
-                                    category: sugg.category,
-                                    current_key: selectedKey,
-                                });
                                 playMultiNote(sugg.freqs, sugg.notes);
                             }}
                             className={`px-4 py-2 bg-gradient-to-b ${color} text-white rounded-lg font-bold shadow-lg active:opacity-80 flex items-center gap-2`}

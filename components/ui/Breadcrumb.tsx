@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import posthog from "posthog-js";
 
 interface BreadcrumbProps {
     currentPage: string;
@@ -30,12 +29,7 @@ export default function Breadcrumb({
                 href="/"
                 className="hover:text-blue-600"
                 onClick={() => {
-                    if (trackClick) {
-                        posthog.capture("breadcrumb_link_clicked", {
-                            destination: "/",
-                            text: "Home",
-                        });
-                    }
+                    void trackClick;
                 }}
             >
                 Home

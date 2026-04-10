@@ -626,7 +626,7 @@ export default function SoftwarePortfolioPage() {
                 </section>
 
                 {/* Projects Section */}
-                <section className="px-8 pb-24 space-y-24">
+                <section className="px-4 md:px-8 lg:px-8 pb-24 space-y-24">
                     {filteredProjects.length === 0 ? (
                         <div className="max-w-7xl mx-auto text-center py-16">
                             <p className="text-lg text-zinc-400">
