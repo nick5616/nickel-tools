@@ -127,6 +127,11 @@ function getProjectLayout(
                     layout: "no-iframe",
                     sources: [],
                 };
+            case "voice-lab":
+                return {
+                    layout: "no-iframe",
+                    sources: [],
+                };
             case "sphere":
                 return {
                     layout: "desktop",
@@ -323,6 +328,19 @@ const projects: Project[] = [
         blobColor: "#f43f5e",
     },
     {
+        id: "voice-lab",
+        title: "VoiceLab",
+        description:
+            "A Python desktop application for singers to track and analyze their vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency — giving you a data-driven view of how your voice is developing over time.",
+        why: "I wanted objective feedback on my singing practice rather than relying purely on ear. Tracking metrics across takes makes it easy to see what's actually improving.",
+        tech: ["Python"],
+        tags: ["Machine Learning"],
+        frontendSource: "https://github.com/nick5616/VoiceLab",
+        color: "from-violet-500/20 to-purple-500/20",
+        borderColor: "border-violet-400/30",
+        blobColor: "#8b5cf6",
+    },
+    {
         id: "batch-analyzer",
         title: "Batch Analyzer",
         description:
@@ -343,9 +361,10 @@ const projects: Project[] = [
         description:
             "A 3D art gallery room inside the holodeck where paintings and artwork are displayed in a navigable virtual space. A personal gallery you can walk through.",
         why: "I wanted a way to display 2D art in a spatial context — mounting pieces on walls you can approach and step back from changes how you experience them compared to a flat grid.",
-        tech: ["Three.js", "WebGL"],
+        tech: ["Three.js", "WebGL", "Go", "Google Cloud Storage", "Docker"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
+        backendSource: "https://github.com/nick5616/holodeck-art-api",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/holodeck/art",
         color: "from-pink-500/20 to-rose-500/20",
@@ -468,6 +487,34 @@ const projects: Project[] = [
         color: "from-red-500/20 to-orange-500/20",
         borderColor: "border-red-400/30",
         blobColor: "#ef4444",
+    },
+    {
+        id: "sphere-website",
+        title: "Sphere Website",
+        description:
+            "A vanilla Three.js website built around a rotating 3D sphere — an early exploration of 3D graphics in the browser.",
+        why: "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D.",
+        tech: ["JavaScript", "Three.js", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        frontendSource: "https://github.com/nick5616/sphere-website",
+        url: "https://tiny-sorbet-aefcf4.netlify.app/",
+        color: "from-cyan-500/20 to-blue-500/20",
+        borderColor: "border-cyan-400/30",
+        blobColor: "#06b6d4",
+    },
+    {
+        id: "new-media-website",
+        title: "New Media Class Website",
+        description:
+            "A college class assignment website. Each page is a separate assignment — the first exploring what kinds of media I consume, the second running a poll across the class to see what everyone else consumed.",
+        why: "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere.",
+        tech: ["HTML", "CSS", "JavaScript"],
+        tags: [],
+        frontendSource: "https://github.com/nick5616/newMediaWebsite",
+        url: "https://new-media-college-class.netlify.app/",
+        color: "from-lime-500/20 to-green-500/20",
+        borderColor: "border-lime-400/30",
+        blobColor: "#84cc16",
     },
     {
         id: "routine",
@@ -831,15 +878,17 @@ export default function SoftwarePortfolioPage() {
                                             </button>
                                             </div>
                                             </div>
-                                            {project.dateString && (
-                                                <p className="text-xs text-zinc-500 -mb-2">
-                                                    {project.dateString}
-                                                </p>
-                                            )}
-                                            <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
-                                                <p className="text-lg text-zinc-300 leading-relaxed">
-                                                    {project.description}
-                                                </p>
+                                            <div className="space-y-1">
+                                                {project.dateString && (
+                                                    <p className="text-xs text-zinc-600">
+                                                        {project.dateString}
+                                                    </p>
+                                                )}
+                                                <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                                                    <p className="text-lg text-zinc-300 leading-relaxed">
+                                                        {project.description}
+                                                    </p>
+                                                </div>
                                             </div>
                                             <div className="space-y-3">
                                                 <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
