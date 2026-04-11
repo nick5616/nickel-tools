@@ -12,6 +12,7 @@ interface ProjectIframeProps {
     title: string;
     mobileDimensions?: boolean;
     slideFrom?: "left" | "right";
+    refreshTrigger?: number;
 }
 
 export default function ProjectIframe({
@@ -19,6 +20,7 @@ export default function ProjectIframe({
     title,
     mobileDimensions = true,
     slideFrom = "left",
+    refreshTrigger = 0,
 }: ProjectIframeProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
@@ -29,6 +31,8 @@ export default function ProjectIframe({
 
     const containerRef = useRef<HTMLDivElement>(null);
     const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const prevRefreshTrigger = useRef(refreshTrigger);
 
     const heightClass = mobileDimensions
         ? "h-[400px] md:h-[600px] w-[300px] md:w-[400px]"
@@ -58,6 +62,15 @@ export default function ProjectIframe({
             setShowingIframe(true);
         }
     }, [hoverTimerFired, iframeLoaded, isHovering, showingIframe]);
+
+    // Reload iframe when refreshTrigger increments
+    useEffect(() => {
+        if (refreshTrigger === prevRefreshTrigger.current) return;
+        prevRefreshTrigger.current = refreshTrigger;
+        if (iframeRef.current) {
+            iframeRef.current.src = iframeRef.current.src;
+        }
+    }, [refreshTrigger]);
 
     // Cleanup hover timer on unmount
     useEffect(() => {
@@ -140,6 +153,7 @@ export default function ProjectIframe({
             {/* Iframe — loaded in background on hover, revealed after affordance */}
             {shouldLoadIframe && (
                 <iframe
+                    ref={iframeRef}
                     src={src}
                     className={`absolute inset-0 w-full h-full border-0 transition-opacity duration-300 ${
                         showingIframe
