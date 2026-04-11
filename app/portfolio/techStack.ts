@@ -5,13 +5,19 @@ export const TECHNOLOGIES = [
     "React",
     "Next.js",
     "Python",
+    "Go",
+    "HTML",
+    "CSS",
     "WebAssembly",
     "LaTeX",
     "Web Audio API",
     "LLM APIs",
     "Three.js",
+    "React-Three-Fiber",
     "WebGL",
     "Canvas API",
+    "Docker",
+    "Google Cloud Storage",
 ] as const;
 
 // Tags - categories, features, design patterns, algorithms, processing types, and other attributes
@@ -40,6 +46,8 @@ export const TAGS = [
     "Responsive UI",
     "3D Design",
     "Interactive Design",
+    "Design System",
+    "Accessibility",
 ] as const;
 
 // Legacy: Keep for backward compatibility during migration
