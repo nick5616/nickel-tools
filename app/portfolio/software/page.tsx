@@ -185,7 +185,7 @@ const projects = [
         why: "I wanted to model relationships between my goals and their prerequisites, and how my goals are related to each other. I've made it generic so you can use it for your own goals. It's intended to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
         tech: ["Three.js", "WebGL", "React"],
         tags: ["3D Design", "Interactive Design"],
-        github: "https://github.com/nick5616/universe",
+        github: "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
         url: "https://yieldpassionfruit.netlify.app/life-graph",
         color: "from-emerald-500/20 to-teal-500/20",
         borderColor: "border-emerald-400/30",

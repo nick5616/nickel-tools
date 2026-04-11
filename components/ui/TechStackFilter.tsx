@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TECHNOLOGIES, TAGS, Technology, Tag } from "@/app/portfolio/techStack";
-import { useUrlSync } from "@/app/hooks/useUrlSync";
+import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 export type ViewMode = "curated" | "mobile" | "desktop";
 
@@ -27,11 +27,10 @@ export default function TechStackFilter({
     onViewModeChange,
 }: TechStackFilterProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const isMobile = useDeviceType();
     const hasActiveFilters = selectedTech.size > 0 || selectedTags.size > 0;
-    
+
     const viewOptions: ViewMode[] = ['curated', 'desktop', 'mobile']
-    const isMobile = useUrlSync()
-    console.log("isMobile", isMobile)
 
     return (
         <div className="mt-6">
