@@ -47,6 +47,12 @@ function getProjectLayout(
     route?: string,
     url?: string
 ): ProjectLayoutConfig {
+    // Projects that are always no-iframe regardless of url/route
+    const NO_IFRAME_IDS = ["chaos", "voice-lab"];
+    if (NO_IFRAME_IDS.includes(projectId)) {
+        return { layout: "no-iframe", sources: [] };
+    }
+
     // Handle internal routes
     if (route) {
         switch (projectId) {
@@ -801,7 +807,7 @@ export default function SoftwarePortfolioPage() {
                                         };
                                     case "no-iframe":
                                         return {
-                                            description: "lg:col-span-5",
+                                            description: "lg:col-span-10",
                                             iframe: "lg:col-span-5",
                                         };
                                     case "laser-room":
@@ -954,25 +960,7 @@ export default function SoftwarePortfolioPage() {
                                                     </div>
                                                 </SlideIn>
                                             </div>
-                                        ) : layoutConfig.layout === "no-iframe" ? (
-                                            <div className="lg:col-span-5 order-1">
-                                                <div className="w-full h-[400px] md:h-[600px] flex items-center justify-center bg-zinc-800 rounded-lg shadow-xl">
-                                                    <div className="text-center space-y-4 p-8">
-                                                        <p className="text-zinc-400">
-                                                            External Project
-                                                        </p>
-                                                        <a
-                                                            href={project.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-block px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg font-semibold hover:from-green-600 hover:to-teal-600 transition-colors"
-                                                        >
-                                                            Visit Project →
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ) : layoutConfig.layout ===
+                                        ) : layoutConfig.layout === "no-iframe" ? null : layoutConfig.layout ===
                                           "double-mobile" ? (
                                             <div
                                                 className={`order-1 relative ${
