@@ -348,6 +348,7 @@ const projects: Project[] = [
     {
         id: "chaos",
         title: "CHAOS",
+        dateString: "Oct 2025",
         description:
             "Counter-Strike Highlight Analysis and Organization System. A desktop application that batch processes video game footage and automatically identifies noteworthy moments using machine learning (OCR and Speech-to-Text).",
         why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
@@ -641,6 +642,10 @@ export default function SoftwarePortfolioPage() {
         });
     }, [projectsWithNormalized, selectedTech, selectedTags]);
 
+    const clarityReady = () =>
+        typeof window !== "undefined" &&
+        typeof (window as Window & { clarity?: unknown }).clarity === "function";
+
     const handleToggleTech = (tech: Technology) => {
         setSelectedTech((prev) => {
             const next = new Set(prev);
@@ -648,8 +653,10 @@ export default function SoftwarePortfolioPage() {
                 next.delete(tech);
             } else {
                 next.add(tech);
-                Clarity.event("filter_tech");
-                Clarity.setTag("filtered_tech", tech);
+                if (clarityReady()) {
+                    Clarity.event("filter_tech");
+                    Clarity.setTag("filtered_tech", tech);
+                }
             }
             return next;
         });
@@ -662,8 +669,10 @@ export default function SoftwarePortfolioPage() {
                 next.delete(tag);
             } else {
                 next.add(tag);
-                Clarity.event("filter_tag");
-                Clarity.setTag("filtered_tag", tag);
+                if (clarityReady()) {
+                    Clarity.event("filter_tag");
+                    Clarity.setTag("filtered_tag", tag);
+                }
             }
             return next;
         });
@@ -671,8 +680,10 @@ export default function SoftwarePortfolioPage() {
 
     const handleViewModeChange = (mode: ViewMode) => {
         setViewMode(mode);
-        Clarity.event("view_mode_changed");
-        Clarity.setTag("view_mode", mode);
+        if (clarityReady()) {
+            Clarity.event("view_mode_changed");
+            Clarity.setTag("view_mode", mode);
+        }
     };
 
     return (
