@@ -168,9 +168,6 @@ interface Project {
     frontendSource?: string;
     backendSource?: string;
     dateString?: string;
-    color: string;
-    borderColor: string;
-    blobColor: string;
 }
 
 function GitHubIcon() {
@@ -195,9 +192,6 @@ const projects: Project[] = [
         backendSource: "https://github.com/nick5616/the-circle",
         dateString: "Apr 2026",
         url: "https://live.saucedog.art/",
-        color: "from-teal-500/20 to-cyan-500/20",
-        borderColor: "border-teal-400/30",
-        blobColor: "#14b8a6",
     },
     {
         id: "3d-website",
@@ -210,9 +204,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com",
-        color: "from-violet-500/20 to-purple-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#7c3aed",
     },
     {
         id: "passionfruit",
@@ -225,9 +216,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/universe",
         dateString: "Nov 2025",
         url: "https://yieldpassionfruit.netlify.app",
-        color: "from-yellow-500/20 to-orange-500/20",
-        borderColor: "border-yellow-400/30",
-        blobColor: "#eab308",
     },
     {
         id: "life-graph",
@@ -240,9 +228,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
         dateString: "Nov 2025",
         url: "https://yieldpassionfruit.netlify.app/life-graph",
-        color: "from-emerald-500/20 to-teal-500/20",
-        borderColor: "border-emerald-400/30",
-        blobColor: "#10b981",
     },
     {
         id: "sphere",
@@ -255,9 +240,6 @@ const projects: Project[] = [
         tech: ["JavaScript", "Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         url: "https://sphere.saucedog.art",
-        color: "from-violet-500/20 to-indigo-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
     },
     {
         id: "nickel-tools",
@@ -270,9 +252,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/nickel-tools",
         dateString: "Nov 2025",
         url: "https://nickeltools.dev/desktop",
-        color: "from-zinc-500/20 to-slate-500/20",
-        borderColor: "border-zinc-400/30",
-        blobColor: "#71717a",
     },
     {
         id: "videogamequest",
@@ -288,9 +267,6 @@ const projects: Project[] = [
             "Journaling",
         ],
         url: "https://videogamequest.me",
-        color: "from-indigo-500/20 to-purple-500/20",
-        borderColor: "border-indigo-400/30",
-        blobColor: "#6366f1",
     },
     {
         id: "friendex",
@@ -303,9 +279,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/friendex",
         dateString: "Oct 2025",
         url: "https://friendex.online",
-        color: "from-sky-500/20 to-cyan-500/20",
-        borderColor: "border-sky-400/30",
-        blobColor: "#0ea5e9",
     },
     {
         id: "sw-viz",
@@ -319,9 +292,6 @@ const projects: Project[] = [
         backendSource: "https://github.com/nick5616/sw-viz-be",
         dateString: "Nov 2023",
         url: "https://star-wars-spending-viz.netlify.app",
-        color: "from-yellow-500/20 to-amber-500/20",
-        borderColor: "border-yellow-400/30",
-        blobColor: "#eab308",
     },
     {
         id: "tierlistify",
@@ -339,9 +309,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/tierlistify",
         dateString: "Sep 2025",
         url: "https://tierlistify.com",
-        color: "from-purple-500/20 to-pink-500/20",
-        borderColor: "border-purple-400/30",
-        blobColor: "#a855f7",
     },
     {
         id: "chaos",
@@ -360,9 +327,6 @@ const projects: Project[] = [
         ],
         frontendSource:"https://github.com/nick5616/CHAOS",
         url: "https://github.com/nick5616/CHAOS",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
     },
     {
         id: "voice-lab",
@@ -373,9 +337,6 @@ const projects: Project[] = [
         tech: ["Python"],
         tags: ["Machine Learning"],
         frontendSource: "https://github.com/nick5616/VoiceLab",
-        color: "from-violet-500/20 to-purple-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
     },
     {
         id: "batch-analyzer",
@@ -388,9 +349,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/batch-item-analyzer",
         dateString: "Dec 2025",
         url: "https://batch-analyzer.netlify.app/",
-        color: "from-violet-500/20 to-purple-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
     },
     {
         id: "art-room",
@@ -404,9 +362,6 @@ const projects: Project[] = [
         backendSource: "https://github.com/nick5616/holodeck-art-api",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/holodeck/art",
-        color: "from-pink-500/20 to-rose-500/20",
-        borderColor: "border-pink-400/30",
-        blobColor: "#ec4899",
     },
     {
         id: "courage-computer",
@@ -419,9 +374,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
-        color: "from-orange-500/20 to-amber-500/20",
-        borderColor: "border-orange-400/30",
-        blobColor: "#f97316",
     },
     
     {
@@ -435,9 +387,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/holodeck/math",
-        color: "from-blue-500/20 to-indigo-500/20",
-        borderColor: "border-blue-400/30",
-        blobColor: "#3b82f6",
     },
     {
         id: "art-museum",
@@ -450,9 +399,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/art-gallery",
-        color: "from-amber-500/20 to-yellow-500/20",
-        borderColor: "border-amber-400/30",
-        blobColor: "#f59e0b",
     },
     {
         id: "software-showroom",
@@ -465,9 +411,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/software",
-        color: "from-emerald-500/20 to-teal-500/20",
-        borderColor: "border-emerald-400/30",
-        blobColor: "#10b981",
     },
     
     {
@@ -481,9 +424,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/nickel-tools",
         dateString: "Nov 2025",
         route: "/smart-piano",
-        color: "from-cyan-500/20 to-blue-500/20",
-        borderColor: "border-cyan-400/30",
-        blobColor: "#06b6d4",
     },
     
     // {
@@ -495,9 +435,6 @@ const projects: Project[] = [
     //     tech: ["TypeScript", "React", "WebAssembly", "LaTeX", "Next.js"],
     //     tags: [],
     //     route: "/resume-editor",
-    //     color: "from-emerald-500/20 to-teal-500/20",
-    //     borderColor: "border-emerald-400/30",
-    //     blobColor: "#10b981",
     // },
     // {
     //     id: "choice-engine",
@@ -508,9 +445,6 @@ const projects: Project[] = [
     //     tech: ["TypeScript", "React", "Next.js"],
     //     tags: [],
     //     route: "/choice-picker",
-    //     color: "from-lime-500/20 to-green-500/20",
-    //     borderColor: "border-lime-400/30",
-    //     blobColor: "#84cc16",
     // },
     {
         id: "pokemon-or-technology",
@@ -521,9 +455,6 @@ const projects: Project[] = [
         tech: ["TypeScript", "React", "Next.js"],
         tags: [],
         route: "/pokemon-or-technology",
-        color: "from-red-500/20 to-orange-500/20",
-        borderColor: "border-red-400/30",
-        blobColor: "#ef4444",
     },
     {
         id: "sphere-website",
@@ -535,9 +466,6 @@ const projects: Project[] = [
         tags: ["3D Design", "Interactive Design"],
         frontendSource: "https://github.com/nick5616/sphere-website",
         url: "https://tiny-sorbet-aefcf4.netlify.app/",
-        color: "from-cyan-500/20 to-blue-500/20",
-        borderColor: "border-cyan-400/30",
-        blobColor: "#06b6d4",
     },
     {
         id: "new-media-website",
@@ -549,9 +477,6 @@ const projects: Project[] = [
         tags: [],
         frontendSource: "https://github.com/nick5616/newMediaWebsite",
         url: "https://new-media-college-class.netlify.app/",
-        color: "from-lime-500/20 to-green-500/20",
-        borderColor: "border-lime-400/30",
-        blobColor: "#84cc16",
     },
     {
         id: "routine",
@@ -564,9 +489,6 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/routine",
         dateString: "Mar 2020",
         url: "http://nick5616.github.io/routine",
-        color: "from-pink-500/20 to-fuchsia-500/20",
-        borderColor: "border-pink-400/30",
-        blobColor: "#ec4899",
     },
 ];
 
