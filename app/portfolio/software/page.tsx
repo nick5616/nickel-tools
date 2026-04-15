@@ -838,7 +838,7 @@ export default function SoftwarePortfolioPage() {
                                             </div>
                                             <div className="space-y-1">
                                                 {project.dateString && (
-                                                    <p className="text-xs text-zinc-600">
+                                                    <p className="text-xs text-zinc-300">
                                                         {project.dateString}
                                                     </p>
                                                 )}
