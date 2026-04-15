@@ -102,10 +102,10 @@ function getProjectLayout(
                 };
             case "tierlistify":
                 return {
-                    layout: "single-mobile",
+                    layout: "double-mobile",
                     sources: [
-                        "https://tierlistify.com/",
-                        "https://tierlistify.com/",
+                        "https://tierlistify.com/init",
+                        "https://tierlistify.com/creation/1776295779582",
                     ],
                 };
             case "videogamequest":
@@ -297,7 +297,7 @@ const projects: Project[] = [
         id: "tierlistify",
         title: "Tierlistify",
         description:
-            "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
+            "Prototype around a better mobile tierlisting experience. Everything but the tier list drag and drop mechanism was not focused on.",
         why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
         tech: ["TypeScript", "React"],
         tags: [
@@ -413,18 +413,7 @@ const projects: Project[] = [
         url: "https://nicolebelovoskey.com/software",
     },
     
-    {
-        id: "smart-piano",
-        title: "Smart Piano",
-        description:
-            "An intelligent web-based piano that analyzes musical context and suggests harmonically appropriate next notes based on the key you're playing in.",
-        why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
-        tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
-        tags: ["Music Theory Algorithms"],
-        frontendSource:"https://github.com/nick5616/nickel-tools",
-        dateString: "Nov 2025",
-        route: "/smart-piano",
-    },
+    
     
     // {
     //     id: "resume-builder",
@@ -446,16 +435,7 @@ const projects: Project[] = [
     //     tags: [],
     //     route: "/choice-picker",
     // },
-    {
-        id: "pokemon-or-technology",
-        title: "Pokemon or Technology",
-        description:
-            "Quiz yourself on what is a Pokemon and what is a Technology.",
-        why: "One day I observed Pokemon and Technology have similar sounding names, so I made this quiz game.",
-        tech: ["TypeScript", "React", "Next.js"],
-        tags: [],
-        route: "/pokemon-or-technology",
-    },
+    
     {
         id: "sphere-website",
         title: "Sphere Website",
@@ -466,6 +446,29 @@ const projects: Project[] = [
         tags: ["3D Design", "Interactive Design"],
         frontendSource: "https://github.com/nick5616/sphere-website",
         url: "https://tiny-sorbet-aefcf4.netlify.app/",
+    },
+    {
+        id: "smart-piano",
+        title: "Smart Piano",
+        description:
+            "Quick prototype: An intelligent web-based piano that analyzes musical context and suggests harmonically appropriate next notes based on the key you're playing in.",
+        why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
+        tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
+        tags: ["Music Theory Algorithms"],
+        frontendSource:"https://github.com/nick5616/nickel-tools",
+        dateString: "Nov 2025",
+        route: "/smart-piano",
+    },
+    {
+        id: "pokemon-or-technology",
+        title: "Pokemon or Technology",
+        dateString: "Sometime in like Oct 2025",
+        description:
+            "Super quick prototype: Quiz yourself on what is a Pokemon and what is a Technology.",
+        why: "One day I observed Pokemon and Technology have similar sounding names, so I made this quiz game.",
+        tech: ["TypeScript", "React", "Next.js"],
+        tags: [],
+        route: "/pokemon-or-technology",
     },
     {
         id: "new-media-website",

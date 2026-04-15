@@ -27,6 +27,9 @@ export const TECHNOLOGIES = [
     "Redis",
     "Tailwind CSS",
     "Framer Motion",
+    "Lit",
+    "HTMX",
+    "Flask",
 ] as const;
 
 // Tags - categories, features, design patterns, algorithms, processing types, and other attributes
