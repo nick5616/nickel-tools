@@ -8,8 +8,6 @@ import LaserRoomPreview from "@/components/ui/LaserRoomPreview";
 import {
     Technology,
     Tag,
-    normalizeTechnology,
-    normalizeTag,
 } from "@/app/portfolio/techStack";
 import { type ViewMode } from "@/components/ui/TechStackFilter";
 import Clarity from "@microsoft/clarity";
@@ -163,8 +161,8 @@ interface Project {
     title: string;
     description: string;
     why: string;
-    tech: string[];
-    tags: string[];
+    tech: Technology[];
+    tags: Tag[];
     url?: string;
     route?: string;
     frontendSource?: string;
@@ -207,7 +205,7 @@ const projects: Project[] = [
         description:
             "I made a first person 3D environment on the web, where the user can walk around, sprint, jump, collect rupees, view my art in a digital upscale museum, see my software projects as if they are physically walking up to them, draw a picture and submit it, with the potential to see it hung up on the wall, interact with an omnipotent and deriding computer from the cartoon 'Courage the Cowardly Dog', Relax in a tranquil forest, or Practice multiplication in a 3D adaptation of 'Meteor Multiplication'.",
         why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance. It was fun. Also I wanted it to exist. Isn't that reason enough?",
-        tech: ["Three.js", "WebGL"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
@@ -222,8 +220,8 @@ const projects: Project[] = [
         description:
             "A project tracking tool that helps you conveniently track and understand all the projects you're working on.",
         why: "I have a lot of infrequent hobbies that I like to switch between. I noticed I was feeling overwhelmed by all the projects I was working on, so I built Passionfruit to help me keep track of them in a way that wouldn't stifle my creativity.",
-        tech: ["React"],
-        tags: ["Project Management", "Productivity Tools"],
+        tech: ["TypeScript", "React", "LLM APIs"],
+        tags: ["AI Integration", "Project Management", "Productivity Tools"],
         frontendSource:"https://github.com/nick5616/universe",
         dateString: "Nov 2025",
         url: "https://yieldpassionfruit.netlify.app",
@@ -237,8 +235,8 @@ const projects: Project[] = [
         description:
             "A 3D visualization of your life goals and their relationships.",
         why: "I wanted to model relationships between my goals and their prerequisites, and how my goals are related to each other. I've made it generic so you can use it for your own goals. It's intended to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
-        tech: ["Three.js", "WebGL", "React"],
-        tags: ["3D Design", "Interactive Design"],
+        tech: ["TypeScript", "React", "Three.js", "WebGL", "LLM APIs"],
+        tags: ["AI Integration", "3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
         dateString: "Nov 2025",
         url: "https://yieldpassionfruit.netlify.app/life-graph",
@@ -254,7 +252,7 @@ const projects: Project[] = [
         frontendSource:"https://github.com/nick5616/plasma-sphere",
         dateString: "Apr 2026",
         why: "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for  the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other.",
-        tech: ["Three.js", "WebGL"],
+        tech: ["JavaScript", "Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         url: "https://sphere.saucedog.art",
         color: "from-violet-500/20 to-indigo-500/20",
@@ -282,7 +280,7 @@ const projects: Project[] = [
         description:
             "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
         why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
-        tech: ["React"],
+        tech: ["TypeScript", "React", "Tailwind CSS", "Framer Motion", "Nest.js", "Node.js"],
         tags: [
             "AI Integration",
             "Productivity Tools",
@@ -300,7 +298,7 @@ const projects: Project[] = [
         description:
             "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
         why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
-        tech: ["React"],
+        tech: ["TypeScript", "React"],
         tags: ["Mobile-First", "Social App", "Web Development"],
         frontendSource:"https://github.com/nick5616/friendex",
         dateString: "Oct 2025",
@@ -331,7 +329,7 @@ const projects: Project[] = [
         description:
             "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
         why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
-        tech: ["React"],
+        tech: ["TypeScript", "React"],
         tags: [
             "Mobile UX",
             "Touch Interactions",
@@ -400,7 +398,7 @@ const projects: Project[] = [
         description:
             "A 3D art gallery room inside the holodeck where paintings and artwork are displayed in a navigable virtual space. A personal gallery you can walk through.",
         why: "I wanted a way to display 2D art in a spatial context — mounting pieces on walls you can approach and step back from changes how you experience them compared to a flat grid.",
-        tech: ["Three.js", "WebGL", "Go", "Google Cloud Storage", "Docker"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL", "Go", "Google Cloud Storage", "Docker"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         backendSource: "https://github.com/nick5616/holodeck-art-api",
@@ -416,7 +414,7 @@ const projects: Project[] = [
         description:
             "An interactive 3D room inside the holodeck — a retro computer lab environment you can freely explore in the browser. Inspired by the aesthetic of early personal computing.",
         why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
-        tech: ["Three.js", "WebGL"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
@@ -432,7 +430,7 @@ const projects: Project[] = [
         description:
             "An immersive 3D room dedicated to mathematical visualization — equations, shapes, and concepts brought to life as explorable objects inside the holodeck.",
         why: "Math is inherently spatial and I wanted to explore what it looks like to present mathematical ideas as environments rather than notation on a page.",
-        tech: ["Three.js", "WebGL"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
@@ -447,7 +445,7 @@ const projects: Project[] = [
         description:
             "A large-scale 3D museum experience inside the holodeck — a multi-room virtual gallery housing a curated collection you can browse at your own pace.",
         why: "Scaling up from the art room into a full museum allowed me to think about wayfinding, pacing, and spatial narrative at a larger architectural scale — all within the browser.",
-        tech: ["Three.js", "WebGL"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
@@ -462,7 +460,7 @@ const projects: Project[] = [
         description:
             "A software showroom where you can explore my projects in a 3D environment. Walk up to the screens and interact with them. Access your cursor by pressing escape.",
         why: "It seemed like a really sci-fi way to showcase my projects.",
-        tech: ["Three.js", "WebGL", "React-Three-Fiber"],
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
@@ -592,55 +590,24 @@ export default function SoftwarePortfolioPage() {
         }
     }, []);
 
-    // Normalize technologies and tags for each project
-    const projectsWithNormalized = useMemo(() => {
-        return projects.map((project) => ({
-            ...project,
-            normalizedTech: (project.tech || [])
-                .map((t) => normalizeTechnology(t))
-                .filter((t): t is Technology => t !== null),
-            normalizedTags: (project.tags || [])
-                .map((t) => normalizeTag(t))
-                .filter((t): t is Tag => t !== null),
-        }));
-    }, []);
-
     // Filter projects based on selected tech and tags (inclusive OR logic)
     const filteredProjects = useMemo(() => {
         if (selectedTech.size === 0 && selectedTags.size === 0) {
-            return projectsWithNormalized;
+            return projects;
         }
 
-        return projectsWithNormalized.filter((project) => {
-            // Check if project has ANY of the selected technologies
-            const matchesTech = project.normalizedTech.some((tech) =>
-                selectedTech.has(tech)
-            );
+        return projects.filter((project) => {
+            const matchesTech = project.tech.some((tech) => selectedTech.has(tech));
+            const matchesTags = project.tags.some((tag) => selectedTags.has(tag));
 
-            // Check if project has ANY of the selected tags
-            const matchesTags = project.normalizedTags.some((tag) =>
-                selectedTags.has(tag)
-            );
-
-            // If both filters are active, project matches if it has any selected tech OR any selected tag
             if (selectedTech.size > 0 && selectedTags.size > 0) {
                 return matchesTech || matchesTags;
             }
-
-            // If only tech is selected, require tech match
-            if (selectedTech.size > 0) {
-                return matchesTech;
-            }
-
-            // If only tags are selected, require tag match
-            if (selectedTags.size > 0) {
-                return matchesTags;
-            }
-
-            // Should not reach here, but return false as fallback
+            if (selectedTech.size > 0) return matchesTech;
+            if (selectedTags.size > 0) return matchesTags;
             return false;
         });
-    }, [projectsWithNormalized, selectedTech, selectedTags]);
+    }, [selectedTech, selectedTags]);
 
     const clarityReady = () =>
         typeof window !== "undefined" &&
@@ -951,14 +918,14 @@ export default function SoftwarePortfolioPage() {
                                                     </p>
                                                 </div>
                                             </div>
-                                            {project.normalizedTech.length >
+                                            {project.tech.length >
                                                 0 && (
                                                 <div className="space-y-3">
                                                     <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                         Technologies
                                                     </h3>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {project.normalizedTech.map(
+                                                        {project.tech.map(
                                                             (tech) => (
                                                                 <span
                                                                     key={tech}
@@ -971,14 +938,14 @@ export default function SoftwarePortfolioPage() {
                                                     </div>
                                                 </div>
                                             )}
-                                            {project.normalizedTags.length >
+                                            {project.tags.length >
                                                 0 && (
                                                 <div className="space-y-3">
                                                     <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
                                                         Tags
                                                     </h3>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {project.normalizedTags.map(
+                                                        {project.tags.map(
                                                             (tag) => (
                                                                 <span
                                                                     key={tag}

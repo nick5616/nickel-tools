@@ -25,6 +25,8 @@ export const TECHNOLOGIES = [
     "WebSockets",
     "WebRTC",
     "Redis",
+    "Tailwind CSS",
+    "Framer Motion",
 ] as const;
 
 // Tags - categories, features, design patterns, algorithms, processing types, and other attributes
