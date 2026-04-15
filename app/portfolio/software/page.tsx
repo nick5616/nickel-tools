@@ -315,7 +315,7 @@ const projects: Project[] = [
         description:
             "An interactive data visualization of Star Wars starship costs from the SWAPI dataset. Explore and compare the price tags of iconic ships across the galaxy — from X-wings to Star Destroyers.",
         why: "A fun excuse to combine a beloved universe with data viz. Pulling from the Star Wars API and rendering comparative cost breakdowns made for a satisfying mix of frontend charting work and backend data wrangling.",
-        tech: ["React", "TypeScript", "Nest.js", "Node.js"],
+        tech: ["React", "TypeScript", "Nivo", "Nest.js", "Node.js"],
         tags: ["Data Visualization", "Web Development"],
         frontendSource: "https://github.com/nick5616/sw-viz-fe",
         backendSource: "https://github.com/nick5616/sw-viz-be",

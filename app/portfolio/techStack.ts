@@ -1,6 +1,9 @@
 // Technologies - actual programming languages, frameworks, libraries, and APIs
 export const TECHNOLOGIES = [
     "TypeScript",
+    "Nest.js",
+    "Node.js",
+    "Nivo",
     "JavaScript",
     "React",
     "Next.js",
