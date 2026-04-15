@@ -48,7 +48,7 @@ function getProjectLayout(
     url?: string
 ): ProjectLayoutConfig {
     // Projects that are always no-iframe regardless of url/route
-    const NO_IFRAME_IDS = ["chaos", "voice-lab"];
+    const NO_IFRAME_IDS = ["chaos", "voice-lab", "the-circle"];
     if (NO_IFRAME_IDS.includes(projectId)) {
         return { layout: "no-iframe", sources: [] };
     }
@@ -186,6 +186,22 @@ function GitHubIcon() {
 const projects: Project[] = [
     
     {
+        id: "the-circle",
+        title: "The Circle",
+        description:
+            "A single persistent global room where up to 8 people can be on camera and mic at the same time via a peer-to-peer WebRTC mesh. Everyone else joins as audience — watching the live video grid and chatting in a shared text channel. No accounts, no room codes, no database.",
+        why: "I wanted to build something that felt genuinely real-time — not just a chat box but actual live video between strangers. Wiring together WebRTC peer connections, Django Channels signaling, and Redis-backed room state from scratch was the challenge. Note: visit the site directly — it won't work embedded in an iframe.",
+        tech: ["React", "TypeScript", "Django", "WebSockets", "WebRTC", "Redis", "Docker"],
+        tags: ["Real-time", "Web Development"],
+        frontendSource: "https://github.com/nick5616/the-circle",
+        backendSource: "https://github.com/nick5616/the-circle",
+        dateString: "Apr 2026",
+        url: "https://live.saucedog.art/",
+        color: "from-teal-500/20 to-cyan-500/20",
+        borderColor: "border-teal-400/30",
+        blobColor: "#14b8a6",
+    },
+    {
         id: "3d-website",
         title: "3D Website",
         description:
@@ -292,6 +308,22 @@ const projects: Project[] = [
         color: "from-sky-500/20 to-cyan-500/20",
         borderColor: "border-sky-400/30",
         blobColor: "#0ea5e9",
+    },
+    {
+        id: "sw-viz",
+        title: "Star Wars Ship Costs Visualizer",
+        description:
+            "An interactive data visualization of Star Wars starship costs from the SWAPI dataset. Explore and compare the price tags of iconic ships across the galaxy — from X-wings to Star Destroyers.",
+        why: "A fun excuse to combine a beloved universe with data viz. Pulling from the Star Wars API and rendering comparative cost breakdowns made for a satisfying mix of frontend charting work and backend data wrangling.",
+        tech: ["React", "TypeScript", "Nest.js", "Node.js"],
+        tags: ["Data Visualization", "Web Development"],
+        frontendSource: "https://github.com/nick5616/sw-viz-fe",
+        backendSource: "https://github.com/nick5616/sw-viz-be",
+        dateString: "Nov 2023",
+        url: "https://star-wars-spending-viz.netlify.app",
+        color: "from-yellow-500/20 to-amber-500/20",
+        borderColor: "border-yellow-400/30",
+        blobColor: "#eab308",
     },
     {
         id: "tierlistify",
@@ -872,6 +904,7 @@ export default function SoftwarePortfolioPage() {
                                                     Source
                                                 </a>
                                             ) : null}
+                                            {layoutConfig.layout !== "no-iframe" && (
                                             <button
                                                 onClick={() => triggerRefresh(project.id)}
                                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-zinc-600 rounded-md text-zinc-100 text-xs font-medium hover:bg-zinc-700 transition-colors"
@@ -882,6 +915,7 @@ export default function SoftwarePortfolioPage() {
                                                 </svg>
                                                 Refresh
                                             </button>
+                                            )}
                                             </div>
                                             </div>
                                             <div className="space-y-1">

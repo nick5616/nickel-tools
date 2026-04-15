@@ -18,6 +18,10 @@ export const TECHNOLOGIES = [
     "Canvas API",
     "Docker",
     "Google Cloud Storage",
+    "Django",
+    "WebSockets",
+    "WebRTC",
+    "Redis",
 ] as const;
 
 // Tags - categories, features, design patterns, algorithms, processing types, and other attributes
@@ -48,6 +52,9 @@ export const TAGS = [
     "Interactive Design",
     "Design System",
     "Accessibility",
+    "Real-time",
+    "Data Visualization",
+    "WebRTC",
 ] as const;
 
 // Legacy: Keep for backward compatibility during migration
