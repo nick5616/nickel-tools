@@ -512,6 +512,22 @@ export default function SoftwarePortfolioPage() {
         }
     }, []);
 
+    const sortedTech = useMemo(() => {
+        const counts = new Map<Technology, number>();
+        for (const p of projects) {
+            for (const t of p.tech) counts.set(t, (counts.get(t) ?? 0) + 1);
+        }
+        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
+    }, []);
+
+    const sortedTags = useMemo(() => {
+        const counts = new Map<Tag, number>();
+        for (const p of projects) {
+            for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+        }
+        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
+    }, []);
+
     // Filter projects based on selected tech and tags (inclusive OR logic)
     const filteredProjects = useMemo(() => {
         if (selectedTech.size === 0 && selectedTags.size === 0) {
@@ -676,6 +692,8 @@ export default function SoftwarePortfolioPage() {
                             selectedTags={selectedTags}
                             onToggleTech={handleToggleTech}
                             onToggleTag={handleToggleTag}
+                            sortedTech={sortedTech}
+                            sortedTags={sortedTags}
                             numProjects={filteredProjects.length}
                             viewMode={viewMode}
                             onViewModeChange={handleViewModeChange}

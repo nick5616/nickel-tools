@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { TECHNOLOGIES, TAGS, Technology, Tag } from "@/app/portfolio/techStack";
+import { Technology, Tag } from "@/app/portfolio/techStack";
 import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 export type ViewMode = "curated" | "mobile" | "desktop";
@@ -12,6 +12,8 @@ interface TechStackFilterProps {
     selectedTags: Set<Tag>;
     onToggleTech: (tech: Technology) => void;
     onToggleTag: (tag: Tag) => void;
+    sortedTech: Technology[];
+    sortedTags: Tag[];
     numProjects: number;
     viewMode: ViewMode;
     onViewModeChange: (mode: ViewMode) => void;
@@ -22,6 +24,8 @@ export default function TechStackFilter({
     selectedTags,
     onToggleTech,
     onToggleTag,
+    sortedTech,
+    sortedTags,
     numProjects,
     viewMode,
     onViewModeChange,
@@ -80,7 +84,7 @@ export default function TechStackFilter({
                             Technologies
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                            {TECHNOLOGIES.map((tech) => {
+                            {sortedTech.map((tech) => {
                                 const isSelected = selectedTech.has(tech);
                                 return (
                                     <button
@@ -106,7 +110,7 @@ export default function TechStackFilter({
                             Tags
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                            {TAGS.map((tag) => {
+                            {sortedTags.map((tag) => {
                                 const isSelected = selectedTags.has(tag);
                                 return (
                                     <button
