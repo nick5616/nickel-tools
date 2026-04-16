@@ -137,7 +137,7 @@ export default function LaserRoomPreview({ src }: LaserRoomPreviewProps) {
                 { x: tipX,              y: tipY },                       // tip
                 { x: tipX - cW * 0.05,              y: tipY + cSize * 0.78 },        // bottom-left of body
                 { x: tipX + cW * 0.33,  y: tipY + cSize * 0.58 },       // notch
-                { x: tipX + cW * 0.76,  y: tipY + cSize },               // tail bottom (more vertical from notch)
+                { x: tipX + cW * 0.65,  y: tipY + cSize * .9 },               // tail bottom (more vertical from notch)
                 { x: tipX + cW * 0.9,  y: tipY + cSize * 0.8 },        // tail right (slightly less correction)
                 { x: tipX + cW * 0.56,  y: tipY + cSize * 0.50 },        // above notch
                 { x: tipX + cW,         y: tipY + cSize * 0.35 },        // right shoulder
