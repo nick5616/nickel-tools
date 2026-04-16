@@ -440,6 +440,18 @@ const projects: Project[] = [
     // },
     
     {
+        id: "sre-dashboard",
+        title: "SRE Dashboard",
+        description:
+            "An SRE dashboard for monitoring services, incidents, and logs. Python/Flask backend serves hypermedia via HTMX, while the frontend is built with Lit web components — a native browser standard that's far more capable than most developers realize.",
+        why: "I wanted to explore a stack that leans into the platform instead of abstracting away from it. HTMX lets the server own state and return HTML fragments directly, cutting out a lot of client-side complexity. Lit is what web components always should have been — lightweight, declarative, and framework-agnostic. I don't think enough people know how powerful the native component model has become.",
+        tech: ["Python", "Lit", "HTMX", "Flask"],
+        tags: ["SRE", "Dashboard"],
+        dateString: "Sep 2025",
+        frontendSource: "https://github.com/nick5616/lit-htmxperiments",
+        url: "https://sre.nickeltools.dev",
+    },
+    {
         id: "sphere-website",
         title: "Sphere Website",
         description:

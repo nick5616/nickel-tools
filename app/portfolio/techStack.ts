@@ -63,6 +63,8 @@ export const TAGS = [
     "Real-time",
     "Data Visualization",
     "WebRTC",
+    "SRE",
+    "Dashboard",
 ] as const;
 
 // Legacy: Keep for backward compatibility during migration
