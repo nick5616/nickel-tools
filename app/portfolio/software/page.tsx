@@ -180,6 +180,19 @@ function GitHubIcon() {
 
 const projects: Project[] = [
     
+    
+    {
+        id: "3d-website",
+        title: "3D Website",
+        description:
+            "I made a first person 3D environment on the web, where the user can walk around, sprint, jump, collect rupees, view my art in a digital upscale museum, see my software projects as if they are physically walking up to them, draw a picture and submit it, with the potential to see it hung up on the wall, interact with an omnipotent and deriding computer from the cartoon 'Courage the Cowardly Dog', Relax in a tranquil forest, or Practice multiplication in a 3D adaptation of 'Meteor Multiplication'.",
+        why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance. It was fun. Also I wanted it to exist. Isn't that reason enough?",
+        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
+        tags: ["3D Design", "Interactive Design"],
+        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        dateString: "Jan 2025",
+        url: "https://nicolebelovoskey.com",
+    },
     {
         id: "the-circle",
         title: "The Circle",
@@ -192,18 +205,6 @@ const projects: Project[] = [
         backendSource: "https://github.com/nick5616/the-circle",
         dateString: "Apr 2026",
         url: "https://live.saucedog.art/",
-    },
-    {
-        id: "3d-website",
-        title: "3D Website",
-        description:
-            "I made a first person 3D environment on the web, where the user can walk around, sprint, jump, collect rupees, view my art in a digital upscale museum, see my software projects as if they are physically walking up to them, draw a picture and submit it, with the potential to see it hung up on the wall, interact with an omnipotent and deriding computer from the cartoon 'Courage the Cowardly Dog', Relax in a tranquil forest, or Practice multiplication in a 3D adaptation of 'Meteor Multiplication'.",
-        why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance. It was fun. Also I wanted it to exist. Isn't that reason enough?",
-        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
-        tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
-        dateString: "Jan 2025",
-        url: "https://nicolebelovoskey.com",
     },
     {
         id: "passionfruit",
@@ -226,7 +227,7 @@ const projects: Project[] = [
         tech: ["TypeScript", "React", "Three.js", "WebGL", "LLM APIs"],
         tags: ["AI Integration", "3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
-        dateString: "Nov 2025",
+        dateString: "Mar 2026",
         url: "https://yieldpassionfruit.netlify.app/life-graph",
     },
     {
@@ -256,6 +257,7 @@ const projects: Project[] = [
     {
         id: "videogamequest",
         title: "RPG Quests",
+        dateString:"June 2025",
         description:
             "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
         why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
@@ -331,6 +333,7 @@ const projects: Project[] = [
     {
         id: "voice-lab",
         title: "VoiceLab",
+        dateString: "Dec 2025",
         description:
             "A Python desktop application for singers to track and analyze their vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency — giving you a data-driven view of how your voice is developing over time.",
         why: "I wanted objective feedback on my singing practice rather than relying purely on ear. Tracking metrics across takes makes it easy to see what's actually improving.",
@@ -360,7 +363,7 @@ const projects: Project[] = [
         tags: ["3D Design", "Interactive Design"],
         frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         backendSource: "https://github.com/nick5616/holodeck-art-api",
-        dateString: "Jan 2025",
+        dateString: "Feb 2026",
         url: "https://nicolebelovoskey.com/holodeck/art",
     },
     {
@@ -372,7 +375,7 @@ const projects: Project[] = [
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
         frontendSource:"https://github.com/nick5616/3d-portfolio-website",
-        dateString: "Jan 2025",
+        dateString: "Nov 2025",
         url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
     },
     
@@ -444,6 +447,7 @@ const projects: Project[] = [
         why: "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D.",
         tech: ["JavaScript", "Three.js", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
+        dateString: "Nov 2023",
         frontendSource: "https://github.com/nick5616/sphere-website",
         url: "https://tiny-sorbet-aefcf4.netlify.app/",
     },
@@ -473,6 +477,7 @@ const projects: Project[] = [
     {
         id: "new-media-website",
         title: "New Media Class Website",
+        dateString: "Oct 2019",
         description:
             "A college class assignment website. Each page is a separate assignment — the first exploring what kinds of media I consume, the second running a poll across the class to see what everyone else consumed.",
         why: "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere.",
