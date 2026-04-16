@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 // ── types ──────────────────────────────────────────────────────────────────
 interface PitchFrame {
@@ -234,9 +234,30 @@ export default function AudioToMidi() {
   const [midiBytes, setMidiBytes] = useState<Uint8Array | null>(null);
   const [showRoll, setShowRoll] = useState(false);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordSeconds, setRecordSeconds] = useState(0);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const durationRef = useRef(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordStreamRef = useRef<MediaStream | null>(null);
+  const recordChunksRef = useRef<Blob[]>([]);
+  const recordTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const playbackSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const playbackCtxRef = useRef<AudioContext | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (recordTimerRef.current) clearInterval(recordTimerRef.current);
+      mediaRecorderRef.current?.stop();
+      recordStreamRef.current?.getTracks().forEach((t) => t.stop());
+      playbackSourceRef.current?.stop();
+      playbackCtxRef.current?.close();
+    };
+  }, []);
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -267,6 +288,59 @@ export default function AudioToMidi() {
     },
     [handleFile]
   );
+
+  const startRecording = useCallback(async () => {
+    setError("");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recordStreamRef.current = stream;
+      const mr = new MediaRecorder(stream);
+      recordChunksRef.current = [];
+      mr.ondataavailable = (e) => { if (e.data.size > 0) recordChunksRef.current.push(e.data); };
+      mr.onstop = async () => {
+        const blob = new Blob(recordChunksRef.current, { type: mr.mimeType || "audio/webm" });
+        const ext = (mr.mimeType || "audio/webm").includes("ogg") ? "ogg" : "webm";
+        const file = new File([blob], `recording.${ext}`, { type: blob.type });
+        await handleFile(file);
+      };
+      mr.start();
+      mediaRecorderRef.current = mr;
+      setIsRecording(true);
+      setRecordSeconds(0);
+      recordTimerRef.current = setInterval(() => setRecordSeconds((s) => s + 1), 1000);
+    } catch {
+      setError("Microphone access denied or unavailable.");
+    }
+  }, [handleFile]);
+
+  const stopRecording = useCallback(() => {
+    if (recordTimerRef.current) { clearInterval(recordTimerRef.current); recordTimerRef.current = null; }
+    recordStreamRef.current?.getTracks().forEach((t) => t.stop());
+    recordStreamRef.current = null;
+    mediaRecorderRef.current?.stop();
+    mediaRecorderRef.current = null;
+    setIsRecording(false);
+  }, []);
+
+  const togglePlayback = useCallback(() => {
+    if (isPlaying) {
+      playbackSourceRef.current?.stop();
+      playbackSourceRef.current = null;
+      playbackCtxRef.current?.close();
+      playbackCtxRef.current = null;
+      setIsPlaying(false);
+    } else if (audioBuffer) {
+      const ctx = new AudioContext();
+      const src = ctx.createBufferSource();
+      src.buffer = audioBuffer;
+      src.connect(ctx.destination);
+      src.onended = () => { setIsPlaying(false); playbackCtxRef.current?.close(); };
+      src.start();
+      playbackCtxRef.current = ctx;
+      playbackSourceRef.current = src;
+      setIsPlaying(true);
+    }
+  }, [isPlaying, audioBuffer]);
 
   const runConvert = useCallback(async () => {
     if (!audioBuffer) return;
@@ -343,6 +417,8 @@ export default function AudioToMidi() {
   }, [midiBytes, fileName]);
 
   const clearFile = () => {
+    if (isPlaying) { playbackSourceRef.current?.stop(); playbackCtxRef.current?.close(); setIsPlaying(false); }
+    if (isRecording) stopRecording();
     setAudioBuffer(null);
     setFileName("");
     setFileMeta("");
@@ -363,30 +439,74 @@ export default function AudioToMidi() {
         </p>
 
         {/* drop zone */}
-        {!audioBuffer && (
-          <div
-            onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()}
-            onClick={() => fileInputRef.current?.click()}
-            className="border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 text-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors mb-6"
-          >
-            <p className="text-sm font-medium mb-1">Drop audio file here or click to upload</p>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
-              WAV, MP3, OGG, M4A — monophonic works best
-            </p>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="audio/*"
-              className="hidden"
-              onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-            />
+        {!audioBuffer && !isRecording && (
+          <div className="mb-6 space-y-3">
+            <div
+              onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+              onClick={() => fileInputRef.current?.click()}
+              className="border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 text-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+            >
+              <p className="text-sm font-medium mb-1">Drop audio file here or click to upload</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                WAV, MP3, OGG, M4A — monophonic works best
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="audio/*"
+                className="hidden"
+                onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+              />
+            </div>
+            <button
+              onClick={startRecording}
+              className="w-full py-3 rounded-xl text-sm font-medium border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors flex items-center justify-center gap-2"
+            >
+              <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
+              Record from microphone
+            </button>
+          </div>
+        )}
+
+        {/* recording indicator */}
+        {isRecording && (
+          <div className="mb-6 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-sm font-medium">Recording…</span>
+              <span className="text-sm tabular-nums text-neutral-500 dark:text-neutral-400">
+                {String(Math.floor(recordSeconds / 60)).padStart(2, "0")}:{String(recordSeconds % 60).padStart(2, "0")}
+              </span>
+            </div>
+            <button
+              onClick={stopRecording}
+              className="px-6 py-2 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
+            >
+              Stop recording
+            </button>
           </div>
         )}
 
         {/* file info */}
         {audioBuffer && (
           <div className="flex items-center gap-3 bg-neutral-100 dark:bg-neutral-900 rounded-lg px-4 py-3 mb-6">
+            <button
+              onClick={togglePlayback}
+              title={isPlaying ? "Stop" : "Play"}
+              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+            >
+              {isPlaying ? (
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                  <rect x="1" y="1" width="4" height="10" rx="1" />
+                  <rect x="7" y="1" width="4" height="10" rx="1" />
+                </svg>
+              ) : (
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                  <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
+                </svg>
+              )}
+            </button>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{fileName}</p>
               <p className="text-xs text-neutral-500 dark:text-neutral-400">{fileMeta}</p>
