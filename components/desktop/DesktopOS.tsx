@@ -34,12 +34,8 @@ export function DesktopOS() {
 
             {/* Desktop Area */}
             <div
-                className="pt-12 h-[calc(100vh-48px)] relative overflow-hidden z-10"
-                style={{
-                    width: "100vw",
-                    maxWidth: "100vw",
-                    position: "relative",
-                }}
+                className="absolute top-12 bottom-0 left-0 right-0 overflow-hidden z-10"
+                style={{ maxWidth: "100vw" }}
             >
                 <Desktop
                     content={allContent}

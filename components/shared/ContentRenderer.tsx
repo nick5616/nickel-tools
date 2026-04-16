@@ -66,6 +66,13 @@ const AdvancedColorSchemeGenerator = dynamic(
     }
 );
 
+const AudioToMidi = dynamic(() => import("@/components/tools/audio-to-midi"), {
+    loading: () => (
+        <div className="p-4 text-zinc-400">Loading Audio → MIDI...</div>
+    ),
+    ssr: false,
+});
+
 interface ContentRendererProps {
     content: Content;
 }
@@ -195,6 +202,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 return (
                     <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
                         <AdvancedColorSchemeGenerator />
+                    </div>
+                );
+            }
+            if (content.route === "/audio-to-midi") {
+                return (
+                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                        <AudioToMidi />
                     </div>
                 );
             }

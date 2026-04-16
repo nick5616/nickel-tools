@@ -466,6 +466,23 @@ export const NICKEL_SYSTEM: NickelSystem = {
             windowHeight: 400,
         },
         {
+            id: "audio-to-midi",
+            type: "internal",
+            title: "Audio → MIDI",
+            description:
+                "Convert audio to MIDI using the YIN pitch detection algorithm. Drop in a WAV or MP3, tune BPM and quantization, then download the MIDI file.",
+            thumbnail: "/project-screenshots/latex.png",
+            category: "Music",
+            status: "operational",
+            route: "/audio-to-midi",
+            openInModal: false,
+            dateAdded: "2026-04-16",
+            featured: false,
+            tags: ["music", "midi", "audio", "pitch-detection"],
+            windowWidth: 720,
+            windowHeight: 800,
+        },
+        {
             id: "batch-analyzer",
             type: "external",
             title: "Batch Analyzer",
