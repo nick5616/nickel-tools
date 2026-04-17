@@ -5,10 +5,7 @@ import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import SlideIn from "@/components/ui/SlideIn";
 import LaserRoomPreview from "@/components/ui/LaserRoomPreview";
-import {
-    Technology,
-    Tag,
-} from "@/app/portfolio/techStack";
+import { Technology, Tag } from "@/app/portfolio/techStack";
 import { type ViewMode } from "@/components/ui/TechStackFilter";
 import Clarity from "@microsoft/clarity";
 
@@ -43,7 +40,7 @@ interface ProjectLayoutConfig {
 function getProjectLayout(
     projectId: string,
     route?: string,
-    url?: string
+    url?: string,
 ): ProjectLayoutConfig {
     // Projects that are always no-iframe regardless of url/route
     const NO_IFRAME_IDS = ["chaos", "voice-lab", "the-circle"];
@@ -85,7 +82,10 @@ function getProjectLayout(
     // Handle external URLs
     if (url) {
         // 3D web environments
-        if (url.includes("nicolebelovoskey.com") || url.includes("sphere.saucedog.art")) {
+        if (
+            url.includes("nicolebelovoskey.com") ||
+            url.includes("sphere.saucedog.art")
+        ) {
             return { layout: "laser-room", sources: [url] };
         }
         console.log("projectId", projectId);
@@ -172,15 +172,17 @@ interface Project {
 
 function GitHubIcon() {
     return (
-        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white" aria-hidden="true">
+        <svg
+            viewBox="0 0 24 24"
+            className="w-4 h-4 fill-white"
+            aria-hidden="true"
+        >
             <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0022 12.017C22 6.484 17.522 2 12 2z" />
         </svg>
     );
 }
 
 const projects: Project[] = [
-    
-    
     {
         id: "3d-website",
         title: "3D Website",
@@ -189,7 +191,7 @@ const projects: Project[] = [
         why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance. It was fun. Also I wanted it to exist. Isn't that reason enough?",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com",
     },
@@ -199,7 +201,15 @@ const projects: Project[] = [
         description:
             "A single persistent global room where up to 8 people can be on camera and mic at the same time via a peer-to-peer WebRTC mesh. Everyone else joins as audience — watching the live video grid and chatting in a shared text channel. No accounts, no room codes, no database.",
         why: "I wanted to build something that felt genuinely real-time — not just a chat box but actual live video between strangers. Wiring together WebRTC peer connections, Django Channels signaling, and Redis-backed room state from scratch was the challenge. Note: visit the site directly — it won't work embedded in an iframe.",
-        tech: ["React", "TypeScript", "Django", "WebSockets", "WebRTC", "Redis", "Docker"],
+        tech: [
+            "React",
+            "TypeScript",
+            "Django",
+            "WebSockets",
+            "WebRTC",
+            "Redis",
+            "Docker",
+        ],
         tags: ["Real-time", "Web Development"],
         frontendSource: "https://github.com/nick5616/the-circle",
         backendSource: "https://github.com/nick5616/the-circle",
@@ -214,7 +224,7 @@ const projects: Project[] = [
         why: "I have a lot of infrequent hobbies that I like to switch between. I noticed I was feeling overwhelmed by all the projects I was working on, so I built Passionfruit to help me keep track of them in a way that wouldn't stifle my creativity.",
         tech: ["TypeScript", "React", "LLM APIs"],
         tags: ["AI Integration", "Project Management", "Productivity Tools"],
-        frontendSource:"https://github.com/nick5616/universe",
+        frontendSource: "https://github.com/nick5616/universe",
         dateString: "Nov 2025",
         url: "https://yieldpassionfruit.netlify.app",
     },
@@ -226,7 +236,8 @@ const projects: Project[] = [
         why: "I wanted to model relationships between my goals and their prerequisites, and how my goals are related to each other. I've made it generic so you can use it for your own goals. It's intended to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
         tech: ["TypeScript", "React", "Three.js", "WebGL", "LLM APIs"],
         tags: ["AI Integration", "3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
+        frontendSource:
+            "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
         dateString: "Mar 2026",
         url: "https://yieldpassionfruit.netlify.app/life-graph",
     },
@@ -235,7 +246,7 @@ const projects: Project[] = [
         title: "Plasma Sphere",
         description:
             "Like that one toy. You can play with it. Hold click and drag on the ball to attract the electricity! Desktop and mobile. ",
-        frontendSource:"https://github.com/nick5616/plasma-sphere",
+        frontendSource: "https://github.com/nick5616/plasma-sphere",
         dateString: "Apr 2026",
         why: "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for  the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other.",
         tech: ["JavaScript", "Three.js", "WebGL"],
@@ -247,21 +258,28 @@ const projects: Project[] = [
         title: "Nickel Tools",
         description:
             "A browser-based desktop OS experience with a swipeable mobile mode, app grid, app tray, and full-screen app windows. ",
-        why: "I wanted a website that was \"a website of websites\" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since the average users can explore apps within a desktop OS.",
+        why: 'I wanted a website that was "a website of websites" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since the average users can explore apps within a desktop OS.',
         tech: ["TypeScript", "React", "Next.js"],
         tags: ["Interactive Design"],
-        frontendSource:"https://github.com/nick5616/nickel-tools",
+        frontendSource: "https://github.com/nick5616/nickel-tools",
         dateString: "Nov 2025",
         url: "https://nickeltools.dev/desktop",
     },
     {
         id: "videogamequest",
         title: "RPG Quests",
-        dateString:"June 2025",
+        dateString: "June 2025",
         description:
             "Convert journal entries into video game quests and live your life like an RPG. This productivity app gamifies your daily life by transforming your goals and activities into quest-like experiences.",
         why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
-        tech: ["TypeScript", "React", "Tailwind CSS", "Framer Motion", "Nest.js", "Node.js"],
+        tech: [
+            "TypeScript",
+            "React",
+            "Tailwind CSS",
+            "Framer Motion",
+            "Nest.js",
+            "Node.js",
+        ],
         tags: [
             "AI Integration",
             "Productivity Tools",
@@ -278,7 +296,7 @@ const projects: Project[] = [
         why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
         tech: ["TypeScript", "React"],
         tags: ["Mobile-First", "Social App", "Web Development"],
-        frontendSource:"https://github.com/nick5616/friendex",
+        frontendSource: "https://github.com/nick5616/friendex",
         dateString: "Oct 2025",
         url: "https://friendex.online",
     },
@@ -308,7 +326,7 @@ const projects: Project[] = [
             "Drag & Drop",
             "Progressive Web App",
         ],
-        frontendSource:"https://github.com/nick5616/tierlistify",
+        frontendSource: "https://github.com/nick5616/tierlistify",
         dateString: "Sep 2025",
         url: "https://tierlistify.com",
     },
@@ -327,7 +345,7 @@ const projects: Project[] = [
             "Video Processing",
             "Computer Vision",
         ],
-        frontendSource:"https://github.com/nick5616/CHAOS",
+        frontendSource: "https://github.com/nick5616/CHAOS",
         url: "https://github.com/nick5616/CHAOS",
     },
     {
@@ -349,7 +367,7 @@ const projects: Project[] = [
         why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
         tech: ["TypeScript", "React", "LLM APIs"],
         tags: ["Image Processing", "Batch Processing"],
-        frontendSource:"https://github.com/nick5616/batch-item-analyzer",
+        frontendSource: "https://github.com/nick5616/batch-item-analyzer",
         dateString: "Dec 2025",
         url: "https://batch-analyzer.netlify.app/",
     },
@@ -359,7 +377,16 @@ const projects: Project[] = [
         description:
             "A 3D art gallery room inside the holodeck where paintings and artwork are displayed in a navigable virtual space. A personal gallery you can walk through.",
         why: "I wanted a way to display 2D art in a spatial context — mounting pieces on walls you can approach and step back from changes how you experience them compared to a flat grid.",
-        tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL", "Go", "Google Cloud Storage", "Docker"],
+        tech: [
+            "TypeScript",
+            "React",
+            "Three.js",
+            "React-Three-Fiber",
+            "WebGL",
+            "Go",
+            "Google Cloud Storage",
+            "Docker",
+        ],
         tags: ["3D Design", "Interactive Design"],
         frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         backendSource: "https://github.com/nick5616/holodeck-art-api",
@@ -374,11 +401,11 @@ const projects: Project[] = [
         why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         dateString: "Nov 2025",
         url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
     },
-    
+
     {
         id: "math-room",
         title: "Math Room",
@@ -387,7 +414,7 @@ const projects: Project[] = [
         why: "Math is inherently spatial and I wanted to explore what it looks like to present mathematical ideas as environments rather than notation on a page.",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/holodeck/math",
     },
@@ -399,7 +426,7 @@ const projects: Project[] = [
         why: "Scaling up from the art room into a full museum allowed me to think about wayfinding, pacing, and spatial narrative at a larger architectural scale — all within the browser.",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/art-gallery",
     },
@@ -411,13 +438,11 @@ const projects: Project[] = [
         why: "It seemed like a really sci-fi way to showcase my projects.",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
         tags: ["3D Design", "Interactive Design"],
-        frontendSource:"https://github.com/nick5616/3d-portfolio-website",
+        frontendSource: "https://github.com/nick5616/3d-portfolio-website",
         dateString: "Jan 2025",
         url: "https://nicolebelovoskey.com/software",
     },
-    
-    
-    
+
     // {
     //     id: "resume-builder",
     //     title: "Online LaTeX Resume Builder",
@@ -438,7 +463,7 @@ const projects: Project[] = [
     //     tags: [],
     //     route: "/choice-picker",
     // },
-    
+
     {
         id: "sre-dashboard",
         title: "SRE Dashboard",
@@ -471,9 +496,45 @@ const projects: Project[] = [
         why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
         tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
         tags: ["Music Theory Algorithms"],
-        frontendSource:"https://github.com/nick5616/nickel-tools",
+        frontendSource: "https://github.com/nick5616/nickel-tools",
         dateString: "Nov 2025",
         route: "/smart-piano",
+    },
+    {
+        id: "song-visualizer",
+        title: "Song Visualizer",
+        description:
+            "Visualize music as animated particles, waveforms, geometry, and spectrum effects. Upload an MP3 or connect a mic for real-time audio-reactive visuals with customizable color, speed, and intensity.",
+        why: "I wanted a way to see my music, not just hear it. Building real-time audio visualization in the browser with the Web Audio API and Canvas was a satisfying way to connect the sonic and the visual.",
+        tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
+        tags: ["Music Theory Algorithms", "Interactive Design"],
+        frontendSource: "https://github.com/nick5616/song-visualizer",
+        dateString: "Apr 2026",
+        url: "https://music.nickeltools.dev/song-visualizer/",
+    },
+    {
+        id: "pitch-hero",
+        title: "Pitch Hero",
+        description:
+            "Sing or play a MIDI keyboard to match scrolling notes as they cross the target line. Uses real-time pitch detection via microphone or MIDI input to score accuracy.",
+        why: "I wanted an interactive way to train pitch accuracy that felt more like a game than an exercise. Building the pitch detection and scrolling note renderer from scratch was a great deep-dive into the Web Audio API.",
+        tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
+        tags: ["Music Theory Algorithms", "Interactive Design", "Real-time"],
+        frontendSource: "https://github.com/nick5616/song-visualizer",
+        dateString: "Apr 2026",
+        url: "https://music.nickeltools.dev/pitch-hero/",
+    },
+    {
+        id: "smart-midi-recorder",
+        title: "Smart MIDI Recorder",
+        description:
+            "Record MIDI keyboard input with live musical context — key, scale, and harmonically suggested next notes displayed in real time to guide improvisation.",
+        why: 'I play piano and wanted a tool that would help me improvise more confidently by surfacing the "right" notes for the key I\'m in, while still capturing what I was playing.',
+        tech: ["JavaScript", "Web Audio API", "HTML", "CSS"],
+        tags: ["Music Theory Algorithms", "Interactive Design", "Real-time"],
+        frontendSource: "https://github.com/nick5616/song-visualizer",
+        dateString: "Apr 2026",
+        url: "https://music.nickeltools.dev/smart-midi-recorder/",
     },
     {
         id: "pokemon-or-technology",
@@ -506,7 +567,7 @@ const projects: Project[] = [
         why: "I wanted to explore algorithmic color theory while building something genuinely useful — a routine tool that generates harmonious, fully accessible palettes on the fly.",
         tech: ["JavaScript"],
         tags: ["Design System", "Accessibility"],
-        frontendSource:"https://github.com/nick5616/routine",
+        frontendSource: "https://github.com/nick5616/routine",
         dateString: "Mar 2020",
         url: "http://nick5616.github.io/routine",
     },
@@ -514,14 +575,19 @@ const projects: Project[] = [
 
 export default function SoftwarePortfolioPage() {
     const [selectedTech, setSelectedTech] = useState<Set<Technology>>(
-        new Set()
+        new Set(),
     );
     const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
     const [viewMode, setViewMode] = useState<ViewMode>("curated");
-    const [refreshTriggers, setRefreshTriggers] = useState<Record<string, number>>({});
+    const [refreshTriggers, setRefreshTriggers] = useState<
+        Record<string, number>
+    >({});
 
     const triggerRefresh = (projectId: string) =>
-        setRefreshTriggers((prev) => ({ ...prev, [projectId]: (prev[projectId] ?? 0) + 1 }));
+        setRefreshTriggers((prev) => ({
+            ...prev,
+            [projectId]: (prev[projectId] ?? 0) + 1,
+        }));
 
     // Init Clarity once
     useEffect(() => {
@@ -537,7 +603,9 @@ export default function SoftwarePortfolioPage() {
         for (const p of projects) {
             for (const t of p.tech) counts.set(t, (counts.get(t) ?? 0) + 1);
         }
-        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
+        return [...counts.keys()].sort(
+            (a, b) => counts.get(b)! - counts.get(a)!,
+        );
     }, []);
 
     const sortedTags = useMemo(() => {
@@ -545,7 +613,9 @@ export default function SoftwarePortfolioPage() {
         for (const p of projects) {
             for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
         }
-        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
+        return [...counts.keys()].sort(
+            (a, b) => counts.get(b)! - counts.get(a)!,
+        );
     }, []);
 
     // Filter projects based on selected tech and tags (inclusive OR logic)
@@ -555,8 +625,12 @@ export default function SoftwarePortfolioPage() {
         }
 
         return projects.filter((project) => {
-            const matchesTech = project.tech.some((tech) => selectedTech.has(tech));
-            const matchesTags = project.tags.some((tag) => selectedTags.has(tag));
+            const matchesTech = project.tech.some((tech) =>
+                selectedTech.has(tech),
+            );
+            const matchesTags = project.tags.some((tag) =>
+                selectedTags.has(tag),
+            );
 
             if (selectedTech.size > 0 && selectedTags.size > 0) {
                 return matchesTech || matchesTags;
@@ -569,7 +643,8 @@ export default function SoftwarePortfolioPage() {
 
     const clarityReady = () =>
         typeof window !== "undefined" &&
-        typeof (window as Window & { clarity?: unknown }).clarity === "function";
+        typeof (window as Window & { clarity?: unknown }).clarity ===
+            "function";
 
     const handleToggleTech = (tech: Technology) => {
         setSelectedTech((prev) => {
@@ -622,7 +697,13 @@ export default function SoftwarePortfolioPage() {
                     preserveAspectRatio="xMidYMid slice"
                 >
                     <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient
+                            id="grad1"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%"
+                        >
                             <stop offset="0%" stopColor="#10b981" />
                             <stop offset="100%" stopColor="#06b6d4" />
                         </linearGradient>
@@ -637,7 +718,13 @@ export default function SoftwarePortfolioPage() {
                     preserveAspectRatio="xMidYMid slice"
                 >
                     <defs>
-                        <linearGradient id="grad2" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <linearGradient
+                            id="grad2"
+                            x1="0%"
+                            y1="100%"
+                            x2="100%"
+                            y2="0%"
+                        >
                             <stop offset="0%" stopColor="#06b6d4" />
                             <stop offset="100%" stopColor="#3b82f6" />
                         </linearGradient>
@@ -652,7 +739,13 @@ export default function SoftwarePortfolioPage() {
                     preserveAspectRatio="xMidYMid slice"
                 >
                     <defs>
-                        <linearGradient id="grad3" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <linearGradient
+                            id="grad3"
+                            x1="100%"
+                            y1="0%"
+                            x2="0%"
+                            y2="100%"
+                        >
                             <stop offset="0%" stopColor="#8b5cf6" />
                             <stop offset="100%" stopColor="#06b6d4" />
                         </linearGradient>
@@ -667,7 +760,13 @@ export default function SoftwarePortfolioPage() {
                     preserveAspectRatio="xMidYMid slice"
                 >
                     <defs>
-                        <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient
+                            id="grad4"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%"
+                        >
                             <stop offset="0%" stopColor="#14b8a6" />
                             <stop offset="100%" stopColor="#10b981" />
                         </linearGradient>
@@ -684,8 +783,8 @@ export default function SoftwarePortfolioPage() {
                             Software Engineering
                         </h1>
                         <p className="text-lg md:text-xl text-zinc-300 leading-relaxed">
-                            I'm a software developer with experience across big
-                            tech at{" "}
+                            I&apos;m a software developer with experience across
+                            big tech at{" "}
                             <span className="font-semibold text-green-400">
                                 Microsoft
                             </span>{" "}
@@ -697,11 +796,8 @@ export default function SoftwarePortfolioPage() {
                             <span className="font-semibold text-teal-400">
                                 several
                             </span>{" "}
-                            early-stage startups{" "}
-
-
-                            . I hold a Bachelor's degree in Computer Science
-                            from{" "}
+                            early-stage startups . I hold a Bachelor&apos;s
+                            degree in Computer Science from{" "}
                             <span className="font-semibold text-cyan-400">
                                 Texas A&M University
                             </span>
@@ -735,27 +831,37 @@ export default function SoftwarePortfolioPage() {
                             const baseLayout = getProjectLayout(
                                 project.id,
                                 project.route,
-                                project.url
+                                project.url,
                             );
 
                             // Override layout based on viewMode
                             const layoutConfig = (() => {
                                 if (viewMode === "curated") return baseLayout;
                                 // no-iframe has no frame to resize
-                                if (baseLayout.layout === "no-iframe") return baseLayout;
+                                if (baseLayout.layout === "no-iframe")
+                                    return baseLayout;
                                 // laser-room keeps its layout type but rendering uses viewMode directly
-                                if (baseLayout.layout === "laser-room") return baseLayout;
+                                if (baseLayout.layout === "laser-room")
+                                    return baseLayout;
                                 if (viewMode === "mobile") {
-                                    return { layout: "single-mobile" as const, sources: [baseLayout.sources[0]] };
+                                    return {
+                                        layout: "single-mobile" as const,
+                                        sources: [baseLayout.sources[0]],
+                                    };
                                 }
                                 if (viewMode === "desktop") {
-                                    return { layout: "desktop" as const, sources: [baseLayout.sources[0]] };
+                                    return {
+                                        layout: "desktop" as const,
+                                        sources: [baseLayout.sources[0]],
+                                    };
                                 }
                                 return baseLayout;
                             })();
 
                             // 3D frames: desktop by default (curated + desktop), mobile only when explicitly chosen or on mobile
-                            const laserRoomMobile = layoutConfig.layout === "laser-room" && viewMode === "mobile";
+                            const laserRoomMobile =
+                                layoutConfig.layout === "laser-room" &&
+                                viewMode === "mobile";
 
                             // Determine column widths based on layout
                             const getColumnClasses = () => {
@@ -782,8 +888,14 @@ export default function SoftwarePortfolioPage() {
                                         };
                                     case "laser-room":
                                         return laserRoomMobile
-                                            ? { description: "lg:col-span-4", iframe: "lg:col-span-6" }
-                                            : { description: "lg:col-span-3", iframe: "lg:col-span-7" };
+                                            ? {
+                                                  description: "lg:col-span-4",
+                                                  iframe: "lg:col-span-6",
+                                              }
+                                            : {
+                                                  description: "lg:col-span-3",
+                                                  iframe: "lg:col-span-7",
+                                              };
                                 }
                             };
 
@@ -806,133 +918,205 @@ export default function SoftwarePortfolioPage() {
                                                     : "lg:order-2"
                                             }`}
                                         >
-                                            <SlideIn from={isEven ? "left" : "right"} className="space-y-6">
-                                            <div className="space-y-3">
-                                            <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-100">
-                                                {project.title}
-                                            </h2>
-                                            <div className="flex flex-wrap gap-2">
-                                            {(project.url || project.route) && (
-                                                <a
-                                                    href={project.url ?? project.route}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-zinc-600 rounded-md text-zinc-100 text-xs font-medium hover:bg-zinc-700 transition-colors"
-                                                >
-                                                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current stroke-2" aria-hidden="true">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                                    </svg>
-                                                    Visit site
-                                                </a>
-                                            )}
-                                            {project.frontendSource && project.backendSource ? (
-                                                <>
-                                                    <a href={project.frontendSource} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors">
-                                                        <GitHubIcon />
-                                                        Frontend
-                                                    </a>
-                                                    <a href={project.backendSource} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors">
-                                                        <GitHubIcon />
-                                                        Backend
-                                                    </a>
-                                                </>
-                                            ) : (project.frontendSource || project.backendSource) ? (
-                                                <a href={(project.frontendSource ?? project.backendSource)!} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors">
-                                                    <GitHubIcon />
-                                                    Source
-                                                </a>
-                                            ) : null}
-                                            {layoutConfig.layout !== "no-iframe" && (
-                                            <button
-                                                onClick={() => triggerRefresh(project.id)}
-                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-zinc-600 rounded-md text-zinc-100 text-xs font-medium hover:bg-zinc-700 transition-colors"
-                                                title="Reload preview"
+                                            <SlideIn
+                                                from={isEven ? "left" : "right"}
+                                                className="space-y-6"
                                             >
-                                                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current stroke-2" aria-hidden="true">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                                </svg>
-                                                Refresh
-                                            </button>
-                                            )}
-                                            </div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                {project.dateString && (
-                                                    <p className="text-xs text-zinc-300">
-                                                        {project.dateString}
-                                                    </p>
+                                                <div className="space-y-3">
+                                                    <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-100">
+                                                        {project.title}
+                                                    </h2>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {(project.url ||
+                                                            project.route) && (
+                                                            <a
+                                                                href={
+                                                                    project.url ??
+                                                                    project.route
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-zinc-600 rounded-md text-zinc-100 text-xs font-medium hover:bg-zinc-700 transition-colors"
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    className="w-3.5 h-3.5 fill-none stroke-current stroke-2"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                                                                    />
+                                                                </svg>
+                                                                Visit site
+                                                            </a>
+                                                        )}
+                                                        {project.frontendSource &&
+                                                        project.backendSource ? (
+                                                            <>
+                                                                <a
+                                                                    href={
+                                                                        project.frontendSource
+                                                                    }
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors"
+                                                                >
+                                                                    <GitHubIcon />
+                                                                    Frontend
+                                                                </a>
+                                                                <a
+                                                                    href={
+                                                                        project.backendSource
+                                                                    }
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors"
+                                                                >
+                                                                    <GitHubIcon />
+                                                                    Backend
+                                                                </a>
+                                                            </>
+                                                        ) : project.frontendSource ||
+                                                          project.backendSource ? (
+                                                            <a
+                                                                href={
+                                                                    (project.frontendSource ??
+                                                                        project.backendSource)!
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-2 px-3 py-1.5 bg-black rounded-md text-white text-xs font-medium hover:bg-zinc-800 transition-colors"
+                                                            >
+                                                                <GitHubIcon />
+                                                                Source
+                                                            </a>
+                                                        ) : null}
+                                                        {layoutConfig.layout !==
+                                                            "no-iframe" && (
+                                                            <button
+                                                                onClick={() =>
+                                                                    triggerRefresh(
+                                                                        project.id,
+                                                                    )
+                                                                }
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-zinc-600 rounded-md text-zinc-100 text-xs font-medium hover:bg-zinc-700 transition-colors"
+                                                                title="Reload preview"
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    className="w-3.5 h-3.5 fill-none stroke-current stroke-2"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                                                                    />
+                                                                </svg>
+                                                                Refresh
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    {project.dateString && (
+                                                        <p className="text-xs text-zinc-300">
+                                                            {project.dateString}
+                                                        </p>
+                                                    )}
+                                                    <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                                                        <p className="text-lg text-zinc-300 leading-relaxed">
+                                                            {
+                                                                project.description
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-3">
+                                                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                                                        Why I Built It
+                                                    </h3>
+                                                    <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                                                        <p className="text-zinc-400 leading-relaxed">
+                                                            {project.why}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {project.tech.length > 0 && (
+                                                    <div className="space-y-3">
+                                                        <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                                                            Technologies
+                                                        </h3>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {project.tech.map(
+                                                                (tech) => (
+                                                                    <span
+                                                                        key={
+                                                                            tech
+                                                                        }
+                                                                        className="px-3 py-1 bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-300 border border-zinc-700"
+                                                                    >
+                                                                        {tech}
+                                                                    </span>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 )}
-                                                <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
-                                                    <p className="text-lg text-zinc-300 leading-relaxed">
-                                                        {project.description}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-3">
-                                                <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
-                                                    Why I Built It
-                                                </h3>
-                                                <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">
-                                                    <p className="text-zinc-400 leading-relaxed">
-                                                        {project.why}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            {project.tech.length >
-                                                0 && (
-                                                <div className="space-y-3">
-                                                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
-                                                        Technologies
-                                                    </h3>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {project.tech.map(
-                                                            (tech) => (
-                                                                <span
-                                                                    key={tech}
-                                                                    className="px-3 py-1 bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-300 border border-zinc-700"
-                                                                >
-                                                                    {tech}
-                                                                </span>
-                                                            )
-                                                        )}
+                                                {project.tags.length > 0 && (
+                                                    <div className="space-y-3">
+                                                        <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                                                            Tags
+                                                        </h3>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {project.tags.map(
+                                                                (tag) => (
+                                                                    <span
+                                                                        key={
+                                                                            tag
+                                                                        }
+                                                                        className="px-3 py-1 bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-300 border border-blue-800"
+                                                                    >
+                                                                        {tag}
+                                                                    </span>
+                                                                ),
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                            {project.tags.length >
-                                                0 && (
-                                                <div className="space-y-3">
-                                                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
-                                                        Tags
-                                                    </h3>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {project.tags.map(
-                                                            (tag) => (
-                                                                <span
-                                                                    key={tag}
-                                                                    className="px-3 py-1 bg-blue-950/30 backdrop-blur-sm rounded-full text-sm text-blue-300 border border-blue-800"
-                                                                >
-                                                                    {tag}
-                                                                </span>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
+                                                )}
                                             </SlideIn>
                                         </div>
 
                                         {/* Iframe/CTA Side */}
-                                        {layoutConfig.layout === "laser-room" ? (
+                                        {layoutConfig.layout ===
+                                        "laser-room" ? (
                                             <div
                                                 className={`order-1 relative ${columnClasses.iframe} ${isEven ? "lg:order-2" : "lg:order-1"}`}
                                             >
-                                                <SlideIn from={isEven ? "right" : "left"} className="h-full">
-                                                    <div className={`${laserRoomMobile ? "w-[300px] md:w-[400px]" : "w-full"} h-[400px] md:h-[560px] rounded-lg`}>
-                                                        <LaserRoomPreview src={layoutConfig.sources[0]} />
+                                                <SlideIn
+                                                    from={
+                                                        isEven
+                                                            ? "right"
+                                                            : "left"
+                                                    }
+                                                    className="h-full"
+                                                >
+                                                    <div
+                                                        className={`${laserRoomMobile ? "w-[300px] md:w-[400px]" : "w-full"} h-[400px] md:h-[560px] rounded-lg`}
+                                                    >
+                                                        <LaserRoomPreview
+                                                            src={
+                                                                layoutConfig
+                                                                    .sources[0]
+                                                            }
+                                                        />
                                                     </div>
                                                 </SlideIn>
                                             </div>
-                                        ) : layoutConfig.layout === "no-iframe" ? null : layoutConfig.layout ===
+                                        ) : layoutConfig.layout ===
+                                          "no-iframe" ? null : layoutConfig.layout ===
                                           "double-mobile" ? (
                                             <div
                                                 className={`order-1 relative ${
@@ -957,10 +1141,19 @@ export default function SoftwarePortfolioPage() {
                                                                 mobileDimensions={
                                                                     true
                                                                 }
-                                                                slideFrom={isEven ? "right" : "left"}
-                                                                refreshTrigger={refreshTriggers[project.id] ?? 0}
+                                                                slideFrom={
+                                                                    isEven
+                                                                        ? "right"
+                                                                        : "left"
+                                                                }
+                                                                refreshTrigger={
+                                                                    refreshTriggers[
+                                                                        project
+                                                                            .id
+                                                                    ] ?? 0
+                                                                }
                                                             />
-                                                        )
+                                                        ),
                                                     )}
                                                 </div>
                                             </div>
@@ -985,8 +1178,16 @@ export default function SoftwarePortfolioPage() {
                                                             layoutConfig.layout ===
                                                             "single-mobile"
                                                         }
-                                                        slideFrom={isEven ? "right" : "left"}
-                                                        refreshTrigger={refreshTriggers[project.id] ?? 0}
+                                                        slideFrom={
+                                                            isEven
+                                                                ? "right"
+                                                                : "left"
+                                                        }
+                                                        refreshTrigger={
+                                                            refreshTriggers[
+                                                                project.id
+                                                            ] ?? 0
+                                                        }
                                                     />
                                                 )}
                                             </div>
