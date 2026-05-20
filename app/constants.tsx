@@ -156,6 +156,26 @@ export const PROJECTS: Project[] = [
         status: "IN_DEVELOPMENT",
     },
     {
+        id: "boards",
+        name: "boards.saucedog.art",
+        subtitle: "",
+        icon: <Gamepad2 className="w-4 h-4" />,
+        href: "https://boards.saucedog.art",
+        type: "EXTERNAL",
+        category: "WEB",
+        status: "OPERATIONAL",
+    },
+    {
+        id: "wizard-wars",
+        name: "wizardwars.saucedog.art",
+        subtitle: "",
+        icon: <Gamepad2 className="w-4 h-4" />,
+        href: "https://wizardwars.saucedog.art",
+        type: "EXTERNAL",
+        category: "WEB",
+        status: "OPERATIONAL",
+    },
+    {
         id: "chaos",
         name: "CHAOS",
         subtitle:

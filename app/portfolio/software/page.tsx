@@ -465,6 +465,26 @@ const projects: Project[] = [
     // },
 
     {
+        id: "boards",
+        title: "Boards",
+        description: "boards.saucedog.art",
+        why: "",
+        tech: [] as Technology[],
+        tags: [] as Tag[],
+        frontendSource: "https://github.com/nick5616/boards",
+        url: "https://boards.saucedog.art",
+    },
+    {
+        id: "wizard-wars",
+        title: "Wizard Wars",
+        description: "wizardwars.saucedog.art",
+        why: "",
+        tech: [] as Technology[],
+        tags: [] as Tag[],
+        frontendSource: "https://github.com/nick5616/wizard-wars",
+        url: "https://wizardwars.saucedog.art",
+    },
+    {
         id: "sre-dashboard",
         title: "SRE Dashboard",
         description:
