@@ -199,7 +199,7 @@ export default function About() {
                             />
                         </a>
                         <a
-                            href="https://linkedin.com/in/nicolasbelovoskey"
+                            href="https://linkedin.com/in/nicolebelovoskey"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
@@ -212,7 +212,7 @@ export default function About() {
                             />
                         </a>
                         <a
-                            href="mailto:nicolasbelovoskey@gmail.com"
+                            href="mailto:nicolebelovoskey@gmail.com"
                             className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
                         >
                             <Mail size={20} />

@@ -9,66 +9,23 @@ import {
     normalizeTechnology,
     normalizeTag,
 } from "@/app/portfolio/techStack";
+import { getContentBySurface } from "@/app/data/content";
 
-const projects = [
-    {
-        id: "color-engine",
-        title: "Advanced Color Scheme Generator",
-        description:
-            "An algorithmic color palette generator based on harmonic color theory. Create beautiful, mathematically sound color schemes and export them as theme JSON for use in design systems and applications.",
-        why: "I built this because I was tired of manually creating color palettes and wanted a tool that could generate harmonious color schemes based on established color theory principles. It's particularly useful for creating accessible, visually pleasing design systems with proper contrast ratios.",
-        tech: ["TypeScript", "React", "Canvas API", "Next.js"],
-        tags: ["Color Theory Algorithms"],
-        route: "/advanced-color-scheme-generator",
-        color: "from-indigo-500/20 to-purple-500/20",
-        borderColor: "border-indigo-400/30",
-        blobColor: "#6366f1",
-    },
-    {
-        id: "portfolio",
-        title: "nicolasbelovoskey.com",
-        description:
-            "An immersive first-person portfolio experience built in Three.js. Navigate through a 3D space to explore my work, with interactive games and experiences integrated throughout the journey.",
-        why: "I wanted to create a portfolio that was more than just a collection of links. The first-person 3D experience makes exploring my work feel like an adventure, and it showcases both my technical skills and creative vision in one cohesive experience.",
-        tech: ["Three.js", "WebGL", "JavaScript"],
-        tags: ["3D Design", "Interactive Design"],
-        url: "https://nicolasbelovoskey.com",
-        color: "from-violet-500/20 to-fuchsia-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
-    },
-    {
-        id: "friendex",
-        title: "friendex.online",
-        description:
-            "A pokédex for your friends—a mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
-        why: "I created friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's easy to use on the go when you're actually with people.",
-        tech: ["React"],
-        tags: ["Mobile-First", "Responsive UI", "Social App"],
-        url: "https://friendex.online",
-        color: "from-blue-500/20 to-cyan-500/20",
-        borderColor: "border-blue-400/30",
-        blobColor: "#3b82f6",
-    },
-    {
-        id: "tierlistify",
-        title: "tierlistify.com",
-        description:
-            "A mobile-optimized tier list maker that makes ranking anything quick and intuitive. Built specifically to address the pain points of existing tier list tools on mobile devices.",
-        why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
-        tech: ["React"],
-        tags: [
-            "Mobile UX",
-            "Touch Interactions",
-            "Drag & Drop",
-            "Progressive Web App",
-        ],
-        url: "https://tierlistify.com",
-        color: "from-purple-500/20 to-pink-500/20",
-        borderColor: "border-purple-400/30",
-        blobColor: "#a855f7",
-    },
-];
+// Single source of truth lives in app/data/content.ts — every entry tagged
+// with surfaces: ["ux-portfolio", ...] shows up here automatically.
+const projects = getContentBySurface("ux-portfolio").map((item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.portfolio?.description ?? item.description,
+    why: item.portfolio?.why ?? "",
+    tech: item.portfolio?.tech ?? [],
+    tags: item.portfolio?.tags ?? [],
+    route: item.type === "internal" ? item.route : undefined,
+    url: item.type === "external" ? item.url : undefined,
+    color: item.portfolio?.color,
+    borderColor: item.portfolio?.borderColor,
+    blobColor: item.portfolio?.blobColor,
+}));
 
 export default function UXPortfolioPage() {
     const [selectedTech, setSelectedTech] = useState<Set<Technology>>(

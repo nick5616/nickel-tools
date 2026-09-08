@@ -3,91 +3,29 @@
 import React from "react";
 import Link from "next/link";
 import ProjectIframe from "@/components/ui/ProjectIframe";
+import { getContentBySurface } from "@/app/data/content";
 
-const projects = [
-    {
-        id: "art-digital-art",
-        title: "Digital Art Gallery",
-        description:
-            "A curated collection of digital artwork created using various tools and techniques. From detailed illustrations to abstract compositions, this gallery showcases the breadth of my digital art practice.",
-        why: "I wanted to create a dedicated space for my digital art pieces, separate from other mediums. Digital art allows for experimentation with color, composition, and style in ways that traditional media can't always achieve.",
-        tech: [
-            "Digital Illustration",
-            "Procreate",
-            "Photoshop",
-            "Digital Painting",
-        ],
-        route: "/art-gallery/digital-art",
-        color: "from-orange-500/20 to-amber-500/20",
-        borderColor: "border-orange-400/30",
-        blobColor: "#f97316",
-    },
-    {
-        id: "art-paintings",
-        title: "Paintings",
-        description:
-            "Traditional paintings created with acrylics, watercolors, and other physical media. This collection represents my work with traditional art forms and the tactile experience of working with physical materials.",
-        why: "Working with physical paint and canvas provides a different creative experience than digital art. These paintings capture moments of experimentation with color, texture, and form in a more traditional medium.",
-        tech: ["Acrylic Paint", "Watercolor", "Traditional Media", "Canvas"],
-        route: "/art-gallery/paintings",
-        color: "from-red-500/20 to-rose-500/20",
-        borderColor: "border-red-400/30",
-        blobColor: "#ef4444",
-    },
-    {
-        id: "art-sketches",
-        title: "Sketches",
-        description:
-            "A collection of sketches, studies, and quick drawings. These pieces represent the foundation of my art practice—the raw ideas, experiments, and practice that inform my finished work.",
-        why: "Sketches are where ideas start. I keep this collection to show the process behind finished pieces and to celebrate the value of quick, experimental work. Sometimes the best ideas come from these loose, unpolished drawings.",
-        tech: ["Pencil", "Pen & Ink", "Charcoal", "Sketching"],
-        route: "/art-gallery/sketches",
-        color: "from-amber-500/20 to-yellow-500/20",
-        borderColor: "border-amber-400/30",
-        blobColor: "#f59e0b",
-    },
-    {
-        id: "saucedog-art",
-        title: "saucedog.art",
-        description:
-            "My digital art portfolio from 2022-2023, featuring a collection of digital illustrations, character designs, and creative experiments. A showcase of my journey exploring digital art and visual storytelling.",
-        why: "I created saucedog.art as a dedicated space to showcase my digital art work. It represents a period of intense creative exploration where I was learning new techniques, developing my style, and creating pieces that combined my interests in technology and art.",
-        tech: [
-            "Digital Art",
-            "Illustration",
-            "Character Design",
-            "Visual Storytelling",
-        ],
-        url: "https://saucedog.art",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
-    },
-];
+// Single source of truth lives in app/data/content.ts — every entry tagged
+// with surfaces: ["art-portfolio", ...] shows up here automatically, split
+// into the two sections below by its portfolio.artGrouping.
+const artContent = getContentBySurface("art-portfolio").map((item) => ({
+    id: item.id,
+    title: item.title,
+    description: item.portfolio?.description ?? item.description,
+    why: item.portfolio?.why ?? "",
+    tech: item.portfolio?.tech ?? [],
+    route: item.type === "internal" ? item.route : undefined,
+    url: item.type === "external" ? item.url : undefined,
+    color: item.portfolio?.color,
+    borderColor: item.portfolio?.borderColor,
+    blobColor: item.portfolio?.blobColor,
+    artGrouping: item.portfolio?.artGrouping,
+}));
 
-const specialProjects = [
-    {
-        id: "art-lefthanded",
-        title: "Left-Handed Art",
-        description:
-            "A unique collection of artwork created exclusively using my left hand. This constraint-based project explores how limitations can lead to creative breakthroughs and new artistic expressions.",
-        route: "/art-gallery/lefthanded",
-    },
-    {
-        id: "art-notesappart",
-        title: "Notes App Art",
-        description:
-            "Art created in note-taking apps and other digital tools not typically used for art. These pieces embrace the limitations and unique qualities of these platforms.",
-        route: "/art-gallery/notesappart",
-    },
-    {
-        id: "art-miscellaneous",
-        title: "Miscellaneous",
-        description:
-            "A collection of miscellaneous artwork and creative pieces that don't fit into other categories—experiments, one-offs, and creative explorations. ",
-        route: "/art-gallery/miscellaneous",
-    },
-];
+const projects = artContent.filter((p) => p.artGrouping === "primary");
+const specialProjects = artContent.filter(
+    (p) => p.artGrouping === "collection",
+);
 
 export default function ArtPortfolioPage() {
     return (
@@ -256,7 +194,7 @@ export default function ArtPortfolioPage() {
                             {specialProjects.map((project) => (
                                 <Link
                                     key={project.id}
-                                    href={project.route}
+                                    href={project.route ?? "#"}
                                     className="group bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-pink-200/50 dark:border-pink-800/50 hover:shadow-xl hover:scale-105 transition-all"
                                 >
                                     <h3 className="text-xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-3 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">

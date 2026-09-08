@@ -18,7 +18,7 @@ export default function Contact() {
 
                 <div>
                     <a
-                        href="mailto:nicolasbelovoskey@gmail.com"
+                        href="mailto:nicolebelovoskey@gmail.com"
                         className="flex items-center gap-3 py-2 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
                     >
                         <div className="flex-1 min-w-0">
@@ -26,7 +26,7 @@ export default function Contact() {
                                 Email
                             </div>
                             <div className="text-sm text-[rgb(var(--text-secondary))] truncate">
-                                nicolasbelovoskey@gmail.com
+                                nicolebelovoskey@gmail.com
                             </div>
                         </div>
                     </a>
@@ -52,7 +52,7 @@ export default function Contact() {
                     </a>
 
                     <a
-                        href="https://linkedin.com/in/nicolasbelovoskey"
+                        href="https://linkedin.com/in/nicolebelovoskey"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 py-2 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors touch-manipulation min-h-[60px]"
@@ -62,7 +62,7 @@ export default function Contact() {
                                 LinkedIn
                             </div>
                             <div className="text-sm text-[rgb(var(--text-secondary))] truncate">
-                                linkedin.com/in/nicolasbelovoskey
+                                linkedin.com/in/nicolebelovoskey
                             </div>
                         </div>
                         <ExternalLink

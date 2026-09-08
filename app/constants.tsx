@@ -27,11 +27,11 @@ export type Project = {
 export const PROJECTS: Project[] = [
     {
         id: "portfolio",
-        name: "nicolasbelovoskey.com",
+        name: "nicolebelovoskey.com",
         subtitle:
             "Immersive first-person sandbox, with interactive games and experiences. Built in Three.js and React. Built for fun.",
         icon: <Gamepad2 className="w-4 h-4" />,
-        href: "https://nicolasbelovoskey.com",
+        href: "https://nicolebelovoskey.com",
         type: "EXTERNAL",
         category: "IMMERSIVE WEB",
         status: "OPERATIONAL",
