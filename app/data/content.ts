@@ -856,7 +856,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
       surfaces: ["desktop", "software-portfolio"],
       portfolio: {
         why: "",
-        tech: ["WebRTC", ""],
+        tech: ["WebRTC", "Three.js", "React", "React-Three-Fiber"],
         tags: [],
         frontendSource: "https://github.com/nick5616/wizard-wars",
       },
