@@ -841,6 +841,27 @@ export const NICKEL_SYSTEM: NickelSystem = {
       },
     },
     {
+      id: "wizard-wars",
+      type: "external",
+      title: "Wizard Wars",
+      description: "A 3D multiplayer wizard duel game on the web",
+      thumbnail: "/project-screenshots/latex.png",
+      category: "Games",
+      status: "operational",
+      url: "https://wizardwars.saucedog.art",
+      openInNewTab: true,
+      dateAdded: "2026-05-01",
+      featured: false,
+      tags: [],
+      surfaces: ["desktop", "software-portfolio"],
+      portfolio: {
+        why: "",
+        tech: ["WebRTC", ""],
+        tags: [],
+        frontendSource: "https://github.com/nick5616/wizard-wars",
+      },
+    },
+    {
       id: "nickel-tools",
       type: "external",
       title: "Nickel Tools",
@@ -1102,27 +1123,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
         frontendSource: "https://github.com/nick5616/boards",
       },
     },
-    {
-      id: "wizard-wars",
-      type: "external",
-      title: "Wizard Wars",
-      description: "wizardwars.saucedog.art",
-      thumbnail: "/project-screenshots/latex.png",
-      category: "Games",
-      status: "operational",
-      url: "https://wizardwars.saucedog.art",
-      openInNewTab: true,
-      dateAdded: "2026-05-01",
-      featured: false,
-      tags: [],
-      surfaces: ["desktop", "software-portfolio"],
-      portfolio: {
-        why: "",
-        tech: [],
-        tags: [],
-        frontendSource: "https://github.com/nick5616/wizard-wars",
-      },
-    },
+
     {
       id: "new-media-website",
       type: "external",
@@ -1196,6 +1197,6 @@ export function getAllContent(): Content[] {
 // page-local copy of the array.
 export function getContentBySurface(surface: Surface): Content[] {
   return NICKEL_SYSTEM.content.filter((item) =>
-    item.surfaces.includes(surface)
+    item.surfaces.includes(surface),
   );
 }
