@@ -175,11 +175,16 @@ export const NICKEL_SYSTEM: NickelSystem = {
       surfaces: ["desktop", "ux-portfolio"],
       portfolio: {
         why: "I wanted to create a portfolio that was more than just a collection of links. The first-person 3D experience makes exploring my work feel like an adventure, and it showcases both my technical skills and creative vision in one cohesive experience.",
-        tech: ["Three.js", "WebGL", "JavaScript"],
+        tech: [
+          "Three.js",
+          "WebGL",
+          "React-Three-Fiber",
+          "TypeScript",
+          "JavaScript",
+          "Golang",
+          "GCP",
+        ],
         tags: ["3D Design", "Interactive Design"],
-        color: "from-violet-500/20 to-fuchsia-500/20",
-        borderColor: "border-violet-400/30",
-        blobColor: "#8b5cf6",
       },
     },
     {
@@ -231,9 +236,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
         ],
         frontendSource: "https://github.com/nick5616/friendex",
         dateLabel: "Oct 2025",
-        color: "from-blue-500/20 to-cyan-500/20",
-        borderColor: "border-blue-400/30",
-        blobColor: "#3b82f6",
       },
     },
     {
@@ -296,9 +298,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
         ],
         frontendSource: "https://github.com/nick5616/tierlistify",
         dateLabel: "Sep 2025",
-        color: "from-purple-500/20 to-pink-500/20",
-        borderColor: "border-purple-400/30",
-        blobColor: "#a855f7",
       },
     },
     {
@@ -335,9 +334,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
         why: "I built this because I was tired of manually creating color palettes and wanted a tool that could generate harmonious color schemes based on established color theory principles. It's particularly useful for creating accessible, visually pleasing design systems with proper contrast ratios.",
         tech: ["TypeScript", "React", "Canvas API", "Next.js"],
         tags: ["Color Theory Algorithms"],
-        color: "from-indigo-500/20 to-purple-500/20",
-        borderColor: "border-indigo-400/30",
-        blobColor: "#6366f1",
       },
     },
     {
@@ -450,9 +446,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
           "Visual Storytelling",
         ],
         artGrouping: "primary",
-        color: "from-rose-500/20 to-pink-500/20",
-        borderColor: "border-rose-400/30",
-        blobColor: "#f43f5e",
       },
     },
     {
@@ -584,9 +577,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
           "Digital Painting",
         ],
         artGrouping: "primary",
-        color: "from-orange-500/20 to-amber-500/20",
-        borderColor: "border-orange-400/30",
-        blobColor: "#f97316",
       },
     },
     {
@@ -605,9 +595,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
         why: "Working with physical paint and canvas provides a different creative experience than digital art. These paintings capture moments of experimentation with color, texture, and form in a more traditional medium.",
         tech: ["Acrylic Paint", "Watercolor", "Traditional Media", "Canvas"],
         artGrouping: "primary",
-        color: "from-red-500/20 to-rose-500/20",
-        borderColor: "border-red-400/30",
-        blobColor: "#ef4444",
       },
     },
     {
@@ -626,9 +613,6 @@ export const NICKEL_SYSTEM: NickelSystem = {
         why: "Sketches are where ideas start. I keep this collection to show the process behind finished pieces and to celebrate the value of quick, experimental work. Sometimes the best ideas come from these loose, unpolished drawings.",
         tech: ["Pencil", "Pen & Ink", "Charcoal", "Sketching"],
         artGrouping: "primary",
-        color: "from-amber-500/20 to-yellow-500/20",
-        borderColor: "border-amber-400/30",
-        blobColor: "#f59e0b",
       },
     },
     {
