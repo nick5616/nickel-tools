@@ -210,7 +210,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
     },
     {
       id: "friendex",
-      title: "friendex.online",
+      title: "Friendex",
       description:
         "A pokédex for your friends. A zany mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
       url: "https://friendex.online",
@@ -233,7 +233,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
     },
     {
       id: "videogamequest",
-      title: "videogamequest.me",
+      title: "RPG Quests",
       description:
         "Convert journal entries into video game quests, and live your life like an RPG.",
       url: "https://rpg-quests.netlify.app/",
@@ -267,7 +267,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
     },
     {
       id: "tierlistify",
-      title: "tierlistify.com",
+      title: "tierlistify",
       description:
         "Rank anything, optimized for your phone. I built it because I thought the Tiermaker mobile site could use some improvement.",
       url: "https://tierlistify.com",
@@ -679,7 +679,8 @@ export const NICKEL_SYSTEM: NickelSystem = {
     {
       id: "wizard-wars",
       title: "Wizard Wars",
-      description: "A 3D multiplayer wizard duel game on the web",
+      description:
+        "A 3D multiplayer wizard FPS (first person shooter) game on the web. You don't need to download anything to play!",
       url: "https://wizardwars.saucedog.art",
       category: "Games",
       date: "2026-05",
