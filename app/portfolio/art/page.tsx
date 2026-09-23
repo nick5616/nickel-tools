@@ -3,24 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import ProjectIframe from "@/components/ui/ProjectIframe";
-import { getContentBySurface } from "@/app/data/content";
+import { getPortfolioProjects } from "@/app/data/content";
 
-// Single source of truth lives in app/data/content.ts — every entry tagged
-// with surfaces: ["art-portfolio", ...] shows up here automatically, split
-// into the two sections below by its portfolio.artGrouping.
-const artContent = getContentBySurface("art-portfolio").map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.portfolio?.description ?? item.description,
-    why: item.portfolio?.why ?? "",
-    tech: item.portfolio?.tech ?? [],
-    route: item.type === "internal" ? item.route : undefined,
-    url: item.type === "external" ? item.url : undefined,
-    color: item.portfolio?.color,
-    borderColor: item.portfolio?.borderColor,
-    blobColor: item.portfolio?.blobColor,
-    artGrouping: item.portfolio?.artGrouping,
-}));
+// Single source of truth lives in app/data/content.ts — every entry with
+// "art" in its surfaces shows up here (with artOverride applied), split into
+// the two sections below by portfolioOnly.artGrouping.
+const artContent = getPortfolioProjects("art");
 
 const projects = artContent.filter((p) => p.artGrouping === "primary");
 const specialProjects = artContent.filter(
@@ -92,21 +80,9 @@ export default function ArtPortfolioPage() {
                                             : "lg:order-2"
                                     }`}
                                 >
-                                    <div className="relative">
-                                        {/* Background blob for this project */}
-                                        <svg
-                                            className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
-                                            viewBox="0 0 400 400"
-                                        >
-                                            <path
-                                                d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                                                fill={project.blobColor}
-                                            />
-                                        </svg>
                                         <h2 className="text-2xl md:text-3xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
                                             {project.title}
                                         </h2>
-                                    </div>
                                     <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
                                         {project.description}
                                     </p>
@@ -123,12 +99,12 @@ export default function ArtPortfolioPage() {
                                             Mediums & Techniques
                                         </h3>
                                         <div className="flex flex-wrap gap-2">
-                                            {project.tech.map((tech) => (
+                                            {project.mediums.map((medium) => (
                                                 <span
-                                                    key={tech}
+                                                    key={medium}
                                                     className="px-3 py-1 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-sm rounded-full text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
                                                 >
-                                                    {tech}
+                                                    {medium}
                                                 </span>
                                             ))}
                                         </div>

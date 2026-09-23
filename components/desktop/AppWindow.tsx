@@ -3,13 +3,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { motion, AnimatePresence } from "framer-motion";
-import { Info, ArrowUpRight, X, Copy, Check } from "lucide-react";
+import { ArrowUpRight, X, Copy, Check } from "lucide-react";
 import type { WindowState } from "@/app/store/appStore";
 import { useAppStore } from "@/app/store/appStore";
 import { WindowControls } from "./WindowControls";
 import { ContentRenderer } from "@/components/shared/ContentRenderer";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 import { ContentfulDescriptionRenderer } from "@/components/shared/ContentfulDescriptionRenderer";
+import { ContentInfoPopover } from "./ContentInfoPopover";
 
 interface AppWindowProps {
     window: WindowState;
@@ -143,39 +144,14 @@ export function AppWindow({
                             <span className="text-sm text-[rgb(var(--text-titlebar))] font-medium">
                                 {window.content.title}
                             </span>
-                            <div className="relative group overflow-visible">
-                                <span
-                                    title={
-                                        window.content.hasContentfulDescription
-                                            ? "Click me for more info!"
-                                            : undefined
-                                    }
-                                >
-                                    <Info
-                                        size={14}
-                                        onClick={
-                                            window.content
-                                                .hasContentfulDescription
-                                                ? handleInfoClick
-                                                : undefined
-                                        }
-                                        className={`text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors ${
-                                            window.content
-                                                .hasContentfulDescription
-                                                ? "cursor-pointer"
-                                                : "cursor-help"
-                                        }`}
-                                    />
-                                </span>
-                                {!window.content.hasContentfulDescription && (
-                                    <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-[9999] pointer-events-none w-96">
-                                        <div className="bg-[rgb(var(--bg-window))] text-[rgb(var(--text-primary))] text-xs rounded px-2 py-1 shadow-lg border border-[rgb(var(--border-window))] whitespace-normal">
-                                            {window.content.description}
-                                        </div>
-                                        <div className="absolute left-2 -top-1 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-[rgb(var(--bg-window))]"></div>
-                                    </div>
-                                )}
-                            </div>
+                            <ContentInfoPopover
+                                content={window.content}
+                                onTriggerClick={
+                                    window.content.hasContentfulDescription
+                                        ? handleInfoClick
+                                        : undefined
+                                }
+                            />
                         </div>
                         <div className="flex items-center gap-1">
                             <button

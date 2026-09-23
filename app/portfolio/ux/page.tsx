@@ -4,28 +4,18 @@ import React, { useState, useMemo } from "react";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter, { type ViewMode } from "@/components/ui/TechStackFilter";
 import {
-    Technology,
-    Tag,
-    normalizeTechnology,
-    normalizeTag,
-} from "@/app/portfolio/techStack";
-import { getContentBySurface } from "@/app/data/content";
+    getMetadataOptions,
+    getPortfolioProjects,
+    matchesMetadata,
+    type Tag,
+    type Technology,
+} from "@/app/data/content";
 
-// Single source of truth lives in app/data/content.ts — every entry tagged
-// with surfaces: ["ux-portfolio", ...] shows up here automatically.
-const projects = getContentBySurface("ux-portfolio").map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.portfolio?.description ?? item.description,
-    why: item.portfolio?.why ?? "",
-    tech: item.portfolio?.tech ?? [],
-    tags: item.portfolio?.tags ?? [],
-    route: item.type === "internal" ? item.route : undefined,
-    url: item.type === "external" ? item.url : undefined,
-    color: item.portfolio?.color,
-    borderColor: item.portfolio?.borderColor,
-    blobColor: item.portfolio?.blobColor,
-}));
+// Single source of truth lives in app/data/content.ts — every entry with
+// "design" in its surfaces shows up here, with designOverride applied.
+const projects = getPortfolioProjects("design");
+const sortedTech = getMetadataOptions(projects, "tech");
+const sortedTags = getMetadataOptions(projects, "tags");
 
 export default function UXPortfolioPage() {
     const [selectedTech, setSelectedTech] = useState<Set<Technology>>(
@@ -34,56 +24,17 @@ export default function UXPortfolioPage() {
     const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
     const [viewMode, setViewMode] = useState<ViewMode>("curated");
 
-    // Normalize technologies and tags for each project
-    const projectsWithNormalized = useMemo(() => {
-        return projects.map((project) => ({
-            ...project,
-            normalizedTech: (project.tech || [])
-                .map((t) => normalizeTechnology(t))
-                .filter((t): t is Technology => t !== null),
-            normalizedTags: (project.tags || [])
-                .map((t) => normalizeTag(t))
-                .filter((t): t is Tag => t !== null),
-        }));
-    }, []);
-
-    const sortedTech = useMemo(() => {
-        const counts = new Map<Technology, number>();
-        for (const p of projectsWithNormalized) {
-            for (const t of p.normalizedTech) counts.set(t, (counts.get(t) ?? 0) + 1);
-        }
-        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
-    }, [projectsWithNormalized]);
-
-    const sortedTags = useMemo(() => {
-        const counts = new Map<Tag, number>();
-        for (const p of projectsWithNormalized) {
-            for (const t of p.normalizedTags) counts.set(t, (counts.get(t) ?? 0) + 1);
-        }
-        return [...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!);
-    }, [projectsWithNormalized]);
-
-    // Filter projects based on selected tech and tags (inclusive OR logic)
-    const filteredProjects = useMemo(() => {
-        if (selectedTech.size === 0 && selectedTags.size === 0) {
-            return projectsWithNormalized;
-        }
-
-        return projectsWithNormalized.filter((project) => {
-            // Check if project has ANY of the selected technologies
-            const matchesTech =
-                selectedTech.size === 0 ||
-                project.normalizedTech.some((tech) => selectedTech.has(tech));
-
-            // Check if project has ANY of the selected tags
-            const matchesTags =
-                selectedTags.size === 0 ||
-                project.normalizedTags.some((tag) => selectedTags.has(tag));
-
-            // Project matches if it has any selected tech OR any selected tag
-            return matchesTech || matchesTags;
-        });
-    }, [projectsWithNormalized, selectedTech, selectedTags]);
+    // Inclusive OR across selected tech and tags
+    const filteredProjects = useMemo(
+        () =>
+            projects.filter((project) =>
+                matchesMetadata(project, {
+                    tech: selectedTech,
+                    tags: selectedTags,
+                })
+            ),
+        [selectedTech, selectedTags]
+    );
 
     const handleToggleTech = (tech: Technology) => {
         setSelectedTech((prev) => {
@@ -197,21 +148,9 @@ export default function UXPortfolioPage() {
                                                 : "lg:order-2"
                                         }`}
                                     >
-                                        <div className="relative">
-                                            {/* Background blob for this project */}
-                                            <svg
-                                                className="absolute -z-10 -top-10 -left-10 w-64 h-64 opacity-10"
-                                                viewBox="0 0 400 400"
-                                            >
-                                                <path
-                                                    d="M200,200 Q250,150 300,200 T400,200 Q350,250 300,200 T200,200 Q150,150 100,200 T0,200 Q50,250 100,200 T200,200"
-                                                    fill={project.blobColor}
-                                                />
-                                            </svg>
                                             <h2 className="text-3xl md:text-4xl font-bold font-bbh-bartle text-zinc-900 dark:text-zinc-100 mb-4">
                                                 {project.title}
                                             </h2>
-                                        </div>
                                         <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
                                             {project.description}
                                         </p>
@@ -223,13 +162,13 @@ export default function UXPortfolioPage() {
                                                 {project.why}
                                             </p>
                                         </div>
-                                        {project.normalizedTech.length > 0 && (
+                                        {project.tech.length > 0 && (
                                             <div className="space-y-3">
                                                 <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
                                                     Technologies
                                                 </h3>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {project.normalizedTech.map(
+                                                    {project.tech.map(
                                                         (tech) => (
                                                             <span
                                                                 key={tech}
@@ -242,13 +181,13 @@ export default function UXPortfolioPage() {
                                                 </div>
                                             </div>
                                         )}
-                                        {project.normalizedTags.length > 0 && (
+                                        {project.tags.length > 0 && (
                                             <div className="space-y-3">
                                                 <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
                                                     Tags
                                                 </h3>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {project.normalizedTags.map(
+                                                    {project.tags.map(
                                                         (tag) => (
                                                             <span
                                                                 key={tag}

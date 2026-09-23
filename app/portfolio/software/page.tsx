@@ -5,14 +5,16 @@ import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import SlideIn from "@/components/ui/SlideIn";
 import LaserRoomPreview from "@/components/ui/LaserRoomPreview";
-import {
-    Technology,
-    Tag,
-    normalizeTechnology,
-    normalizeTag,
-} from "@/app/portfolio/techStack";
 import { type ViewMode } from "@/components/ui/TechStackFilter";
-import { getContentBySurface } from "@/app/data/content";
+import {
+    formatDate,
+    getMetadataOptions,
+    getPortfolioProjects,
+    matchesMetadata,
+    type PortfolioProject,
+    type Tag,
+    type Technology,
+} from "@/app/data/content";
 import Clarity from "@microsoft/clarity";
 
 // Pre-computed blob paths using superformula-inspired polar coordinates
@@ -42,161 +44,32 @@ interface ProjectLayoutConfig {
     sources: string[]; // For double-mobile, this will have 2 sources
 }
 
-// Function to map project ID to layout configuration
-function getProjectLayout(
-    projectId: string,
-    route?: string,
-    url?: string,
-): ProjectLayoutConfig {
-    // Projects that are always no-iframe regardless of url/route
-    const NO_IFRAME_IDS = ["chaos", "voice-lab", "the-circle"];
-    if (NO_IFRAME_IDS.includes(projectId)) {
-        return { layout: "no-iframe", sources: [] };
+// Preview layout comes from portfolioOnly.preview in content.ts; 3D
+// environments are detected by URL.
+function getProjectLayout(project: Project): ProjectLayoutConfig {
+    const { preview, route, url } = project;
+    if (preview === "none") return { layout: "no-iframe", sources: [] };
+    if (preview) {
+        return { layout: "double-mobile", sources: preview.mobileScreens };
     }
-
-    // Handle internal routes
-    if (route) {
-        switch (projectId) {
-            case "pokemon-or-technology":
-                return {
-                    layout: "desktop",
-                    sources: [route],
-                };
-            case "choice-engine":
-                return {
-                    layout: "desktop",
-                    sources: [route],
-                };
-            case "resume-builder":
-                return {
-                    layout: "desktop",
-                    sources: [route],
-                };
-            case "smart-piano":
-                return {
-                    layout: "desktop",
-                    sources: [route],
-                };
-            default:
-                return {
-                    layout: "desktop",
-                    sources: [route],
-                };
-        }
+    if (
+        url &&
+        (url.includes("nicolebelovoskey.com") ||
+            url.includes("sphere.saucedog.art"))
+    ) {
+        return { layout: "laser-room", sources: [url] };
     }
-
-    // Handle external URLs
-    if (url) {
-        // 3D web environments
-        if (
-            url.includes("nicolebelovoskey.com") ||
-            url.includes("sphere.saucedog.art")
-        ) {
-            return { layout: "laser-room", sources: [url] };
-        }
-        console.log("projectId", projectId);
-        console.log("url", url);
-
-        switch (projectId) {
-            case "friendex":
-                return {
-                    layout: "double-mobile",
-                    sources: [
-                        "https://friendex.online/",
-                        "https://friendex.online/demo",
-                    ],
-                };
-            case "tierlistify":
-                return {
-                    layout: "double-mobile",
-                    sources: [
-                        "https://tierlistify.com/init",
-                        "https://tierlistify.com/creation/1776295779582",
-                    ],
-                };
-            case "videogamequest":
-                return {
-                    layout: "double-mobile",
-                    sources: [
-                        "https://videogamequest.me/",
-                        "https://videogamequest.me/demo",
-                    ],
-                };
-            case "passionfruit":
-                return {
-                    layout: "desktop",
-                    sources: [url],
-                };
-            case "batch-analyzer":
-                return {
-                    layout: "desktop",
-                    sources: [url],
-                };
-            case "chaos":
-                return {
-                    layout: "no-iframe",
-                    sources: [],
-                };
-            case "voice-lab":
-                return {
-                    layout: "no-iframe",
-                    sources: [],
-                };
-            case "plasma-sphere":
-                return {
-                    layout: "desktop",
-                    sources: [url],
-                };
-            default:
-                return {
-                    layout: "desktop",
-                    sources: [url],
-                };
-        }
-    }
-
-    // Default fallback
-    return {
-        layout: "desktop",
-        sources: [],
-    };
+    const src = route ?? url;
+    return { layout: "desktop", sources: src ? [src] : [] };
 }
 
-interface Project {
-    id: string;
-    title: string;
-    description: string;
-    why: string;
-    tech: Technology[];
-    tags: Tag[];
-    url?: string;
-    route?: string;
-    frontendSource?: string;
-    backendSource?: string;
-    dateString?: string;
-}
+type Project = PortfolioProject;
 
-// Single source of truth lives in app/data/content.ts — every entry tagged
-// with surfaces: ["software-portfolio", ...] shows up here automatically.
-const projects: Project[] = getContentBySurface("software-portfolio").map(
-    (item): Project => ({
-        id: item.id,
-        title: item.title,
-        description: item.portfolio?.description ?? item.description,
-        why: item.portfolio?.why ?? "",
-        tech: (item.portfolio?.tech ?? [])
-            .map((t) => normalizeTechnology(t))
-            .filter((t): t is Technology => t !== null),
-        tags: (item.portfolio?.tags ?? [])
-            .map((t) => normalizeTag(t))
-            .filter((t): t is Tag => t !== null),
-        url: item.type === "external" ? item.url : undefined,
-        route: item.type === "internal" ? item.route : undefined,
-        frontendSource: item.portfolio?.frontendSource,
-        backendSource: item.portfolio?.backendSource,
-        dateString: item.portfolio?.dateLabel,
-    }),
-);
+// Single source of truth lives in app/data/content.ts — every entry with
+// "software" in its surfaces shows up here, with softwareOverride applied.
+const projects = getPortfolioProjects("software");
+const sortedTech = getMetadataOptions(projects, "tech");
+const sortedTags = getMetadataOptions(projects, "tags");
 
 function GitHubIcon() {
     return (
@@ -235,48 +108,17 @@ export default function SoftwarePortfolioPage() {
         }
     }, []);
 
-    const sortedTech = useMemo(() => {
-        const counts = new Map<Technology, number>();
-        for (const p of projects) {
-            for (const t of p.tech) counts.set(t, (counts.get(t) ?? 0) + 1);
-        }
-        return [...counts.keys()].sort(
-            (a, b) => counts.get(b)! - counts.get(a)!,
-        );
-    }, []);
-
-    const sortedTags = useMemo(() => {
-        const counts = new Map<Tag, number>();
-        for (const p of projects) {
-            for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
-        }
-        return [...counts.keys()].sort(
-            (a, b) => counts.get(b)! - counts.get(a)!,
-        );
-    }, []);
-
-    // Filter projects based on selected tech and tags (inclusive OR logic)
-    const filteredProjects = useMemo(() => {
-        if (selectedTech.size === 0 && selectedTags.size === 0) {
-            return projects;
-        }
-
-        return projects.filter((project) => {
-            const matchesTech = project.tech.some((tech) =>
-                selectedTech.has(tech),
-            );
-            const matchesTags = project.tags.some((tag) =>
-                selectedTags.has(tag),
-            );
-
-            if (selectedTech.size > 0 && selectedTags.size > 0) {
-                return matchesTech || matchesTags;
-            }
-            if (selectedTech.size > 0) return matchesTech;
-            if (selectedTags.size > 0) return matchesTags;
-            return false;
-        });
-    }, [selectedTech, selectedTags]);
+    // Inclusive OR across selected tech and tags
+    const filteredProjects = useMemo(
+        () =>
+            projects.filter((project) =>
+                matchesMetadata(project, {
+                    tech: selectedTech,
+                    tags: selectedTags,
+                }),
+            ),
+        [selectedTech, selectedTags],
+    );
 
     const clarityReady = () =>
         typeof window !== "undefined" &&
@@ -465,11 +307,7 @@ export default function SoftwarePortfolioPage() {
                         </div>
                     ) : (
                         filteredProjects.map((project, index) => {
-                            const baseLayout = getProjectLayout(
-                                project.id,
-                                project.route,
-                                project.url,
-                            );
+                            const baseLayout = getProjectLayout(project);
 
                             // Override layout based on viewMode
                             const layoutConfig = (() => {
@@ -589,12 +427,12 @@ export default function SoftwarePortfolioPage() {
                                                                 Visit site
                                                             </a>
                                                         )}
-                                                        {project.frontendSource &&
+                                                        {project.source &&
                                                         project.backendSource ? (
                                                             <>
                                                                 <a
                                                                     href={
-                                                                        project.frontendSource
+                                                                        project.source
                                                                     }
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
@@ -615,11 +453,11 @@ export default function SoftwarePortfolioPage() {
                                                                     Backend
                                                                 </a>
                                                             </>
-                                                        ) : project.frontendSource ||
+                                                        ) : project.source ||
                                                           project.backendSource ? (
                                                             <a
                                                                 href={
-                                                                    (project.frontendSource ??
+                                                                    (project.source ??
                                                                         project.backendSource)!
                                                                 }
                                                                 target="_blank"
@@ -658,9 +496,9 @@ export default function SoftwarePortfolioPage() {
                                                     </div>
                                                 </div>
                                                 <div className="space-y-1">
-                                                    {project.dateString && (
+                                                    {project.date && (
                                                         <p className="text-xs text-zinc-300">
-                                                            {project.dateString}
+                                                            {formatDate(project.date)}
                                                         </p>
                                                     )}
                                                     <div className="max-h-28 overflow-y-auto pr-1 scrollbar-thin">

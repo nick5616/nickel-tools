@@ -57,11 +57,9 @@ const getDefaultIconPositions = (
             .flatMap(([, items]) => items);
     } else if (sortMethod === "date") {
         // Sort by date (newest first)
-        organizedContent = [...content].sort(
-            (a, b) =>
-                new Date(b.dateAdded).getTime() -
-                new Date(a.dateAdded).getTime()
-        );
+        const time = (item: Content) =>
+            new Date(item.date ?? 0).getTime() || 0;
+        organizedContent = [...content].sort((a, b) => time(b) - time(a));
     } else {
         // Sort by name (alphabetically)
         organizedContent = [...content].sort((a, b) =>

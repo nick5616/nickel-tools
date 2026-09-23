@@ -44,56 +44,16 @@ export function RightPanel({ onOpenItem }: RightPanelProps) {
         return grouped;
     }, [filteredContent]);
 
-    // Art gallery routes
-    const artGalleries = [
-        {
-            id: "art-digital-art",
-            title: "Digital Art",
-            route: "/art-gallery/digital-art",
-        },
-        {
-            id: "art-paintings",
-            title: "Paintings",
-            route: "/art-gallery/paintings",
-        },
-        {
-            id: "art-sketches",
-            title: "Sketches",
-            route: "/art-gallery/sketches",
-        },
-        {
-            id: "art-lefthanded",
-            title: "Left-Handed Art",
-            route: "/art-gallery/lefthanded",
-        },
-        {
-            id: "art-miscellaneous",
-            title: "Miscellaneous",
-            route: "/art-gallery/miscellaneous",
-        },
-        {
-            id: "art-notesappart",
-            title: "Notes App Art",
-            route: "/art-gallery/notesappart",
-        },
-    ];
-
-    // Find art gallery content items
-    const artGalleryContent = useMemo(() => {
-        return artGalleries
-            .map((gallery) => {
-                const content = allContent.find(
-                    (item) => item.id === gallery.id
-                );
-                return content ? { ...gallery, content } : null;
-            })
-            .filter(
-                (
-                    item
-                ): item is (typeof artGalleries)[0] & { content: Content } =>
-                    item !== null
-            );
-    }, [allContent]);
+    // Art galleries are the internal apps routed under /art-gallery/
+    const artGalleries = useMemo(
+        () =>
+            allContent.filter(
+                (item) =>
+                    item.type === "internal" &&
+                    item.route.startsWith("/art-gallery/")
+            ),
+        [allContent]
+    );
 
     return (
         <div
@@ -161,10 +121,10 @@ export function RightPanel({ onOpenItem }: RightPanelProps) {
                         Art Galleries
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
-                        {artGalleryContent.map((gallery) => (
+                        {artGalleries.map((gallery) => (
                             <button
                                 key={gallery.id}
-                                onClick={() => onOpenItem(gallery.content)}
+                                onClick={() => onOpenItem(gallery)}
                                 className="p-4 bg-[rgb(var(--bg-window))] border border-[rgb(var(--border-window))] rounded-lg hover:bg-[rgb(var(--bg-button-hover))] transition-colors text-left"
                             >
                                 <div className="font-medium text-[rgb(var(--text-primary))] text-sm">

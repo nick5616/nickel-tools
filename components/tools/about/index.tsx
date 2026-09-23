@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import {
-    NICKEL_SYSTEM,
+    getAllContent,
     getCategoryIcon,
     type Content,
     type Category,
@@ -41,7 +41,7 @@ export default function About() {
             Content[]
         >;
 
-        NICKEL_SYSTEM.content.forEach((item) => {
+        getAllContent().forEach((item) => {
             if (!grouped[item.category]) {
                 grouped[item.category] = [];
             }
@@ -73,7 +73,7 @@ export default function About() {
             <div className="w-full py-2 md:p-6">
                 <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-6">
                     I made this website to chuck anything I want onto it. So far
-                    we have {NICKEL_SYSTEM.content.length} apps and tools.
+                    we have {getAllContent().length} apps and tools.
                     Enjoy!
                 </p>
 

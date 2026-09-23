@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Technology, Tag } from "@/app/portfolio/techStack";
+import type { Tag, Technology } from "@/app/data/content";
 import { useDeviceType } from "@/app/hooks/useDeviceType";
 
 export type ViewMode = "curated" | "mobile" | "desktop";
