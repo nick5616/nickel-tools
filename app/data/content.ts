@@ -41,6 +41,7 @@ export interface ProjectDetails {
 
 // Settings only the desktop/mobile OS uses.
 export interface DesktopOnly {
+  title?: string; // replaces the entry title on the desktop only
   openInNewTab?: boolean; // external links only; defaults to true
   windowWidth?: number;
   windowHeight?: number;
@@ -701,6 +702,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
       tags: ["Interactive Design"],
       source: "https://github.com/nick5616/nickel-tools",
       surfaces: ["desktop", "software"],
+      desktopOnly: { title: "Nickel Tools (INCEPTION!!!)" },
     },
     {
       id: "sw-viz",
@@ -928,7 +930,7 @@ function toDesktopContent(entry: ContentEntry): Content {
   const d = detailsFor(entry, "desktop");
   const base = {
     id: entry.id,
-    title: d.title,
+    title: entry.desktopOnly?.title ?? d.title,
     description: d.description,
     thumbnail: d.thumbnail,
     category: d.category,
