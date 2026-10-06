@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowLeft, Image as ImageIcon } from "lucide-react";
+import {
+    ArrowLeft,
+    Image as ImageIcon,
+    LayoutDashboard,
+    LayoutGrid,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { listGCSFolder } from "@/app/utils/gcs";
 
@@ -55,6 +60,7 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
     const [images, setImages] = useState<ArtImage[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [layout, setLayout] = useState<"masonry" | "grid">("masonry");
 
     React.useEffect(() => {
         async function fetchImages() {
@@ -155,52 +161,57 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
     }
 
     if (selectedImage) {
+        const meta = [
+            selectedImage.date && `Created: ${selectedImage.date}`,
+            selectedImage.dimensions &&
+                `${selectedImage.dimensions.width} × ${selectedImage.dimensions.height}`,
+        ].filter(Boolean);
+
         return (
-            <div className="h-full w-full overflow-auto bg-black/95 p-4">
-                <div className="max-w-6xl mx-auto">
+            <div className="h-full w-full flex flex-col gap-3 bg-black/95 p-4">
+                <div className="w-full max-w-6xl mx-auto flex items-center justify-between gap-4">
                     <button
                         onClick={() => setSelectedImage(null)}
-                        className="mb-4 flex items-center gap-2 text-white hover:text-zinc-300 transition-colors"
+                        className="shrink-0 flex items-center gap-2 text-white hover:text-zinc-300 transition-colors"
                     >
                         <ArrowLeft size={20} />
                         <span>Back to Gallery</span>
                     </button>
 
-                    <div className="bg-zinc-900 rounded-lg p-4 mb-4">
-                        <h2 className="text-xl font-semibold text-white mb-2">
+                    <div className="min-w-0 text-right">
+                        <h2
+                            className="truncate text-sm sm:text-base font-semibold text-white"
+                            title={selectedImage.filename}
+                        >
                             {selectedImage.filename}
                         </h2>
-                        {selectedImage.date && (
-                            <p className="text-sm text-zinc-400">
-                                Created: {selectedImage.date}
-                            </p>
-                        )}
-                        {selectedImage.description && (
-                            <p className="text-sm text-zinc-300 mt-1">
-                                {selectedImage.description}
-                            </p>
-                        )}
-                        {selectedImage.dimensions && (
-                            <p className="text-sm text-zinc-400 mt-1">
-                                Dimensions: {selectedImage.dimensions.width} ×{" "}
-                                {selectedImage.dimensions.height}
+                        {meta.length > 0 && (
+                            <p className="truncate text-xs text-zinc-400">
+                                {meta.join(" · ")}
                             </p>
                         )}
                     </div>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="flex justify-center"
-                    >
-                        <img
-                            src={selectedImage.url}
-                            alt={selectedImage.filename}
-                            className="max-w-full max-h-[70vh] object-contain rounded-lg"
-                        />
-                    </motion.div>
                 </div>
+
+                <motion.div
+                    key={selectedImage.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex-1 min-h-0 flex items-center justify-center"
+                >
+                    <img
+                        src={selectedImage.url}
+                        alt={selectedImage.filename}
+                        className="max-w-full max-h-full object-contain rounded-lg"
+                    />
+                </motion.div>
+
+                {selectedImage.description && (
+                    <p className="w-full max-w-6xl mx-auto text-center text-sm text-zinc-300 line-clamp-2">
+                        {selectedImage.description}
+                    </p>
+                )}
             </div>
         );
     }
@@ -211,7 +222,37 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
                     {getGalleryDescription(folder)}
                 </p>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="flex justify-end mb-4">
+                    <div className="inline-flex rounded-full bg-zinc-100 dark:bg-zinc-800 p-1 border border-zinc-200 dark:border-zinc-700">
+                        {(
+                            [
+                                ["masonry", "Masonry", LayoutDashboard],
+                                ["grid", "Grid", LayoutGrid],
+                            ] as const
+                        ).map(([mode, label, Icon]) => (
+                            <button
+                                key={mode}
+                                onClick={() => setLayout(mode)}
+                                aria-pressed={layout === mode}
+                                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                                    layout === mode
+                                        ? "bg-white dark:bg-zinc-600 text-zinc-900 dark:text-white shadow-sm"
+                                        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                                }`}
+                            >
+                                <Icon size={14} />
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div
+                    className={
+                        layout === "masonry"
+                            ? "columns-2 md:columns-3 lg:columns-4 gap-4"
+                            : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                    }
+                >
                     <AnimatePresence>
                         {images.map((image) => (
                             <motion.div
@@ -220,13 +261,21 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.2 }}
-                                className="aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden cursor-pointer hover:ring-2 ring-zinc-400 dark:ring-zinc-600 transition-all group"
+                                className={`bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden cursor-pointer hover:ring-2 ring-zinc-400 dark:ring-zinc-600 transition-all group ${
+                                    layout === "masonry"
+                                        ? "mb-4 break-inside-avoid"
+                                        : "aspect-square"
+                                }`}
                                 onClick={() => setSelectedImage(image)}
                             >
                                 <img
                                     src={image.url}
                                     alt={image.filename}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                    className={`w-full group-hover:scale-105 transition-transform duration-300 ${
+                                        layout === "masonry"
+                                            ? "h-auto block"
+                                            : "h-full object-cover"
+                                    }`}
                                 />
                             </motion.div>
                         ))}
