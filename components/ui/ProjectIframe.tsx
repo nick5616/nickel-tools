@@ -155,7 +155,7 @@ export default function ProjectIframe({
                 <iframe
                     ref={iframeRef}
                     src={src}
-                    className={`absolute inset-0 w-full h-full border-0 transition-opacity duration-300 ${
+                    className={`iframe-backdrop absolute inset-0 w-full h-full border-0 transition-opacity duration-300 ${
                         showingIframe
                             ? "z-20 opacity-100"
                             : "z-0 opacity-0 pointer-events-none"

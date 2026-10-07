@@ -870,7 +870,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
       title: "Routine",
       description:
         "An accessible online routine with dynamic generation of WCAG AAA compliant analogous color schemes.",
-      url: "http://nick5616.github.io/routine",
+      url: "https://nick5616.github.io/routine/",
       category: "Design System",
       date: "2020-03",
       why: "I wanted to explore algorithmic color theory while building something genuinely useful — a routine tool that generates harmonious, fully accessible palettes on the fly.",

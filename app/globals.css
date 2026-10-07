@@ -34,6 +34,18 @@
     --text-dropdown: 250 250 250;
 }
 
+/* Opaque backdrop for embedded project previews — some sites have a
+   transparent background. Follows the OS theme, not the app theme. */
+.iframe-backdrop {
+    background-color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+    .iframe-backdrop {
+        background-color: #000;
+    }
+}
+
 [data-theme="dark"],
 .dark {
     /* Dark Mode Base */

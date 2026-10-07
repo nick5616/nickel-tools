@@ -3,7 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
     const hostname = request.nextUrl.hostname;
 
-    if (hostname.includes("nicolebelovoskey")) {
+    // Only the root redirects — the portfolio iframes load internal app
+    // routes (e.g. /pokemon-or-technology) from this same host.
+    if (
+        hostname.includes("nicolebelovoskey") &&
+        request.nextUrl.pathname === "/"
+    ) {
         return NextResponse.redirect(new URL("/portfolio/software", request.url));
     }
 

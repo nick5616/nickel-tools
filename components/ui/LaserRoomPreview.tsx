@@ -212,7 +212,7 @@ export default function LaserRoomPreview({ src }: LaserRoomPreviewProps) {
                 <iframe
                     src={src}
                     title="Project preview"
-                    className="absolute inset-0 w-full h-full border-0 z-20 rounded-lg"
+                    className="iframe-backdrop absolute inset-0 w-full h-full border-0 z-20 rounded-lg"
                     sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
                 />
             )}
