@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import ProjectIframe from "@/components/ui/ProjectIframe";
 import TechStackFilter from "@/components/ui/TechStackFilter";
 import SlideIn from "@/components/ui/SlideIn";
@@ -399,7 +400,12 @@ export default function SoftwarePortfolioPage() {
                                             >
                                                 <div className="space-y-3">
                                                     <h2 className="text-xl md:text-2xl font-bold font-bbh-bartle text-zinc-100">
-                                                        {project.title}
+                                                        <Link
+                                                            href={`/portfolio/software/${project.id}`}
+                                                            className="hover:underline"
+                                                        >
+                                                            {project.title}
+                                                        </Link>
                                                     </h2>
                                                     <div className="flex flex-wrap gap-2">
                                                         {(project.url ||
