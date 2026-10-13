@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
-import { Palette, Monitor, Image as ImageIcon } from "lucide-react";
+import { Palette, Monitor, Image as ImageIcon, SunMoon } from "lucide-react";
 import { ColorSchemeGenerator } from "./ColorSchemeGenerator";
+import {
+    AppearancePicker,
+    PalettePresetPicker,
+    WallpaperPicker,
+} from "@/components/shared/SystemPickers";
 
 const WINDOW_SIZE_STORAGE_KEY = "nickel-default-window-size";
 
 export default function Settings() {
-    const { theme, setTheme } = useTheme();
     const [defaultWindowWidth, setDefaultWindowWidth] = useState(800);
     const [defaultWindowHeight, setDefaultWindowHeight] = useState(600);
 
@@ -52,21 +55,48 @@ export default function Settings() {
         }
     };
 
-    // Placeholder wallpapers - replace with actual artwork paths
-    const wallpapers = [
-        { id: "default", name: "Default", color: "bg-zinc-900" },
-        { id: "blue", name: "Ocean Blue", color: "bg-blue-900" },
-        { id: "purple", name: "Purple Haze", color: "bg-purple-900" },
-        { id: "green", name: "Forest Green", color: "bg-green-900" },
-    ];
-
     return (
         <div className="w-full bg-transparent">
             <div className="w-full p-4">
-                <h2 className="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4 flex items-center gap-2">
-                    Color Scheme Generator
+                <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-3 flex items-center gap-2">
+                    <SunMoon size={18} />
+                    Appearance
                 </h2>
+                <div className="max-w-sm">
+                    <AppearancePicker />
+                </div>
+
+                <hr className="border-t border-[rgb(var(--border-window))] my-6" />
+
+                <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-1 flex items-center gap-2">
+                    <Palette size={18} />
+                    Color Engine
+                </h2>
+                <p className="text-sm text-[rgb(var(--text-secondary))] mb-4 max-w-prose">
+                    Nickel is themed by color scheme. The scheme decides the
+                    hues (complementary, triadic, and so on). Saturation and
+                    lightness follow each color&apos;s role, so every background
+                    shares one lightness and every foreground shares another.
+                    Start from a preset or build your own below.
+                </p>
+                <div className="max-w-md mb-6">
+                    <PalettePresetPicker columns={7} />
+                </div>
                 <ColorSchemeGenerator />
+
+                <hr className="border-t border-[rgb(var(--border-window))] my-6" />
+
+                <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-3 flex items-center gap-2">
+                    <ImageIcon size={18} />
+                    Wallpaper
+                </h2>
+                <p className="text-sm text-[rgb(var(--text-secondary))] mb-3 max-w-prose">
+                    Every wallpaper is drawn from your palette, in the
+                    background role.
+                </p>
+                <div className="max-w-xl">
+                    <WallpaperPicker columns={4} />
+                </div>
 
                 <hr className="border-t border-[rgb(var(--border-window))] my-6" />
 

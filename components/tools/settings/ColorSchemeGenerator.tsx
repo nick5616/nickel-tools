@@ -20,13 +20,12 @@ import {
     saveTheme,
     applyTheme,
     clearTheme,
+    GRID_POSITION_STORAGE_KEY,
+    VISIBLE_ROW_START_STORAGE_KEY,
+    HUE_OFFSET_STORAGE_KEY,
 } from "@/app/utils/themeUtils";
 
 type ContrastThreshold = "AA" | "AAA" | number;
-
-const GRID_POSITION_STORAGE_KEY = "nickel-color-scheme-grid-position";
-const VISIBLE_ROW_START_STORAGE_KEY = "nickel-color-scheme-visible-row-start";
-const HUE_OFFSET_STORAGE_KEY = "nickel-color-scheme-hue-offset";
 
 export function ColorSchemeGenerator() {
     const { theme, systemTheme } = useTheme();
@@ -316,10 +315,6 @@ export function ColorSchemeGenerator() {
 
     // Handle color selection
     const handleColorSelect = (hsl: HSL, row: number, col: number) => {
-        console.log("hsl", hsl);
-        console.log("row", row);
-        console.log("col", col);
-        console.log("handleing color select");
         setSelectedColor(hsl);
         setSelectedGridPosition({ row, col });
         // Ensure the row is visible

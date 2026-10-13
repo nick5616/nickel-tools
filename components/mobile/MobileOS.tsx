@@ -1,69 +1,69 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
     motion,
     AnimatePresence,
+    MotionConfig,
     useMotionValue,
-    PanInfo,
+    animate,
+    type PanInfo,
 } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { StatusBar } from "./StatusBar";
 import { AppGrid } from "./AppGrid";
 import { LeftPanel } from "./LeftPanel";
 import { RightPanel } from "./RightPanel";
-import { ContentRenderer } from "@/components/shared/ContentRenderer";
+import { MobileDock } from "./MobileDock";
+import { AppSheet, type SheetExit } from "./AppSheet";
+import { AppSwitcher } from "./AppSwitcher";
+import { LongPressMenu } from "./LongPressMenu";
 import { getAllContent, getContentById } from "@/app/data/content";
 import type { Content } from "@/app/data/content";
-import { usePathname } from "next/navigation";
-import { X } from "lucide-react";
-import { AppTray } from "@/components/shared/AppTray";
-import { RevolvingText } from "@/components/shared/RevolvingText";
+import { Wallpaper } from "@/components/shared/Wallpaper";
+import { Spotlight } from "@/components/shared/Spotlight";
+import { springs, type OriginRect } from "@/components/shared/motion";
+import { useSystemStore } from "@/app/store/systemStore";
+import { useSpecularLight } from "@/app/hooks/useSpecularLight";
+
+// Home-screen grid metrics (4 columns)
+const ROW_HEIGHT = 96; // 60px tile + label + row gap
+const STATUS_BAR = 54;
+const DOCK = 118;
+const DOTS = 28;
+
+interface Opened {
+    content: Content;
+    rect?: OriginRect;
+}
 
 export function MobileOS() {
     const allContent = getAllContent();
     const pathname = usePathname();
-    const [selectedContent, setSelectedContent] = useState<Content | null>(
-        null
-    );
-    const [currentSection, setCurrentSection] = useState<
-        "left" | "apps" | "right"
-    >("apps");
-    const [currentAppPage, setCurrentAppPage] = useState(0); // For app grid pagination
+    const { hydrate, setSpotlightOpen } = useSystemStore();
+
     const containerRef = useRef<HTMLDivElement>(null);
     const [pageWidth, setPageWidth] = useState(375);
     const [pageHeight, setPageHeight] = useState(667);
+    const [pageIndex, setPageIndex] = useState(1); // 0 = Today, last = Library
     const x = useMotionValue(0);
-    const [isDragging, setIsDragging] = useState(false);
-    const [showIndicators, setShowIndicators] = useState(false);
-    const hideIndicatorsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const modalHeaderRef = useRef<HTMLDivElement>(null);
-    const [titleContainerWidth, setTitleContainerWidth] = useState(0);
 
-    // Calculate how many apps fit per page
-    // Grid is 3 columns, with padding and gaps
-    // Each app icon is roughly: icon (64px) + gap (16px) + text (20px) + padding
+    const [opened, setOpened] = useState<Opened | null>(null);
+    const [sheetExit, setSheetExit] = useState<SheetExit>("home");
+    const [switcherOpen, setSwitcherOpen] = useState(false);
+    const [recents, setRecents] = useState<Content[]>([]);
+    const [longPress, setLongPress] = useState<Opened | null>(null);
+    const [activity, setActivity] = useState<string | null>(null);
+    const activityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => hydrate(), [hydrate]);
+    useSpecularLight();
+
     const appsPerPage = useMemo(() => {
-        const padding = 16; // p-4 = 16px top/bottom
-        const statusBarHeight = 44; // Approximate status bar height
-        const pageIndicatorHeight = 48; // Approximate page indicator height
-        // AppTray: minHeight 80px + padding p-2 (8px top/bottom = 16px) + margin m-2 (8px top/bottom = 16px) = ~112px
-        const appTrayHeight = 112;
-        const availableHeight =
-            pageHeight -
-            statusBarHeight -
-            pageIndicatorHeight -
-            appTrayHeight -
-            padding * 2;
-
-        // Each row: icon (64px) + gap (16px) + text (~20px) = ~100px per row
-        const rowHeight = 100;
-        const rowsPerPage = Math.floor(availableHeight / rowHeight);
-        const appsPerPage = rowsPerPage * 3; // 3 columns
-
-        return Math.max(6, appsPerPage); // Minimum 6 apps per page (2 rows)
+        const available = pageHeight - STATUS_BAR - DOCK - DOTS - 12;
+        return Math.max(2, Math.floor(available / ROW_HEIGHT)) * 4;
     }, [pageHeight]);
 
-    // Split content into pages
     const appPages = useMemo(() => {
         const pages: Content[][] = [];
         for (let i = 0; i < allContent.length; i += appsPerPage) {
@@ -72,75 +72,49 @@ export function MobileOS() {
         return pages;
     }, [allContent, appsPerPage]);
 
-    // Calculate total pages: left (1) + app pages + right (1)
-    const totalPages = 1 + appPages.length + 1;
-    const leftPageIndex = 0;
-    const rightPageIndex = totalPages - 1;
-    const firstAppPageIndex = 1;
-    const lastAppPageIndex = totalPages - 2;
+    const totalPages = appPages.length + 2;
+    const lastPage = totalPages - 1;
+    const onAppPage = pageIndex > 0 && pageIndex < lastPage;
 
-    // Get current absolute page index
-    const currentPageIndex = useMemo(() => {
-        if (currentSection === "left") return leftPageIndex;
-        if (currentSection === "right") return rightPageIndex;
-        return firstAppPageIndex + currentAppPage;
-    }, [
-        currentSection,
-        currentAppPage,
-        leftPageIndex,
-        rightPageIndex,
-        firstAppPageIndex,
-    ]);
-
-    // Get page width and height on mount and resize - use fixed values
+    // Measure the viewport (dvh-aware)
     useEffect(() => {
-        const updateDimensions = () => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setPageWidth(rect.width);
-                setPageHeight(rect.height);
-            } else {
-                // Fallback to window dimensions
-                setPageWidth(window.innerWidth);
-                setPageHeight(window.innerHeight);
-            }
+        const update = () => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            setPageWidth(rect?.width || window.innerWidth);
+            setPageHeight(rect?.height || window.innerHeight);
         };
-        updateDimensions();
-        window.addEventListener("resize", updateDimensions);
-        return () => window.removeEventListener("resize", updateDimensions);
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
     }, []);
 
-    // Update x position when page changes
+    // Keep the strip on the current page
     useEffect(() => {
-        x.set(-pageWidth * currentPageIndex);
-    }, [currentPageIndex, pageWidth, x]);
+        animate(x, -pageWidth * pageIndex, springs.window);
+    }, [pageIndex, pageWidth, x]);
 
-    // Cleanup timeout on unmount
+    // Clamp if the page count shrinks (e.g. rotation)
     useEffect(() => {
-        return () => {
-            if (hideIndicatorsTimeoutRef.current) {
-                clearTimeout(hideIndicatorsTimeoutRef.current);
-            }
-        };
+        if (pageIndex > lastPage) setPageIndex(lastPage);
+    }, [pageIndex, lastPage]);
+
+    const flashActivity = useCallback((text: string) => {
+        setActivity(text);
+        if (activityTimer.current) clearTimeout(activityTimer.current);
+        activityTimer.current = setTimeout(() => setActivity(null), 2400);
     }, []);
 
-    // Calculate available width for title in modal header
-    useEffect(() => {
-        const updateTitleWidth = () => {
-            if (modalHeaderRef.current && selectedContent) {
-                const headerWidth = modalHeaderRef.current.offsetWidth;
-                const padding = 32; // p-4 = 16px on each side = 32px total
-                const buttonWidth = 32; // w-8 = 32px
-                const gap = 16; // gap between title and button (flex gap)
-                const availableWidth =
-                    headerWidth - padding - buttonWidth - gap;
-                setTitleContainerWidth(Math.max(0, availableWidth));
-            }
-        };
-        updateTitleWidth();
-        window.addEventListener("resize", updateTitleWidth);
-        return () => window.removeEventListener("resize", updateTitleWidth);
-    }, [selectedContent]);
+    const openItem = useCallback(
+        (content: Content, rect?: OriginRect) => {
+            setLongPress(null);
+            setSwitcherOpen(false);
+            setSheetExit("home");
+            setOpened({ content, rect });
+            setRecents((prev) => [content, ...prev.filter((c) => c.id !== content.id)].slice(0, 8));
+            flashActivity(content.title);
+        },
+        [flashActivity]
+    );
 
     // Open app from URL on mount (e.g. /desktop/{app-id})
     useEffect(() => {
@@ -152,275 +126,174 @@ export function MobileOS() {
         }
         if (appId) {
             const content = getContentById(appId);
-            if (content) setSelectedContent(content);
+            if (content) openItem(content);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleOpenItem = (content: Content) => {
-        setSelectedContent(content);
+    const closeSheet = () => {
+        setSheetExit("home");
+        setOpened(null);
     };
 
-    const handleCloseModal = () => {
-        setSelectedContent(null);
+    const toSwitcher = () => {
+        setSheetExit("switcher");
+        setOpened(null);
+        setSwitcherOpen(true);
     };
 
-    const handleNiIconClick = () => {
-        setCurrentSection("right");
-    };
-
-    const handleDragStart = () => {
-        setIsDragging(true);
-        setShowIndicators(true);
-        // Clear any existing timeout
-        if (hideIndicatorsTimeoutRef.current) {
-            clearTimeout(hideIndicatorsTimeoutRef.current);
+    const handleDragEnd = (_e: unknown, info: PanInfo) => {
+        // Pull down on the home screen for search
+        if (onAppPage && info.offset.y > 70 && Math.abs(info.offset.x) < 50) {
+            setSpotlightOpen(true);
+            animate(x, -pageWidth * pageIndex, springs.window);
+            return;
         }
+        const swipe = Math.abs(info.velocity.x) > 200 || Math.abs(info.offset.x) > pageWidth * 0.18;
+        let next = pageIndex;
+        if (swipe) {
+            const dir = (Math.abs(info.velocity.x) > 200 ? info.velocity.x : info.offset.x) < 0 ? 1 : -1;
+            next = Math.max(0, Math.min(lastPage, pageIndex + dir));
+        }
+        if (next === pageIndex) animate(x, -pageWidth * pageIndex, springs.window);
+        else setPageIndex(next);
     };
 
-    const handleDragEnd = (
-        _event: MouseEvent | TouchEvent | PointerEvent,
-        info: PanInfo
-    ) => {
-        setIsDragging(false);
-        const threshold = pageWidth * 0.1; // 10% threshold - more sensitive
-        const velocity = info.velocity.x;
-        const offset = info.offset.x;
-        const isMouse = _event.type.startsWith("mouse");
-
-        // For mouse drags, be more lenient with velocity (mouse drags are slower)
-        const velocityThreshold = isMouse ? 100 : 150;
-
-        let newPageIndex = currentPageIndex;
-
-        // Velocity-based detection - prioritize velocity for quick swipes
-        if (Math.abs(velocity) > velocityThreshold) {
-            // Fast swipe - change page based on velocity direction
-            if (velocity < 0 && currentPageIndex < rightPageIndex) {
-                newPageIndex = currentPageIndex + 1;
-            } else if (velocity > 0 && currentPageIndex > leftPageIndex) {
-                newPageIndex = currentPageIndex - 1;
-            }
-        } else if (Math.abs(offset) > threshold) {
-            // Distance-based detection - more sensitive
-            if (offset < 0 && currentPageIndex < rightPageIndex) {
-                newPageIndex = currentPageIndex + 1;
-            } else if (offset > 0 && currentPageIndex > leftPageIndex) {
-                newPageIndex = currentPageIndex - 1;
-            }
-        }
-
-        // Update state based on new page index
-        if (newPageIndex !== currentPageIndex) {
-            if (newPageIndex === leftPageIndex) {
-                setCurrentSection("left");
-            } else if (newPageIndex === rightPageIndex) {
-                setCurrentSection("right");
-            } else {
-                setCurrentSection("apps");
-                setCurrentAppPage(newPageIndex - firstAppPageIndex);
-            }
-        }
-
-        // Hide indicators after 0.25 seconds
-        hideIndicatorsTimeoutRef.current = setTimeout(() => {
-            setShowIndicators(false);
-        }, 250);
-    };
+    const pageStyle: React.CSSProperties = { width: pageWidth, height: "100%" };
 
     return (
-        <div
-            ref={containerRef}
-            className="h-screen w-screen bg-[rgb(var(--bg-desktop))] text-[rgb(var(--text-primary))] overflow-hidden flex flex-col fixed inset-0"
-            style={{
-                width: "100vw",
-                height: "100vh",
-                overflowX: "hidden",
-                touchAction: "pan-x",
-            }}
-        >
-            {/* Swipeable Container */}
+        <MotionConfig reducedMotion="user">
             <div
-                className="flex-1 overflow-hidden relative"
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    overflowX: "hidden",
-                    touchAction: "pan-x",
-                }}
+                ref={containerRef}
+                className="fixed inset-0 overflow-hidden text-[rgb(var(--text-primary))]"
+                style={{ height: "100dvh" }}
             >
-                {/* Page Indicators - Positioned at bottom of app grid area, just above app tray */}
-                {!selectedContent && currentSection === "apps" && (
-                    <AnimatePresence>
-                        {showIndicators && (
-                            <motion.div
-                                className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 pointer-events-none z-10"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                style={{
-                                    bottom: "140px", // App tray height (80px minHeight + 16px padding + 16px margin)
-                                }}
-                            >
-                                {Array.from({ length: totalPages }).map(
-                                    (_, index) => {
-                                        const isActive =
-                                            index === currentPageIndex;
-                                        return (
-                                            <button
-                                                key={index}
-                                                onClick={() => {
-                                                    if (
-                                                        index === leftPageIndex
-                                                    ) {
-                                                        setCurrentSection(
-                                                            "left"
-                                                        );
-                                                    } else if (
-                                                        index === rightPageIndex
-                                                    ) {
-                                                        setCurrentSection(
-                                                            "right"
-                                                        );
-                                                    } else {
-                                                        setCurrentSection(
-                                                            "apps"
-                                                        );
-                                                        setCurrentAppPage(
-                                                            index -
-                                                                firstAppPageIndex
-                                                        );
-                                                    }
-                                                }}
-                                                className={`h-2 rounded-full transition-all pointer-events-auto ${
-                                                    isActive
-                                                        ? "bg-[rgb(var(--accent-nickel))] w-6"
-                                                        : "bg-[rgb(var(--text-secondary))] opacity-50 w-2"
-                                                }`}
-                                                aria-label={`Go to page ${
-                                                    index + 1
-                                                }`}
-                                            />
-                                        );
-                                    }
-                                )}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                )}
-                <motion.div
-                    className="flex h-full"
-                    style={{
-                        x,
-                        width: `${totalPages * pageWidth}px`,
-                        height: "100%",
-                    }}
-                    drag="x"
-                    dragConstraints={{
-                        left: -pageWidth * (totalPages - 1),
-                        right: 0,
-                    }}
-                    dragElastic={0.1}
-                    dragMomentum={false}
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    animate={{ x: -pageWidth * currentPageIndex }}
-                    transition={{ type: "spring", stiffness: 500, damping: 50 }}
-                >
-                    {/* Left Panel (Settings/Contact/About) */}
-                    <div
-                        className="h-full flex-shrink-0 overflow-hidden"
-                        style={{
-                            width: `${pageWidth}px`,
-                            height: "100%",
-                            overflowX: "hidden",
-                            touchAction: "pan-y",
-                        }}
-                    >
-                        <LeftPanel onNiIconClick={handleNiIconClick} />
-                    </div>
+                <Wallpaper />
 
-                    {/* App Grid Pages */}
-                    {appPages.map((pageContent, pageIndex) => (
-                        <div
-                            key={`app-page-${pageIndex}`}
-                            className="h-full flex-shrink-0 overflow-hidden"
-                            style={{
-                                width: `${pageWidth}px`,
-                                height: "100%",
-                                overflowX: "hidden",
-                                touchAction: "pan-y",
-                            }}
+                {/* Today and the Library blur the wallpaper, like iOS */}
+                <motion.div
+                    className="absolute inset-0 backdrop-blur-2xl bg-[rgb(var(--bg-desktop)/0.25)] pointer-events-none"
+                    animate={{ opacity: onAppPage ? 0 : 1 }}
+                    transition={{ duration: 0.3 }}
+                />
+
+                <div className="relative z-10 h-full flex flex-col">
+                    <StatusBar activity={activity} />
+
+                    <div className="relative flex-1 min-h-0 overflow-hidden">
+                        <motion.div
+                            className="flex h-full"
+                            style={{ x, width: totalPages * pageWidth }}
+                            drag="x"
+                            dragConstraints={{ left: -pageWidth * lastPage, right: 0 }}
+                            dragElastic={0.12}
+                            dragMomentum={false}
+                            onDragEnd={handleDragEnd}
                         >
-                            <div className="h-full">
-                                <AppGrid
-                                    content={pageContent}
-                                    onOpenItem={handleOpenItem}
+                            <div className="shrink-0" style={pageStyle}>
+                                <LeftPanel onOpenItem={(c) => openItem(c)} />
+                            </div>
+
+                            {appPages.map((pageContent, i) => (
+                                <div
+                                    key={`app-page-${i}`}
+                                    className="shrink-0"
+                                    // No browser gestures here, so pull-down and swipes reach us
+                                    style={{ ...pageStyle, touchAction: "none" }}
+                                >
+                                    <AppGrid
+                                        content={pageContent}
+                                        onOpenItem={openItem}
+                                        onLongPress={(content, rect) => setLongPress({ content, rect })}
+                                    />
+                                </div>
+                            ))}
+
+                            <div className="shrink-0" style={pageStyle}>
+                                <RightPanel
+                                    onOpenItem={openItem}
+                                    onSearch={() => setSpotlightOpen(true)}
                                 />
                             </div>
-                        </div>
-                    ))}
+                        </motion.div>
 
-                    {/* Right Panel (Search/Categories) */}
-                    <div
-                        className="h-full flex-shrink-0 overflow-hidden"
-                        style={{
-                            width: `${pageWidth}px`,
-                            height: "100%",
-                            overflowX: "hidden",
-                            touchAction: "pan-y",
-                        }}
-                    >
-                        <RightPanel onOpenItem={handleOpenItem} />
-                    </div>
-                </motion.div>
-            </div>
-
-            {/* App Tray - Only show on home screen (when no app is selected) and when we are not on the first or last page (left and right screen) */}
-            {!selectedContent &&
-                currentPageIndex !== leftPageIndex &&
-                currentPageIndex !== rightPageIndex && (
-                    <AppTray onOpenItem={handleOpenItem} />
-                )}
-
-            {/* Full Screen Modal for Content */}
-            <AnimatePresence>
-                {selectedContent && (
-                    <motion.div
-                        className="fixed inset-0 bg-[rgb(var(--bg-desktop))] z-50 flex flex-col"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
+                        {/* Page dots */}
                         <div
-                            ref={modalHeaderRef}
-                            className="p-4 border-b border-[rgb(var(--border-window))] flex items-center justify-between gap-4 flex-shrink-0"
+                            className="absolute inset-x-0 flex justify-center pointer-events-none z-10"
+                            style={{ bottom: onAppPage ? DOCK + 6 : 14 }}
                         >
-                            <div className="flex-1 min-w-0">
-                                {titleContainerWidth > 0 && (
-                                    <RevolvingText
-                                        text={selectedContent.title}
-                                        containerWidth={titleContainerWidth}
-                                        className="text-lg font-bbh-bartle font-semibold text-[rgb(var(--text-primary))]"
-                                    />
-                                )}
+                            <div className="nk-material-thin flex items-center gap-2 px-2.5 h-6 rounded-full pointer-events-auto">
+                                {Array.from({ length: totalPages }).map((_, i) => {
+                                    const active = i === pageIndex;
+                                    const edge = i === 0 || i === lastPage;
+                                    return (
+                                        <button
+                                            key={i}
+                                            onClick={() => setPageIndex(i)}
+                                            className={`rounded-full transition-all ${
+                                                active
+                                                    ? "w-2 h-2 bg-[rgb(var(--text-primary))]"
+                                                    : "w-1.5 h-1.5 bg-[rgb(var(--text-primary)/0.35)]"
+                                            } ${edge ? "!rounded-[2px]" : ""}`}
+                                            aria-label={
+                                                i === 0 ? "Today" : i === lastPage ? "App Library" : `Home page ${i}`
+                                            }
+                                        />
+                                    );
+                                })}
                             </div>
-                            <button
-                                onClick={handleCloseModal}
-                                className="w-8 h-8 flex-shrink-0 rounded-full hover:bg-[rgb(var(--bg-button-hover))] flex items-center justify-center text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] transition-colors"
-                                aria-label="Close"
-                            >
-                                <X size={20} />
-                            </button>
                         </div>
-                        <div className="flex-1 overflow-auto">
-                            <ContentRenderer content={selectedContent} />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+
+                        <AnimatePresence>
+                            {onAppPage && (
+                                <MobileDock
+                                    key="dock"
+                                    onOpenItem={openItem}
+                                    onLongPress={(content, rect) => setLongPress({ content, rect })}
+                                    onSearch={() => setSpotlightOpen(true)}
+                                />
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
+
+                <AnimatePresence custom={sheetExit}>
+                    {opened && (
+                        <AppSheet
+                            key={opened.content.id}
+                            content={opened.content}
+                            originRect={opened.rect}
+                            onClose={closeSheet}
+                            onSwitcher={toSwitcher}
+                        />
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {switcherOpen && (
+                        <AppSwitcher
+                            recents={recents}
+                            onOpen={(content) => openItem(content)}
+                            onRemove={(id) => setRecents((prev) => prev.filter((c) => c.id !== id))}
+                            onClose={() => setSwitcherOpen(false)}
+                        />
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {longPress && (
+                        <LongPressMenu
+                            key={longPress.content.id}
+                            content={longPress.content}
+                            rect={longPress.rect}
+                            onOpen={(content) => openItem(content, longPress.rect)}
+                            onClose={() => setLongPress(null)}
+                        />
+                    )}
+                </AnimatePresence>
+
+                <Spotlight mobile onOpenContent={(content) => openItem(content)} />
+            </div>
+        </MotionConfig>
     );
 }

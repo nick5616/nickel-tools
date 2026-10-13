@@ -1,236 +1,147 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
+import React, { useMemo } from "react";
+import { AnimatePresence, LayoutGroup } from "framer-motion";
 import type { Content } from "@/app/data/content";
 import { DesktopIcon } from "./DesktopIcon";
-import { useAppStore } from "@/app/store/appStore";
+import { Stack } from "./Stack";
+import { ClockWidget, LatestWidget, PaletteWidget } from "./Widgets";
+import { useAppStore, type SortMethod } from "@/app/store/appStore";
+import { useSystemStore } from "@/app/store/systemStore";
+import type { OriginRect } from "@/components/shared/motion";
 
 interface DesktopProps {
     content: Content[];
-    onOpenContent: (content: Content) => void;
-    onContextMenu?: (e: React.MouseEvent, content: Content) => void;
+    onOpenContent: (content: Content, rect?: OriginRect) => void;
+    onContextMenu?: (e: React.MouseEvent, content?: Content) => void;
 }
 
-// Responsive icon positioning with wrapping
-const getDefaultIconPositions = (
-    content: Content[],
-    viewportWidth: number,
-    sortMethod: "date" | "category" | "name"
-): Map<string, { x: number; y: number }> => {
-    const positions = new Map<string, { x: number; y: number }>();
-
-    // Fixed spacing values
-    const iconWidth = 96; // Icon width
-    const columnWidth = 150; // Horizontal spacing between icons
-    const rowHeight = 150; // Vertical spacing between rows
-    const startX = 20; // Anchor to top-left
-    const startY = 20; // Anchor to top-left
-    const padding = 10; // Padding from edges (reduced to fit more icons)
-
-    // Calculate how many columns fit per row
-    // Be more aggressive - check if we can fit one more column
-    const availableWidth = viewportWidth - startX * 2 - padding;
-    let columnsPerRow = Math.floor(availableWidth / columnWidth);
-
-    // Try to fit one more column if there's enough space for the icon itself
-    const spaceForOneMore = availableWidth - columnsPerRow * columnWidth;
-    if (spaceForOneMore >= iconWidth) {
-        columnsPerRow++;
-    }
-
-    // Sort and organize content based on sort method
-    let organizedContent: Content[];
-
-    if (sortMethod === "category") {
-        // Group content by category to keep related items together
-        const contentByCategory = content.reduce((acc, item) => {
-            if (!acc[item.category]) {
-                acc[item.category] = [];
-            }
-            acc[item.category].push(item);
-            return acc;
-        }, {} as Record<string, typeof content>);
-
-        organizedContent = Object.entries(contentByCategory)
-            .sort(([a], [b]) => a.localeCompare(b))
-            .flatMap(([, items]) => items);
-    } else if (sortMethod === "date") {
-        // Sort by date (newest first)
-        const time = (item: Content) =>
-            new Date(item.date ?? 0).getTime() || 0;
-        organizedContent = [...content].sort((a, b) => time(b) - time(a));
-    } else {
-        // Sort by name (alphabetically)
-        organizedContent = [...content].sort((a, b) =>
-            a.title.localeCompare(b.title)
-        );
-    }
-
-    // Position icons with wrapping
-    let currentRow = 0;
-    let currentCol = 0;
-
-    organizedContent.forEach((item) => {
-        // Check if we need to wrap to next row
-        if (currentCol >= columnsPerRow) {
-            currentRow++;
-            currentCol = 0;
-        }
-
-        const x = startX + currentCol * columnWidth;
-        const y = startY + currentRow * rowHeight;
-
-        // Ensure position doesn't exceed viewport
-        const constrainedX = Math.min(x, viewportWidth - iconWidth - padding);
-
-        positions.set(item.id, {
-            x: constrainedX,
-            y: y,
-        });
-
-        currentCol++;
-    });
-
-    return positions;
+const CATEGORY_FILTERS: Record<string, string> = {
+    engineering: "Engineering",
+    music: "Music",
+    art: "Art",
+    "immersive-web": "Immersive Web",
+    "social-tools": "Social Tools",
+    "ai-tools": "AI / Productivity",
 };
 
-export function Desktop({
-    content,
-    onOpenContent,
-    onContextMenu,
-}: DesktopProps) {
-    const [viewportWidth, setViewportWidth] = useState(0);
-    const [viewportHeight, setViewportHeight] = useState(0);
-    const { menu, desktopPage, setDesktopPage, setDesktopTotalPages } =
-        useAppStore();
+const time = (item: Content) => new Date(item.date ?? 0).getTime() || 0;
 
-    useEffect(() => {
-        const updateDimensions = () => {
-            setViewportWidth(window.innerWidth);
-            setViewportHeight(window.innerHeight);
-        };
-        updateDimensions();
-        window.addEventListener("resize", updateDimensions);
-        return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
+function sortItems(items: Content[], method: SortMethod): Content[] {
+    const sorted = [...items];
+    if (method === "date") sorted.sort((a, b) => time(b) - time(a));
+    else if (method === "category")
+        sorted.sort(
+            (a, b) =>
+                a.category.localeCompare(b.category) ||
+                a.title.localeCompare(b.title)
+        );
+    else sorted.sort((a, b) => a.title.localeCompare(b.title));
+    return sorted;
+}
 
-    // Filter content based on viewFilter
-    const filteredContent = useMemo(() => {
-        if (menu.viewFilter === "all") {
-            return content;
-        }
+export function Desktop({ content, onOpenContent, onContextMenu }: DesktopProps) {
+    const menu = useAppStore((s) => s.menu);
+    const useStacks = useSystemStore((s) => s.useStacks);
 
-        if (menu.viewFilter === "tools-only") {
+    const filtered = useMemo(() => {
+        if (menu.viewFilter === "all") return content;
+        if (menu.viewFilter === "tools-only")
             return content.filter((item) => item.type === "internal");
-        }
-
-        // Map filter names to category names
-        const categoryMap: Record<string, string> = {
-            engineering: "Engineering",
-            music: "Music",
-            art: "Art",
-            "immersive-web": "Immersive Web",
-            "social-tools": "Social Tools",
-            "ai-tools": "AI / Productivity",
-        };
-
-        const targetCategory = categoryMap[menu.viewFilter];
-        if (!targetCategory) {
-            return content;
-        }
-
-        return content.filter((item) => item.category === targetCategory);
+        const category = CATEGORY_FILTERS[menu.viewFilter];
+        return category
+            ? content.filter((item) => item.category === category)
+            : content;
     }, [content, menu.viewFilter]);
 
-    // Use viewport dimensions once available, or fallback to reasonable defaults
-    const effectiveWidth = viewportWidth || 1920;
-    const effectiveHeight = viewportHeight || 1080;
-
-    // Calculate rows per page based on viewport height
-    // Desktop area is h-[calc(100vh-48px)], so we subtract 48px for menu bar
-    // Also account for startY padding (20px) and some bottom padding (20px)
-    const rowHeight = 150;
-    const startY = 20;
-    const menuBarHeight = 48;
-    const bottomPadding = 20;
-    const availableHeight =
-        effectiveHeight - menuBarHeight - startY - bottomPadding;
-    const rowsPerPage = Math.max(1, Math.floor(availableHeight / rowHeight));
-
-    // Get all icon positions first
-    const allIconPositions = getDefaultIconPositions(
-        filteredContent,
-        effectiveWidth,
-        menu.sortMethod
+    const sorted = useMemo(
+        () => sortItems(filtered, menu.sortMethod),
+        [filtered, menu.sortMethod]
     );
 
-    // Calculate total pages based on the maximum row number
-    const iconRows = Array.from(allIconPositions.values()).map((pos) => {
-        // Calculate which row this position is on
-        return Math.floor((pos.y - startY) / rowHeight);
-    });
-    const maxRow = iconRows.length > 0 ? Math.max(...iconRows) : -1;
-    const totalPages = Math.max(1, Math.ceil((maxRow + 1) / rowsPerPage));
-
-    // Update total pages in store
-    useEffect(() => {
-        setDesktopTotalPages(totalPages);
-    }, [totalPages, setDesktopTotalPages]);
-
-    // Reset to page 1 if current page exceeds total pages (e.g., after filtering)
-    useEffect(() => {
-        if (desktopPage > totalPages && totalPages > 0) {
-            setDesktopPage(1);
+    // Stacks: one pile per category; lone apps stay loose
+    const entries = useMemo(() => {
+        if (!useStacks) {
+            return sorted.map((item) => ({ kind: "icon" as const, item }));
         }
-    }, [totalPages, desktopPage, setDesktopPage]);
-
-    // Filter icon positions to only show current page
-    const currentPageStartRow = (desktopPage - 1) * rowsPerPage;
-    const currentPageEndRow = currentPageStartRow + rowsPerPage;
-
-    const iconPositions = new Map<string, { x: number; y: number }>();
-    allIconPositions.forEach((pos, id) => {
-        const row = Math.floor((pos.y - startY) / rowHeight);
-        if (row >= currentPageStartRow && row < currentPageEndRow) {
-            // Adjust y position to be relative to the current page
-            const adjustedY = pos.y - currentPageStartRow * rowHeight;
-            iconPositions.set(id, { x: pos.x, y: adjustedY });
+        const groups = new Map<string, Content[]>();
+        sorted.forEach((item) => {
+            const list = groups.get(item.category) ?? [];
+            list.push(item);
+            groups.set(item.category, list);
+        });
+        const ordered = [...groups.entries()];
+        if (menu.sortMethod === "date") {
+            ordered.sort(
+                (a, b) =>
+                    Math.max(...b[1].map(time)) - Math.max(...a[1].map(time))
+            );
+        } else {
+            ordered.sort(([a], [b]) => a.localeCompare(b));
         }
-    });
-
-    // Filter content to only show items on current page
-    const visibleContent = filteredContent.filter((item) =>
-        iconPositions.has(item.id)
-    );
+        return ordered.map(([label, items]) =>
+            items.length === 1
+                ? { kind: "icon" as const, item: items[0] }
+                : { kind: "stack" as const, label, items }
+        );
+    }, [sorted, useStacks, menu.sortMethod]);
 
     return (
         <div
-            className="relative h-full overflow-hidden bg-[rgb(var(--bg-desktop))]"
-            style={{
-                width: "100%",
-                maxWidth: "100vw",
-                position: "relative",
-                zIndex: 1,
+            className="absolute inset-0 flex"
+            onContextMenu={(e) => {
+                if (e.target === e.currentTarget || (e.target as Element).closest("[data-desktop-surface]")) {
+                    e.preventDefault();
+                    onContextMenu?.(e);
+                }
             }}
         >
-            <AnimatePresence mode="popLayout">
-                {visibleContent.map((item) => {
-                    const position = iconPositions.get(item.id) || {
-                        x: 20,
-                        y: 20,
-                    };
-                    return (
-                        <DesktopIcon
-                            key={item.id}
-                            content={item}
-                            position={position}
-                            onClick={onOpenContent}
-                            onContextMenu={onContextMenu}
-                        />
-                    );
-                })}
-            </AnimatePresence>
+            {/* Icons flow down columns, left to right, like a real desktop */}
+            <div
+                data-desktop-surface
+                className="flex-1 min-w-0 p-4 pb-28 overflow-x-auto overflow-y-hidden"
+            >
+                <LayoutGroup>
+                    <div
+                        className="grid gap-x-2 gap-y-1 h-full content-start justify-start"
+                        style={{
+                            gridAutoFlow: "column",
+                            gridTemplateRows: "repeat(auto-fill, 112px)",
+                            gridAutoColumns: "96px",
+                        }}
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {entries.map((entry) =>
+                                entry.kind === "stack" ? (
+                                    <Stack
+                                        key={`stack-${entry.label}`}
+                                        label={entry.label}
+                                        items={entry.items}
+                                        onOpen={onOpenContent}
+                                        onContextMenu={onContextMenu}
+                                    />
+                                ) : (
+                                    <DesktopIcon
+                                        key={entry.item.id}
+                                        content={entry.item}
+                                        onOpen={onOpenContent}
+                                        onContextMenu={onContextMenu}
+                                    />
+                                )
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </LayoutGroup>
+            </div>
+
+            {/* Widgets */}
+            {/* Scrolling clips overflow, so the column pads itself wide enough
+                for the widgets' soft shadows and pulls back with a negative margin */}
+            <aside className="hidden xl:flex flex-col gap-3 w-[348px] shrink-0 -ml-8 px-6 pt-4 pb-28 overflow-y-auto">
+                <ClockWidget />
+                <PaletteWidget />
+                <LatestWidget onOpen={onOpenContent} />
+            </aside>
         </div>
     );
 }

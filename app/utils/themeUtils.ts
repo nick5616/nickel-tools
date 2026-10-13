@@ -5,6 +5,8 @@
 import type { HSL, ColorSchemeType } from "./colorUtils";
 import {
     hslToRgb,
+    rgbToHsl,
+    getContrastRatio,
     rgbToCssVariable,
     adjustForMode,
     getHighContrastVariant,
@@ -23,6 +25,66 @@ export interface ThemeConfig {
 }
 
 const THEME_STORAGE_KEY = "nickel-color-theme";
+
+// Fired on window whenever theme CSS variables change, for anything that
+// draws with JS (e.g. canvas wallpapers) instead of CSS.
+export const THEME_CHANGE_EVENT = "nickel:themechange";
+
+// The Color Engine's grid selection, persisted separately from the theme.
+export const GRID_POSITION_STORAGE_KEY = "nickel-color-scheme-grid-position";
+export const VISIBLE_ROW_START_STORAGE_KEY =
+    "nickel-color-scheme-visible-row-start";
+export const HUE_OFFSET_STORAGE_KEY = "nickel-color-scheme-hue-offset";
+
+export function saveColorEngineUiState(state: {
+    row: number;
+    col: number;
+    hueOffset: number;
+}): void {
+    if (typeof window === "undefined") return;
+    try {
+        localStorage.setItem(
+            GRID_POSITION_STORAGE_KEY,
+            JSON.stringify({ row: state.row, col: state.col })
+        );
+        localStorage.setItem(
+            VISIBLE_ROW_START_STORAGE_KEY,
+            String(state.row < 3 ? 0 : 3)
+        );
+        localStorage.setItem(HUE_OFFSET_STORAGE_KEY, String(state.hueOffset));
+    } catch (error) {
+        console.error("Failed to save color engine state:", error);
+    }
+}
+
+export function clearColorEngineUiState(): void {
+    if (typeof window === "undefined") return;
+    try {
+        localStorage.removeItem(GRID_POSITION_STORAGE_KEY);
+        localStorage.removeItem(VISIBLE_ROW_START_STORAGE_KEY);
+        localStorage.removeItem(HUE_OFFSET_STORAGE_KEY);
+    } catch (error) {
+        console.error("Failed to clear color engine state:", error);
+    }
+}
+
+/**
+ * Spread a scheme's colors across the four palette slots the OS draws from
+ * (--nk-h1..--nk-h4). Repeats colors for schemes with fewer than four.
+ */
+function getPaletteHues(colors: HSL[]): number[] {
+    const hues = colors.map((c) => Math.round(c.h));
+    switch (hues.length) {
+        case 1:
+            return [hues[0], hues[0], hues[0], hues[0]];
+        case 2:
+            return [hues[0], hues[1], hues[0], hues[1]];
+        case 3:
+            return [hues[0], hues[1], hues[2], hues[1]];
+        default:
+            return hues.slice(0, 4);
+    }
+}
 
 const DEFAULT_THEME: ThemeConfig = {
     baseColor: null,
@@ -206,6 +268,48 @@ export function applyTheme(theme: ThemeConfig, isDarkMode: boolean): void {
         )} / 0.2`;
     }
 
+    // Text is the foreground role: keep its hue and saturation, but make sure
+    // its lightness actually meets the chosen threshold against both
+    // backgrounds. (Multi-color schemes take text from a scheme color, which
+    // the mode shift alone doesn't guarantee is readable.)
+    if (!theme.useBlackWhiteText) {
+        const threshold = getThresholdValue(theme.contrastThreshold);
+        const backgrounds = [cssVars["--bg-desktop"], cssVars["--bg-window"]]
+            .filter(Boolean)
+            .map(cssVariableToHsl);
+        for (const [name, min] of [
+            ["--text-primary", threshold],
+            ["--text-secondary", Math.min(threshold, 4.5)],
+        ] as const) {
+            if (!cssVars[name]) continue;
+            const readable = ensureContrast(
+                cssVariableToHsl(cssVars[name]),
+                backgrounds,
+                min
+            );
+            cssVars[name] = rgbToCssVariable(hslToRgb(readable));
+        }
+    }
+
+    // Palette slots for tiles and wallpapers
+    getPaletteHues(colors).forEach((hue, index) => {
+        cssVars[`--nk-h${index + 1}`] = String(hue);
+    });
+    // Saturation and lightness are set by role, not by scheme slot: every
+    // background color shares one lightness, every foreground color another,
+    // using the same mode rules as the rest of the engine.
+    const backgroundRole = adjustForMode(theme.baseColor, isDarkMode, true);
+    const foregroundRole = adjustForMode(theme.baseColor, isDarkMode, false);
+    cssVars["--nk-s"] = `${Math.round(
+        Math.min(90, Math.max(0, theme.baseColor.s))
+    )}%`;
+    cssVars["--nk-bg-l"] = `${Math.round(
+        Math.min(96, Math.max(4, backgroundRole.l))
+    )}%`;
+    cssVars["--nk-fg-l"] = `${Math.round(
+        Math.min(96, Math.max(4, foregroundRole.l))
+    )}%`;
+
     // Apply additional UI element variables
     applyAdditionalVariables(
         cssVars,
@@ -216,6 +320,39 @@ export function applyTheme(theme: ThemeConfig, isDarkMode: boolean): void {
 
     // Inject CSS variables into document root
     injectCssVariables(cssVars);
+}
+
+function getThresholdValue(threshold: ThemeConfig["contrastThreshold"]): number {
+    if (threshold === "AA") return 4.5;
+    if (threshold === "AAA") return 7;
+    return typeof threshold === "number" ? threshold : 7;
+}
+
+function cssVariableToHsl(value: string): HSL {
+    const [r, g, b] = value.split(/\s+/).map(Number);
+    return rgbToHsl({ r, g, b });
+}
+
+/**
+ * Move a foreground color's lightness away from its backgrounds until it
+ * meets `threshold` against every one of them (or hits the 2-98% limit).
+ * Hue and saturation are untouched.
+ */
+function ensureContrast(fg: HSL, backgrounds: HSL[], threshold: number): HSL {
+    if (backgrounds.length === 0) return fg;
+    const meets = (c: HSL) =>
+        backgrounds.every(
+            (bg) => getContrastRatio(hslToRgb(c), hslToRgb(bg)) >= threshold
+        );
+    if (meets(fg)) return fg;
+    const avgBgLightness =
+        backgrounds.reduce((sum, bg) => sum + bg.l, 0) / backgrounds.length;
+    const step = avgBgLightness > 50 ? -1 : 1;
+    const next = { ...fg };
+    while (!meets(next) && next.l > 2 && next.l < 98) {
+        next.l += step;
+    }
+    return next;
 }
 
 /**
@@ -329,6 +466,7 @@ function injectCssVariables(vars: Record<string, string>): void {
     Object.entries(vars).forEach(([key, value]) => {
         root.style.setProperty(key, value);
     });
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 }
 
 /**
@@ -364,9 +502,17 @@ function resetCssVariables(): void {
         "--text-menubar",
         "--text-titlebar",
         "--text-dropdown",
+        "--nk-h1",
+        "--nk-h2",
+        "--nk-h3",
+        "--nk-h4",
+        "--nk-s",
+        "--nk-bg-l",
+        "--nk-fg-l",
     ];
 
     customVars.forEach((varName) => {
         root.style.removeProperty(varName);
     });
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 }

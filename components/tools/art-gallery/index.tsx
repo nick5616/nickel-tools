@@ -69,7 +69,6 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                 setError(null);
 
                 const result = await listGCSFolder(folder);
-                console.log("result files", result.files);
                 // Filter to only image files and transform to ArtImage format
                 const imageFiles = result.files
                     .filter((file) => {
@@ -110,11 +109,11 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
 
     if (loading) {
         return (
-            <div className="h-full w-full flex items-center justify-center bg-white dark:bg-zinc-900">
+            <div className="h-full w-full flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-600 dark:border-zinc-400 mx-auto mb-4"></div>
-                    <p className="text-zinc-500 dark:text-zinc-400">
-                        Loading gallery...
+                    <div className="animate-spin rounded-full h-9 w-9 border-[3px] border-[rgb(var(--text-primary)/0.1)] border-t-[hsl(var(--nk-h1)_var(--nk-s)_var(--nk-fg-l))] mx-auto mb-3"></div>
+                    <p className="text-sm text-[rgb(var(--text-secondary))]">
+                        Loading gallery…
                     </p>
                 </div>
             </div>
@@ -123,15 +122,11 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
 
     if (error) {
         return (
-            <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-12 border border-red-200 dark:border-red-800 text-center">
-                        <p className="text-lg text-red-600 dark:text-red-400 mb-2">
-                            Error loading gallery
-                        </p>
-                        <p className="text-sm text-red-500 dark:text-red-500">
-                            {error}
-                        </p>
+            <div className="h-full w-full overflow-auto p-8">
+                <div className="max-w-md mx-auto">
+                    <div className="nk-banner nk-banner-error flex-col !items-start">
+                        <p className="font-semibold">Couldn&apos;t load this gallery</p>
+                        <p>{error}</p>
                     </div>
                 </div>
             </div>
@@ -140,17 +135,15 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
 
     if (images.length === 0 && !loading) {
         return (
-            <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-12 border border-zinc-200 dark:border-zinc-700 text-center">
+            <div className="h-full w-full overflow-auto p-8">
+                <div className="max-w-md mx-auto">
+                    <div className="nk-group p-10 text-center">
                         <ImageIcon
-                            size={48}
-                            className="text-zinc-400 dark:text-zinc-500 mx-auto mb-4"
+                            size={40}
+                            className="text-[rgb(var(--text-secondary))] mx-auto mb-3"
                         />
-                        <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-2">
-                            No images found
-                        </p>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-500">
+                        <p className="font-semibold mb-1">No images found</p>
+                        <p className="text-sm text-[rgb(var(--text-secondary))]">
                             This folder appears to be empty or contains no image
                             files.
                         </p>
@@ -172,10 +165,10 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                 <div className="w-full max-w-6xl mx-auto flex items-center justify-between gap-4">
                     <button
                         onClick={() => setSelectedImage(null)}
-                        className="shrink-0 flex items-center gap-2 text-white hover:text-zinc-300 transition-colors"
+                        className="nk-btn !text-white !bg-white/10 hover:!bg-white/20"
                     >
-                        <ArrowLeft size={20} />
-                        <span>Back to Gallery</span>
+                        <ArrowLeft size={16} />
+                        Gallery
                     </button>
 
                     <div className="min-w-0 text-right">
@@ -217,13 +210,12 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
     }
 
     return (
-        <div className="h-full w-full overflow-auto bg-white dark:bg-zinc-900 p-8">
-            <div className="max-w-6xl mx-auto">
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-                    {getGalleryDescription(folder)}
-                </p>
-                <div className="flex justify-end mb-4">
-                    <div className="inline-flex rounded-full bg-zinc-100 dark:bg-zinc-800 p-1 border border-zinc-200 dark:border-zinc-700">
+        <div className="h-full w-full overflow-auto">
+            <div className="nk-toolbar justify-between">
+                <span className="text-sm font-semibold">
+                    {images.length} pieces
+                </span>
+                <div className="nk-segmented">
                         {(
                             [
                                 ["masonry", "Masonry", LayoutDashboard],
@@ -234,18 +226,17 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                                 key={mode}
                                 onClick={() => setLayout(mode)}
                                 aria-pressed={layout === mode}
-                                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                                    layout === mode
-                                        ? "bg-white dark:bg-zinc-600 text-zinc-900 dark:text-white shadow-sm"
-                                        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
-                                }`}
                             >
                                 <Icon size={14} />
                                 {label}
                             </button>
                         ))}
-                    </div>
                 </div>
+            </div>
+            <div className="max-w-6xl mx-auto p-4 sm:p-6">
+                <p className="text-sm leading-relaxed text-[rgb(var(--text-secondary))] mb-5 max-w-prose">
+                    {getGalleryDescription(folder)}
+                </p>
                 <div
                     className={
                         layout === "masonry"
@@ -261,7 +252,7 @@ export default function ArtGallery({ folder }: ArtGalleryProps) {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.2 }}
-                                className={`bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden cursor-pointer hover:ring-2 ring-zinc-400 dark:ring-zinc-600 transition-all group ${
+                                className={`bg-[rgb(var(--text-primary)/0.06)] rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group ${
                                     layout === "masonry"
                                         ? "mb-4 break-inside-avoid"
                                         : "aspect-square"

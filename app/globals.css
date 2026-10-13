@@ -17,21 +17,43 @@
     --accent-glow: 141 141 141 / 0.2;
 
     /* Additional UI Element Variables - Light Mode */
-    --bg-menubar: 39 39 42;
-    --bg-menubar-hover: 63 63 70;
+    --bg-menubar: 250 250 250;
+    --bg-menubar-hover: 228 228 231;
     --bg-titlebar: 250 250 250;
     --bg-titlebar-hover: 244 244 245;
-    --bg-dropdown: 39 39 42;
-    --bg-dropdown-hover: 63 63 70;
+    --bg-dropdown: 250 250 250;
+    --bg-dropdown-hover: 228 228 231;
     --bg-dock: 255 255 255 / 0.9;
     --bg-dock-hover: 244 244 245;
     --bg-button: 255 255 255;
     --bg-button-hover: 244 244 245;
-    --border-dropdown: 63 63 70;
+    --border-dropdown: 212 212 216;
     --border-dock: 212 212 216;
-    --text-menubar: 250 250 250;
+    --text-menubar: 24 24 27;
     --text-titlebar: 24 24 27;
-    --text-dropdown: 250 250 250;
+    --text-dropdown: 24 24 27;
+
+    /* Nickel palette. Hue comes from the color scheme (one per slot);
+       saturation and lightness come from the color's ROLE — every background
+       color shares --nk-bg-l, every foreground color shares --nk-fg-l.
+       The color engine overwrites all of these (themeUtils.applyTheme);
+       the defaults are an analogous scheme of nickel-salt greens. */
+    --nk-h1: 122;
+    --nk-h2: 152;
+    --nk-h3: 182;
+    --nk-h4: 152;
+    --nk-s: 42%;
+    --nk-bg-l: 80%;
+    --nk-fg-l: 30%;
+
+    /* Light source for specular highlights, -1..1 (useSpecularLight) */
+    --light-x: 0;
+    --light-y: 0;
+
+    /* Materials */
+    --glass-border: 255 255 255 / 0.6;
+    --glass-highlight: 255 255 255 / 0.75;
+    --shadow-color: 15 23 42;
 }
 
 /* Opaque backdrop for embedded project previews — some sites have a
@@ -77,6 +99,13 @@
     --text-menubar: 250 250 250;
     --text-titlebar: 250 250 250;
     --text-dropdown: 250 250 250;
+
+    --nk-bg-l: 20%;
+    --nk-fg-l: 70%;
+
+    --glass-border: 255 255 255 / 0.1;
+    --glass-highlight: 255 255 255 / 0.16;
+    --shadow-color: 0 0 0;
 }
 
 html {
@@ -99,6 +128,7 @@ body {
     padding: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     overflow-x: hidden;
     color: rgb(var(--foreground));
@@ -172,21 +202,417 @@ body {
     }
 }
 
-/* Window Styles */
-.app-window {
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-        0 10px 10px -5px rgb(0 0 0 / 0.04);
+/* ------------------------------------------------------------------------
+   Nickel OS — materials
+   Glass layers that sit over the wallpaper. Tinted by the color engine's
+   --bg-window, so a new scheme retints every surface.
+   ------------------------------------------------------------------------ */
+.nk-material,
+.nk-material-thin,
+.nk-material-thick {
+    background: rgb(var(--bg-window) / var(--mat-alpha));
+    -webkit-backdrop-filter: blur(var(--mat-blur)) saturate(180%);
+    backdrop-filter: blur(var(--mat-blur)) saturate(180%);
+    border: 1px solid rgb(var(--glass-border));
+    box-shadow: inset 0 1px 0 rgb(var(--glass-highlight)),
+        0 1px 2px rgb(var(--shadow-color) / 0.08),
+        0 12px 32px -8px rgb(var(--shadow-color) / 0.3);
+}
+.nk-material {
+    --mat-alpha: 0.6;
+    --mat-blur: 28px;
+}
+.nk-material-thin {
+    --mat-alpha: 0.38;
+    --mat-blur: 18px;
+}
+.nk-material-thick {
+    --mat-alpha: 0.82;
+    --mat-blur: 40px;
 }
 
-.app-window:hover {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+.nk-menubar {
+    background: rgb(var(--bg-menubar) / 0.55);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgb(var(--glass-border));
 }
 
-/* Glass Morphism for Dock */
-.dock-glass {
-    background: rgba(39, 39, 42, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+/* Windows: deep layered shadow when focused, shallow when not */
+.nk-window {
+    box-shadow: 0 0 0 1px rgb(var(--shadow-color) / 0.1),
+        0 2px 6px rgb(var(--shadow-color) / 0.1),
+        0 16px 32px rgb(var(--shadow-color) / 0.18),
+        0 40px 80px -16px rgb(var(--shadow-color) / 0.4);
+    transition: box-shadow 0.25s ease;
+}
+.nk-window[data-active="false"] {
+    box-shadow: 0 0 0 1px rgb(var(--shadow-color) / 0.08),
+        0 2px 4px rgb(var(--shadow-color) / 0.08),
+        0 10px 20px rgb(var(--shadow-color) / 0.12);
+}
+.nk-window[data-active="false"] .nk-titlebar {
+    opacity: 0.72;
+}
+
+/* While a window is dragged or resized, iframes would swallow the pointer */
+body.nk-interacting iframe {
+    pointer-events: none;
+}
+
+/* ------------------------------------------------------------------------
+   App tiles — every app is an element on the Nickel periodic table
+   ------------------------------------------------------------------------ */
+.nk-tile {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 26%;
+    /* A tile is a foreground-role color sitting on the background-role
+       wallpaper; its glyph flips back to the background role of the same
+       hue. Depth comes from light overlays, never from shifting S/L. */
+    color: hsl(var(--tile-hue) var(--nk-s) var(--nk-bg-l));
+    background: linear-gradient(
+            160deg,
+            rgb(255 255 255 / 0.16),
+            rgb(255 255 255 / 0) 50%,
+            rgb(0 0 0 / 0.14)
+        ),
+        hsl(var(--tile-hue) var(--nk-s) var(--nk-fg-l));
+    box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.22),
+        inset 0 1px 0 rgb(255 255 255 / 0.35),
+        0 1px 2px rgb(var(--shadow-color) / 0.2),
+        0 8px 18px -6px rgb(var(--shadow-color) / 0.45);
+}
+@supports (corner-shape: squircle) {
+    .nk-tile {
+        border-radius: 34%;
+        corner-shape: squircle;
+    }
+}
+/* Specular sheen that follows the light source */
+.nk-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+        120% 90% at calc(50% + var(--light-x) * 45%)
+            calc(var(--light-y) * 30%),
+        rgb(255 255 255 / 0.42),
+        rgb(255 255 255 / 0) 58%
+    );
+}
+.nk-tile[data-dormant="true"] {
+    filter: grayscale(1);
+    opacity: 0.55;
+}
+
+/* Labels over the wallpaper stay legible on any palette */
+.nk-label {
+    color: rgb(var(--text-primary));
+    text-shadow: 0 1px 2px rgb(var(--bg-desktop) / 0.9),
+        0 0 10px rgb(var(--bg-desktop) / 0.7);
+}
+
+/* ------------------------------------------------------------------------
+   Native app kit — what makes in-repo apps feel like part of Nickel.
+   Primary actions are foreground-role color with background-role text;
+   everything else is neutral, tinted only by the window surface.
+   ------------------------------------------------------------------------ */
+.nk-app {
+    --accent: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    --on-accent: hsl(var(--nk-h1) var(--nk-s) var(--nk-bg-l));
+    --hairline: rgb(var(--text-primary) / 0.1);
+    --fill: rgb(var(--text-primary) / 0.06);
+    --fill-strong: rgb(var(--text-primary) / 0.11);
+    background: rgb(var(--bg-window));
+    color: rgb(var(--text-primary));
+    accent-color: var(--accent);
+    font-size: 14px;
+}
+.nk-app ::selection {
+    background: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l) / 0.35);
+}
+
+.nk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    height: 2rem;
+    padding: 0 0.8rem;
+    border-radius: 0.6rem;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: rgb(var(--text-primary));
+    background: var(--fill, rgb(var(--text-primary) / 0.06));
+    transition: background-color 0.15s, transform 0.1s, filter 0.15s;
+    user-select: none;
+}
+.nk-btn:hover {
+    background: var(--fill-strong, rgb(var(--text-primary) / 0.11));
+}
+.nk-btn:active {
+    transform: scale(0.97);
+}
+.nk-btn:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.nk-btn:focus-visible,
+.nk-field:focus-visible {
+    outline: 2px solid hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    outline-offset: 2px;
+}
+.nk-btn-primary {
+    color: hsl(var(--nk-h1) var(--nk-s) var(--nk-bg-l));
+    background: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18),
+        0 1px 2px rgb(var(--shadow-color) / 0.2);
+}
+.nk-btn-primary:hover {
+    background: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    filter: brightness(1.08);
+}
+.nk-btn-ghost {
+    background: transparent;
+}
+.nk-btn-danger {
+    color: rgb(220 38 38);
+}
+.dark .nk-btn-danger {
+    color: rgb(248 113 113);
+}
+.nk-btn-lg {
+    height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: 0.85rem;
+    font-size: 15px;
+}
+.nk-btn-icon {
+    width: 2rem;
+    padding: 0;
+}
+
+.nk-field {
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    border-radius: 0.6rem;
+    font-size: 14px;
+    color: rgb(var(--text-primary));
+    background: rgb(var(--text-primary) / 0.05);
+    box-shadow: inset 0 0 0 1px rgb(var(--text-primary) / 0.1);
+    transition: box-shadow 0.15s;
+}
+.nk-field::placeholder {
+    color: rgb(var(--text-secondary));
+}
+.nk-field:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+}
+textarea.nk-field {
+    height: auto;
+    padding: 0.6rem 0.75rem;
+}
+select.nk-field {
+    padding-right: 2rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='gray' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+}
+select.nk-field option {
+    background: rgb(var(--bg-window));
+    color: rgb(var(--text-primary));
+}
+
+/* Grouped surface, like a settings list or card */
+.nk-group {
+    border-radius: 1rem;
+    padding: 1rem;
+    background: rgb(var(--text-primary) / 0.035);
+    box-shadow: inset 0 0 0 1px rgb(var(--text-primary) / 0.07);
+}
+.nk-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--text-secondary));
+}
+.nk-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.8rem;
+    transition: background-color 0.15s;
+}
+.nk-row:hover {
+    background: rgb(var(--text-primary) / 0.05);
+}
+
+/* Toolbar pinned to the top of an app window */
+.nk-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.5rem 0.75rem;
+    background: rgb(var(--bg-window) / 0.82);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgb(var(--text-primary) / 0.08);
+}
+
+/* Segmented control */
+.nk-segmented {
+    display: inline-flex;
+    padding: 2px;
+    gap: 2px;
+    border-radius: 0.65rem;
+    background: rgb(var(--text-primary) / 0.07);
+}
+.nk-segmented > button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 1.75rem;
+    padding: 0 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(var(--text-secondary));
+    transition: background-color 0.15s, color 0.15s;
+}
+.nk-segmented > button:hover {
+    color: rgb(var(--text-primary));
+}
+.nk-segmented > button[aria-pressed="true"] {
+    color: rgb(var(--text-primary));
+    background: rgb(var(--bg-window));
+    box-shadow: 0 1px 3px rgb(var(--shadow-color) / 0.18);
+}
+
+.nk-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 1.25rem;
+    padding: 0 0.5rem;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    background: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l) / 0.14);
+}
+
+.nk-progress {
+    height: 6px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgb(var(--text-primary) / 0.08);
+}
+.nk-progress > div {
+    height: 100%;
+    border-radius: inherit;
+    background: hsl(var(--nk-h1) var(--nk-s) var(--nk-fg-l));
+    transition: width 0.25s ease;
+}
+
+.nk-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.8rem;
+    font-size: 13px;
+}
+.nk-banner-warn {
+    color: rgb(146 64 14);
+    background: rgb(251 191 36 / 0.16);
+}
+.nk-banner-error {
+    color: rgb(185 28 28);
+    background: rgb(239 68 68 / 0.12);
+}
+.dark .nk-banner-warn {
+    color: rgb(253 230 138);
+}
+.dark .nk-banner-error {
+    color: rgb(254 202 202);
+}
+
+/* Range sliders inside apps */
+.nk-app input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: rgb(var(--text-primary) / 0.1);
+}
+.nk-app input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: white;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 2px 6px rgb(0 0 0 / 0.25);
+    cursor: pointer;
+}
+.nk-app input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 999px;
+    background: white;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 2px 6px rgb(0 0 0 / 0.25);
+}
+
+/* ------------------------------------------------------------------------
+   Wallpapers
+   ------------------------------------------------------------------------ */
+.nk-wall-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    will-change: transform;
+    animation: nk-drift var(--drift, 40s) ease-in-out infinite alternate;
+}
+@keyframes nk-drift {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(var(--dx, 8vw), var(--dy, -6vh), 0)
+            scale(1.15);
+    }
+    100% {
+        transform: translate3d(calc(var(--dx, 8vw) * -0.6), var(--dy2, 8vh), 0)
+            scale(0.92);
+    }
+}
+
+.nk-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nk-wall-blob {
+        animation: none;
+    }
 }
 
 /* Metallic Border Effect */

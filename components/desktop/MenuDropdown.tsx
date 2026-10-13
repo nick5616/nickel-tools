@@ -135,11 +135,11 @@ export function MenuDropdown({
         <AnimatePresence>
             <motion.div
                 ref={menuRef}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.15 }}
-                className="z-[100] mt-1 bg-[rgb(var(--bg-dropdown))]/75 backdrop-blur-xl rounded-lg shadow-2xl border border-[rgb(var(--border-dropdown))] min-w-[180px] py-1"
+                initial={{ opacity: 0, scale: 0.97, y: -4 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.97, y: -4 }}
+                transition={{ type: "spring", stiffness: 520, damping: 36 }}
+                className="nk-material-thick z-[10001] mt-1 rounded-xl min-w-[200px] p-1 origin-top-left"
                 style={style}
             >
                 {items.map((item, index) => {
@@ -147,7 +147,7 @@ export function MenuDropdown({
                         return (
                             <div
                                 key={`separator-${index}`}
-                                className="h-px bg-[rgb(var(--border-dropdown))] my-1 mx-2"
+                                className="h-px bg-[rgb(var(--text-primary)/0.12)] my-1 mx-2"
                             />
                         );
                     }
@@ -166,29 +166,29 @@ export function MenuDropdown({
                             }}
                             onMouseEnter={() => setFocusedIndex(itemIndex)}
                             className={`
-                w-full text-left px-4 py-2 text-xs text-[rgb(var(--text-dropdown))] 
+                w-full text-left px-3 py-1.5 rounded-md text-[13px] text-[rgb(var(--text-primary))]
                 flex items-center justify-between gap-4
-                transition-colors
                 ${
                     isFocused
-                        ? "bg-[rgb(var(--bg-dropdown-hover))]/80"
-                        : "hover:bg-[rgb(var(--bg-dropdown-hover))]/80"
+                        ? "bg-[hsl(var(--nk-h1)_var(--nk-s)_var(--nk-fg-l))] text-[hsl(var(--nk-h1)_var(--nk-s)_var(--nk-bg-l))]"
+                        : ""
                 }
               `}
                         >
                             <div className="flex items-center gap-2">
                                 {item.icon && (
-                                    <span className="text-[rgb(var(--text-dropdown))]/70">
+                                    <span className="opacity-70">
                                         {item.icon}
                                     </span>
                                 )}
                                 <span>{item.label}</span>
                             </div>
-                            {(item.checked || item.radio) && (
-                                <span className="text-[rgb(var(--text-dropdown))]/70 text-xs">
-                                    {item.checked && <Check size={14} />}
-                                    {item.radio && (
-                                        <span className="w-2 h-2 rounded-full bg-[rgb(var(--text-dropdown))]/70" />
+                            {item.checked && (
+                                <span className="opacity-80 flex items-center">
+                                    {item.radio ? (
+                                        <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                                    ) : (
+                                        <Check size={14} />
                                     )}
                                 </span>
                             )}

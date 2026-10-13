@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppMessages } from "@/app/hooks/useAppMessages";
+import { Wallpaper } from "./Wallpaper";
 
 interface SplashScreenProps {
     isLoading: boolean;
@@ -37,41 +38,29 @@ export function SplashScreen({ isLoading }: SplashScreenProps) {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
-                    <div className="flex flex-col items-center gap-6">
-                        {/* [Ni] Nickel Logo - matching MenuBar style */}
+                    <Wallpaper />
+                    <div className="relative flex flex-col items-center gap-6">
+                        {/* The Ni element tile, plated in the current palette */}
                         <motion.div
-                            className="relative flex items-center gap-2"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{
-                                duration: 0.6,
-                                ease: "easeOut",
-                                delay: 0.1,
-                            }}
+                            className="nk-tile relative flex flex-col items-center justify-center w-28 h-28 font-sans font-black tracking-tight"
+                            style={{ ["--tile-hue" as string]: "var(--nk-h1)" }}
+                            initial={{ scale: 0.6, opacity: 0, rotate: -8 }}
+                            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
                         >
-                            <div
-                                className="w-8 h-8 rounded flex items-center justify-center font-mono text-sm font-bold"
-                                style={{
-                                    backgroundColor: "rgb(var(--bg-window))",
-                                    color: "rgb(var(--text-primary))",
-                                }}
-                            >
-                                Ni
-                            </div>
-                            <span
-                                className="font-bold text-lg font-bbh-bartle"
-                                style={{
-                                    color: "rgb(var(--text-primary))",
-                                }}
-                            >
-                                Nickel
+                            <span className="absolute top-2.5 left-3 text-xs font-mono opacity-80">
+                                28
+                            </span>
+                            <span className="text-5xl mt-2">Ni</span>
+                            <span className="text-[9px] font-mono tracking-[0.2em] opacity-80 mt-1">
+                                NICKEL
                             </span>
                         </motion.div>
 
                         {/* Message about apps - title and description components */}
                         {currentMessage && (
                             <motion.div
-                                className="flex flex-col items-center gap-2 px-4"
+                                className="nk-label flex flex-col items-center gap-2 px-4"
                                 key={currentMessageIndex}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
