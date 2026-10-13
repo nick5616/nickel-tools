@@ -44,6 +44,8 @@ export const TECHNOLOGIES = [
   "JavaScript",
   "Python",
   "Go",
+  "Java",
+  "C#",
   "HTML",
   "CSS",
   "React",
@@ -58,6 +60,11 @@ export const TECHNOLOGIES = [
   "HTMX",
   "Flask",
   "Django",
+  "FastAPI",
+  "Spring Boot",
+  "PyQt6",
+  "UWP",
+  "XAML",
   "Three.js",
   "React-Three-Fiber",
   "WebGL",
@@ -66,6 +73,11 @@ export const TECHNOLOGIES = [
   "WebAssembly",
   "LaTeX",
   "LLM APIs",
+  "PyTorch",
+  "OpenCV",
+  "Whisper",
+  "FFmpeg",
+  "Ableton Live",
   "WebSockets",
   "WebRTC",
   "Redis",
@@ -93,6 +105,9 @@ export const MEDIUMS = [
   "Pen & Ink",
   "Charcoal",
   "Sketching",
+  "Figure Drawing",
+  "Music Production",
+  "Video Editing",
 ] as const;
 export type Medium = (typeof MEDIUMS)[number];
 
@@ -134,5 +149,10 @@ export const TAGS = [
   "Quiz",
   "Brain Training",
   "Portfolio",
+  "Multiplayer",
+  "Physics",
+  "Animation",
+  "Open Source",
+  "Developer Tools",
 ] as const;
 export type Tag = (typeof TAGS)[number];

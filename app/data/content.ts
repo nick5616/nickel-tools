@@ -64,6 +64,10 @@ type EntryLink =
 export type ContentEntry = ProjectDetails &
   EntryLink & {
     id: string;
+    // true keeps the entry off every surface (desktop OS, portfolio pages,
+    // sitemap, llms.txt). It still shows up in this file, and this repo is
+    // public, so don't put anything here you wouldn't want read.
+    hide: boolean;
     surfaces: Surface[];
     desktopOnly?: DesktopOnly;
     portfolioOnly?: PortfolioOnly;
@@ -176,19 +180,27 @@ export function getCategoryIcon(category: Category): string {
 // The master content array — single source of truth for the desktop/mobile OS
 // and for the software, design, and art portfolio pages. Every project lives
 // here exactly once; `surfaces` says which page(s) render it.
+//
+// Not listed yet, waiting on details (what did I actually build there?):
+//   iHeartMedia (intern + part-time), Story Health, 66degrees (tech lead),
+//   DoorDash, Integrate, USAFacts (contract).
 export const NICKEL_SYSTEM: NickelSystem = {
-  version: "1.0.0",
+  version: "1.1.0",
   content: [
+    // -----------------------------------------------------------------------
+    // Immersive web
+    // -----------------------------------------------------------------------
     {
       id: "portfolio",
+      hide: false,
       title: "nicolebelovoskey.com",
       description:
-        "Immersive first-person art and software engineering portfolio, with interactive games and experiences thrown in for fun. Built in Three.js.",
+        "My art and software portfolio as a first-person 3D world you can walk around in, with games and little experiences hidden inside. Built in Three.js.",
       url: "https://nicolebelovoskey.com",
       category: "Immersive Web",
       date: "2025-01",
       thumbnail: "/project-screenshots/3dportfolio.png",
-      why: "I wanted to create a portfolio that was more than just a collection of links. The first-person 3D experience makes exploring my work feel like an adventure, and it showcases both my technical skills and creative vision in one cohesive experience.",
+      why: "I wanted my portfolio to feel like a place you visit instead of a list of links you skim. Walking through it should feel like exploring, and it shows the technical side and the creative side of me in one place.",
       tech: [
         "Three.js",
         "WebGL",
@@ -198,29 +210,192 @@ export const NICKEL_SYSTEM: NickelSystem = {
         "Go",
         "Google Cloud Platform",
       ],
-      tags: ["3D Design", "Interactive Design"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
       source: "https://github.com/nick5616/3d-portfolio-website",
       surfaces: ["desktop", "software", "design"],
       softwareOverride: {
         title: "Nicole's World",
         description:
-          "I made a first person 3D environment on the web, where the user can walk around, sprint, jump, collect gems, view my art in a digital upscale museum, see my software projects as if they are physically walking up to them, draw a picture and submit it, with the potential to see it hung up on the wall, interact with an omnipotent and deriding computer from the cartoon 'Courage the Cowardly Dog', Relax in a tranquil forest, or practice multiplication in a 3D adaptation of 'Meteor Multiplication'.",
-        why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Building a fully explorable 3D world pushed my skills across graphics programming, spatial UX, and browser performance. It was fun. Also I wanted it to exist. Isn't that reason enough?",
+          "A first-person 3D world on the web. You can walk, sprint, and jump around, collect gems, browse my art in a fancy digital museum, walk right up to my software projects, draw a picture and submit it (it might end up hanging on the wall), get roasted by the omnipotent computer from Courage the Cowardly Dog, chill in a quiet forest, or practice multiplication in a 3D take on Meteor Multiplication.",
+        why: "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Making a world you can actually walk around in meant working through graphics programming, spatial UX, and keeping it all running smoothly in a browser. It was fun. Also I wanted it to exist. Isn't that reason enough?",
         tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
       },
     },
     {
+      id: "art-room",
+      hide: false,
+      title: "Art Room",
+      description:
+        "A gallery room inside the holodeck where my paintings hang on the walls. Walk up close to look at the brushwork or step back to see the whole piece.",
+      url: "https://nicolebelovoskey.com/holodeck/art",
+      category: "Immersive Web",
+      date: "2026-02",
+      why: "Art looks different on a wall than in a grid of thumbnails. Being able to approach a piece and step away from it changes how you experience it, and I wanted that in the browser. The art is served from a small Go API backed by Cloud Storage.",
+      tech: [
+        "TypeScript",
+        "React",
+        "Three.js",
+        "React-Three-Fiber",
+        "WebGL",
+        "Go",
+        "Google Cloud Storage",
+        "Docker",
+      ],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/3d-portfolio-website",
+      backendSource: "https://github.com/nick5616/holodeck-art-api",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "art-museum",
+      hide: false,
+      title: "Art Museum",
+      description:
+        "A multi-room virtual museum inside the holodeck that holds my art collection. Wander through it at your own pace.",
+      url: "https://nicolebelovoskey.com/art-gallery",
+      category: "Immersive Web",
+      date: "2025-01",
+      why: "Going from one room to a whole museum meant thinking like an architect: how people find their way around, how pacing works from room to room, and what story the layout tells. All inside a browser tab.",
+      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/3d-portfolio-website",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "software-showroom",
+      hide: false,
+      title: "Software Showroom",
+      description:
+        "Walk up to screens in a 3D room and use my projects right there on them. Press escape to get your cursor back.",
+      url: "https://nicolebelovoskey.com/software",
+      category: "Immersive Web",
+      date: "2025-01",
+      why: "It seemed like a really sci-fi way to showcase my projects.",
+      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/3d-portfolio-website",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "courage-computer",
+      hide: false,
+      title: "Courage Computer Room",
+      description:
+        "A retro computer lab inside the holodeck, starring the smug, all-knowing computer from Courage the Cowardly Dog.",
+      url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
+      category: "Immersive Web",
+      date: "2025-11",
+      why: "I wanted to capture the feeling of an old computer room as a space you can stand in. It's environmental storytelling with a lot of nostalgia, and a computer that's mean to you.",
+      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/3d-portfolio-website",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "math-room",
+      hide: false,
+      title: "Math Room",
+      description:
+        "A 3D room inside the holodeck where equations, shapes, and math concepts are objects you can walk around and explore.",
+      url: "https://nicolebelovoskey.com/holodeck/math",
+      category: "Immersive Web",
+      date: "2025-01",
+      why: "Math is spatial. I wanted to see what it looks like when a math idea is an environment instead of notation on a page.",
+      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/3d-portfolio-website",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "plasma-sphere",
+      hide: false,
+      title: "Plasma Sphere",
+      description:
+        "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
+      url: "https://sphere.saucedog.art",
+      category: "Experiments",
+      date: "2026-04",
+      why: "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other.",
+      tech: ["JavaScript", "Three.js", "WebGL"],
+      tags: [
+        "3D Design",
+        "Interactive Design",
+        "Touch Interactions",
+        "Physics",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/plasma-sphere",
+      surfaces: ["desktop", "software", "design"],
+      desktopOnly: { openInNewTab: false },
+    },
+    {
+      id: "sphere-website",
+      hide: false,
+      title: "Sphere Website",
+      description:
+        "A vanilla Three.js site built around a spinning 3D sphere. The hello world of 3D on the web.",
+      url: "https://tiny-sorbet-aefcf4.netlify.app/",
+      category: "Immersive Web",
+      date: "2023-11",
+      why: "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D.",
+      tech: ["JavaScript", "Three.js", "WebGL"],
+      tags: ["3D Design", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/sphere-website",
+      surfaces: ["desktop", "software"],
+    },
+
+    // -----------------------------------------------------------------------
+    // Product UI, mobile, and social
+    // -----------------------------------------------------------------------
+    {
+      id: "tierlistify",
+      hide: false,
+      title: "tierlistify",
+      description:
+        "Rank anything, made for your phone. Drag items into tiers with your thumb and share the result.",
+      url: "https://tierlistify.com",
+      category: "Social App",
+      date: "2025-09",
+      thumbnail: "/project-screenshots/tierlistifytierlist.png",
+      why: "I thought the Tiermaker mobile site could use some improvement. Dragging things between tiers on a phone was frustrating, so I built one where touch is the main way you use it, not an afterthought, with a clean UI that stays out of the way of the ranking.",
+      tech: ["TypeScript", "React"],
+      tags: [
+        "Mobile UX",
+        "Touch Interactions",
+        "Drag & Drop",
+        "Progressive Web App",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/tierlistify",
+      surfaces: ["desktop", "software", "design"],
+      portfolioOnly: {
+        preview: {
+          mobileScreens: [
+            "https://tierlistify.com/init",
+            "https://tierlistify.com/creation/1776295779582",
+          ],
+        },
+      },
+    },
+    {
       id: "friendex",
+      hide: false,
       title: "Friendex",
       description:
-        "A pokédex for your friends. A zany mobile-first social app that lets you collect and organize information about the people in your life. Built with a focus on delightful mobile interactions and intuitive navigation.",
+        "A pokédex for your friends. A zany, mobile-first app for collecting and organizing what you know about the people in your life.",
       url: "https://friendex.online",
       category: "Social Tools",
       date: "2025-10",
       thumbnail: "/project-screenshots/friendex.png",
-      why: "I created Friendex because I wanted a fun, gamified way to remember details about friends. The pokédex metaphor makes it engaging, and the mobile-first design ensures it's social",
+      why: "I wanted a fun way to remember the details about my friends that felt like a game, not a contacts app. The pokédex idea makes filling it in feel like collecting, and I designed it phone-first because that's what you have on you when you're out with people.",
       tech: ["TypeScript", "React", "Firebase Auth"],
-      tags: ["Mobile-First", "Social App", "Web Development", "Responsive UI"],
+      tags: [
+        "Mobile-First",
+        "Social App",
+        "Web Development",
+        "Responsive UI",
+        "Open Source",
+      ],
       source: "https://github.com/nick5616/friendex",
       surfaces: ["desktop", "software", "design"],
       portfolioOnly: {
@@ -234,14 +409,17 @@ export const NICKEL_SYSTEM: NickelSystem = {
     },
     {
       id: "videogamequest",
+      hide: false,
       title: "RPG Quests",
       description:
-        "Convert journal entries into video game quests, and live your life like an RPG.",
+        "Write a journal entry and get it back as video game quests, so you can live your life like an RPG.",
+      // TODO: the link and the previews point at different domains
+      // (rpg-quests.netlify.app vs videogamequest.me). Pick the live one.
       url: "https://rpg-quests.netlify.app/",
       category: "AI / Productivity",
       date: "2025-06",
       thumbnail: "/project-screenshots/videogamequest.png",
-      why: "I built videogamequest because I wanted to make productivity and journaling more engaging. By framing life events as RPG quests, it adds a layer of fun and motivation to tracking your progress and achieving goals.",
+      why: "I wanted journaling and getting things done to feel more like playing a game. Turning what you write into quests gives you something to chase, and finishing one feels like leveling up instead of crossing off a chore.",
       tech: [
         "TypeScript",
         "React",
@@ -249,6 +427,7 @@ export const NICKEL_SYSTEM: NickelSystem = {
         "Framer Motion",
         "Nest.js",
         "Node.js",
+        "LLM APIs",
       ],
       tags: [
         "AI Integration",
@@ -267,37 +446,425 @@ export const NICKEL_SYSTEM: NickelSystem = {
       },
     },
     {
-      id: "tierlistify",
-      title: "tierlistify",
+      id: "passionfruit",
+      hide: false,
+      title: "Passionfruit",
       description:
-        "Rank anything, optimized for your phone. I built it because I thought the Tiermaker mobile site could use some improvement.",
-      url: "https://tierlistify.com",
-      category: "Social App",
-      date: "2025-09",
-      thumbnail: "/project-screenshots/tierlistifytierlist.png",
-      why: "I built tierlistify because I was frustrated with how poorly existing tier list tools worked on mobile. I wanted to create something that felt native to touch interfaces, with smooth drag-and-drop interactions and a clean, focused UI.",
+        "Keep track of every project you're working on in one place, without it feeling like a work tracker.",
+      url: "https://yieldpassionfruit.netlify.app",
+      category: "Creative Productivity",
+      date: "2025-11",
+      thumbnail: "/project-screenshots/passionfruit.png",
+      why: "I have a lot of hobbies that I bounce between. I was getting overwhelmed by how many projects I had going, so I built Passionfruit to keep track of them in a way that wouldn't stifle my creativity.",
       tech: ["TypeScript", "React"],
+      tags: ["Project Management", "Productivity Tools", "Open Source"],
+      source: "https://github.com/nick5616/universe",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "life-graph",
+      hide: false,
+      title: "Life Network",
+      description:
+        "Your life's goals as a 3D network: what depends on what, what to prioritize, and how it all connects.",
+      url: "https://yieldpassionfruit.netlify.app/life-graph",
+      category: "Creative Productivity",
+      date: "2026-03",
+      why: "I wanted to see how my goals relate to each other and what has to happen first. It's generic so you can map your own. It's meant to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
+      tech: ["TypeScript", "React", "Three.js", "WebGL"],
       tags: [
-        "Mobile UX",
-        "Touch Interactions",
-        "Drag & Drop",
-        "Progressive Web App",
+        "AI Integration",
+        "3D Design",
+        "Interactive Design",
+        "Data Visualization",
+        "Open Source",
       ],
-      source: "https://github.com/nick5616/tierlistify",
+      source:
+        "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
+      surfaces: ["desktop", "software"],
+      desktopOnly: { openInNewTab: false },
+    },
+    {
+      id: "the-circle",
+      hide: false,
+      title: "The Circle",
+      description:
+        "One persistent global room where up to 8 people can be on camera and mic at once over a WebRTC mesh. Everyone else watches as the audience. No accounts, no room codes, no database.",
+      url: "https://live.saucedog.art/",
+      category: "Social Tools",
+      date: "2026-04",
+      why: "I wanted something that felt truly live. Not a chat box, but actual video with strangers. Wiring up WebRTC peer connections, Django Channels signaling, and Redis room state from scratch was the challenge. (Visit it directly. It won't work inside an iframe.)",
+      tech: [
+        "React",
+        "TypeScript",
+        "Django",
+        "WebSockets",
+        "WebRTC",
+        "Redis",
+        "Docker",
+      ],
+      tags: ["Real-time", "Web Development", "Open Source"],
+      source: "https://github.com/nick5616/the-circle",
+      surfaces: ["desktop", "software"],
+      portfolioOnly: { preview: "none" },
+    },
+    {
+      id: "nickel-tools",
+      hide: false,
+      title: "Nickel Tools",
+      description:
+        "A desktop OS in your browser: app grid, app tray, draggable windows, and a swipeable mobile mode. Every little web thing I make lives here.",
+      url: "https://nickeltools.dev/desktop",
+      category: "Engineering",
+      date: "2025-11",
+      why: 'I wanted a website that was "a website of websites" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since pretty much everyone already knows how to get around one.',
+      tech: ["TypeScript", "React", "Next.js"],
+      tags: [
+        "Interactive Design",
+        "Responsive UI",
+        "Touch Interactions",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/nickel-tools",
       surfaces: ["desktop", "software", "design"],
-      portfolioOnly: {
-        preview: {
-          mobileScreens: [
-            "https://tierlistify.com/init",
-            "https://tierlistify.com/creation/1776295779582",
-          ],
-        },
-      },
+      desktopOnly: { title: "Nickel Tools (INCEPTION!!!)" },
+    },
+    {
+      id: "boards",
+      // Hidden until it has a real description and a why.
+      hide: true,
+      title: "Boards",
+      description: "boards.saucedog.art",
+      url: "https://boards.saucedog.art",
+      category: "Experiments",
+      date: "2026-05",
+      tags: ["Open Source"],
+      source: "https://github.com/nick5616/boards",
+      surfaces: ["desktop", "software"],
+    },
+
+    // -----------------------------------------------------------------------
+    // Design systems and color
+    // -----------------------------------------------------------------------
+    {
+      id: "color-engine",
+      hide: false,
+      title: "Advanced Color Scheme Generator",
+      description:
+        "Generates color palettes from color theory harmonies and exports them as theme JSON you can drop straight into a project.",
+      route: "/advanced-color-scheme-generator",
+      category: "Design System",
+      why: "I was tired of picking palettes by hand. I wanted something that starts from real color theory and keeps contrast in check, so what comes out is usable in a design system and not just pretty.",
+      tech: ["TypeScript", "React", "Canvas API", "Next.js"],
+      tags: ["Color Theory Algorithms", "Design System", "Accessibility"],
+      surfaces: ["desktop", "design"],
+      desktopOnly: { windowHeight: 700 },
+    },
+    {
+      id: "routine",
+      hide: false,
+      title: "Routine",
+      description:
+        "A daily routine page that generates analogous color schemes on the fly, every one of them WCAG AAA compliant.",
+      url: "https://nick5616.github.io/routine/",
+      category: "Design System",
+      date: "2020-03",
+      why: "I wanted to play with algorithmic color theory while making something I'd actually use. Getting palettes to stay harmonious and still pass the strictest contrast level was the fun constraint.",
+      tech: ["JavaScript"],
+      tags: [
+        "Design System",
+        "Accessibility",
+        "Color Theory Algorithms",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/routine",
+      surfaces: ["desktop", "software", "design"],
+    },
+
+    // -----------------------------------------------------------------------
+    // Music and audio
+    // -----------------------------------------------------------------------
+    {
+      id: "smart-piano",
+      hide: false,
+      title: "Smart Piano",
+      description:
+        "An online piano that looks at the key you're in and what you just played, then suggests good next notes.",
+      route: "/smart-piano",
+      category: "Music",
+      date: "2025-11",
+      thumbnail: "/project-screenshots/smartpiano.png",
+      why: "I wanted a way to learn music theory by playing instead of memorizing scales. The suggestions help you make something that sounds nice even if you're not an expert yet.",
+      tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
+      tags: ["Music Theory Algorithms", "Interactive Design", "Open Source"],
+      source: "https://github.com/nick5616/nickel-tools",
+      surfaces: ["desktop", "software"],
+      desktopOnly: { windowWidth: 1400 },
+    },
+    {
+      id: "midimuse",
+      // TODO: if this is the same thing as Smart Piano, merge the two entries.
+      hide: true,
+      title: "MidiMuse",
+      description:
+        "A piano roll in the browser where you place notes and chords, and it suggests combinations that fit the key. Exports to MIDI.",
+      route: "#",
+      category: "Music",
+      status: "in-development",
+      why: "Next up: hover to preview how a note or chord sounds, and a sliding window of musical context so suggestions follow the phrase and not just the key.",
+      tags: ["Music Theory Algorithms", "MIDI", "Interactive Design"],
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "smart-midi-recorder",
+      hide: false,
+      title: "Smart MIDI Recorder",
+      description:
+        "Records what you play on a MIDI keyboard and shows the key, the scale, and good next notes in real time to help you improvise.",
+      url: "https://music.nickeltools.dev/smart-midi-recorder/",
+      category: "Music",
+      date: "2026-04",
+      why: 'I play piano and wanted help improvising with more confidence. It surfaces the "right" notes for the key I\'m in while still capturing everything I play.',
+      tech: ["JavaScript", "Web Audio API", "HTML", "CSS"],
+      tags: [
+        "Music Theory Algorithms",
+        "Interactive Design",
+        "Real-time",
+        "MIDI",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/song-visualizer",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "pitch-hero",
+      hide: false,
+      title: "Pitch Hero",
+      description:
+        "Sing or play a MIDI keyboard to hit scrolling notes as they cross the target line. Scores your pitch accuracy in real time from your mic or keyboard.",
+      url: "https://music.nickeltools.dev/pitch-hero/",
+      category: "Music",
+      date: "2026-04",
+      why: "I wanted pitch training to feel like a rhythm game instead of an exercise. I built the pitch detection and the scrolling note renderer from scratch on the Web Audio API.",
+      tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
+      tags: [
+        "Music Theory Algorithms",
+        "Interactive Design",
+        "Real-time",
+        "MIDI",
+        "Pitch Detection",
+        "Gamification",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/song-visualizer",
+      surfaces: ["desktop", "software", "design"],
+    },
+    {
+      id: "song-visualizer",
+      hide: false,
+      title: "Song Visualizer",
+      description:
+        "Turns music into animated particles, waveforms, geometry, and spectrum effects. Upload an MP3 or use your mic, then tweak the color, speed, and intensity.",
+      url: "https://music.nickeltools.dev/song-visualizer/",
+      category: "Music",
+      date: "2026-04",
+      why: "I wanted to see my music, not just hear it. Hooking the Web Audio API up to a canvas and watching a track turn into motion in real time never gets old.",
+      tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
+      tags: [
+        "Audio Processing",
+        "Interactive Design",
+        "Real-time",
+        "Animation",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/song-visualizer",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "audio-to-midi",
+      hide: false,
+      title: "Audio → MIDI",
+      description:
+        "Converts audio to MIDI with the YIN pitch detection algorithm. Drop in a WAV or MP3, tune the BPM and quantization, then download the MIDI file.",
+      route: "/audio-to-midi",
+      category: "Music",
+      date: "2026-04-16",
+      tags: ["Audio Processing", "Pitch Detection", "MIDI"],
+      surfaces: ["desktop"],
+      desktopOnly: { windowWidth: 720, windowHeight: 800 },
+    },
+    {
+      id: "voice-lab",
+      hide: false,
+      title: "VoiceLab",
+      description:
+        "A Python desktop app for singers that tracks vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency.",
+      url: "https://github.com/nick5616/VoiceLab",
+      category: "Machine Learning",
+      date: "2025-12",
+      why: "I wanted objective feedback on my singing practice instead of relying only on my ear. Tracking the numbers across takes makes it easy to see what's actually improving.",
+      tech: ["Python"],
+      tags: [
+        "Machine Learning",
+        "Audio Processing",
+        "Pitch Detection",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/VoiceLab",
+      surfaces: ["desktop", "software"],
+      portfolioOnly: { preview: "none" },
+    },
+    {
+      id: "bird-dog",
+      // TODO: add a link (SoundCloud, Spotify, etc.) before unhiding.
+      hide: true,
+      title: "Bird Dog",
+      description:
+        "Songs and beats I produce in Ableton under the name Bird Dog.",
+      route: "#",
+      category: "Music",
+      mediums: ["Music Production"],
+      tech: ["Ableton Live"],
+      surfaces: ["desktop"],
+    },
+
+    // -----------------------------------------------------------------------
+    // ML, computer vision, video, and data
+    // -----------------------------------------------------------------------
+    {
+      id: "chaos",
+      hide: false,
+      title: "CHAOS",
+      description:
+        "Counter-Strike Highlight Analysis and Organization System. Point it at hours of gameplay footage and it finds the moments worth keeping (kills, funny voice chat, good conversations) and clips them for you. Runs entirely on your own machine.",
+      url: "https://github.com/nick5616/CHAOS",
+      category: "Machine Learning",
+      // TODO: push the October 2026 rewrite before featuring this.
+      date: "2026-10",
+      thumbnail: "/project-screenshots/chaos.png",
+      why: "I have 700+ GB of my own Counter-Strike footage from 10+ years of playing and making videos, and scrubbing through it by hand was never going to happen. The rewrite made it a lot faster and more accurate. Classical computer vision does most of the work and OCR only runs on small crops. It samples every couple of seconds, then binary searches for the exact frame of a kill, which was the big speed win. An audio tagger catches laughter in voice chat, Whisper adds burned-in subtitles, and a resource planner sizes the workers from each model's measured memory so it doesn't eat my whole computer. It can resume where it left off, recompute only what changed, and throttle itself while I'm gaming. No LLMs, no cloud calls.",
+      tech: ["Python", "PyQt6", "OpenCV", "PyTorch", "Whisper", "FFmpeg"],
+      tags: [
+        "Machine Learning",
+        "Computer Vision",
+        "OCR",
+        "Speech-to-Text",
+        "Audio Processing",
+        "Video Processing",
+        "Batch Processing",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/CHAOS",
+      surfaces: ["desktop", "software"],
+      portfolioOnly: { preview: "none" },
+    },
+    {
+      id: "chaos-reels",
+      hide: true,
+      title: "CHAOS Reels",
+      description:
+        "An idea built on top of CHAOS: an LLM directs edits of my real clips into short vertical reels. No generated pixels, just smarter editing.",
+      route: "#",
+      category: "Video",
+      status: "experimental",
+      tech: ["Python", "LLM APIs", "FFmpeg"],
+      tags: ["Video Processing", "AI Integration"],
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "batch-analyzer",
+      hide: false,
+      title: "Batch Analyzer",
+      description:
+        "Ask the same questions (like 'How many books are in this image?') about a whole batch of product images at once. Bring your own LLM.",
+      url: "https://batch-analyzer.netlify.app/",
+      category: "AI / Productivity",
+      date: "2025-12",
+      why: "While doing product image analysis work, I kept asking the same questions about image after image. This lets you write the questions once and run them across an entire batch, with whichever model you want.",
+      tech: ["TypeScript", "React", "LLM APIs"],
+      tags: [
+        "Image Processing",
+        "Batch Processing",
+        "AI Integration",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/batch-item-analyzer",
+      surfaces: ["desktop", "software"],
+      desktopOnly: { contentfulDescription: BatchAnalyzerDescription },
+    },
+    {
+      id: "me-timelines",
+      // Private, for my own use. Hidden on purpose.
+      hide: true,
+      title: "Me Timelines",
+      description:
+        "A local app that goes through a big set of my photos and automatically makes side-by-side comparisons across time, matching face and pose so each pair lines up, with dates labeled.",
+      route: "#",
+      category: "Machine Learning",
+      tech: ["Python", "FastAPI"],
+      tags: ["Computer Vision", "Image Processing"],
+      surfaces: ["desktop"],
+    },
+    {
+      id: "cs-videos",
+      // TODO: add the YouTube channel link before unhiding.
+      hide: true,
+      title: "Counter-Strike Videos",
+      description:
+        "About ten years of editing and publishing my own Counter-Strike clips on YouTube.",
+      route: "#",
+      category: "Video",
+      mediums: ["Video Editing"],
+      tags: ["Video Processing"],
+      surfaces: ["desktop"],
+    },
+    {
+      id: "sw-viz",
+      hide: false,
+      title: "Star Wars Ship Costs Visualizer",
+      description:
+        "An interactive chart of what Star Wars starships cost, from X-wings to Star Destroyers, using the SWAPI dataset.",
+      url: "https://star-wars-spending-viz.netlify.app",
+      category: "Experiments",
+      date: "2023-11",
+      why: "A fun excuse to mix Star Wars with data viz. I pulled the ship data from the Star Wars API, cleaned it up on a Nest backend, and charted it so you can compare ships side by side.",
+      tech: ["React", "TypeScript", "Nivo", "Nest.js", "Node.js"],
+      tags: ["Data Visualization", "Web Development", "Open Source"],
+      source: "https://github.com/nick5616/sw-viz-fe",
+      backendSource: "https://github.com/nick5616/sw-viz-be",
+      surfaces: ["desktop", "software"],
+    },
+
+    // -----------------------------------------------------------------------
+    // Engineering and tools
+    // -----------------------------------------------------------------------
+    {
+      id: "sre-dashboard",
+      hide: false,
+      title: "SRE Dashboard",
+      description:
+        "A dashboard for monitoring services, incidents, and logs. A Python/Flask backend serves hypermedia through HTMX, and the frontend is Lit web components.",
+      url: "https://sre.nickeltools.dev",
+      category: "Engineering",
+      date: "2025-09",
+      why: "I wanted to try a stack that leans into the platform instead of abstracting it away. HTMX lets the server own state and send back HTML fragments, which cuts out a lot of client-side complexity. Lit is what web components always should have been: lightweight, declarative, and framework-agnostic. I don't think enough people know how powerful the native component model has gotten.",
+      tech: ["Python", "Lit", "HTMX", "Flask"],
+      tags: [
+        "SRE",
+        "Dashboard",
+        "Data Visualization",
+        "Developer Tools",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/lit-htmxperiments",
+      surfaces: ["desktop", "software"],
     },
     {
       id: "resume-builder",
+      hide: false,
       title: "Online LaTeX Resume Builder",
-      description: "WASM-powered LaTeX compiler. Zero config, total privacy.",
+      description:
+        "A LaTeX resume editor that compiles in your browser with WebAssembly. Nothing to set up, and your resume never leaves your machine.",
       route: "/resume-editor",
       category: "Engineering",
       date: "2023-06",
@@ -306,20 +873,123 @@ export const NICKEL_SYSTEM: NickelSystem = {
       surfaces: ["desktop"],
     },
     {
-      id: "color-engine",
-      title: "Advanced Color Scheme Generator",
+      id: "factory-orchestrator",
+      hide: false,
+      title: "Factory Orchestrator",
       description:
-        "Algorithmic palette generator based on harmonic color theory. Generate and export theme JSON.",
-      route: "/advanced-color-scheme-generator",
-      category: "Design System",
-      why: "I built this because I was tired of manually creating color palettes and wanted a tool that could generate harmonious color schemes based on established color theory principles. It's particularly useful for creating accessible, visually pleasing design systems with proper contrast ratios.",
-      tech: ["TypeScript", "React", "Canvas API", "Next.js"],
-      tags: ["Color Theory Algorithms"],
-      surfaces: ["desktop", "design"],
-      desktopOnly: { windowHeight: 700 },
+        "A test harness device makers use on the factory floor to flash and test Windows on their hardware. I helped build it at Microsoft and helped open-source it.",
+      url: "https://github.com/microsoft/FactoryOrchestrator",
+      category: "Engineering",
+      // TODO: add the year.
+      why: "This was my Microsoft internship. Besides the app itself, I worked with Ted, a tech writer, on the product docs and the open-source announcement. It's still my go-to story for working with someone outside engineering.",
+      tech: ["C#", "UWP", "XAML"],
+      tags: ["Open Source", "Developer Tools"],
+      source: "https://github.com/microsoft/FactoryOrchestrator",
+      surfaces: ["desktop", "software"],
+      portfolioOnly: { preview: "none" },
+    },
+    {
+      id: "amex-onboarding-validation",
+      // Internal work, nothing to link to. Probably better on the resume.
+      hide: true,
+      title: "Card Onboarding Validation Service",
+      description:
+        "A Spring Boot microservice that validates form data for commercial credit card onboarding, built during my American Express internship.",
+      route: "#",
+      category: "Engineering",
+      tech: ["Java", "Spring Boot"],
+      surfaces: ["software"],
+    },
+    {
+      id: "interview-tracker",
+      hide: true,
+      title: "Interview Tracker",
+      description:
+        "Two tools in one for job searching. A case-manager view follows every interview process from first recruiter message to outcome, with inline notes and fast add and edit. A learning view balances the CS topics I'm studying. Folding sections keep everything scannable, and every dropdown is editable in the app instead of hardcoded.",
+      route: "#",
+      category: "AI / Productivity",
+      status: "in-development",
+      why: "I wanted a real three-tier app with a proper backend, not a client talking straight to a database, and deployments that run end to end from scripts in the repo.",
+      tech: ["TypeScript", "React", "Firebase Auth", "Google Cloud Platform"],
+      tags: ["Productivity Tools", "Project Management"],
+      surfaces: ["desktop", "software"],
+    },
+
+    // -----------------------------------------------------------------------
+    // Games and education
+    // -----------------------------------------------------------------------
+    {
+      id: "wizard-wars",
+      hide: false,
+      title: "Wizard Wars",
+      description:
+        "A 3D multiplayer wizard first-person shooter that runs in your browser. Nothing to download, just open it and play.",
+      url: "https://wizardwars.saucedog.art",
+      category: "Games",
+      date: "2026-05",
+      // TODO: add a why.
+      tech: ["WebRTC", "Three.js", "React", "React-Three-Fiber"],
+      tags: [
+        "Multiplayer",
+        "Real-time",
+        "3D Design",
+        "Physics",
+        "Open Source",
+      ],
+      source: "https://github.com/nick5616/wizard-wars",
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "cosmic-connect-four",
+      hide: true,
+      title: "Cosmic Connect Four",
+      description:
+        "Multiplayer Connect Four in space, in some alternate dimension. The board rotates up toward you, you hold the chip and dangle it over the slot, then drop it and watch it fall. It should feel like playing Connect Four with God.",
+      route: "#",
+      category: "Games",
+      status: "in-development",
+      tech: ["Three.js", "React-Three-Fiber", "WebGL"],
+      tags: [
+        "Multiplayer",
+        "3D Design",
+        "Physics",
+        "Animation",
+        "Interactive Design",
+      ],
+      surfaces: ["desktop", "software", "design"],
+    },
+    {
+      id: "brains-games-gauntlet",
+      hide: true,
+      title: "The Gauntlet",
+      description:
+        "A 10-minute daily brain workout: ten one-minute rounds with short breaks, in a quirky hand-drawn style. It trains things that help in real life, like working memory and mental math, and includes rounds where you remember something early and get quizzed on it at the end.",
+      route: "#",
+      category: "Education",
+      status: "in-development",
+      why: "I want a daily ritual that makes you sharper in real life, not just better at the app. Right now every game is playable on its own so I can tell which ones are actually good, and the curated daily set comes after that. I also want learning tracks people actually want, like picking up a new alphabet (learning Cyrillic was so fun).",
+      tags: ["Brain Training", "Gamification"],
+      surfaces: ["desktop", "software"],
+    },
+    {
+      id: "pokemon-or-technology",
+      hide: false,
+      title: "Pokemon or Technology",
+      description:
+        "Test your knowledge! Can you tell a Pokémon name from a technology term?",
+      route: "/pokemon-or-technology",
+      category: "Games",
+      date: "2025-10",
+      why: "One day I noticed Pokémon and technology have similar sounding names, so I made this quiz game.",
+      tech: ["TypeScript", "React", "Next.js"],
+      tags: ["Quiz"],
+      surfaces: ["desktop", "software"],
+      desktopOnly: { windowWidth: 300, windowHeight: 400 },
+      softwareOverride: { date: "Sometime in like Oct 2025" },
     },
     {
       id: "choice-engine",
+      hide: false,
       title: "Choice Picker",
       description:
         "Spin the wheel to make decisions! Add your options and let chance decide.",
@@ -328,62 +998,47 @@ export const NICKEL_SYSTEM: NickelSystem = {
       surfaces: ["desktop"],
     },
     {
-      id: "passionfruit",
-      title: "Passionfruit",
+      id: "cs2-workshop",
+      hide: true,
+      title: "CS2 Workshop Experiments",
       description:
-        "Conveniently track and understand all the projects you are working on",
-      url: "https://yieldpassionfruit.netlify.app",
-      category: "Creative Productivity",
-      date: "2025-11",
-      thumbnail: "/project-screenshots/passionfruit.png",
-      why: "I have a lot of infrequent hobbies that I like to switch between. I noticed I was feeling overwhelmed by all the projects I was working on, so I built Passionfruit to help me keep track of them in a way that wouldn't stifle my creativity.",
-      tech: ["TypeScript", "React"],
-      tags: ["Project Management", "Productivity Tools"],
-      source: "https://github.com/nick5616/universe",
-      surfaces: ["desktop", "software"],
+        "Messing around with making Counter-Strike 2 Workshop maps and weapon skins.",
+      route: "#",
+      category: "Gaming",
+      status: "experimental",
+      tags: ["3D Design"],
+      surfaces: ["desktop"],
     },
     {
-      id: "life-graph",
-      title: "Life Network",
+      id: "new-media-website",
+      hide: false,
+      title: "New Media Class Website",
       description:
-        "A 3D visualization of your life's goals, prioritization, and dependencies",
-      url: "https://yieldpassionfruit.netlify.app/life-graph",
-      category: "Creative Productivity",
-      date: "2026-03",
-      why: "I wanted to model relationships between my goals and their prerequisites, and how my goals are related to each other. I've made it generic so you can use it for your own goals. It's intended to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best.",
-      tech: ["TypeScript", "React", "Three.js", "WebGL"],
-      tags: ["AI Integration", "3D Design", "Interactive Design"],
-      source:
-        "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx",
+        "My first real website, from a 2019 college class. It explores the media I consume and polls my classmates on theirs.",
+      url: "https://new-media-college-class.netlify.app/",
+      category: "Experiments",
+      date: "2019-10",
+      why: "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere.",
+      tech: ["HTML", "CSS", "JavaScript"],
+      tags: ["Open Source"],
+      source: "https://github.com/nick5616/newMediaWebsite",
       surfaces: ["desktop", "software"],
-      desktopOnly: { openInNewTab: false },
     },
-    {
-      id: "smart-piano",
-      title: "Smart Piano",
-      description:
-        "An online piano that uses the key you're in and the musical context to suggest the next notes to play",
-      route: "/smart-piano",
-      category: "Music",
-      date: "2025-11",
-      thumbnail: "/project-screenshots/smartpiano.png",
-      why: "I wanted to create a tool that helps people learn music theory through play. Instead of just showing scales or chords, Smart Piano provides real-time musical guidance, making it easier to create pleasing melodies even if you're not an expert musician.",
-      tech: ["TypeScript", "React", "Web Audio API", "Next.js"],
-      tags: ["Music Theory Algorithms"],
-      source: "https://github.com/nick5616/nickel-tools",
-      surfaces: ["desktop", "software"],
-      desktopOnly: { windowWidth: 1400 },
-    },
+
+    // -----------------------------------------------------------------------
+    // Art
+    // -----------------------------------------------------------------------
     {
       id: "saucedog-art",
+      hide: false,
       title: "saucedog.art",
       description:
-        "My art portfolio from 2022-2023. A collection of digital art, illustrations, and creative projects.",
+        "My art portfolio from 2022 to 2023: digital art, illustration, and character design.",
       url: "https://saucedog.art",
       category: "Art",
       date: "2023-02",
       thumbnail: "/project-screenshots/oldartportfolio.png",
-      why: "I created saucedog.art as a dedicated space to showcase my digital art work. It represents a period of intense creative exploration where I was learning new techniques, developing my style, and creating pieces that combined my interests in technology and art.",
+      why: "This covers a stretch where I was learning a lot of new techniques and figuring out my style, so it got a site of its own.",
       mediums: [
         "Digital Art",
         "Illustration",
@@ -392,93 +1047,15 @@ export const NICKEL_SYSTEM: NickelSystem = {
       ],
       tags: ["Portfolio"],
       surfaces: ["desktop", "art"],
-      artOverride: {
-        description:
-          "My digital art portfolio from 2022-2023, featuring a collection of digital illustrations, character designs, and creative experiments. A showcase of my journey exploring digital art and visual storytelling.",
-      },
     },
-    {
-      id: "brains-games-gauntlet",
-      title: "Brains Games Gauntlet",
-      description:
-        "A series of games designed to improve mental math, working memory, creativity, etc",
-      route: "#",
-      category: "Education",
-      status: "in-development",
-      tags: ["Brain Training"],
-      surfaces: ["desktop"],
-    },
-    {
-      id: "plasma-sphere",
-      title: "Plasma Sphere",
-      description:
-        "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
-      url: "https://sphere.saucedog.art",
-      category: "Experiments",
-      date: "2026-04",
-      why: "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for  the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other.",
-      tech: ["JavaScript", "Three.js", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/plasma-sphere",
-      surfaces: ["desktop", "software"],
-      desktopOnly: { openInNewTab: false },
-    },
-    {
-      id: "chaos",
-      title: "CHAOS",
-      description:
-        "Counter-Strike Highlight Analysis and Organization System. A tool that batch processes video game footage and filters noteworthy in-game moments using machine learning (OCR, Speech-To-Text) (Desktop app on hiatus).",
-      url: "https://github.com/nick5616/CHAOS",
-      category: "Machine Learning",
-      date: "2025-10",
-      thumbnail: "/project-screenshots/chaos.png",
-      why: "As a Counter-Strike player, I wanted to automatically find and organize my best plays from hours of gameplay footage. Manually scrubbing through videos is tedious, so I built CHAOS to use ML to detect kills, callouts, and other significant moments automatically.",
-      tech: ["Python"],
-      tags: [
-        "Machine Learning",
-        "OCR",
-        "Speech-to-Text",
-        "Video Processing",
-        "Computer Vision",
-      ],
-      source: "https://github.com/nick5616/CHAOS",
-      surfaces: ["desktop", "software"],
-      portfolioOnly: { preview: "none" },
-    },
-    // System windows
-    {
-      id: "about",
-      title: "About Nickel OS",
-      description: "System information and bio",
-      route: "/about",
-      category: "Utility",
-      surfaces: ["desktop"],
-    },
-    {
-      id: "contact",
-      title: "Contact",
-      description: "Get in touch",
-      route: "/contact",
-      category: "Utility",
-      surfaces: ["desktop"],
-    },
-    {
-      id: "settings",
-      title: "Settings",
-      description: "System preferences and customization",
-      route: "/settings",
-      category: "Utility",
-      surfaces: ["desktop"],
-      desktopOnly: { windowHeight: 700 },
-    },
-    // Art galleries
     {
       id: "art-digital-art",
+      hide: false,
       title: "Digital Art",
       description: "Gallery of digital artwork",
       route: "/art-gallery/digital-art",
       category: "Art",
-      why: "I wanted to create a dedicated space for my digital art pieces, separate from other mediums. Digital art allows for experimentation with color, composition, and style in ways that traditional media can't always achieve.",
+      why: "Digital is where I experiment the most with color, composition, and style, since trying something and undoing it costs nothing.",
       mediums: [
         "Digital Illustration",
         "Procreate",
@@ -489,52 +1066,62 @@ export const NICKEL_SYSTEM: NickelSystem = {
       artOverride: {
         title: "Digital Art Gallery",
         description:
-          "A curated collection of digital artwork created using various tools and techniques. From detailed illustrations to abstract compositions, this gallery showcases the breadth of my digital art practice.",
+          "Digital illustrations and paintings, mostly made in Procreate and Photoshop.",
       },
     },
     {
       id: "art-paintings",
+      hide: false,
       title: "Paintings",
       description: "Gallery of paintings",
       route: "/art-gallery/paintings",
       category: "Art",
-      why: "Working with physical paint and canvas provides a different creative experience than digital art. These paintings capture moments of experimentation with color, texture, and form in a more traditional medium.",
+      why: "Real paint is slower and more physical than digital, and these are me experimenting with color and texture that way.",
       mediums: ["Acrylic Paint", "Watercolor", "Traditional Media", "Canvas"],
       surfaces: ["desktop", "art"],
       artOverride: {
         description:
-          "Traditional paintings created with acrylics, watercolors, and other physical media. This collection represents my work with traditional art forms and the tactile experience of working with physical materials.",
+          "Paintings in acrylic, watercolor, and other physical media.",
       },
     },
     {
       id: "art-sketches",
+      hide: false,
       title: "Sketches",
       description: "Gallery of sketches",
       route: "/art-gallery/sketches",
       category: "Art",
-      why: "Sketches are where ideas start. I keep this collection to show the process behind finished pieces and to celebrate the value of quick, experimental work. Sometimes the best ideas come from these loose, unpolished drawings.",
-      mediums: ["Pencil", "Pen & Ink", "Charcoal", "Sketching"],
+      why: "Sketches are where ideas start. I keep the loose, unfinished stuff around because it shows how I actually work.",
+      mediums: [
+        "Pencil",
+        "Pen & Ink",
+        "Charcoal",
+        "Sketching",
+        "Figure Drawing",
+      ],
       surfaces: ["desktop", "art"],
       artOverride: {
         description:
-          "A collection of sketches, studies, and quick drawings. These pieces represent the foundation of my art practice—the raw ideas, experiments, and practice that inform my finished work.",
+          "Sketches, studies, figure drawing, and quick drawings. The raw material behind everything else.",
       },
     },
     {
       id: "art-lefthanded",
+      hide: false,
       title: "Left-Handed Art",
       description: "Art created only using my left hand",
       route: "/art-gallery/lefthanded",
       category: "Art",
+      why: "I'm working on becoming ambidextrous, and drawing is a good way to practice.",
       surfaces: ["desktop", "art"],
       portfolioOnly: { artGrouping: "collection" },
       artOverride: {
-        description:
-          "A unique collection of artwork created exclusively using my left hand. This constraint-based project explores how limitations can lead to creative breakthroughs and new artistic expressions.",
+        description: "Art made using only my left hand.",
       },
     },
     {
       id: "art-miscellaneous",
+      hide: false,
       title: "Miscellaneous",
       description: "A collection of miscellaneous artwork and creative pieces",
       route: "/art-gallery/miscellaneous",
@@ -544,11 +1131,12 @@ export const NICKEL_SYSTEM: NickelSystem = {
       portfolioOnly: { artGrouping: "collection" },
       artOverride: {
         description:
-          "A collection of miscellaneous artwork and creative pieces that don't fit into other categories—experiments, one-offs, and creative explorations.",
+          "Art that doesn't fit anywhere else: experiments, one-offs, and whatever I felt like making.",
       },
     },
     {
       id: "art-notesappart",
+      hide: false,
       title: "Notes App Art",
       description: "Art created in note-taking apps and other digital tools",
       route: "/art-gallery/notesappart",
@@ -557,327 +1145,40 @@ export const NICKEL_SYSTEM: NickelSystem = {
       portfolioOnly: { artGrouping: "collection" },
       artOverride: {
         description:
-          "Art created in note-taking apps and other digital tools not typically used for art. These pieces embrace the limitations and unique qualities of these platforms.",
+          "Drawings made in notes apps and other tools that were never meant for art. Working inside their limits is half the fun.",
       },
     },
+
+    // -----------------------------------------------------------------------
+    // System windows
+    // -----------------------------------------------------------------------
     {
-      id: "pokemon-or-technology",
-      title: "Pokemon or Technology",
-      description:
-        "Test your knowledge! Can you tell the difference between a Pokémon name and a technology term?",
-      route: "/pokemon-or-technology",
-      category: "Games",
-      date: "2025-10",
-      why: "One day I observed Pokemon and Technology have similar sounding names, so I made this quiz game.",
-      tech: ["TypeScript", "React", "Next.js"],
-      tags: ["Quiz"],
-      surfaces: ["desktop", "software"],
-      desktopOnly: { windowWidth: 300, windowHeight: 400 },
-      softwareOverride: { date: "Sometime in like Oct 2025" },
-    },
-    {
-      id: "audio-to-midi",
-      title: "Audio → MIDI",
-      description:
-        "Convert audio to MIDI using the YIN pitch detection algorithm. Drop in a WAV or MP3, tune BPM and quantization, then download the MIDI file.",
-      route: "/audio-to-midi",
-      category: "Music",
-      date: "2026-04-16",
-      tags: ["Audio Processing", "Pitch Detection", "MIDI"],
+      id: "about",
+      hide: false,
+      title: "About Nickel OS",
+      description: "System information and bio",
+      route: "/about",
+      category: "Utility",
       surfaces: ["desktop"],
-      desktopOnly: { windowWidth: 720, windowHeight: 800 },
     },
     {
-      id: "song-visualizer",
-      title: "Song Visualizer",
-      description:
-        "Visualize music as animated particles, waveforms, geometry, and spectrum effects. Upload an MP3 or connect a mic for real-time visuals with customizable color, speed, and intensity.",
-      url: "https://music.nickeltools.dev/song-visualizer/",
-      category: "Music",
-      date: "2026-04",
-      why: "I wanted a way to see my music, not just hear it. Building real-time audio visualization in the browser with the Web Audio API and Canvas was a satisfying way to connect the sonic and the visual.",
-      tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
-      tags: ["Music Theory Algorithms", "Interactive Design"],
-      source: "https://github.com/nick5616/song-visualizer",
-      surfaces: ["desktop", "software"],
+      id: "contact",
+      hide: false,
+      title: "Contact",
+      description: "Get in touch",
+      route: "/contact",
+      category: "Utility",
+      surfaces: ["desktop"],
     },
     {
-      id: "pitch-hero",
-      title: "Pitch Hero",
-      description:
-        "Sing or play a MIDI keyboard to match scrolling notes as they cross the target line. Trains pitch accuracy with real-time microphone or MIDI input scoring.",
-      url: "https://music.nickeltools.dev/pitch-hero/",
-      category: "Music",
-      date: "2026-04",
-      why: "I wanted an interactive way to train pitch accuracy that felt more like a game than an exercise. Building the pitch detection and scrolling note renderer from scratch was a great deep-dive into the Web Audio API.",
-      tech: ["JavaScript", "Web Audio API", "Canvas API", "HTML", "CSS"],
-      tags: [
-        "Music Theory Algorithms",
-        "Interactive Design",
-        "Real-time",
-        "MIDI",
-      ],
-      source: "https://github.com/nick5616/song-visualizer",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "smart-midi-recorder",
-      title: "Smart MIDI Recorder",
-      description:
-        "Record MIDI keyboard input with musical context — key, scale, and suggested next notes displayed in real time to guide improvisation.",
-      url: "https://music.nickeltools.dev/smart-midi-recorder/",
-      category: "Music",
-      date: "2026-04",
-      why: 'I play piano and wanted a tool that would help me improvise more confidently by surfacing the "right" notes for the key I\'m in, while still capturing what I was playing.',
-      tech: ["JavaScript", "Web Audio API", "HTML", "CSS"],
-      tags: [
-        "Music Theory Algorithms",
-        "Interactive Design",
-        "Real-time",
-        "MIDI",
-      ],
-      source: "https://github.com/nick5616/song-visualizer",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "batch-analyzer",
-      title: "Batch Analyzer",
-      description:
-        "Batch analyze product images by sending the same queries (like 'How many books are in the image?') to each image in the batch. Plug and play with your own LLM.",
-      url: "https://batch-analyzer.netlify.app/",
-      category: "AI / Productivity",
-      date: "2025-12",
-      why: "While working on product analysis tasks, I found myself repeatedly asking the same questions about different images. This tool automates that workflow, allowing teams to analyze entire product catalogs efficiently with custom LLM integrations.",
-      tech: ["TypeScript", "React", "LLM APIs"],
-      tags: ["Image Processing", "Batch Processing"],
-      source: "https://github.com/nick5616/batch-item-analyzer",
-      surfaces: ["desktop", "software"],
-      desktopOnly: { contentfulDescription: BatchAnalyzerDescription },
-    },
-    {
-      id: "the-circle",
-      title: "The Circle",
-      description:
-        "A single persistent global room where up to 8 people can be on camera and mic at once via WebRTC mesh. Everyone else joins as audience. No accounts, no room codes, no database.",
-      url: "https://live.saucedog.art/",
-      category: "Social Tools",
-      date: "2026-04",
-      why: "I wanted to build something that felt genuinely real-time — not just a chat box but actual live video between strangers. Wiring together WebRTC peer connections, Django Channels signaling, and Redis-backed room state from scratch was the challenge. Note: visit the site directly — it won't work embedded in an iframe.",
-      tech: [
-        "React",
-        "TypeScript",
-        "Django",
-        "WebSockets",
-        "WebRTC",
-        "Redis",
-        "Docker",
-      ],
-      tags: ["Real-time", "Web Development"],
-      source: "https://github.com/nick5616/the-circle",
-      surfaces: ["desktop", "software"],
-      portfolioOnly: { preview: "none" },
-    },
-    {
-      id: "wizard-wars",
-      title: "Wizard Wars",
-      description:
-        "A 3D multiplayer wizard FPS (first person shooter) game on the web. You don't need to download anything to play!",
-      url: "https://wizardwars.saucedog.art",
-      category: "Games",
-      date: "2026-05",
-      tech: ["WebRTC", "Three.js", "React", "React-Three-Fiber"],
-      source: "https://github.com/nick5616/wizard-wars",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "nickel-tools",
-      title: "Nickel Tools",
-      description:
-        "A browser-based desktop OS experience with a swipeable mobile mode, app grid, app tray, and full-screen app windows.",
-      url: "https://nickeltools.dev/desktop",
-      category: "Engineering",
-      date: "2025-11",
-      why: 'I wanted a website that was "a website of websites" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since the average users can explore apps within a desktop OS.',
-      tech: ["TypeScript", "React", "Next.js"],
-      tags: ["Interactive Design"],
-      source: "https://github.com/nick5616/nickel-tools",
-      surfaces: ["desktop", "software"],
-      desktopOnly: { title: "Nickel Tools (INCEPTION!!!)" },
-    },
-    {
-      id: "sw-viz",
-      title: "Star Wars Ship Costs Visualizer",
-      description:
-        "Interactive data visualization of Star Wars starship costs from the SWAPI dataset. Explore and compare iconic ships from X-wings to Star Destroyers.",
-      url: "https://star-wars-spending-viz.netlify.app",
-      category: "Experiments",
-      date: "2023-11",
-      why: "A fun excuse to combine a beloved universe with data viz. Pulling from the Star Wars API and rendering comparative cost breakdowns made for a satisfying mix of frontend charting work and backend data wrangling.",
-      tech: ["React", "TypeScript", "Nivo", "Nest.js", "Node.js"],
-      tags: ["Data Visualization", "Web Development"],
-      source: "https://github.com/nick5616/sw-viz-fe",
-      backendSource: "https://github.com/nick5616/sw-viz-be",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "voice-lab",
-      title: "VoiceLab",
-      description:
-        "Python desktop app for singers to track and analyze vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency.",
-      url: "https://github.com/nick5616/VoiceLab",
-      category: "Machine Learning",
-      date: "2025-12",
-      why: "I wanted objective feedback on my singing practice rather than relying purely on ear. Tracking metrics across takes makes it easy to see what's actually improving.",
-      tech: ["Python"],
-      tags: ["Machine Learning"],
-      source: "https://github.com/nick5616/VoiceLab",
-      surfaces: ["desktop", "software"],
-      portfolioOnly: { preview: "none" },
-    },
-    {
-      id: "art-room",
-      title: "Art Room",
-      description:
-        "A 3D art gallery room inside the holodeck where paintings are displayed on walls you can approach and step back from.",
-      url: "https://nicolebelovoskey.com/holodeck/art",
-      category: "Immersive Web",
-      date: "2026-02",
-      why: "I wanted a way to display 2D art in a spatial context — mounting pieces on walls you can approach and step back from changes how you experience them compared to a flat grid.",
-      tech: [
-        "TypeScript",
-        "React",
-        "Three.js",
-        "React-Three-Fiber",
-        "WebGL",
-        "Go",
-        "Google Cloud Storage",
-        "Docker",
-      ],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/3d-portfolio-website",
-      backendSource: "https://github.com/nick5616/holodeck-art-api",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "courage-computer",
-      title: "Courage Computer Room",
-      description:
-        "An interactive 3D retro computer lab environment inside the holodeck. Inspired by the aesthetic of early personal computing and Courage the Cowardly Dog.",
-      url: "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
-      category: "Immersive Web",
-      date: "2025-11",
-      why: "I wanted to capture the feeling of a classic computer room as an inhabitable space. It was a chance to blend 3D environmental storytelling with web technology in a way that feels nostalgic and playful.",
-      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/3d-portfolio-website",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "math-room",
-      title: "Math Room",
-      description:
-        "An immersive 3D room for mathematical visualization — equations, shapes, and concepts brought to life as explorable objects inside the holodeck.",
-      url: "https://nicolebelovoskey.com/holodeck/math",
-      category: "Immersive Web",
-      date: "2025-01",
-      why: "Math is inherently spatial and I wanted to explore what it looks like to present mathematical ideas as environments rather than notation on a page.",
-      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/3d-portfolio-website",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "art-museum",
-      title: "Art Museum",
-      description:
-        "A large-scale 3D museum experience inside the holodeck — a multi-room virtual gallery housing a curated collection you can browse at your own pace.",
-      url: "https://nicolebelovoskey.com/art-gallery",
-      category: "Immersive Web",
-      date: "2025-01",
-      why: "Scaling up from the art room into a full museum allowed me to think about wayfinding, pacing, and spatial narrative at a larger architectural scale — all within the browser.",
-      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/3d-portfolio-website",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "software-showroom",
-      title: "Software Showroom",
-      description:
-        "Walk up to screens in a 3D environment and interact with my projects. Press escape for your cursor.",
-      url: "https://nicolebelovoskey.com/software",
-      category: "Immersive Web",
-      date: "2025-01",
-      why: "It seemed like a really sci-fi way to showcase my projects.",
-      tech: ["TypeScript", "React", "Three.js", "React-Three-Fiber", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/3d-portfolio-website",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "sre-dashboard",
-      title: "SRE Dashboard",
-      description:
-        "SRE dashboard for monitoring services, incidents, and logs. Python/Flask backend serves hypermedia via HTMX, frontend built with Lit web components.",
-      url: "https://sre.nickeltools.dev",
-      category: "Engineering",
-      date: "2025-09",
-      why: "I wanted to explore a stack that leans into the platform instead of abstracting away from it. HTMX lets the server own state and return HTML fragments directly, cutting out a lot of client-side complexity. Lit is what web components always should have been — lightweight, declarative, and framework-agnostic. I don't think enough people know how powerful the native component model has become.",
-      tech: ["Python", "Lit", "HTMX", "Flask"],
-      tags: ["SRE", "Dashboard"],
-      source: "https://github.com/nick5616/lit-htmxperiments",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "sphere-website",
-      title: "Sphere Website",
-      description:
-        "A vanilla Three.js website built around a rotating 3D sphere — the hello world of 3D web graphics.",
-      url: "https://tiny-sorbet-aefcf4.netlify.app/",
-      category: "Immersive Web",
-      date: "2023-11",
-      why: "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D.",
-      tech: ["JavaScript", "Three.js", "WebGL"],
-      tags: ["3D Design", "Interactive Design"],
-      source: "https://github.com/nick5616/sphere-website",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "boards",
-      title: "Boards",
-      description: "boards.saucedog.art",
-      url: "https://boards.saucedog.art",
-      category: "Experiments",
-      date: "2026-05",
-      source: "https://github.com/nick5616/boards",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "new-media-website",
-      title: "New Media Class Website",
-      description:
-        "My first real website — a 2019 college class assignment exploring what kinds of media I consume and polling classmates on the same.",
-      url: "https://new-media-college-class.netlify.app/",
-      category: "Experiments",
-      date: "2019-10",
-      why: "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere.",
-      tech: ["HTML", "CSS", "JavaScript"],
-      source: "https://github.com/nick5616/newMediaWebsite",
-      surfaces: ["desktop", "software"],
-    },
-    {
-      id: "routine",
-      title: "Routine",
-      description:
-        "An accessible online routine with dynamic generation of WCAG AAA compliant analogous color schemes.",
-      url: "https://nick5616.github.io/routine/",
-      category: "Design System",
-      date: "2020-03",
-      why: "I wanted to explore algorithmic color theory while building something genuinely useful — a routine tool that generates harmonious, fully accessible palettes on the fly.",
-      tech: ["JavaScript"],
-      tags: ["Design System", "Accessibility"],
-      source: "https://github.com/nick5616/routine",
-      surfaces: ["desktop", "software"],
+      id: "settings",
+      hide: false,
+      title: "Settings",
+      description: "System preferences and customization",
+      route: "/settings",
+      category: "Utility",
+      surfaces: ["desktop"],
+      desktopOnly: { windowHeight: 700 },
     },
   ],
   featured: ["resume-builder", "smart-piano", "portfolio", "saucedog-art"],
@@ -893,6 +1194,12 @@ const OVERRIDE_KEY = {
   design: "designOverride",
   art: "artOverride",
 } as const satisfies Record<Surface, keyof ContentEntry>;
+
+// Everything below reads from this, so `hide: true` removes an entry from
+// every surface at once.
+const VISIBLE_CONTENT: ContentEntry[] = NICKEL_SYSTEM.content.filter(
+  (entry) => !entry.hide,
+);
 
 function detailsFor(entry: ContentEntry, surface: Surface): ProjectDetails {
   const {
@@ -983,9 +1290,9 @@ function toPortfolioProject(
 }
 
 // Resolved once so callers get a stable array reference.
-const DESKTOP_CONTENT: Content[] = NICKEL_SYSTEM.content
-  .filter((entry) => entry.surfaces.includes("desktop"))
-  .map(toDesktopContent);
+const DESKTOP_CONTENT: Content[] = VISIBLE_CONTENT.filter((entry) =>
+  entry.surfaces.includes("desktop"),
+).map(toDesktopContent);
 
 const MONTHS = [
   "Jan",
@@ -1079,7 +1386,7 @@ export function getMetadataOptions<K extends ListKey>(
 export function getPortfolioProjects(
   surface: PortfolioSurface,
 ): PortfolioProject[] {
-  return NICKEL_SYSTEM.content
-    .filter((entry) => entry.surfaces.includes(surface))
-    .map((entry) => toPortfolioProject(entry, surface));
+  return VISIBLE_CONTENT.filter((entry) =>
+    entry.surfaces.includes(surface),
+  ).map((entry) => toPortfolioProject(entry, surface));
 }
