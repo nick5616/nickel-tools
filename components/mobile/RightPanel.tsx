@@ -1,140 +1,119 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Search } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { Search, X } from "lucide-react";
 import { AppIcon } from "./AppIcon";
-import { getAllContent, type Category, type Content } from "@/app/data/content";
+import { AppTile } from "@/components/shared/AppTile";
+import { getAllContent, type Content } from "@/app/data/content";
+import { springs, type OriginRect } from "@/components/shared/motion";
 
 interface RightPanelProps {
-    onOpenItem: (content: Content) => void;
+    onOpenItem: (content: Content, rect?: OriginRect) => void;
+    onSearch: () => void;
 }
 
-export function RightPanel({ onOpenItem }: RightPanelProps) {
-    const [searchQuery, setSearchQuery] = useState("");
+/** The App Library: every app, foldered by category. */
+export function RightPanel({ onOpenItem, onSearch }: RightPanelProps) {
     const allContent = getAllContent();
+    const [openFolder, setOpenFolder] = useState<string | null>(null);
 
-    // Get unique categories
-    const categories = useMemo(() => {
-        const categorySet = new Set<Category>();
-        allContent.forEach((item) => categorySet.add(item.category));
-        return Array.from(categorySet).sort();
+    const folders = useMemo(() => {
+        const groups = new Map<string, Content[]>();
+        allContent.forEach((item) => {
+            const list = groups.get(item.category) ?? [];
+            list.push(item);
+            groups.set(item.category, list);
+        });
+        return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
     }, [allContent]);
 
-    // Filter content by search query
-    const filteredContent = useMemo(() => {
-        if (!searchQuery.trim()) return allContent;
-        const query = searchQuery.toLowerCase();
-        return allContent.filter(
-            (item) =>
-                item.title.toLowerCase().includes(query) ||
-                item.description.toLowerCase().includes(query) ||
-                item.tags?.some((tag) => tag.toLowerCase().includes(query))
-        );
-    }, [allContent, searchQuery]);
-
-    // Group filtered content by category
-    const groupedContent = useMemo(() => {
-        const grouped: Record<string, Content[]> = {};
-        filteredContent.forEach((item) => {
-            if (!grouped[item.category]) {
-                grouped[item.category] = [];
-            }
-            grouped[item.category].push(item);
-        });
-        return grouped;
-    }, [filteredContent]);
-
-    // Art galleries are the internal apps routed under /art-gallery/
-    const artGalleries = useMemo(
-        () =>
-            allContent.filter(
-                (item) =>
-                    item.type === "internal" &&
-                    item.route.startsWith("/art-gallery/")
-            ),
-        [allContent]
-    );
+    const folderItems = folders.find(([name]) => name === openFolder)?.[1] ?? [];
 
     return (
         <div
-            className="h-full w-full bg-[rgb(var(--bg-desktop))] flex flex-col overflow-hidden"
-            style={{
-                overflowX: "hidden",
-                touchAction: "pan-y",
-                overscrollBehaviorX: "contain",
-            }}
+            className="relative h-full w-full overflow-y-auto overflow-x-hidden px-5 pt-2 pb-32"
+            style={{ touchAction: "pan-y", overscrollBehavior: "contain" }}
         >
-            {/* Search Bar */}
-            <div className="p-4 border-b border-[rgb(var(--border-window))] flex-shrink-0">
-                <div className="relative">
-                    <Search
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[rgb(var(--text-secondary))]"
-                        size={20}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Search apps..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[rgb(var(--bg-window))] border border-[rgb(var(--border-window))] rounded-lg text-[rgb(var(--text-primary))] placeholder:text-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent-nickel))]"
-                    />
-                </div>
-            </div>
-
-            {/* Scrollable content */}
-            <div
-                className="flex-1 overflow-y-auto overflow-x-hidden pb-20"
-                style={{
-                    overflowX: "hidden",
-                    touchAction: "pan-y",
-                    overscrollBehaviorX: "contain",
-                }}
+            <button
+                onClick={onSearch}
+                className="nk-material w-full h-11 rounded-2xl flex items-center gap-2 px-3 text-[rgb(var(--text-secondary))] text-[15px]"
             >
-                {/* Apps by Category */}
-                <div className="p-4 space-y-6">
-                    {categories.map((category) => {
-                        const items = groupedContent[category] || [];
-                        if (items.length === 0) return null;
+                <Search size={18} />
+                App Library
+            </button>
 
-                        return (
-                            <div key={category}>
-                                <h3 className="text-sm uppercase text-[rgb(var(--text-secondary))] font-semibold mb-3 px-2">
-                                    {category}
-                                </h3>
-                                <div className="grid grid-cols-3 gap-4">
-                                    {items.map((item) => (
-                                        <AppIcon
-                                            key={item.id}
-                                            content={item}
-                                            onClick={() => onOpenItem(item)}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                {/* Art Gallery Controls */}
-                <div className="p-4 border-t border-[rgb(var(--border-window))] mt-6">
-                    <h3 className="text-sm uppercase text-[rgb(var(--text-secondary))] font-semibold mb-4 px-2">
-                        Art Galleries
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                        {artGalleries.map((gallery) => (
-                            <button
-                                key={gallery.id}
-                                onClick={() => onOpenItem(gallery)}
-                                className="p-4 bg-[rgb(var(--bg-window))] border border-[rgb(var(--border-window))] rounded-lg hover:bg-[rgb(var(--bg-button-hover))] transition-colors text-left"
-                            >
-                                <div className="font-medium text-[rgb(var(--text-primary))] text-sm">
-                                    {gallery.title}
-                                </div>
-                            </button>
-                        ))}
+            <div className="mt-4 grid grid-cols-2 gap-4">
+                {folders.map(([name, items]) => (
+                    <div key={name}>
+                        <button
+                            onClick={() => setOpenFolder(name)}
+                            className="nk-material w-full aspect-square rounded-[28px] p-3 grid grid-cols-2 gap-2.5"
+                            aria-label={`${name}, ${items.length} apps`}
+                        >
+                            {items.slice(0, 4).map((item) => (
+                                <span key={item.id} className="flex items-center justify-center">
+                                    <AppTile content={item} size={52} showNumber={false} />
+                                </span>
+                            ))}
+                        </button>
+                        <div className="nk-label mt-1.5 text-xs font-medium text-center truncate">
+                            {name}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
+
+            {typeof document !== "undefined" &&
+                createPortal(
+            <AnimatePresence>
+                {openFolder && (
+                    <motion.div
+                        className="fixed inset-0 z-[15000] flex items-center justify-center p-6 bg-black/25 backdrop-blur-md"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setOpenFolder(null)}
+                    >
+                        <motion.div
+                            className="nk-material-thick w-full max-w-sm rounded-[32px] p-5"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.85, opacity: 0 }}
+                            transition={springs.window}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex items-center mb-4">
+                                <h2 className="text-xl font-bold text-[rgb(var(--text-primary))]">
+                                    {openFolder}
+                                </h2>
+                                <button
+                                    onClick={() => setOpenFolder(null)}
+                                    className="ml-auto w-8 h-8 rounded-full flex items-center justify-center bg-[rgb(var(--text-primary)/0.08)] text-[rgb(var(--text-primary))]"
+                                    aria-label="Close folder"
+                                >
+                                    <X size={16} />
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-3 gap-x-3 gap-y-5 max-h-[60vh] overflow-y-auto">
+                                {folderItems.map((item) => (
+                                    <AppIcon
+                                        key={item.id}
+                                        content={item}
+                                        onOpen={(content, rect) => {
+                                            setOpenFolder(null);
+                                            onOpenItem(content, rect);
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>,
+                    document.body
+                )}
         </div>
     );
 }

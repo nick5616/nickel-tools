@@ -29,11 +29,16 @@ import {
 interface IconRendererProps {
   content: Content;
   size?: "sm" | "md" | "lg";
+  px?: number; // exact pixel size, overrides `size`
   className?: string;
 }
 
-const getSizeConfig = (size: "sm" | "md" | "lg", isArtThumbnail: boolean) => {
-  const pixels = getPixels(size, isArtThumbnail);
+const getSizeConfig = (
+  size: "sm" | "md" | "lg",
+  isArtThumbnail: boolean,
+  px?: number
+) => {
+  const pixels = px ?? getPixels(size, isArtThumbnail);
   return {
     pixels,
     // Use explicit Tailwind classes that work at build time
@@ -84,6 +89,7 @@ const iconComponentMap: Record<
 export function IconRenderer({
   content,
   size = "md",
+  px,
   className = "",
 }: IconRendererProps) {
   // Check if this is an art gallery and get thumbnail
@@ -105,7 +111,7 @@ export function IconRenderer({
   const hasReportedRef = React.useRef(false);
   const thumbnailFetchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const sizeConfig = getSizeConfig(size, !!artGalleryThumbnail);
+  const sizeConfig = getSizeConfig(size, !!artGalleryThumbnail, px);
   const sizeClass = sizeConfig.class;
 
   // Register image loading for art galleries IMMEDIATELY (don't wait for thumbnail URL)

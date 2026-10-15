@@ -1,85 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import type { Content } from "@/app/data/content";
-import { IconRenderer } from "@/components/shared/IconRenderer";
+import { AppTile } from "@/components/shared/AppTile";
+import { rectOf, springs, type OriginRect } from "@/components/shared/motion";
 
 interface DesktopIconProps {
     content: Content;
-    position: { x: number; y: number };
-    onClick: (content: Content) => void;
+    onOpen: (content: Content, rect?: OriginRect) => void;
     onContextMenu?: (e: React.MouseEvent, content: Content) => void;
+    size?: number;
 }
 
 export function DesktopIcon({
     content,
-    position,
-    onClick,
+    onOpen,
     onContextMenu,
+    size = 60,
 }: DesktopIconProps) {
+    const tileRef = useRef<HTMLDivElement>(null);
+    const operational = content.status === "operational";
+
     return (
-        <motion.div
-            className="absolute cursor-pointer select-none group z-0"
-            style={{
-                left: `${Math.max(10, position.x)}px`,
-                top: `${position.y}px`,
-                maxWidth: "96px",
-                right: "auto",
-                zIndex: 1,
-            }}
-            onClick={() => {
-                if (content.status !== "operational") {
-                    return;
-                }
-                return onClick(content);
-            }}
-            onContextMenu={(e) => onContextMenu?.(e, content)}
-            whileHover={
-                content.status === "operational"
-                    ? { scale: 1.1 }
-                    : { scale: 0.8 }
-            }
-            whileTap={content.status === "operational" ? { scale: 0.95 } : {}}
-            initial={
-                content.status === "operational"
-                    ? { opacity: 0, scale: 0.8 }
-                    : { opacity: 0.5, scale: 0.8 }
-            }
-            animate={
-                content.status === "operational"
-                    ? {
-                          opacity: 1,
-                          scale: 1,
-                          x: 0,
-                          y: 0,
-                      }
-                    : {
-                          opacity: 0.5,
-                          scale: 0.8,
-                          x: 0,
-                          y: 0,
-                      }
-            }
-            exit={{ opacity: 0, scale: 0.8 }}
+        <motion.button
             layout
-            transition={{
-                duration: 0.3,
-                ease: "easeOut",
-            }}
+            className="group flex flex-col items-center gap-1.5 w-[96px] p-1.5 rounded-xl select-none focus:outline-none focus-visible:bg-[rgb(var(--text-primary)/0.12)] hover:bg-[rgb(var(--text-primary)/0.07)] transition-colors"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={springs.snappy}
+            whileTap={operational ? { scale: 0.94 } : undefined}
+            onClick={() => operational && onOpen(content, rectOf(tileRef.current))}
+            onContextMenu={(e) => onContextMenu?.(e, content)}
+            aria-disabled={!operational}
+            title={operational ? content.title : `${content.title} (${content.status})`}
         >
-            <div className="flex flex-col items-center w-24 p-2 rounded hover:bg-[rgb(var(--bg-window))]/10 transition-colors">
-                <div className="text-4xl mb-1 group-hover:scale-110 transition-transform flex items-center justify-center">
-                    <IconRenderer
-                        content={content}
-                        size="lg"
-                        className="text-[rgb(var(--text-primary))]"
-                    />
-                </div>
-                <div className="text-xs text-center text-[rgb(var(--text-primary))] leading-tight px-1">
-                    {content.title}
-                </div>
-            </div>
-        </motion.div>
+            <AppTile ref={tileRef} content={content} size={size} />
+            <span className="nk-label text-[12px] font-medium leading-tight text-center line-clamp-2 break-words w-full">
+                {content.title}
+            </span>
+        </motion.button>
     );
 }

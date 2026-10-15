@@ -1,20 +1,11 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
-import {
-    getAllContent,
-    getCategoryIcon,
-    type Content,
-    type Category,
-} from "@/app/data/content";
+import { Github, Linkedin, Mail, ChevronRight, ArrowUpRight } from "lucide-react";
+import { getAllContent, NICKEL_SYSTEM, type Content, type Category } from "@/app/data/content";
 import { useAppStore } from "@/app/store/appStore";
-import { IconRenderer } from "@/components/shared/IconRenderer";
-
-function getStatusBadgeColor(status: Content["status"]): string {
-    // Use theme accent color for all status badges
-    return "bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]";
-}
+import { AppTile } from "@/components/shared/AppTile";
+import { useActiveScheme } from "@/components/shared/SystemPickers";
 
 function getStatusLabel(status: Content["status"]): string {
     switch (status) {
@@ -33,200 +24,118 @@ function getStatusLabel(status: Content["status"]): string {
 
 export default function About() {
     const openWindow = useAppStore((state) => state.openWindow);
+    const { scheme } = useActiveScheme();
+    const allContent = getAllContent();
 
-    // Group content by category
     const contentByCategory = useMemo(() => {
-        const grouped: Record<Category, Content[]> = {} as Record<
-            Category,
-            Content[]
-        >;
-
-        getAllContent().forEach((item) => {
-            if (!grouped[item.category]) {
-                grouped[item.category] = [];
-            }
-            grouped[item.category].push(item);
+        const grouped = new Map<Category, Content[]>();
+        allContent.forEach((item) => {
+            grouped.set(item.category, [...(grouped.get(item.category) ?? []), item]);
         });
-
-        // Sort categories by name, and items within each category by title
-        const sorted: Record<Category, Content[]> = {} as Record<
-            Category,
-            Content[]
-        >;
-        Object.keys(grouped)
-            .sort()
-            .forEach((category) => {
-                sorted[category as Category] = grouped[
-                    category as Category
-                ].sort((a, b) => a.title.localeCompare(b.title));
-            });
-
-        return sorted;
-    }, []);
-
-    const handleItemClick = (item: Content) => {
-        openWindow(item);
-    };
+        return [...grouped.entries()]
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([category, items]) => [
+                category,
+                [...items].sort((a, b) => a.title.localeCompare(b.title)),
+            ] as const);
+    }, [allContent]);
 
     return (
-        <div className="w-full bg-transparent">
-            <div className="w-full py-2 md:p-6">
-                <p className="text-base leading-relaxed text-[rgb(var(--text-primary))] mb-6">
-                    I made this website to chuck anything I want onto it. So far
-                    we have {getAllContent().length} apps and tools.
-                    Enjoy!
-                </p>
-
-                {/* Table of Contents */}
-                <div className="mb-8">
-                    <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4">
-                        Apps & Tools
-                    </h3>
-                    <div className="space-y-6">
-                        {Object.entries(contentByCategory).map(
-                            ([category, items]) => (
-                                <div key={category} className="space-y-3">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <h4 className="text-base font-semibold text-[rgb(var(--text-primary))]">
-                                            {category}
-                                        </h4>
-                                        <span className="text-sm text-[rgb(var(--text-secondary))]">
-                                            ({items.length})
-                                        </span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        {items.map((item) => (
-                                            <button
-                                                key={item.id}
-                                                onClick={() =>
-                                                    handleItemClick(item)
-                                                }
-                                                className="w-full text-left mb-2 rounded-lg bg-[rgb(var(--bg-button))] transition-colors group"
-                                            >
-                                                <div className="flex items-start gap-3">
-                                                    <div className="flex-shrink-0 mt-0.5">
-                                                        <IconRenderer
-                                                            content={item}
-                                                            size="sm"
-                                                        />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <h5 className="text-sm font-medium text-[rgb(var(--text-primary))] group-hover:underline">
-                                                                {item.title}
-                                                            </h5>
-                                                        </div>
-
-                                                        <p className="text-xs text-[rgb(var(--text-secondary))] line-clamp-2">
-                                                            {item.description}
-                                                        </p>
-                                                        {item.tags &&
-                                                            item.tags.length >
-                                                                0 && (
-                                                                <div className="flex flex-wrap gap-1 mt-2">
-                                                                    {item.tags.map(
-                                                                        (
-                                                                            tag
-                                                                        ) => (
-                                                                            <span
-                                                                                key={
-                                                                                    tag
-                                                                                }
-                                                                                className="text-xs px-1.5 py-0.5 rounded bg-[rgb(var(--bg-window))] text-[rgb(var(--text-secondary))]"
-                                                                            >
-                                                                                {
-                                                                                    tag
-                                                                                }
-                                                                            </span>
-                                                                        )
-                                                                    )}
-                                                                </div>
-                                                            )}
-
-                                                        <span
-                                                            className={`text-xs px-2 py-0.5 rounded-full ${getStatusBadgeColor(
-                                                                item.status
-                                                            )}`}
-                                                        >
-                                                            {getStatusLabel(
-                                                                item.status
-                                                            )}
-                                                        </span>
-                                                        {item.featured && (
-                                                            <span className="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--accent-glow))] text-[rgb(var(--accent-nickel))]">
-                                                                Featured
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex-shrink-0">
-                                                        {item.type ===
-                                                        "external" ? (
-                                                            <ExternalLink
-                                                                size={16}
-                                                                className="text-[rgb(var(--text-secondary))] opacity-0 group-hover:opacity-100 transition-opacity"
-                                                            />
-                                                        ) : (
-                                                            <div className="w-4 h-4" />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            )
-                        )}
-                    </div>
-                </div>
-
-                {/* Connect Section */}
-                <div className="pt-4 mt-6">
-                    <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4">
-                        Connect
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                        <a
-                            href="https://github.com/nick5616"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
-                        >
-                            <Github size={20} />
-                            <span className="text-base">GitHub</span>
-                            <ExternalLink
-                                size={16}
-                                className="text-[rgb(var(--text-secondary))] ml-auto"
-                            />
-                        </a>
-                        <a
-                            href="https://linkedin.com/in/nicolebelovoskey"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
-                        >
-                            <Linkedin size={20} />
-                            <span className="text-base">LinkedIn</span>
-                            <ExternalLink
-                                size={16}
-                                className="text-[rgb(var(--text-secondary))] ml-auto"
-                            />
-                        </a>
-                        <a
-                            href="mailto:nicolebelovoskey@gmail.com"
-                            className="flex items-center gap-3 py-3 bg-[rgb(var(--bg-button))] rounded-lg active:bg-[rgb(var(--bg-button-hover))] transition-colors text-[rgb(var(--text-primary))] touch-manipulation min-h-[52px]"
-                        >
-                            <Mail size={20} />
-                            <span className="text-base">Email</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div className="pt-4 mt-6 border-t border-[rgb(var(--border-window))]">
+        <div className="w-full p-1 sm:p-6 space-y-6">
+            {/* System hero */}
+            <div className="flex flex-col items-center text-center gap-3 pt-2">
+                <span
+                    className="nk-tile relative flex flex-col items-center justify-center w-24 h-24 font-sans font-black tracking-tight"
+                    style={{ ["--tile-hue" as string]: "var(--nk-h1)" }}
+                >
+                    <span className="absolute top-2 left-2.5 text-[11px] font-mono opacity-80">28</span>
+                    <span className="text-4xl mt-1">Ni</span>
+                </span>
+                <div>
+                    <h2 className="text-2xl font-bold text-[rgb(var(--text-primary))]">
+                        Nickel OS
+                    </h2>
                     <p className="text-sm text-[rgb(var(--text-secondary))]">
-                        Built for fun
+                        Version {NICKEL_SYSTEM.version} · {allContent.length} apps · {scheme} palette
                     </p>
                 </div>
+                <p className="max-w-md text-[15px] leading-relaxed text-[rgb(var(--text-primary))]">
+                    I made this website to chuck anything I want onto it. Every
+                    app is an element on the Nickel periodic table. Enjoy!
+                </p>
             </div>
+
+            {/* Apps by category */}
+            {contentByCategory.map(([category, items]) => (
+                <section key={category}>
+                    <h3 className="nk-section-title px-1 mb-2">
+                        {category} · {items.length}
+                    </h3>
+                    <div className="nk-group !p-1.5">
+                        {items.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => openWindow(item)}
+                                className="nk-row w-full text-left items-start"
+                            >
+                                <AppTile content={item} size={40} showNumber={false} />
+                                <span className="flex-1 min-w-0">
+                                    <span className="flex items-center gap-2">
+                                        <span className="text-[15px] font-semibold text-[rgb(var(--text-primary))] truncate">
+                                            {item.title}
+                                        </span>
+                                        {item.status !== "operational" && (
+                                            <span className="nk-badge">
+                                                {getStatusLabel(item.status)}
+                                            </span>
+                                        )}
+                                    </span>
+                                    <span className="block text-[13px] text-[rgb(var(--text-secondary))] line-clamp-2">
+                                        {item.description}
+                                    </span>
+                                    {item.tags && item.tags.length > 0 && (
+                                        <span className="flex flex-wrap gap-1 mt-1.5">
+                                            {item.tags.map((tag) => (
+                                                <span
+                                                    key={tag}
+                                                    className="text-[11px] px-1.5 py-0.5 rounded-md bg-[rgb(var(--text-primary)/0.06)] text-[rgb(var(--text-secondary))]"
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </span>
+                                    )}
+                                </span>
+                                {item.type === "external" ? (
+                                    <ArrowUpRight size={16} className="shrink-0 mt-1 text-[rgb(var(--text-secondary))] opacity-60" />
+                                ) : (
+                                    <ChevronRight size={16} className="shrink-0 mt-1 text-[rgb(var(--text-secondary))] opacity-60" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            ))}
+
+            {/* Connect */}
+            <section>
+                <h3 className="nk-section-title px-1 mb-2">Connect</h3>
+                <div className="flex flex-wrap gap-2">
+                    <a href="https://github.com/nick5616" target="_blank" rel="noopener noreferrer" className="nk-btn">
+                        <Github size={15} /> GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/nicolebelovoskey" target="_blank" rel="noopener noreferrer" className="nk-btn">
+                        <Linkedin size={15} /> LinkedIn
+                    </a>
+                    <a href="mailto:nicolebelovoskey@gmail.com" className="nk-btn nk-btn-primary">
+                        <Mail size={15} /> Email
+                    </a>
+                </div>
+            </section>
+
+            <p className="text-center text-xs text-[rgb(var(--text-secondary))]">
+                Built for fun
+            </p>
         </div>
     );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Check, X, RotateCcw } from "lucide-react";
+import { paletteColor } from "@/app/utils/nickelPalette";
 
 const DATABASE = [
     // Pokémon (50)
@@ -160,9 +161,9 @@ export default function PokemonTechQuiz() {
 
     if (items.length === 0) {
         return (
-            <div className="flex items-center justify-center h-full bg-[rgb(var(--bg-window))]">
-                <div className="text-[rgb(var(--text-primary))] text-xl">
-                    Loading...
+            <div className="flex items-center justify-center h-full">
+                <div className="text-[rgb(var(--text-secondary))]">
+                    Loading…
                 </div>
             </div>
         );
@@ -170,15 +171,13 @@ export default function PokemonTechQuiz() {
 
     if (gameComplete) {
         return (
-            <div className="flex items-center justify-center h-full bg-[rgb(var(--bg-window))] p-4">
-                <div className="bg-[rgb(var(--bg-button))] rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border border-[rgb(var(--border-window))]">
-                    <h2 className="text-3xl font-bold text-[rgb(var(--text-primary))] mb-4">
-                        Game Complete!
-                    </h2>
-                    <p className="text-6xl font-bold text-[rgb(var(--accent-nickel))] mb-2">
+            <div className="flex items-center justify-center h-full p-4">
+                <div className="nk-group !p-8 max-w-md w-full text-center">
+                    <h2 className="nk-section-title mb-3">Game complete</h2>
+                    <p className="text-6xl font-black tabular-nums mb-2" style={{ color: paletteColor(1, "fg") }}>
                         {score}/{items.length}
                     </p>
-                    <p className="text-xl text-[rgb(var(--text-secondary))] mb-6">
+                    <p className="text-lg text-[rgb(var(--text-secondary))] mb-6">
                         {score === items.length
                             ? "Perfect score! 🎉"
                             : score >= items.length * 0.8
@@ -189,9 +188,9 @@ export default function PokemonTechQuiz() {
                     </p>
                     <button
                         onClick={startGame}
-                        className="bg-[rgb(var(--accent-nickel))] text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2 mx-auto"
+                        className="nk-btn nk-btn-primary nk-btn-lg mx-auto"
                     >
-                        <RotateCcw size={20} />
+                        <RotateCcw size={18} />
                         Play Again
                     </button>
                 </div>
@@ -201,15 +200,13 @@ export default function PokemonTechQuiz() {
 
     const current = items[currentIndex];
     return (
-        <div className="flex items-center justify-center h-full bg-[rgb(var(--bg-window))] p-4">
-            <div className="bg-[rgb(var(--bg-button))] rounded-2xl shadow-2xl p-8 max-w-md w-full border border-[rgb(var(--border-window))]">
+        <div className="flex items-center justify-center h-full p-4">
+            <div className="nk-group !p-8 max-w-md w-full">
                 <div className="flex justify-between items-center mb-6">
-                    <div className="text-sm font-semibold text-[rgb(var(--text-secondary))]">
-                        Question {currentIndex + 1}/{items.length}
+                    <div className="nk-section-title">
+                        Question {currentIndex + 1} of {items.length}
                     </div>
-                    <div className="text-sm font-semibold text-[rgb(var(--accent-nickel))]">
-                        Score: {score}
-                    </div>
+                    <div className="nk-badge tabular-nums">Score {score}</div>
                 </div>
                 <div className="mb-8 text-center relative">
                     <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
@@ -220,7 +217,7 @@ export default function PokemonTechQuiz() {
                     </p>
 
                     {showResult && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-[rgb(var(--bg-button))] bg-opacity-95">
+                        <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[rgb(var(--bg-window)/0.92)] backdrop-blur-sm">
                             {isCorrect ? (
                                 <div className="text-center">
                                     <Check
@@ -257,22 +254,23 @@ export default function PokemonTechQuiz() {
                     <button
                         onClick={() => handleGuess(true)}
                         disabled={showResult}
-                        className="bg-[rgb(var(--accent-nickel))] hover:opacity-90 disabled:bg-[rgb(var(--border-window))] disabled:opacity-50 text-white font-bold py-4 px-6 rounded-xl transition-all hover:shadow-lg disabled:cursor-not-allowed"
+                        className="nk-btn nk-btn-lg !h-14"
+                        style={{ background: paletteColor(1, "fg"), color: paletteColor(1, "bg") }}
                     >
                         Pokémon
                     </button>
                     <button
                         onClick={() => handleGuess(false)}
                         disabled={showResult}
-                        className="bg-[rgb(var(--accent-nickel))] hover:opacity-90 disabled:bg-[rgb(var(--border-window))] disabled:opacity-50 text-white font-bold py-4 px-6 rounded-xl transition-all hover:shadow-lg disabled:cursor-not-allowed"
+                        className="nk-btn nk-btn-lg !h-14"
+                        style={{ background: paletteColor(2, "fg"), color: paletteColor(2, "bg") }}
                     >
                         Technology
                     </button>
                 </div>
                 <div className="mt-6">
-                    <div className="w-full bg-[rgb(var(--border-window))] rounded-full h-2">
+                    <div className="nk-progress">
                         <div
-                            className="bg-[rgb(var(--accent-nickel))] h-2 rounded-full transition-all duration-300"
                             style={{
                                 width: `${
                                     ((currentIndex + 1) / items.length) * 100

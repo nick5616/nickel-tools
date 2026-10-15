@@ -3,6 +3,15 @@
 import { create } from "zustand";
 import type { Content } from "../data/content";
 
+export const MENU_BAR_HEIGHT = 40;
+
+export interface Rect {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export interface WindowState {
     id: string;
     content: Content;
@@ -11,9 +20,22 @@ export interface WindowState {
     zIndex: number;
     minimized: boolean;
     maximized?: boolean;
+    snapped?: boolean;
+    // Screen rect of the icon the window was launched from, for the zoom-in
+    originRect?: Rect;
     previousPosition?: { x: number; y: number };
     previousSize?: { width: number; height: number };
     previousZIndex?: number;
+}
+
+// The focused window: highest z-index among those not minimized.
+export function getFocusedWindow(windows: WindowState[]): WindowState | undefined {
+    return windows
+        .filter((w) => !w.minimized)
+        .reduce<WindowState | undefined>(
+            (top, w) => (!top || w.zIndex > top.zIndex ? w : top),
+            undefined
+        );
 }
 
 export type ViewFilter =
@@ -40,14 +62,14 @@ interface MenuState {
 interface AppState {
     windows: WindowState[];
     menu: MenuState;
-    desktopPage: number;
-    desktopTotalPages: number;
-    setDesktopPage: (page: number) => void;
-    setDesktopTotalPages: (pages: number) => void;
-    openWindow: (content: Content) => void;
+    // Opens the app, or brings its existing window forward
+    openWindow: (content: Content, originRect?: Rect) => void;
+    // Dock behaviour: open, restore, focus, or minimize if already focused
+    toggleWindowFromDock: (content: Content, originRect?: Rect) => void;
     closeWindow: (id: string) => void;
     minimizeWindow: (id: string) => void;
     toggleMaximizeWindow: (id: string) => void;
+    snapWindow: (id: string, rect: Rect) => void;
     focusWindow: (id: string) => void;
     updateWindowPosition: (
         id: string,
@@ -75,24 +97,15 @@ export const useAppStore = create<AppState>((set, get) => ({
             art: false,
         },
     },
-    desktopPage: 1,
-    desktopTotalPages: 1,
-    setDesktopPage: (page) => set({ desktopPage: page }),
-    setDesktopTotalPages: (pages) => set({ desktopTotalPages: pages }),
-
-    openWindow: (content) => {
+    openWindow: (content, originRect) => {
         const existingWindow = get().windows.find(
             (w) => w.content.id === content.id
         );
         if (existingWindow) {
-            // If window is minimized, un-minimize and focus it
             if (existingWindow.minimized) {
                 get().minimizeWindow(existingWindow.id);
-                get().focusWindow(existingWindow.id);
-            } else {
-                // If window is not minimized, minimize it
-                get().minimizeWindow(existingWindow.id);
             }
+            get().focusWindow(existingWindow.id);
             return;
         }
 
@@ -102,8 +115,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         // 3. Viewport-relative default (70vw × 72vh, min 600×450)
         const vw = typeof window !== "undefined" ? window.innerWidth : 1200;
         const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-        const menuBarHeight = 48;
-        const availableHeight = vh - menuBarHeight;
+        const availableHeight = vh - MENU_BAR_HEIGHT;
 
         let windowWidth = Math.max(600, Math.round(vw * 0.7));
         let windowHeight = Math.max(450, Math.round(availableHeight * 0.72));
@@ -141,20 +153,57 @@ export const useAppStore = create<AppState>((set, get) => ({
             }
         }
 
+        // Keep the window on screen, cascading from the centre
+        windowWidth = Math.min(windowWidth, vw - 32);
+        windowHeight = Math.min(windowHeight, availableHeight - 96);
+        const cascade = (get().windows.length % 6) * 28;
         const newWindow: WindowState = {
             id: `window-${Date.now()}`,
             content,
             position: {
-                x: 100 + get().windows.length * 30,
-                y: 100 + get().windows.length * 30,
+                x: Math.max(16, Math.round((vw - windowWidth) / 2) - 60 + cascade),
+                y: Math.max(12, Math.round((availableHeight - windowHeight) / 2) - 40 + cascade),
             },
             size: { width: windowWidth, height: windowHeight },
             zIndex: get().getNextZIndex(),
             minimized: false,
             maximized: false,
+            originRect,
         };
 
         set({ windows: [...get().windows, newWindow] });
+    },
+
+    toggleWindowFromDock: (content, originRect) => {
+        const existing = get().windows.find((w) => w.content.id === content.id);
+        if (existing && !existing.minimized) {
+            const focused = getFocusedWindow(get().windows);
+            if (focused?.id === existing.id) {
+                get().minimizeWindow(existing.id);
+                return;
+            }
+        }
+        get().openWindow(content, originRect);
+    },
+
+    snapWindow: (id, rect) => {
+        set({
+            windows: get().windows.map((w) =>
+                w.id === id
+                    ? {
+                          ...w,
+                          position: { x: rect.x, y: rect.y },
+                          size: { width: rect.width, height: rect.height },
+                          snapped: true,
+                          maximized: false,
+                          previousPosition: w.snapped
+                              ? w.previousPosition
+                              : w.position,
+                          previousSize: w.snapped ? w.previousSize : w.size,
+                      }
+                    : w
+            ),
+        });
     },
 
     closeWindow: (id) => {
@@ -180,34 +229,36 @@ export const useAppStore = create<AppState>((set, get) => ({
                     const previousSize = w.size;
                     const previousZIndex = w.zIndex;
 
-                    // Fill the entire desktop area (full viewport minus menu bar)
-                    // The desktop area is h-[calc(100vh-48px)], so we use that height
+                    // Fill the desktop area (the viewport below the menu bar).
+                    // Positions are relative to that area, so the origin is 0,0.
                     const width =
                         typeof window !== "undefined"
                             ? window.innerWidth
                             : previousSize.width;
                     const height =
                         typeof window !== "undefined"
-                            ? window.innerHeight - 48
+                            ? window.innerHeight - MENU_BAR_HEIGHT
                             : previousSize.height;
 
-                    // Set a very high z-index to be above the dock (z-40)
                     const maxZ = Math.max(
                         ...get().windows.map((w) => w.zIndex),
                         0
                     );
-                    const newZIndex = Math.max(maxZ + 1, 50);
 
                     return {
                         ...w,
-                        // Position below the MenuBar (48px) so title bar is visible
-                        // The desktop area has pt-12 padding, but absolutely positioned elements ignore it
-                        position: { x: 0, y: 48 },
+                        position: { x: 0, y: 0 },
                         size: { width, height },
-                        zIndex: newZIndex,
+                        zIndex: maxZ + 1,
                         maximized: true,
-                        previousPosition,
-                        previousSize,
+                        snapped: false,
+                        // A snapped window restores to its pre-snap frame
+                        previousPosition: w.snapped
+                            ? w.previousPosition ?? previousPosition
+                            : previousPosition,
+                        previousSize: w.snapped
+                            ? w.previousSize ?? previousSize
+                            : previousSize,
                         previousZIndex,
                     };
                 }
@@ -220,7 +271,6 @@ export const useAppStore = create<AppState>((set, get) => ({
                     maximized: false,
                     previousPosition: undefined,
                     previousSize: undefined,
-                    zIndex: w.previousZIndex ?? w.zIndex,
                     previousZIndex: undefined,
                 };
             }),
@@ -239,7 +289,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     updateWindowPosition: (id, position) => {
         set({
             windows: get().windows.map((w) =>
-                w.id === id ? { ...w, position } : w
+                w.id === id ? { ...w, position, snapped: false } : w
             ),
         });
     },
@@ -258,7 +308,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     },
 
     setViewFilter: (filter) => {
-        set({ menu: { ...get().menu, viewFilter: filter }, desktopPage: 1 });
+        set({ menu: { ...get().menu, viewFilter: filter } });
         get().closeAllMenus();
     },
 

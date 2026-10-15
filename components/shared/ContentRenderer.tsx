@@ -137,35 +137,35 @@ export function ContentRenderer({ content }: ContentRendererProps) {
             // Route to the appropriate internal component
             if (content.route === "/resume-editor") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <ResumeEditor />
                     </div>
                 );
             }
             if (content.route === "/smart-piano") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <SmartPiano />
                     </div>
                 );
             }
             if (content.route === "/about") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <About />
                     </div>
                 );
             }
             if (content.route === "/contact") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <Contact />
                     </div>
                 );
             }
             if (content.route === "/settings") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <Settings />
                     </div>
                 );
@@ -179,35 +179,35 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                     | "miscellaneous"
                     | "notesappart";
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <ArtGallery folder={folder} />
                     </div>
                 );
             }
             if (content.route === "/pokemon-or-technology") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <PokemonOrTechnology />
                     </div>
                 );
             }
             if (content.route === "/choice-picker") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <ChoicePicker />
                     </div>
                 );
             }
             if (content.route === "/advanced-color-scheme-generator") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <AdvancedColorSchemeGenerator />
                     </div>
                 );
             }
             if (content.route === "/audio-to-midi") {
                 return (
-                    <div className="h-full w-full overflow-auto bg-[rgb(var(--bg-window))]">
+                    <div className="nk-app h-full w-full overflow-auto">
                         <AudioToMidi />
                     </div>
                 );

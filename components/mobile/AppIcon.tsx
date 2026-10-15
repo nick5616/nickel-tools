@@ -1,40 +1,81 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import type { Content } from "@/app/data/content";
-import { IconRenderer } from "@/components/shared/IconRenderer";
-import { RevolvingText } from "@/components/shared/RevolvingText";
+import { AppTile } from "@/components/shared/AppTile";
+import { rectOf, springs, type OriginRect } from "@/components/shared/motion";
 
 interface AppIconProps {
     content: Content;
-    onClick: () => void;
+    onOpen: (content: Content, rect?: OriginRect) => void;
+    onLongPress?: (content: Content, rect?: OriginRect) => void;
+    size?: number;
+    showLabel?: boolean;
 }
 
-export function AppIcon({ content, onClick }: AppIconProps) {
+const HOLD_MS = 450;
+const MOVE_TOLERANCE = 8;
+
+export function AppIcon({
+    content,
+    onOpen,
+    onLongPress,
+    size = 60,
+    showLabel = true,
+}: AppIconProps) {
+    const tileRef = useRef<HTMLDivElement>(null);
+    const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const start = useRef<{ x: number; y: number } | null>(null);
+    const held = useRef(false);
+
+    const cancel = () => {
+        if (timer.current) clearTimeout(timer.current);
+        timer.current = null;
+        start.current = null;
+    };
+
     return (
         <motion.button
-            onClick={onClick}
-            className="flex flex-col items-center gap-2 p-3 rounded-2xl hover:bg-[rgb(var(--bg-button-hover))] transition-colors w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-nickel))] focus-visible:ring-offset-2"
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.2 }}
+            className="flex flex-col items-center gap-1.5 w-full select-none focus:outline-none [-webkit-touch-callout:none]"
+            whileTap={{ scale: 0.9 }}
+            transition={springs.press}
+            onPointerDown={(e) => {
+                held.current = false;
+                start.current = { x: e.clientX, y: e.clientY };
+                if (!onLongPress) return;
+                timer.current = setTimeout(() => {
+                    held.current = true;
+                    navigator.vibrate?.(10);
+                    onLongPress(content, rectOf(tileRef.current));
+                }, HOLD_MS);
+            }}
+            onPointerMove={(e) => {
+                // A swipe between pages is not a long-press
+                if (
+                    start.current &&
+                    Math.hypot(e.clientX - start.current.x, e.clientY - start.current.y) >
+                        MOVE_TOLERANCE
+                ) {
+                    cancel();
+                }
+            }}
+            onPointerUp={cancel}
+            onPointerCancel={cancel}
+            onContextMenu={(e) => e.preventDefault()}
+            onClick={() => {
+                if (held.current) return;
+                if (content.status !== "operational") return;
+                onOpen(content, rectOf(tileRef.current));
+            }}
+            aria-label={content.title}
         >
-            <div className="w-16 h-16 bg-[rgb(var(--bg-button))] rounded-2xl flex items-center justify-center">
-                <IconRenderer
-                    content={content}
-                    size="lg"
-                    className="text-[rgb(var(--text-primary))]"
-                />
-            </div>
-            <div className="w-16 text-xs text-center leading-tight text-[rgb(var(--text-primary))] relative">
-                <RevolvingText
-                    text={content.title}
-                    containerWidth={64}
-                    className="text-[rgb(var(--text-primary))]"
-                />
-            </div>
+            <AppTile ref={tileRef} content={content} size={size} showNumber={size >= 56} />
+            {showLabel && (
+                <span className="nk-label w-full px-0.5 text-[11px] font-medium leading-tight text-center truncate">
+                    {content.title}
+                </span>
+            )}
         </motion.button>
     );
 }

@@ -1,44 +1,54 @@
 "use client";
 
 import React from "react";
-import { X, Minus, Square } from "lucide-react";
+import { X, Minus, Maximize2 } from "lucide-react";
+import { paletteColor } from "@/app/utils/nickelPalette";
 
 interface WindowControlsProps {
-  onMinimize: () => void;
-  onMaximize?: () => void;
-  onClose: () => void;
+    onMinimize: () => void;
+    onMaximize?: () => void;
+    onClose: () => void;
 }
 
+// Nickel's take on traffic lights: three foreground-role dots in the
+// scheme's first three hues, with glyphs on hover.
 export function WindowControls({ onMinimize, onMaximize, onClose }: WindowControlsProps) {
-  return (
-    <div className="flex items-center gap-1">
-      <button
-        onClick={onMinimize}
-        className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
-        aria-label="Minimize"
-        title="Minimize"
-      >
-        <Minus size={14} />
-      </button>
-      {onMaximize && (
-        <button
-          onClick={onMaximize}
-          className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-titlebar-hover))] flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-[rgb(var(--text-titlebar))] transition-colors"
-          aria-label="Maximize"
-          title="Maximize / Restore"
-        >
-          <Square size={14} />
-        </button>
-      )}
-      <button
-        onClick={onClose}
-        className="w-6 h-6 rounded hover:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center text-[rgb(var(--text-titlebar))]/70 hover:text-white transition-colors"
-        aria-label="Close"
-        title="Close"
-      >
-        <X size={14} />
-      </button>
-    </div>
-  );
-}
+    const buttons = [
+        { label: "Close", onClick: onClose, Icon: X, slot: 1 },
+        { label: "Minimize", onClick: onMinimize, Icon: Minus, slot: 2 },
+        ...(onMaximize
+            ? [{ label: "Maximize / Restore", onClick: onMaximize, Icon: Maximize2, slot: 3 }]
+            : []),
+    ];
 
+    return (
+        <div
+            className="group/controls flex items-center gap-2"
+            onMouseDown={(e) => e.stopPropagation()}
+            onDoubleClick={(e) => e.stopPropagation()}
+        >
+            {buttons.map(({ label, onClick, Icon, slot }) => (
+                <button
+                    key={label}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onClick();
+                    }}
+                    className="w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-[inset_0_0_0_0.5px_rgb(0_0_0/0.25)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-nickel))]"
+                    style={{
+                        background: paletteColor(slot, "fg"),
+                        color: paletteColor(slot, "bg"),
+                    }}
+                    aria-label={label}
+                    title={label}
+                >
+                    <Icon
+                        size={9}
+                        strokeWidth={3}
+                        className="opacity-0 group-hover/controls:opacity-100 transition-opacity"
+                    />
+                </button>
+            ))}
+        </div>
+    );
+}

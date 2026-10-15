@@ -165,11 +165,23 @@ function buildMidi(notes: MidiNote[], bpm: number): Uint8Array {
 }
 
 // ── piano roll canvas ──────────────────────────────────────────────────────
+// Notes are foreground-role marks on the window surface, labelled in the
+// background role of the same hue.
+function readRollColors() {
+  const s = getComputedStyle(document.documentElement);
+  const v = (name: string) => s.getPropertyValue(name).trim();
+  return {
+    bg: `rgb(${v("--bg-window")})`,
+    lane: `rgb(${v("--text-primary")} / 0.05)`,
+    note: `hsl(${v("--nk-h1")} ${v("--nk-s")} ${v("--nk-fg-l")})`,
+    label: `hsl(${v("--nk-h1")} ${v("--nk-s")} ${v("--nk-bg-l")})`,
+  };
+}
+
 function drawPianoRoll(
   canvas: HTMLCanvasElement,
   notes: MidiNote[],
-  duration: number,
-  isDark: boolean
+  duration: number
 ) {
   const W = Math.max(600, duration * 80);
   const midiMin = Math.max(21, Math.min(...notes.map((n) => n.midi)) - 2);
@@ -181,8 +193,9 @@ function drawPianoRoll(
   canvas.height = H;
 
   const ctx = canvas.getContext("2d")!;
-  const bg = isDark ? "#1e1e1e" : "#f5f5f4";
-  const noteFill = isDark ? "#e5e5e5" : "#1c1c1c";
+  const colors = readRollColors();
+  const bg = colors.bg;
+  const noteFill = colors.note;
 
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
@@ -190,7 +203,7 @@ function drawPianoRoll(
   for (let m = midiMin; m <= midiMax; m++) {
     const y = H - 20 - (m - midiMin + 1) * noteHeight;
     const isBlack = [1, 3, 6, 8, 10].includes(m % 12);
-    ctx.fillStyle = isBlack ? "rgba(0,0,0,0.07)" : "rgba(0,0,0,0)";
+    ctx.fillStyle = isBlack ? colors.lane : "rgba(0,0,0,0)";
     ctx.fillRect(0, y, W, noteHeight);
   }
 
@@ -208,7 +221,7 @@ function drawPianoRoll(
 
     if (w > 28) {
       ctx.globalAlpha = 1;
-      ctx.fillStyle = bg;
+      ctx.fillStyle = colors.label;
       ctx.font = "9px monospace";
       ctx.fillText(midiToName(n.midi), x + 3, y + noteHeight - 3);
     }
@@ -394,8 +407,7 @@ export default function AudioToMidi() {
 
       setTimeout(() => {
         if (canvasRef.current) {
-          const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          drawPianoRoll(canvasRef.current, detected, audioBuffer.duration, isDark);
+          drawPianoRoll(canvasRef.current, detected, audioBuffer.duration);
         }
       }, 50);
     } catch (e: unknown) {
@@ -431,10 +443,10 @@ export default function AudioToMidi() {
   };
 
   return (
-    <div className="min-h-full bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <h1 className="text-2xl font-medium mb-1">Audio → MIDI</h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-8">
+    <div className="min-h-full">
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold mb-1">Audio → MIDI</h1>
+        <p className="text-sm text-[rgb(var(--text-secondary))] mb-6">
           Monophonic pitch detection for vocals, whistling, or single instruments.
         </p>
 
@@ -445,10 +457,10 @@ export default function AudioToMidi() {
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={() => fileInputRef.current?.click()}
-              className="border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 text-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+              className="nk-group !p-10 text-center cursor-pointer border-2 border-dashed border-[rgb(var(--text-primary)/0.15)] hover:border-[hsl(var(--nk-h1)_var(--nk-s)_var(--nk-fg-l))] transition-colors"
             >
-              <p className="text-sm font-medium mb-1">Drop audio file here or click to upload</p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              <p className="text-sm font-semibold mb-1">Drop an audio file here, or click to choose one</p>
+              <p className="text-xs text-[rgb(var(--text-secondary))]">
                 WAV, MP3, OGG, M4A — monophonic works best
               </p>
               <input
@@ -461,7 +473,7 @@ export default function AudioToMidi() {
             </div>
             <button
               onClick={startRecording}
-              className="w-full py-3 rounded-xl text-sm font-medium border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors flex items-center justify-center gap-2"
+              className="nk-btn nk-btn-lg w-full"
             >
               <span className="inline-block w-2 h-2 rounded-full bg-red-500" />
               Record from microphone
@@ -471,17 +483,17 @@ export default function AudioToMidi() {
 
         {/* recording indicator */}
         {isRecording && (
-          <div className="mb-6 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center space-y-3">
+          <div className="mb-6 nk-group !p-6 text-center space-y-3">
             <div className="flex items-center justify-center gap-2">
               <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
               <span className="text-sm font-medium">Recording…</span>
-              <span className="text-sm tabular-nums text-neutral-500 dark:text-neutral-400">
+              <span className="text-sm tabular-nums text-[rgb(var(--text-secondary))]">
                 {String(Math.floor(recordSeconds / 60)).padStart(2, "0")}:{String(recordSeconds % 60).padStart(2, "0")}
               </span>
             </div>
             <button
               onClick={stopRecording}
-              className="px-6 py-2 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
+              className="nk-btn !bg-red-600 !text-white hover:!bg-red-700"
             >
               Stop recording
             </button>
@@ -490,11 +502,11 @@ export default function AudioToMidi() {
 
         {/* file info */}
         {audioBuffer && (
-          <div className="flex items-center gap-3 bg-neutral-100 dark:bg-neutral-900 rounded-lg px-4 py-3 mb-6">
+          <div className="nk-group !py-3 flex items-center gap-3 mb-6">
             <button
               onClick={togglePlayback}
               title={isPlaying ? "Stop" : "Play"}
-              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+              className="nk-btn nk-btn-primary nk-btn-icon !rounded-full shrink-0"
             >
               {isPlaying ? (
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
@@ -508,12 +520,12 @@ export default function AudioToMidi() {
               )}
             </button>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{fileName}</p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">{fileMeta}</p>
+              <p className="text-sm font-semibold truncate">{fileName}</p>
+              <p className="text-xs text-[rgb(var(--text-secondary))]">{fileMeta}</p>
             </div>
             <button
               onClick={clearFile}
-              className="text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors shrink-0"
+              className="nk-btn nk-btn-ghost shrink-0"
             >
               Clear
             </button>
@@ -523,22 +535,22 @@ export default function AudioToMidi() {
         {/* settings */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div>
-            <label className="block text-xs text-neutral-500 dark:text-neutral-400 mb-1">BPM</label>
+            <label className="nk-section-title block mb-1.5">BPM</label>
             <input
               type="number"
               value={bpm}
               min={40}
               max={300}
               onChange={(e) => setBpm(parseInt(e.target.value) || 120)}
-              className="w-full border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+              className="nk-field w-full"
             />
           </div>
           <div>
-            <label className="block text-xs text-neutral-500 dark:text-neutral-400 mb-1">Quantize</label>
+            <label className="nk-section-title block mb-1.5">Quantize</label>
             <select
               value={quantize}
               onChange={(e) => setQuantize(parseInt(e.target.value))}
-              className="w-full border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+              className="nk-field w-full"
             >
               <option value={0}>None</option>
               <option value={16}>1/16 note</option>
@@ -547,11 +559,11 @@ export default function AudioToMidi() {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-neutral-500 dark:text-neutral-400 mb-1">Min note</label>
+            <label className="nk-section-title block mb-1.5">Min note</label>
             <select
               value={minNote}
               onChange={(e) => setMinNote(parseFloat(e.target.value))}
-              className="w-full border border-neutral-200 dark:border-neutral-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+              className="nk-field w-full"
             >
               <option value={0.05}>50ms</option>
               <option value={0.08}>80ms</option>
@@ -565,7 +577,7 @@ export default function AudioToMidi() {
         <button
           disabled={!audioBuffer || converting}
           onClick={runConvert}
-          className="w-full py-3 rounded-lg text-sm font-medium border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors mb-4"
+          className="nk-btn nk-btn-primary nk-btn-lg w-full mb-4"
         >
           {converting ? "Converting…" : "Convert to MIDI"}
         </button>
@@ -573,10 +585,9 @@ export default function AudioToMidi() {
         {/* progress */}
         {(converting || progress === 100) && (
           <div className="mb-4">
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">{progressLabel}</p>
-            <div className="h-1 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+            <p className="text-xs text-[rgb(var(--text-secondary))] mb-1.5">{progressLabel}</p>
+            <div className="nk-progress">
               <div
-                className="h-full bg-neutral-900 dark:bg-neutral-100 rounded-full transition-all duration-100"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -585,7 +596,7 @@ export default function AudioToMidi() {
 
         {/* error */}
         {error && (
-          <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950 rounded-lg px-4 py-3 mb-4">
+          <div className="nk-banner nk-banner-error mb-4">
             {error}
           </div>
         )}
@@ -593,8 +604,8 @@ export default function AudioToMidi() {
         {/* piano roll */}
         {showRoll && notes.length > 0 && (
           <div className="mb-4">
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-2">{noteCountLabel}</p>
-            <div className="overflow-x-auto overflow-y-auto border border-neutral-200 dark:border-neutral-700 rounded-lg">
+            <p className="text-xs text-[rgb(var(--text-secondary))] mb-2">{noteCountLabel}</p>
+            <div className="overflow-x-auto overflow-y-auto rounded-xl shadow-[inset_0_0_0_1px_rgb(var(--text-primary)/0.1)]">
               <canvas ref={canvasRef} className="block" />
             </div>
           </div>
@@ -604,7 +615,7 @@ export default function AudioToMidi() {
         {midiBytes && (
           <button
             onClick={downloadMidi}
-            className="w-full py-3 rounded-lg text-sm font-medium bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors"
+            className="nk-btn nk-btn-primary nk-btn-lg w-full"
           >
             Download .mid
           </button>

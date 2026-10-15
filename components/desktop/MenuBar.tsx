@@ -1,10 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { useTheme } from "next-themes";
+import React, { useEffect, useRef, useState } from "react";
 import {
-    Moon,
-    Sun,
     Folder,
     Info,
     Mail,
@@ -14,45 +11,56 @@ import {
     Hand,
     Settings,
     FileText,
-    Layers,
+    Search,
+    SlidersHorizontal,
 } from "lucide-react";
 import { MenuDropdown, type MenuItem } from "./MenuDropdown";
-import { useAppStore } from "@/app/store/appStore";
+import { ControlCenter } from "./ControlCenter";
+import {
+    useAppStore,
+    getFocusedWindow,
+    MENU_BAR_HEIGHT,
+} from "@/app/store/appStore";
+import { useSystemStore } from "@/app/store/systemStore";
 import { getContentById } from "@/app/data/content";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
+function useClock() {
+    const [now, setNow] = useState<Date | null>(null);
+    useEffect(() => {
+        setNow(new Date());
+        const id = setInterval(() => setNow(new Date()), 15_000);
+        return () => clearInterval(id);
+    }, []);
+    return now;
+}
 
 export function MenuBar() {
-    const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = React.useState(false);
-    const niIconRef = useRef<HTMLDivElement>(null);
+    const niIconRef = useRef<HTMLButtonElement>(null);
     const viewMenuRef = useRef<HTMLButtonElement>(null);
     const artMenuRef = useRef<HTMLButtonElement>(null);
-    const toolsMenuRef = useRef<HTMLButtonElement>(null);
+    const now = useClock();
 
     const {
         menu,
+        windows,
         toggleMenu,
         setViewFilter,
         setSortMethod,
         openWindow,
-        desktopPage,
-        desktopTotalPages,
-        setDesktopPage,
     } = useAppStore();
+    const {
+        useStacks,
+        setUseStacks,
+        controlCenterOpen,
+        setControlCenterOpen,
+        setSpotlightOpen,
+    } = useSystemStore();
 
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const toggleTheme = () => {
-        setTheme(theme === "dark" ? "light" : "dark");
-    };
+    const focused = getFocusedWindow(windows);
 
     const handleOpenSystemWindow = (id: string) => {
         const content = getContentById(id);
-        if (content) {
-            openWindow(content);
-        }
+        if (content) openWindow(content);
     };
 
     const niIconMenuItems: MenuItem[] = [
@@ -73,42 +81,27 @@ export function MenuBar() {
         },
     ];
 
+    const filter = (label: string, value: typeof menu.viewFilter): MenuItem => ({
+        label,
+        onClick: () => setViewFilter(value),
+        checked: menu.viewFilter === value,
+    });
+
     const viewMenuItems: MenuItem[] = [
         {
-            label: "All Projects",
-            onClick: () => setViewFilter("all"),
-            checked: menu.viewFilter === "all",
+            label: "Use Stacks",
+            onClick: () => setUseStacks(!useStacks),
+            checked: useStacks,
         },
-        {
-            label: "Engineering",
-            onClick: () => setViewFilter("engineering"),
-            checked: menu.viewFilter === "engineering",
-        },
-        {
-            label: "Music",
-            onClick: () => setViewFilter("music"),
-            checked: menu.viewFilter === "music",
-        },
-        {
-            label: "Art",
-            onClick: () => setViewFilter("art"),
-            checked: menu.viewFilter === "art",
-        },
-        {
-            label: "Immersive Web",
-            onClick: () => setViewFilter("immersive-web"),
-            checked: menu.viewFilter === "immersive-web",
-        },
-        {
-            label: "Social Tools",
-            onClick: () => setViewFilter("social-tools"),
-            checked: menu.viewFilter === "social-tools",
-        },
-        {
-            label: "AI Tools",
-            onClick: () => setViewFilter("ai-tools"),
-            checked: menu.viewFilter === "ai-tools",
-        },
+        { separator: true },
+        filter("All Projects", "all"),
+        filter("Tools Only", "tools-only"),
+        filter("Engineering", "engineering"),
+        filter("Music", "music"),
+        filter("Art", "art"),
+        filter("Immersive Web", "immersive-web"),
+        filter("Social Tools", "social-tools"),
+        filter("AI Tools", "ai-tools"),
         { separator: true },
         {
             label: "Sort by Date",
@@ -131,92 +124,64 @@ export function MenuBar() {
     ];
 
     const artMenuItems: MenuItem[] = [
-        {
-            label: "Digital Art",
-            onClick: () => handleOpenSystemWindow("art-digital-art"),
-            icon: <Image size={14} />,
-        },
-        {
-            label: "Paintings",
-            onClick: () => handleOpenSystemWindow("art-paintings"),
-            icon: <Paintbrush size={14} />,
-        },
-        {
-            label: "Sketches",
-            onClick: () => handleOpenSystemWindow("art-sketches"),
-            icon: <PenTool size={14} />,
-        },
-        {
-            label: "Left-Handed Art",
-            onClick: () => handleOpenSystemWindow("art-lefthanded"),
-            icon: <Hand size={14} />,
-        },
-        {
-            label: "Miscellaneous",
-            onClick: () => handleOpenSystemWindow("art-miscellaneous"),
-            icon: <Folder size={14} />,
-        },
-        {
-            label: "Notes App Art",
-            onClick: () => handleOpenSystemWindow("art-notesappart"),
-            icon: <FileText size={14} />,
-        },
-    ];
-
-    const toolsMenuItems: MenuItem[] = [
-        {
-            label: "Show Only Tools",
-            onClick: () => {
-                if (menu.viewFilter === "tools-only") {
-                    setViewFilter("all");
-                } else {
-                    setViewFilter("tools-only");
-                }
-            },
-            checked: menu.viewFilter === "tools-only",
-        },
+        { label: "Digital Art", onClick: () => handleOpenSystemWindow("art-digital-art"), icon: <Image size={14} /> },
+        { label: "Paintings", onClick: () => handleOpenSystemWindow("art-paintings"), icon: <Paintbrush size={14} /> },
+        { label: "Sketches", onClick: () => handleOpenSystemWindow("art-sketches"), icon: <PenTool size={14} /> },
+        { label: "Left-Handed Art", onClick: () => handleOpenSystemWindow("art-lefthanded"), icon: <Hand size={14} /> },
+        { label: "Miscellaneous", onClick: () => handleOpenSystemWindow("art-miscellaneous"), icon: <Folder size={14} /> },
+        { label: "Notes App Art", onClick: () => handleOpenSystemWindow("art-notesappart"), icon: <FileText size={14} /> },
     ];
 
     const getMenuPosition = (ref: React.RefObject<HTMLElement | null>) => {
-        if (!ref.current) return { top: 48, left: 0 };
+        if (!ref.current) return { top: MENU_BAR_HEIGHT, left: 0 };
         const rect = ref.current.getBoundingClientRect();
-        return {
-            top: rect.bottom + 4,
-            left: rect.left,
-        };
+        return { top: rect.bottom + 2, left: rect.left };
     };
 
+    const menuButton = (open: boolean) =>
+        `px-2.5 h-7 rounded-md transition-colors ${
+            open
+                ? "bg-[rgb(var(--text-menubar)/0.12)]"
+                : "hover:bg-[rgb(var(--text-menubar)/0.08)]"
+        }`;
+
     return (
-        <div className="fixed top-0 left-0 right-0 bg-[rgb(var(--bg-menubar))]/80 backdrop-blur-xl border-b border-[rgb(var(--border-window))] px-4 py-2 flex items-center justify-between z-50 h-12">
-            <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 relative">
-                    <div
-                        ref={niIconRef}
-                        onClick={() => toggleMenu("niIcon")}
-                        className=" w-8 h-8 bg-[rgb(var(--bg-titlebar))] rounded flex items-center justify-center font-mono text-sm font-bold text-[rgb(var(--text-titlebar))] cursor-pointer hover:bg-[rgb(var(--bg-menubar-hover))] transition-colors"
+        <div
+            className="nk-menubar fixed top-0 left-0 right-0 px-2 flex items-center justify-between z-[10000] text-[13px] text-[rgb(var(--text-menubar))]"
+            style={{ height: MENU_BAR_HEIGHT }}
+        >
+            <div className="flex items-center gap-1">
+                {/* The Ni element tile is the system menu */}
+                <button
+                    ref={niIconRef}
+                    onClick={() => toggleMenu("niIcon")}
+                    className={`${menuButton(menu.openMenus.niIcon)} !px-1.5`}
+                    aria-label="Nickel menu"
+                >
+                    <span
+                        className="nk-tile relative flex items-center justify-center w-6 h-6 font-sans font-black tracking-tight text-[11px] leading-none"
+                        style={{ ["--tile-hue" as string]: "var(--nk-h1)" }}
                     >
                         Ni
-                    </div>
-                    <MenuDropdown
-                        isOpen={menu.openMenus.niIcon}
-                        onClose={() => toggleMenu("niIcon")}
-                        items={niIconMenuItems}
-                        position={getMenuPosition(niIconRef)}
-                        triggerRef={niIconRef}
-                    />
-                    {/* <span className="font-bold font-bbh-bartle text-[rgb(var(--text-menubar))]">
-                        Nickel Tools
-                    </span> */}
-                </div>
-                <div className="hidden md:flex items-center gap-4 text-xs text-[rgb(var(--text-menubar))]/70 relative">
+                    </span>
+                </button>
+                <MenuDropdown
+                    isOpen={menu.openMenus.niIcon}
+                    onClose={() => toggleMenu("niIcon")}
+                    items={niIconMenuItems}
+                    position={getMenuPosition(niIconRef)}
+                    triggerRef={niIconRef}
+                />
+
+                <span className="px-2 font-bold truncate max-w-[220px]">
+                    {focused?.content.title ?? "Nickel"}
+                </span>
+
+                <div className="hidden md:flex items-center">
                     <button
                         ref={viewMenuRef}
                         onClick={() => toggleMenu("view")}
-                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
-                            menu.openMenus.view
-                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
-                                : ""
-                        }`}
+                        className={menuButton(menu.openMenus.view)}
                     >
                         View
                     </button>
@@ -230,11 +195,7 @@ export function MenuBar() {
                     <button
                         ref={artMenuRef}
                         onClick={() => toggleMenu("art")}
-                        className={`hover:text-[rgb(var(--text-menubar))] transition-colors px-2 py-1 rounded ${
-                            menu.openMenus.art
-                                ? "bg-[rgb(var(--bg-menubar-hover))] text-[rgb(var(--text-menubar))]"
-                                : ""
-                        }`}
+                        className={menuButton(menu.openMenus.art)}
                     >
                         Art
                     </button>
@@ -247,64 +208,38 @@ export function MenuBar() {
                     />
                 </div>
             </div>
-            <div className="flex items-center gap-4">
-                {desktopTotalPages > 1 && (
-                    <div className="flex items-center gap-2 px-2 py-1 rounded bg-[rgb(var(--bg-menubar-hover))]/50">
-                        <button
-                            onClick={() =>
-                                setDesktopPage(Math.max(1, desktopPage - 1))
-                            }
-                            disabled={desktopPage === 1}
-                            className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            aria-label="Previous page"
-                        >
-                            <ChevronLeft
-                                size={14}
-                                className="text-[rgb(var(--text-menubar))]"
-                            />
-                        </button>
-                        <span className="text-xs text-[rgb(var(--text-menubar))]/70 min-w-[3rem] text-center">
-                            {desktopPage} / {desktopTotalPages}
-                        </span>
-                        <button
-                            onClick={() =>
-                                setDesktopPage(
-                                    Math.min(desktopTotalPages, desktopPage + 1)
-                                )
-                            }
-                            disabled={desktopPage === desktopTotalPages}
-                            className="w-6 h-6 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            aria-label="Next page"
-                        >
-                            <ChevronRight
-                                size={14}
-                                className="text-[rgb(var(--text-menubar))]"
-                            />
-                        </button>
-                    </div>
-                )}
-                <span className="text-xs font-bbh-bartle text-[rgb(var(--text-menubar))]/60">
-                    ELEMENT 28
-                </span>
 
+            <div className="flex items-center gap-1">
                 <button
-                    onClick={toggleTheme}
-                    className="w-8 h-8 rounded hover:bg-[rgb(var(--bg-menubar-hover))] flex items-center justify-center transition-colors"
-                    aria-label="Toggle theme"
+                    onClick={() => setSpotlightOpen(true)}
+                    className={menuButton(false)}
+                    aria-label="Search (⌘K)"
+                    title="Search (⌘K)"
                 >
-                    {mounted && theme === "dark" ? (
-                        <Sun
-                            size={16}
-                            className="text-[rgb(var(--text-menubar))]"
-                        />
-                    ) : (
-                        <Moon
-                            size={16}
-                            className="text-[rgb(var(--text-menubar))]"
-                        />
-                    )}
+                    <Search size={15} />
                 </button>
+                <button
+                    onClick={() => setControlCenterOpen(!controlCenterOpen)}
+                    className={menuButton(controlCenterOpen)}
+                    aria-label="Control Center"
+                    title="Control Center"
+                    data-control-center-trigger
+                >
+                    <SlidersHorizontal size={15} />
+                </button>
+                <span className="px-2 tabular-nums font-medium whitespace-nowrap">
+                    {now &&
+                        now.toLocaleString("en-US", {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                        })}
+                </span>
             </div>
+
+            <ControlCenter />
         </div>
     );
 }

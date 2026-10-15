@@ -1,144 +1,216 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import {
+    motion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+    AnimatePresence,
+    type MotionValue,
+} from "framer-motion";
+import { Search } from "lucide-react";
 import type { Content } from "@/app/data/content";
 import type { WindowState } from "@/app/store/appStore";
-import { IconRenderer } from "@/components/shared/IconRenderer";
+import { getFocusedWindow, useAppStore } from "@/app/store/appStore";
+import { useSystemStore } from "@/app/store/systemStore";
 import { getContentById } from "@/app/data/content";
-import { usePathname } from "next/navigation";
+import { AppTile } from "@/components/shared/AppTile";
+import { springs, rectOf } from "@/components/shared/motion";
 
-interface DockProps {
-    items: Content[];
-    windows?: WindowState[];
-    onOpenItem: (content: Content) => void;
-}
+const BASE = 48;
+const MAX = 76;
+const REACH = 150;
 
-export function Dock({ items, windows, onOpenItem }: DockProps) {
-    const pathname = usePathname();
+const PINNED_IDS = ["portfolio", "art-digital-art", "settings"];
 
-    // Get the three pinned apps
-    const portfolio = getContentById("portfolio");
-    const digitalArt = getContentById("art-digital-art");
-    const settings = getContentById("settings");
+export function Dock() {
+    const windows = useAppStore((s) => s.windows);
+    const toggleWindowFromDock = useAppStore((s) => s.toggleWindowFromDock);
+    const setSpotlightOpen = useSystemStore((s) => s.setSpotlightOpen);
+    const mouseX = useMotionValue(Infinity);
+    const [revealed, setRevealed] = useState(false);
 
-    const pinnedApps = [portfolio, digitalArt, settings].filter(
-        (app): app is NonNullable<typeof app> => app !== undefined
+    const pinned = PINNED_IDS.map(getContentById).filter(
+        (app): app is Content => app !== undefined
     );
+    const running = windows
+        .map((w) => w.content)
+        .filter((c) => !PINNED_IDS.includes(c.id));
 
-    // Create a map to quickly check if a content item has a minimized window
-    const minimizedMap = new Map<string, boolean>();
-    if (windows) {
-        windows.forEach((w) => {
-            minimizedMap.set(w.content.id, w.minimized);
-        });
-    }
+    // Get out of the way of a maximized window, like a fullscreen app
+    const focused = getFocusedWindow(windows);
+    const autoHide = !!focused?.maximized;
+    const hidden = autoHide && !revealed;
 
     return (
-        <div
-            className="fixed bottom-4 left-0 right-0 flex justify-center z-40 pointer-events-none"
-            style={{
-                width: "100vw",
-                maxWidth: "100vw",
-            }}
+        <>
+            {autoHide && (
+                <div
+                    className="fixed bottom-0 left-0 right-0 h-2 z-[9998]"
+                    onMouseEnter={() => setRevealed(true)}
+                />
+            )}
+            <div
+                className="fixed bottom-3 left-0 right-0 flex justify-center z-[9999] pointer-events-none"
+                onMouseLeave={() => setRevealed(false)}
+            >
+                <motion.div
+                    className="nk-material flex items-end gap-2 px-2 pb-2 pt-2 rounded-[22px] pointer-events-auto"
+                    style={{ height: BASE + 16 }}
+                    initial={{ y: 90, opacity: 0 }}
+                    animate={{ y: hidden ? 100 : 0, opacity: hidden ? 0 : 1 }}
+                    transition={springs.window}
+                    onMouseMove={(e) => mouseX.set(e.clientX)}
+                    onMouseLeave={() => mouseX.set(Infinity)}
+                >
+                    {pinned.map((app) => (
+                        <DockItem
+                            key={app.id}
+                            content={app}
+                            window={windows.find((w) => w.content.id === app.id)}
+                            mouseX={mouseX}
+                            onClick={(rect) => toggleWindowFromDock(app, rect)}
+                        />
+                    ))}
+
+                    <AnimatePresence initial={false}>
+                        {running.length > 0 && (
+                            <motion.div
+                                key="sep"
+                                className="w-px self-stretch my-2 bg-[rgb(var(--text-primary)/0.15)]"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                            />
+                        )}
+                        {running.map((app) => (
+                            <motion.div
+                                key={app.id}
+                                initial={{ width: 0, opacity: 0 }}
+                                animate={{ width: "auto", opacity: 1 }}
+                                exit={{ width: 0, opacity: 0 }}
+                                transition={springs.snappy}
+                            >
+                                <DockItem
+                                    content={app}
+                                    window={windows.find(
+                                        (w) => w.content.id === app.id
+                                    )}
+                                    mouseX={mouseX}
+                                    onClick={(rect) =>
+                                        toggleWindowFromDock(app, rect)
+                                    }
+                                />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+
+                    <div className="w-px self-stretch my-2 bg-[rgb(var(--text-primary)/0.15)]" />
+                    <DockButton
+                        label="Search  ⌘K"
+                        mouseX={mouseX}
+                        onClick={() => setSpotlightOpen(true)}
+                    >
+                        <Search className="w-[45%] h-[45%]" strokeWidth={2} />
+                    </DockButton>
+                </motion.div>
+            </div>
+        </>
+    );
+}
+
+function useMagnify(mouseX: MotionValue<number>, ref: React.RefObject<HTMLElement | null>) {
+    const distance = useTransform(mouseX, (x) => {
+        const r = ref.current?.getBoundingClientRect();
+        return r ? x - (r.left + r.width / 2) : Infinity;
+    });
+    const target = useTransform(distance, [-REACH, 0, REACH], [BASE, MAX, BASE]);
+    return useSpring(target, springs.dock);
+}
+
+function DockItem({
+    content,
+    window,
+    mouseX,
+    onClick,
+}: {
+    content: Content;
+    window?: WindowState;
+    mouseX: MotionValue<number>;
+    onClick: (rect: ReturnType<typeof rectOf>) => void;
+}) {
+    const ref = useRef<HTMLButtonElement>(null);
+    const size = useMagnify(mouseX, ref);
+    // Render the tile once at full size and scale it, rather than re-render per frame
+    const scale = useTransform(size, (s) => s / MAX);
+
+    return (
+        <motion.button
+            ref={ref}
+            data-dock-id={content.id}
+            className="group relative flex flex-col items-center focus:outline-none"
+            style={{ width: size, height: size }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => onClick(rectOf(ref.current))}
+            aria-label={content.title}
         >
             <motion.div
-                className="bg-[rgb(var(--bg-dock))] backdrop-blur-xl border border-[rgb(var(--border-dock))] rounded-2xl px-3 py-2 flex gap-2 shadow-2xl pointer-events-auto"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                className="absolute bottom-0 left-1/2"
+                style={{
+                    width: MAX,
+                    height: MAX,
+                    x: "-50%",
+                    scale,
+                    originY: 1,
+                }}
             >
-                {/* Pinned Apps - Styled like mobile AppTray */}
-                {pinnedApps.map((app) => {
-                    // Check if this app has an open window
-                    const hasWindow = windows?.some(
-                        (w) => w.content.id === app.id
-                    );
-                    const isMinimized = hasWindow
-                        ? minimizedMap.get(app.id) || false
-                        : false;
-                    const isActive =
-                        app.type === "internal" && pathname === app.route;
-
-                    return (
-                        <motion.button
-                            key={app.id}
-                            onClick={() => onOpenItem(app)}
-                            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all relative group ${
-                                isActive
-                                    ? "bg-zinc-200 dark:bg-zinc-700"
-                                    : "hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                            } ${isMinimized ? "opacity-60" : ""}`}
-                            title={app.title}
-                            style={
-                                !isActive
-                                    ? {
-                                          backgroundColor:
-                                              "rgb(var(--bg-window) / 0.7)",
-                                      }
-                                    : {}
-                            }
-                            whileHover={{ scale: 1.2, y: -10 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{
-                                duration: 0.15,
-                                ease: "linear",
-                            }}
-                        >
-                            <IconRenderer
-                                content={app}
-                                size="md"
-                                className="text-zinc-900 dark:text-zinc-100"
-                            />
-                            {isMinimized && (
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[rgb(var(--text-secondary))] rounded-full" />
-                            )}
-                            <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                                {app.title}
-                            </div>
-                        </motion.button>
-                    );
-                })}
-
-                {/* Separator */}
-                {pinnedApps.length > 0 && items.length > 0 && (
-                    <div className="w-px h-8 bg-[rgb(var(--border-dock))] self-center" />
-                )}
-
-                {/* Regular Dock Items */}
-                {items.map((item) => {
-                    console.log("item", item);
-                    const isMinimized = minimizedMap.get(item.id) || false;
-                    return (
-                        <motion.button
-                            key={item.id}
-                            onClick={() => onOpenItem(item)}
-                            className={`w-12 h-12 rounded-xl bg-[rgb(var(--accent-glow))] hover:bg-[rgb(var(--bg-dock-hover))] flex items-center justify-center text-2xl hover:scale-110 transition-all relative group ${
-                                isMinimized ? "opacity-60" : ""
-                            }`}
-                            title={item.title}
-                            whileHover={{ scale: 1.2, y: -10 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{
-                                duration: 0.15,
-                                ease: "linear",
-                            }}
-                        >
-                            <IconRenderer
-                                content={item}
-                                size="md"
-                                className="text-[rgb(var(--text-primary))]"
-                            />
-                            {isMinimized && (
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[rgb(var(--text-secondary))] rounded-full" />
-                            )}
-                            <div className="absolute bottom-full mb-2 px-2 py-1 bg-[rgb(var(--bg-dropdown))] text-[rgb(var(--text-dropdown))] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                                {item.title}
-                            </div>
-                        </motion.button>
-                    );
-                })}
+                <AppTile content={content} size={MAX} showNumber={false} />
             </motion.div>
-        </div>
+            <Tooltip label={content.title} />
+            {window && (
+                <span
+                    className={`absolute -bottom-1.5 w-1 h-1 rounded-full bg-[rgb(var(--text-primary))] ${
+                        window.minimized ? "opacity-40" : "opacity-80"
+                    }`}
+                />
+            )}
+        </motion.button>
+    );
+}
+
+function DockButton({
+    label,
+    mouseX,
+    onClick,
+    children,
+}: {
+    label: string;
+    mouseX: MotionValue<number>;
+    onClick: () => void;
+    children: React.ReactNode;
+}) {
+    const ref = useRef<HTMLButtonElement>(null);
+    const size = useMagnify(mouseX, ref);
+    return (
+        <motion.button
+            ref={ref}
+            className="group relative nk-material-thin rounded-[26%] flex items-center justify-center text-[rgb(var(--text-primary))] focus:outline-none"
+            style={{ width: size, height: size }}
+            whileTap={{ scale: 0.9 }}
+            onClick={onClick}
+            aria-label={label}
+        >
+            {children}
+            <Tooltip label={label} />
+        </motion.button>
+    );
+}
+
+function Tooltip({ label }: { label: string }) {
+    return (
+        <span className="nk-material-thick absolute bottom-full mb-3 px-2.5 py-1 rounded-lg text-xs font-medium text-[rgb(var(--text-primary))] whitespace-nowrap opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all pointer-events-none">
+            {label}
+        </span>
     );
 }
