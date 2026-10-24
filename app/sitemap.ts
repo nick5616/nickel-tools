@@ -8,6 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/portfolio/software",
     "/portfolio/ux",
     "/portfolio/art",
+    "/youtube-to-mp3",
     "/llms.txt",
   ];
   const projects = getPortfolioProjects("software").map(

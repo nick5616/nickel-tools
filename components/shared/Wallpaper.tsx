@@ -415,6 +415,11 @@ function Arc({ preview }: { preview: boolean }) {
         };
 
         const onPointerMove = (e: PointerEvent) => {
+            // Windows sit above the wallpaper; don't stir it through them
+            if ((e.target as Element | null)?.closest?.(".nk-window")) {
+                onPointerLeave();
+                return;
+            }
             const rect = canvas.getBoundingClientRect();
             mouse.x = e.clientX - rect.left;
             mouse.y = e.clientY - rect.top;

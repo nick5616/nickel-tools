@@ -32,6 +32,7 @@ import {
     Grid,
     Hand,
     Folder,
+    FileAudio,
     type LucideIcon,
 } from "lucide-react";
 import type { Category, Content } from "@/app/data/content";
@@ -73,6 +74,7 @@ const APP_GLYPHS: Record<string, LucideIcon> = {
     "saucedog-art": Palette,
     passionfruit: Layers,
     "batch-analyzer": Grid,
+    "youtube-to-mp3": FileAudio,
     about: Info,
     contact: Mail,
     settings: Settings,
