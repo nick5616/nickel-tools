@@ -73,6 +73,13 @@ const AudioToMidi = dynamic(() => import("@/components/tools/audio-to-midi"), {
     ssr: false,
 });
 
+const YoutubeToMp3 = dynamic(() => import("@/components/tools/youtube-to-mp3"), {
+    loading: () => (
+        <div className="p-4 text-zinc-400">Loading YouTube to MP3...</div>
+    ),
+    ssr: false,
+});
+
 interface ContentRendererProps {
     content: Content;
 }
@@ -209,6 +216,13 @@ export function ContentRenderer({ content }: ContentRendererProps) {
                 return (
                     <div className="nk-app h-full w-full overflow-auto">
                         <AudioToMidi />
+                    </div>
+                );
+            }
+            if (content.route === "/youtube-to-mp3") {
+                return (
+                    <div className="nk-app h-full w-full overflow-auto">
+                        <YoutubeToMp3 />
                     </div>
                 );
             }

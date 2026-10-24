@@ -694,6 +694,20 @@ export const NICKEL_SYSTEM: NickelSystem = {
       desktopOnly: { windowWidth: 720, windowHeight: 800 },
     },
     {
+      id: "youtube-to-mp3",
+      hide: false,
+      title: "YouTube to MP3",
+      description:
+        "Paste a YouTube link and download the audio as a 192 kbps MP3. No ads, no sign-up.",
+      route: "/youtube-to-mp3",
+      category: "Utility",
+      date: "2026-10-23",
+      tech: ["TypeScript", "Next.js", "FFmpeg"],
+      tags: ["Audio Processing"],
+      surfaces: ["desktop"],
+      desktopOnly: { windowWidth: 640, windowHeight: 320 },
+    },
+    {
       id: "voice-lab",
       hide: false,
       title: "VoiceLab",
