@@ -9,7 +9,7 @@
  */
 
 import type { CSSProperties } from "react";
-import { CATEGORIES, getAllContent } from "@/app/data/content";
+import { getAllContent } from "@/app/data/content";
 import type { Category, Content } from "@/app/data/content";
 import type { ColorSchemeType, HSL } from "./colorUtils";
 import { generateColorSwatch } from "./colorUtils";
@@ -29,17 +29,31 @@ export { THEME_CHANGE_EVENT } from "./themeUtils";
 // Category colors
 // ---------------------------------------------------------------------------
 
-// "Gaming" and "Games" are the same thing to a visitor, so they share a color.
-const CATEGORY_ALIASES: Partial<Record<Category, Category>> = {
-    Gaming: "Games",
-};
-
 // Each category takes one of the scheme's hue slots, and nothing else: its
 // saturation and lightness come from the role it's drawn in (see globals.css),
 // so a complementary scheme gives exactly two tile colors, triadic three, etc.
+// The slots are what each category had before Games/Gaming and Social
+// Tools/Social App were merged in Canon, so no tile changed color (Social
+// keeps Social Tools' slot).
+const CATEGORY_SLOTS: Record<Category, number> = {
+    Engineering: 1,
+    Music: 2,
+    Art: 3,
+    "Immersive Web": 4,
+    Social: 1,
+    "AI / Productivity": 2,
+    Gaming: 3,
+    Experiments: 4,
+    "Design System": 1,
+    Utility: 2,
+    "Creative Productivity": 3,
+    Education: 4,
+    "Machine Learning": 2,
+    Video: 3,
+};
+
 export function getCategorySlot(category: Category): number {
-    const resolved = CATEGORY_ALIASES[category] ?? category;
-    return (Math.max(0, CATEGORIES.indexOf(resolved)) % 4) + 1;
+    return CATEGORY_SLOTS[category] ?? 1;
 }
 
 export function tileStyle(category: Category): CSSProperties {

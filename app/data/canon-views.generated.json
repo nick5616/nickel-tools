@@ -1,0 +1,5992 @@
+{
+  "desktop": {
+    "entries": [
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JMPHT7TH",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com",
+          "window": null
+        },
+        "order": 10,
+        "pinned": 2,
+        "slug": "portfolio",
+        "status": "operational",
+        "summary": "My art and software portfolio as a first-person 3D world you can walk around in, with games and little experiences hidden inside. Built in Three.js.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "three-js",
+          "webgl",
+          "react-three-fiber",
+          "typescript",
+          "javascript",
+          "go",
+          "google-cloud-platform"
+        ],
+        "title": "nicolebelovoskey.com",
+        "why": "I wanted my portfolio to feel like a place you visit instead of a list of links you skim. Walking through it should feel like exploring, and it shows the technical side and the creative side of me in one place."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Feb 2026",
+          "label": null,
+          "sortKey": 20260200,
+          "value": "2026-02"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JPE4WER7",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          },
+          {
+            "label": null,
+            "rel": "backend-source",
+            "url": "https://github.com/nick5616/holodeck-art-api"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com/holodeck/art",
+          "window": null
+        },
+        "order": 20,
+        "pinned": null,
+        "slug": "art-room",
+        "status": "operational",
+        "summary": "A gallery room inside the holodeck where my paintings hang on the walls. Walk up close to look at the brushwork or step back to see the whole piece.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl",
+          "go",
+          "google-cloud-storage",
+          "docker"
+        ],
+        "title": "Art Room",
+        "why": "Art looks different on a wall than in a grid of thumbnails. Being able to approach a piece and step away from it changes how you experience it, and I wanted that in the browser. The art is served from a small Go API backed by Cloud Storage."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JRCTEK62",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/art-gallery"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com/art-gallery",
+          "window": null
+        },
+        "order": 30,
+        "pinned": null,
+        "slug": "art-museum",
+        "status": "operational",
+        "summary": "A multi-room virtual museum inside the holodeck that holds my art collection. Wander through it at your own pace.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "title": "Art Museum",
+        "why": "Going from one room to a whole museum meant thinking like an architect: how people find their way around, how pacing works from room to room, and what story the layout tells. All inside a browser tab."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JVWA5QHA",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/software"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com/software",
+          "window": null
+        },
+        "order": 40,
+        "pinned": null,
+        "slug": "software-showroom",
+        "status": "operational",
+        "summary": "Walk up to screens in a 3D room and use my projects right there on them. Press escape to get your cursor back.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "title": "Software Showroom",
+        "why": "It seemed like a really sci-fi way to showcase my projects."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JXGV1RE4",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog",
+          "window": null
+        },
+        "order": 50,
+        "pinned": null,
+        "slug": "courage-computer",
+        "status": "operational",
+        "summary": "A retro computer lab inside the holodeck, starring the smug, all-knowing computer from Courage the Cowardly Dog.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "title": "Courage Computer Room",
+        "why": "I wanted to capture the feeling of an old computer room as a space you can stand in. It's environmental storytelling with a lot of nostalgia, and a computer that's mean to you."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JZEGDS6N",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/math"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nicolebelovoskey.com/holodeck/math",
+          "window": null
+        },
+        "order": 60,
+        "pinned": null,
+        "slug": "math-room",
+        "status": "operational",
+        "summary": "A 3D room inside the holodeck where equations, shapes, and math concepts are objects you can walk around and explore.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "title": "Math Room",
+        "why": "Math is spatial. I wanted to see what it looks like when a math idea is an environment instead of notation on a page."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K2DF8BKK",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://sphere.saucedog.art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/plasma-sphere"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": null,
+          "type": "url",
+          "url": "https://sphere.saucedog.art",
+          "window": null
+        },
+        "order": 70,
+        "pinned": null,
+        "slug": "plasma-sphere",
+        "status": "operational",
+        "summary": "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "touch-interactions",
+          "physics",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "three-js",
+          "webgl"
+        ],
+        "title": "Plasma Sphere",
+        "why": "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2023",
+          "label": null,
+          "sortKey": 20231100,
+          "value": "2023-11"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K5PKJZRJ",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://tiny-sorbet-aefcf4.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/sphere-website"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://tiny-sorbet-aefcf4.netlify.app/",
+          "window": null
+        },
+        "order": 80,
+        "pinned": null,
+        "slug": "sphere-website",
+        "status": "operational",
+        "summary": "A vanilla Three.js site built around a spinning 3D sphere. The hello world of 3D on the web.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "three-js",
+          "webgl"
+        ],
+        "title": "Sphere Website",
+        "why": "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "component": null,
+        "date": {
+          "display": "Sep 2025",
+          "label": null,
+          "sortKey": 20250900,
+          "value": "2025-09"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K8C2VT2X",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://tierlistify.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/tierlistify"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://tierlistify.netlify.app",
+          "window": null
+        },
+        "order": 90,
+        "pinned": null,
+        "slug": "tierlistify",
+        "status": "operational",
+        "summary": "Rank anything, made for your phone. Drag items into tiers with your thumb and share the result.",
+        "tags": [
+          "mobile-ux",
+          "touch-interactions",
+          "drag-drop",
+          "progressive-web-app",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react"
+        ],
+        "title": "tierlistify",
+        "why": "I thought the Tiermaker mobile site could use some improvement. Dragging things between tiers on a phone was frustrating, so I built one where touch is the main way you use it, not an afterthought, with a clean UI that stays out of the way of the ranking."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "component": null,
+        "date": {
+          "display": "Oct 2025",
+          "label": null,
+          "sortKey": 20251000,
+          "value": "2025-10"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4KB32HRG8",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://friendex.online"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/friendex"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://friendex.online",
+          "window": null
+        },
+        "order": 100,
+        "pinned": null,
+        "slug": "friendex",
+        "status": "operational",
+        "summary": "A pokédex for your friends. A zany, mobile-first app for collecting and organizing what you know about the people in your life.",
+        "tags": [
+          "mobile-first",
+          "social-app",
+          "web-development",
+          "responsive-ui",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "firebase-auth"
+        ],
+        "title": "Friendex",
+        "why": "I wanted a fun way to remember the details about my friends that felt like a game, not a contacts app. The pokédex idea makes filling it in feel like collecting, and I designed it phone-first because that's what you have on you when you're out with people."
+      },
+      {
+        "category": {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        "component": null,
+        "date": {
+          "display": "Jun 2025",
+          "label": null,
+          "sortKey": 20250600,
+          "value": "2025-06"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPK4HZAB8",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://rpg-quests.netlify.app/"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://rpg-quests.netlify.app/",
+          "window": null
+        },
+        "order": 110,
+        "pinned": null,
+        "slug": "rpg-quests",
+        "status": "operational",
+        "summary": "Write a journal entry and get it back as video game quests, so you can live your life like an RPG.",
+        "tags": [
+          "ai-integration",
+          "productivity-tools",
+          "gamification",
+          "journaling"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "tailwind-css",
+          "framer-motion",
+          "nest-js",
+          "node-js",
+          "llm-apis"
+        ],
+        "title": "RPG Quests",
+        "why": "I wanted journaling and getting things done to feel more like playing a game. Turning what you write into quests gives you something to chase, and finishing one feels like leveling up instead of crossing off a chore."
+      },
+      {
+        "category": {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPKCDGZG6",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://yieldpassionfruit.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/universe"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://yieldpassionfruit.netlify.app",
+          "window": null
+        },
+        "order": 120,
+        "pinned": null,
+        "slug": "passionfruit",
+        "status": "operational",
+        "summary": "Keep track of every project you're working on in one place, without it feeling like a work tracker.",
+        "tags": [
+          "project-management",
+          "productivity-tools",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react"
+        ],
+        "title": "Passionfruit",
+        "why": "I have a lot of hobbies that I bounce between. I was getting overwhelmed by how many projects I had going, so I built Passionfruit to keep track of them in a way that wouldn't stifle my creativity."
+      },
+      {
+        "category": {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        "component": null,
+        "date": {
+          "display": "Mar 2026",
+          "label": null,
+          "sortKey": 20260300,
+          "value": "2026-03"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPPK73ASA",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://yieldpassionfruit.netlify.app/life-graph"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": null,
+          "type": "url",
+          "url": "https://yieldpassionfruit.netlify.app/life-graph",
+          "window": null
+        },
+        "order": 130,
+        "pinned": null,
+        "slug": "life-graph",
+        "status": "operational",
+        "summary": "Your life's goals as a 3D network: what depends on what, what to prioritize, and how it all connects.",
+        "tags": [
+          "ai-integration",
+          "3d-design",
+          "interactive-design",
+          "data-visualization",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "webgl"
+        ],
+        "title": "Life Network",
+        "why": "I wanted to see how my goals relate to each other and what has to happen first. It's generic so you can map your own. It's meant to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPRWGBHV7",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://live.saucedog.art/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/the-circle"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://live.saucedog.art/",
+          "window": null
+        },
+        "order": 140,
+        "pinned": null,
+        "slug": "the-circle",
+        "status": "operational",
+        "summary": "One persistent global room where up to 8 people can be on camera and mic at once over a WebRTC mesh. Everyone else watches as the audience. No accounts, no room codes, no database.",
+        "tags": [
+          "real-time",
+          "web-development",
+          "open-source"
+        ],
+        "tech": [
+          "react",
+          "typescript",
+          "django",
+          "websockets",
+          "webrtc",
+          "redis",
+          "docker"
+        ],
+        "title": "The Circle",
+        "why": "I wanted something that felt truly live. Not a chat box, but actual video with strangers. Wiring up WebRTC peer connections, Django Channels signaling, and Redis room state from scratch was the challenge. (Visit it directly. It won't work inside an iframe.)"
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPSNPT1ED",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/desktop"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/nickel-tools"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nickeltools.dev/desktop",
+          "window": null
+        },
+        "order": 150,
+        "pinned": null,
+        "slug": "nickel-tools",
+        "status": "operational",
+        "summary": "A desktop OS in your browser: app grid, app tray, draggable windows, and a swipeable mobile mode. Every little web thing I make lives here.",
+        "tags": [
+          "interactive-design",
+          "responsive-ui",
+          "touch-interactions",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "next-js"
+        ],
+        "title": "Nickel Tools (INCEPTION!!!)",
+        "why": "I wanted a website that was \"a website of websites\" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since pretty much everyone already knows how to get around one."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPTCS677C",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/advanced-color-scheme-generator"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/advanced-color-scheme-generator",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": 700,
+            "width": null
+          }
+        },
+        "order": 170,
+        "pinned": null,
+        "slug": "color-engine",
+        "status": "operational",
+        "summary": "Generates color palettes from color theory harmonies and exports them as theme JSON you can drop straight into a project.",
+        "tags": [
+          "color-theory-algorithms",
+          "design-system",
+          "accessibility"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "canvas-api",
+          "next-js"
+        ],
+        "title": "Advanced Color Scheme Generator",
+        "why": "I was tired of picking palettes by hand. I wanted something that starts from real color theory and keeps contrast in check, so what comes out is usable in a design system and not just pretty."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        "component": null,
+        "date": {
+          "display": "Mar 2020",
+          "label": null,
+          "sortKey": 20200300,
+          "value": "2020-03"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPX5QXA59",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nick5616.github.io/routine/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/routine"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://nick5616.github.io/routine/",
+          "window": null
+        },
+        "order": 180,
+        "pinned": null,
+        "slug": "routine",
+        "status": "operational",
+        "summary": "A daily routine page that generates analogous color schemes on the fly, every one of them WCAG AAA compliant.",
+        "tags": [
+          "design-system",
+          "accessibility",
+          "color-theory-algorithms",
+          "open-source"
+        ],
+        "tech": [
+          "javascript"
+        ],
+        "title": "Routine",
+        "why": "I wanted to play with algorithmic color theory while making something I'd actually use. Getting palettes to stay harmonious and still pass the strictest contrast level was the fun constraint."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQ0TMAXQG",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/smart-piano"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/nickel-tools"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/smart-piano",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": null,
+            "width": 1400
+          }
+        },
+        "order": 190,
+        "pinned": 1,
+        "slug": "smart-piano",
+        "status": "operational",
+        "summary": "An online piano that looks at the key you're in and what you just played, then suggests good next notes.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "web-audio-api",
+          "next-js"
+        ],
+        "title": "Smart Piano",
+        "why": "I wanted a way to learn music theory by playing instead of memorizing scales. The suggestions help you make something that sounds nice even if you're not an expert yet."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQ7K5A63B",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/smart-midi-recorder/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://music.nickeltools.dev/smart-midi-recorder/",
+          "window": null
+        },
+        "order": 210,
+        "pinned": null,
+        "slug": "smart-midi-recorder",
+        "status": "operational",
+        "summary": "Records what you play on a MIDI keyboard and shows the key, the scale, and good next notes in real time to help you improvise.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "real-time",
+          "midi",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "html",
+          "css"
+        ],
+        "title": "Smart MIDI Recorder",
+        "why": "I play piano and wanted help improvising with more confidence. It surfaces the \"right\" notes for the key I'm in while still capturing everything I play."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQA2P6997",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/pitch-hero/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://music.nickeltools.dev/pitch-hero/",
+          "window": null
+        },
+        "order": 220,
+        "pinned": null,
+        "slug": "pitch-hero",
+        "status": "operational",
+        "summary": "Sing or play a MIDI keyboard to hit scrolling notes as they cross the target line. Scores your pitch accuracy in real time from your mic or keyboard.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "real-time",
+          "midi",
+          "pitch-detection",
+          "gamification",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "canvas-api",
+          "html",
+          "css"
+        ],
+        "title": "Pitch Hero",
+        "why": "I wanted pitch training to feel like a rhythm game instead of an exercise. I built the pitch detection and the scrolling note renderer from scratch on the Web Audio API."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQAJV6DRW",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/song-visualizer/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://music.nickeltools.dev/song-visualizer/",
+          "window": null
+        },
+        "order": 230,
+        "pinned": null,
+        "slug": "song-visualizer",
+        "status": "operational",
+        "summary": "Turns music into animated particles, waveforms, geometry, and spectrum effects. Upload an MP3 or use your mic, then tweak the color, speed, and intensity.",
+        "tags": [
+          "audio-processing",
+          "interactive-design",
+          "real-time",
+          "animation",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "canvas-api",
+          "html",
+          "css"
+        ],
+        "title": "Song Visualizer",
+        "why": "I wanted to see my music, not just hear it. Hooking the Web Audio API up to a canvas and watching a track turn into motion in real time never gets old."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "component": null,
+        "date": {
+          "display": "Apr 16, 2026",
+          "label": null,
+          "sortKey": 20260416,
+          "value": "2026-04-16"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQAPQWE2Y",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/audio-to-midi"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/audio-to-midi",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": 800,
+            "width": 720
+          }
+        },
+        "order": 240,
+        "pinned": null,
+        "slug": "audio-to-midi",
+        "status": "operational",
+        "summary": "Converts audio to MIDI with the YIN pitch detection algorithm. Drop in a WAV or MP3, tune the BPM and quantization, then download the MIDI file.",
+        "tags": [
+          "audio-processing",
+          "pitch-detection",
+          "midi"
+        ],
+        "tech": [],
+        "title": "Audio → MIDI",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🔧",
+          "label": "Utility",
+          "slug": "utility"
+        },
+        "component": null,
+        "date": {
+          "display": "Oct 23, 2026",
+          "label": null,
+          "sortKey": 20261023,
+          "value": "2026-10-23"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQDFRJ2FB",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/youtube-to-mp3"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/youtube-to-mp3",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": 320,
+            "width": 640
+          }
+        },
+        "order": 250,
+        "pinned": null,
+        "slug": "youtube-to-mp3",
+        "status": "operational",
+        "summary": "Paste a YouTube link and download the audio as a 192 kbps MP3. No ads, no sign-up.",
+        "tags": [
+          "audio-processing"
+        ],
+        "tech": [
+          "typescript",
+          "next-js",
+          "ffmpeg"
+        ],
+        "title": "YouTube to MP3",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        "component": null,
+        "date": {
+          "display": "Dec 2025",
+          "label": null,
+          "sortKey": 20251200,
+          "value": "2025-12"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQGNATEH6",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/nick5616/VoiceLab"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://github.com/nick5616/VoiceLab",
+          "window": null
+        },
+        "order": 260,
+        "pinned": null,
+        "slug": "voice-lab",
+        "status": "operational",
+        "summary": "A Python desktop app for singers that tracks vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency.",
+        "tags": [
+          "machine-learning",
+          "audio-processing",
+          "pitch-detection",
+          "open-source"
+        ],
+        "tech": [
+          "python"
+        ],
+        "title": "VoiceLab",
+        "why": "I wanted objective feedback on my singing practice instead of relying only on my ear. Tracking the numbers across takes makes it easy to see what's actually improving."
+      },
+      {
+        "category": {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        "component": null,
+        "date": {
+          "display": "Oct 2026",
+          "label": null,
+          "sortKey": 20261000,
+          "value": "2026-10"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQQ7X5GZ0",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/nick5616/CHAOS"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://github.com/nick5616/CHAOS",
+          "window": null
+        },
+        "order": 280,
+        "pinned": null,
+        "slug": "chaos",
+        "status": "operational",
+        "summary": "Counter-Strike Highlight Analysis and Organization System. Point it at hours of gameplay footage and it finds the moments worth keeping (kills, funny voice chat, good conversations) and clips them for you. Runs entirely on your own machine.",
+        "tags": [
+          "machine-learning",
+          "computer-vision",
+          "ocr",
+          "speech-to-text",
+          "audio-processing",
+          "video-processing",
+          "batch-processing",
+          "open-source"
+        ],
+        "tech": [
+          "python",
+          "pyqt6",
+          "opencv",
+          "pytorch",
+          "whisper",
+          "ffmpeg"
+        ],
+        "title": "CHAOS",
+        "why": "I have 700+ GB of my own Counter-Strike footage from 10+ years of playing and making videos, and scrubbing through it by hand was never going to happen. The rewrite made it a lot faster and more accurate. Classical computer vision does most of the work and OCR only runs on small crops. It samples every couple of seconds, then binary searches for the exact frame of a kill, which was the big speed win. An audio tagger catches laughter in voice chat, Whisper adds burned-in subtitles, and a resource planner sizes the workers from each model's measured memory so it doesn't eat my whole computer. It can resume where it left off, recompute only what changed, and throttle itself while I'm gaming. No LLMs, no cloud calls."
+      },
+      {
+        "category": {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        "component": "batch-analyzer",
+        "date": {
+          "display": "Dec 2025",
+          "label": null,
+          "sortKey": 20251200,
+          "value": "2025-12"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQRWYTEV9",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://batch-analyzer.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/batch-item-analyzer"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://batch-analyzer.netlify.app/",
+          "window": null
+        },
+        "order": 300,
+        "pinned": null,
+        "slug": "batch-analyzer",
+        "status": "operational",
+        "summary": "Ask the same questions (like 'How many books are in this image?') about a whole batch of product images at once. Bring your own LLM.",
+        "tags": [
+          "image-processing",
+          "batch-processing",
+          "ai-integration",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "llm-apis"
+        ],
+        "title": "Batch Analyzer",
+        "why": "While doing product image analysis work, I kept asking the same questions about image after image. This lets you write the questions once and run them across an entire batch, with whichever model you want."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "component": null,
+        "date": {
+          "display": "Nov 2023",
+          "label": null,
+          "sortKey": 20231100,
+          "value": "2023-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQYG5MT01",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://star-wars-spending-viz.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/sw-viz-fe"
+          },
+          {
+            "label": null,
+            "rel": "backend-source",
+            "url": "https://github.com/nick5616/sw-viz-be"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://star-wars-spending-viz.netlify.app",
+          "window": null
+        },
+        "order": 330,
+        "pinned": null,
+        "slug": "sw-viz",
+        "status": "operational",
+        "summary": "An interactive chart of what Star Wars starships cost, from X-wings to Star Destroyers, using the SWAPI dataset.",
+        "tags": [
+          "data-visualization",
+          "web-development",
+          "open-source"
+        ],
+        "tech": [
+          "react",
+          "typescript",
+          "nivo",
+          "nest-js",
+          "node-js"
+        ],
+        "title": "Star Wars Ship Costs Visualizer",
+        "why": "A fun excuse to mix Star Wars with data viz. I pulled the ship data from the Star Wars API, cleaned it up on a Nest backend, and charted it so you can compare ships side by side."
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "component": null,
+        "date": {
+          "display": "Sep 2025",
+          "label": null,
+          "sortKey": 20250900,
+          "value": "2025-09"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR0R6823Y",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://sre.nickeltools.dev"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/lit-htmxperiments"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://sre.nickeltools.dev",
+          "window": null
+        },
+        "order": 340,
+        "pinned": null,
+        "slug": "sre-dashboard",
+        "status": "operational",
+        "summary": "A dashboard for monitoring services, incidents, and logs. A Python/Flask backend serves hypermedia through HTMX, and the frontend is Lit web components.",
+        "tags": [
+          "sre",
+          "dashboard",
+          "data-visualization",
+          "developer-tools",
+          "open-source"
+        ],
+        "tech": [
+          "python",
+          "lit",
+          "htmx",
+          "flask"
+        ],
+        "title": "SRE Dashboard",
+        "why": "I wanted to try a stack that leans into the platform instead of abstracting it away. HTMX lets the server own state and send back HTML fragments, which cuts out a lot of client-side complexity. Lit is what web components always should have been: lightweight, declarative, and framework-agnostic. I don't think enough people know how powerful the native component model has gotten."
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "component": null,
+        "date": {
+          "display": "Jun 2023",
+          "label": null,
+          "sortKey": 20230600,
+          "value": "2023-06"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR1ET5S76",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/resume-editor"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/resume-editor",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 350,
+        "pinned": 0,
+        "slug": "resume-builder",
+        "status": "operational",
+        "summary": "A LaTeX resume editor that compiles in your browser with WebAssembly. Nothing to set up, and your resume never leaves your machine.",
+        "tags": [],
+        "tech": [
+          "latex",
+          "webassembly"
+        ],
+        "title": "Online LaTeX Resume Builder",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR2J8TKQS",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/microsoft/FactoryOrchestrator"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://github.com/microsoft/FactoryOrchestrator",
+          "window": null
+        },
+        "order": 360,
+        "pinned": null,
+        "slug": "factory-orchestrator",
+        "status": "operational",
+        "summary": "A test harness device makers use on the factory floor to flash and test Windows on their hardware. I helped build it at Microsoft and helped open-source it.",
+        "tags": [
+          "open-source",
+          "developer-tools"
+        ],
+        "tech": [
+          "csharp",
+          "uwp",
+          "xaml"
+        ],
+        "title": "Factory Orchestrator",
+        "why": "This was my Microsoft internship. Besides the app itself, I worked with Ted, a tech writer, on the product docs and the open-source announcement. It's still my go-to story for working with someone outside engineering."
+      },
+      {
+        "category": {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        "component": null,
+        "date": {
+          "display": "May 2026",
+          "label": null,
+          "sortKey": 20260500,
+          "value": "2026-05"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR90HBQTZ",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://wizardwars.saucedog.art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/wizard-wars"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://wizardwars.saucedog.art",
+          "window": null
+        },
+        "order": 380,
+        "pinned": null,
+        "slug": "wizard-wars",
+        "status": "operational",
+        "summary": "A 3D multiplayer wizard first-person shooter that runs in your browser. Nothing to download, just open it and play.",
+        "tags": [
+          "multiplayer",
+          "real-time",
+          "3d-design",
+          "physics",
+          "open-source"
+        ],
+        "tech": [
+          "webrtc",
+          "three-js",
+          "react",
+          "react-three-fiber"
+        ],
+        "title": "Wizard Wars",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        "component": null,
+        "date": {
+          "display": "Oct 2025",
+          "label": null,
+          "sortKey": 20251000,
+          "value": "2025-10"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2W1HSWM4Q",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/pokemon-or-technology"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/pokemon-or-technology",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": 400,
+            "width": 300
+          }
+        },
+        "order": 410,
+        "pinned": null,
+        "slug": "pokemon-or-technology",
+        "status": "operational",
+        "summary": "Test your knowledge! Can you tell a Pokémon name from a technology term?",
+        "tags": [
+          "quiz"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "next-js"
+        ],
+        "title": "Pokemon or Technology",
+        "why": "One day I noticed Pokémon and technology have similar sounding names, so I made this quiz game."
+      },
+      {
+        "category": {
+          "icon": "🔧",
+          "label": "Utility",
+          "slug": "utility"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2W3BS85VC",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/choice-picker"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/choice-picker",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 420,
+        "pinned": null,
+        "slug": "choice-engine",
+        "status": "operational",
+        "summary": "Spin the wheel to make decisions! Add your options and let chance decide.",
+        "tags": [],
+        "tech": [],
+        "title": "Choice Picker",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "component": null,
+        "date": {
+          "display": "Oct 2019",
+          "label": null,
+          "sortKey": 20191000,
+          "value": "2019-10"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2W9XFNK1D",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://new-media-college-class.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/newMediaWebsite"
+          }
+        ],
+        "mediums": [],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://new-media-college-class.netlify.app/",
+          "window": null
+        },
+        "order": 440,
+        "pinned": null,
+        "slug": "new-media-website",
+        "status": "operational",
+        "summary": "My first real website, from a 2019 college class. It explores the media I consume and polls my classmates on theirs.",
+        "tags": [
+          "open-source"
+        ],
+        "tech": [
+          "html",
+          "css",
+          "javascript"
+        ],
+        "title": "New Media Class Website",
+        "why": "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": {
+          "display": "Feb 2023",
+          "label": null,
+          "sortKey": 20230200,
+          "value": "2023-02"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2WAZ98KME",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://saucedog.art"
+          }
+        ],
+        "mediums": [
+          "digital-art",
+          "illustration",
+          "character-design",
+          "visual-storytelling"
+        ],
+        "open": {
+          "newTab": true,
+          "route": null,
+          "type": "url",
+          "url": "https://saucedog.art",
+          "window": null
+        },
+        "order": 450,
+        "pinned": 3,
+        "slug": "saucedog-art",
+        "status": "operational",
+        "summary": "My art portfolio from 2022 to 2023: digital art, illustration, and character design.",
+        "tags": [
+          "portfolio"
+        ],
+        "tech": [],
+        "title": "saucedog.art",
+        "why": "This covers a stretch where I was learning a lot of new techniques and figuring out my style, so it got a site of its own."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJ6MNB84X",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "digital-illustration",
+          "procreate",
+          "photoshop",
+          "digital-painting"
+        ],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/digital-art",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 460,
+        "pinned": null,
+        "slug": "digitalart",
+        "status": null,
+        "summary": "Gallery of digital artwork",
+        "tags": [],
+        "tech": [],
+        "title": "Digital Art",
+        "why": "Digital is where I experiment the most with color, composition, and style, since trying something and undoing it costs nothing."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJEA08RG0",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "acrylic-paint",
+          "watercolor",
+          "traditional-media",
+          "canvas"
+        ],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/paintings",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 470,
+        "pinned": null,
+        "slug": "paintings",
+        "status": null,
+        "summary": "Gallery of paintings",
+        "tags": [],
+        "tech": [],
+        "title": "Paintings",
+        "why": "Real paint is slower and more physical than digital, and these are me experimenting with color and texture that way."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJF3Y2GWC",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "pencil",
+          "pen-ink",
+          "charcoal",
+          "sketching",
+          "figure-drawing"
+        ],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/sketches",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 480,
+        "pinned": null,
+        "slug": "sketches",
+        "status": null,
+        "summary": "Gallery of sketches",
+        "tags": [],
+        "tech": [],
+        "title": "Sketches",
+        "why": "Sketches are where ideas start. I keep the loose, unfinished stuff around because it shows how I actually work."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJBBFNFSE",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/lefthanded",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 490,
+        "pinned": null,
+        "slug": "lefthanded",
+        "status": null,
+        "summary": "Art created only using my left hand",
+        "tags": [],
+        "tech": [],
+        "title": "Left-Handed Art",
+        "why": "I'm working on becoming ambidextrous, and drawing is a good way to practice."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJC5BH2KJ",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/miscellaneous",
+          "type": "route",
+          "url": null,
+          "window": {
+            "height": 700,
+            "width": null
+          }
+        },
+        "order": 500,
+        "pinned": null,
+        "slug": "miscellaneous",
+        "status": null,
+        "summary": "A collection of miscellaneous artwork and creative pieces",
+        "tags": [],
+        "tech": [],
+        "title": "Miscellaneous",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "component": null,
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJCJFXT4K",
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "open": {
+          "newTab": false,
+          "route": "/art-gallery/notesappart",
+          "type": "route",
+          "url": null,
+          "window": null
+        },
+        "order": 510,
+        "pinned": null,
+        "slug": "notesappart",
+        "status": null,
+        "summary": "Art created in note-taking apps and other digital tools",
+        "tags": [],
+        "tech": [],
+        "title": "Notes App Art",
+        "why": ""
+      }
+    ],
+    "pipelineVersion": "0.5.0",
+    "taxonomy": {
+      "categories": [
+        {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        {
+          "icon": "🔧",
+          "label": "Utility",
+          "slug": "utility"
+        },
+        {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        }
+      ],
+      "mediums": [
+        {
+          "label": "Digital Art",
+          "slug": "digital-art"
+        },
+        {
+          "label": "Digital Illustration",
+          "slug": "digital-illustration"
+        },
+        {
+          "label": "Digital Painting",
+          "slug": "digital-painting"
+        },
+        {
+          "label": "Illustration",
+          "slug": "illustration"
+        },
+        {
+          "label": "Character Design",
+          "slug": "character-design"
+        },
+        {
+          "label": "Visual Storytelling",
+          "slug": "visual-storytelling"
+        },
+        {
+          "label": "Procreate",
+          "slug": "procreate"
+        },
+        {
+          "label": "Photoshop",
+          "slug": "photoshop"
+        },
+        {
+          "label": "Acrylic Paint",
+          "slug": "acrylic-paint"
+        },
+        {
+          "label": "Watercolor",
+          "slug": "watercolor"
+        },
+        {
+          "label": "Traditional Media",
+          "slug": "traditional-media"
+        },
+        {
+          "label": "Canvas",
+          "slug": "canvas"
+        },
+        {
+          "label": "Pencil",
+          "slug": "pencil"
+        },
+        {
+          "label": "Pen & Ink",
+          "slug": "pen-ink"
+        },
+        {
+          "label": "Charcoal",
+          "slug": "charcoal"
+        },
+        {
+          "label": "Sketching",
+          "slug": "sketching"
+        },
+        {
+          "label": "Figure Drawing",
+          "slug": "figure-drawing"
+        }
+      ],
+      "tags": [
+        {
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        {
+          "label": "Computer Vision",
+          "slug": "computer-vision"
+        },
+        {
+          "label": "OCR",
+          "slug": "ocr"
+        },
+        {
+          "label": "Speech-to-Text",
+          "slug": "speech-to-text"
+        },
+        {
+          "label": "Video Processing",
+          "slug": "video-processing"
+        },
+        {
+          "label": "Image Processing",
+          "slug": "image-processing"
+        },
+        {
+          "label": "Audio Processing",
+          "slug": "audio-processing"
+        },
+        {
+          "label": "Pitch Detection",
+          "slug": "pitch-detection"
+        },
+        {
+          "label": "MIDI",
+          "slug": "midi"
+        },
+        {
+          "label": "Batch Processing",
+          "slug": "batch-processing"
+        },
+        {
+          "label": "Music Theory Algorithms",
+          "slug": "music-theory-algorithms"
+        },
+        {
+          "label": "Color Theory Algorithms",
+          "slug": "color-theory-algorithms"
+        },
+        {
+          "label": "AI Integration",
+          "slug": "ai-integration"
+        },
+        {
+          "label": "Mobile-First",
+          "slug": "mobile-first"
+        },
+        {
+          "label": "Mobile UX",
+          "slug": "mobile-ux"
+        },
+        {
+          "label": "Responsive UI",
+          "slug": "responsive-ui"
+        },
+        {
+          "label": "Touch Interactions",
+          "slug": "touch-interactions"
+        },
+        {
+          "label": "Drag & Drop",
+          "slug": "drag-drop"
+        },
+        {
+          "label": "Progressive Web App",
+          "slug": "progressive-web-app"
+        },
+        {
+          "label": "Web Development",
+          "slug": "web-development"
+        },
+        {
+          "label": "3D Design",
+          "slug": "3d-design"
+        },
+        {
+          "label": "Interactive Design",
+          "slug": "interactive-design"
+        },
+        {
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        {
+          "label": "Accessibility",
+          "slug": "accessibility"
+        },
+        {
+          "label": "Real-time",
+          "slug": "real-time"
+        },
+        {
+          "label": "Data Visualization",
+          "slug": "data-visualization"
+        },
+        {
+          "label": "Dashboard",
+          "slug": "dashboard"
+        },
+        {
+          "label": "SRE",
+          "slug": "sre"
+        },
+        {
+          "label": "Social App",
+          "slug": "social-app"
+        },
+        {
+          "label": "Productivity Tools",
+          "slug": "productivity-tools"
+        },
+        {
+          "label": "Project Management",
+          "slug": "project-management"
+        },
+        {
+          "label": "Journaling",
+          "slug": "journaling"
+        },
+        {
+          "label": "Gamification",
+          "slug": "gamification"
+        },
+        {
+          "label": "Quiz",
+          "slug": "quiz"
+        },
+        {
+          "label": "Portfolio",
+          "slug": "portfolio"
+        },
+        {
+          "label": "Multiplayer",
+          "slug": "multiplayer"
+        },
+        {
+          "label": "Physics",
+          "slug": "physics"
+        },
+        {
+          "label": "Animation",
+          "slug": "animation"
+        },
+        {
+          "label": "Open Source",
+          "slug": "open-source"
+        },
+        {
+          "label": "Developer Tools",
+          "slug": "developer-tools"
+        }
+      ],
+      "tech": [
+        {
+          "label": "TypeScript",
+          "slug": "typescript"
+        },
+        {
+          "label": "JavaScript",
+          "slug": "javascript"
+        },
+        {
+          "label": "Python",
+          "slug": "python"
+        },
+        {
+          "label": "Go",
+          "slug": "go"
+        },
+        {
+          "label": "C#",
+          "slug": "csharp"
+        },
+        {
+          "label": "HTML",
+          "slug": "html"
+        },
+        {
+          "label": "CSS",
+          "slug": "css"
+        },
+        {
+          "label": "React",
+          "slug": "react"
+        },
+        {
+          "label": "Next.js",
+          "slug": "next-js"
+        },
+        {
+          "label": "Nest.js",
+          "slug": "nest-js"
+        },
+        {
+          "label": "Node.js",
+          "slug": "node-js"
+        },
+        {
+          "label": "Tailwind CSS",
+          "slug": "tailwind-css"
+        },
+        {
+          "label": "Framer Motion",
+          "slug": "framer-motion"
+        },
+        {
+          "label": "Firebase Auth",
+          "slug": "firebase-auth"
+        },
+        {
+          "label": "Nivo",
+          "slug": "nivo"
+        },
+        {
+          "label": "Lit",
+          "slug": "lit"
+        },
+        {
+          "label": "HTMX",
+          "slug": "htmx"
+        },
+        {
+          "label": "Flask",
+          "slug": "flask"
+        },
+        {
+          "label": "Django",
+          "slug": "django"
+        },
+        {
+          "label": "PyQt6",
+          "slug": "pyqt6"
+        },
+        {
+          "label": "UWP",
+          "slug": "uwp"
+        },
+        {
+          "label": "XAML",
+          "slug": "xaml"
+        },
+        {
+          "label": "Three.js",
+          "slug": "three-js"
+        },
+        {
+          "label": "React-Three-Fiber",
+          "slug": "react-three-fiber"
+        },
+        {
+          "label": "WebGL",
+          "slug": "webgl"
+        },
+        {
+          "label": "Canvas API",
+          "slug": "canvas-api"
+        },
+        {
+          "label": "Web Audio API",
+          "slug": "web-audio-api"
+        },
+        {
+          "label": "WebAssembly",
+          "slug": "webassembly"
+        },
+        {
+          "label": "LaTeX",
+          "slug": "latex"
+        },
+        {
+          "label": "LLM APIs",
+          "slug": "llm-apis"
+        },
+        {
+          "label": "PyTorch",
+          "slug": "pytorch"
+        },
+        {
+          "label": "OpenCV",
+          "slug": "opencv"
+        },
+        {
+          "label": "Whisper",
+          "slug": "whisper"
+        },
+        {
+          "label": "FFmpeg",
+          "slug": "ffmpeg"
+        },
+        {
+          "label": "WebSockets",
+          "slug": "websockets"
+        },
+        {
+          "label": "WebRTC",
+          "slug": "webrtc"
+        },
+        {
+          "label": "Redis",
+          "slug": "redis"
+        },
+        {
+          "label": "Docker",
+          "slug": "docker"
+        },
+        {
+          "label": "Google Cloud Platform",
+          "slug": "google-cloud-platform"
+        },
+        {
+          "label": "Google Cloud Storage",
+          "slug": "google-cloud-storage"
+        }
+      ]
+    },
+    "view": "nickel-desktop",
+    "viewVersion": 1
+  },
+  "software": {
+    "entries": [
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JMPHT7TH",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 10,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com"
+          ]
+        },
+        "richDescription": null,
+        "slug": "portfolio",
+        "status": "operational",
+        "summary": "A first-person 3D world on the web. You can walk, sprint, and jump around, collect gems, browse my art in a fancy digital museum, walk right up to my software projects, draw a picture and submit it (it might end up hanging on the wall), get roasted by the omnipotent computer from Courage the Cowardly Dog, chill in a quiet forest, or practice multiplication in a 3D take on Meteor Multiplication.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "three-js",
+          "webgl",
+          "react-three-fiber",
+          "typescript",
+          "javascript",
+          "go",
+          "google-cloud-platform"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACwBACdASogABQAPuleo02pJSMiMAwBIB0JYwDE2CBTPXWnvBJQ9ESheMP4fHgAAP4vIMRaKd53pGi3AxPOLfL4r2XzbqyQpHjXe/9oTZ34fKvPPXHxAbqnQDFjR07soa2RHj2EW11DldkvsCUNYl5ebjZIGtejNVYC1jy0KuGHaY2W8As6HdTsbRF/HO9FwbnRliGzd+fplrzq9bpakAAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2940.webp",
+          "width": 2940
+        },
+        "title": "Nicole's World",
+        "why": "I wanted this website to feel like a place you could inhabit rather than a page you scroll. Making a world you can actually walk around in meant working through graphics programming, spatial UX, and keeping it all running smoothly in a browser. It was fun. Also I wanted it to exist. Isn't that reason enough?"
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Feb 2026",
+          "label": null,
+          "sortKey": 20260200,
+          "value": "2026-02"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JPE4WER7",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          },
+          {
+            "label": null,
+            "rel": "backend-source",
+            "url": "https://github.com/nick5616/holodeck-art-api"
+          }
+        ],
+        "mediums": [],
+        "order": 20,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com/holodeck/art"
+          ]
+        },
+        "richDescription": null,
+        "slug": "art-room",
+        "status": "operational",
+        "summary": "A gallery room inside the holodeck where my paintings hang on the walls. Walk up close to look at the brushwork or step back to see the whole piece.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl",
+          "go",
+          "google-cloud-storage",
+          "docker"
+        ],
+        "thumbnail": null,
+        "title": "Art Room",
+        "why": "Art looks different on a wall than in a grid of thumbnails. Being able to approach a piece and step away from it changes how you experience it, and I wanted that in the browser. The art is served from a small Go API backed by Cloud Storage."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JRCTEK62",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/art-gallery"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 30,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com/art-gallery"
+          ]
+        },
+        "richDescription": null,
+        "slug": "art-museum",
+        "status": "operational",
+        "summary": "A multi-room virtual museum inside the holodeck that holds my art collection. Wander through it at your own pace.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Art Museum",
+        "why": "Going from one room to a whole museum meant thinking like an architect: how people find their way around, how pacing works from room to room, and what story the layout tells. All inside a browser tab."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JVWA5QHA",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/software"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 40,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com/software"
+          ]
+        },
+        "richDescription": null,
+        "slug": "software-showroom",
+        "status": "operational",
+        "summary": "Walk up to screens in a 3D room and use my projects right there on them. Press escape to get your cursor back.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Software Showroom",
+        "why": "It seemed like a really sci-fi way to showcase my projects."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JXGV1RE4",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 50,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com/holodeck/courage-the-cowardly-dog"
+          ]
+        },
+        "richDescription": null,
+        "slug": "courage-computer",
+        "status": "operational",
+        "summary": "A retro computer lab inside the holodeck, starring the smug, all-knowing computer from Courage the Cowardly Dog.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Courage Computer Room",
+        "why": "I wanted to capture the feeling of an old computer room as a space you can stand in. It's environmental storytelling with a lot of nostalgia, and a computer that's mean to you."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JZEGDS6N",
+        "key": null,
+        "kind": "experience",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com/holodeck/math"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 60,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com/holodeck/math"
+          ]
+        },
+        "richDescription": null,
+        "slug": "math-room",
+        "status": "operational",
+        "summary": "A 3D room inside the holodeck where equations, shapes, and math concepts are objects you can walk around and explore.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "react-three-fiber",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Math Room",
+        "why": "Math is spatial. I wanted to see what it looks like when a math idea is an environment instead of notation on a page."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K2DF8BKK",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://sphere.saucedog.art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/plasma-sphere"
+          }
+        ],
+        "mediums": [],
+        "order": 70,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://sphere.saucedog.art"
+          ]
+        },
+        "richDescription": null,
+        "slug": "plasma-sphere",
+        "status": "operational",
+        "summary": "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "touch-interactions",
+          "physics",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "three-js",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Plasma Sphere",
+        "why": "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other."
+      },
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Nov 2023",
+          "label": null,
+          "sortKey": 20231100,
+          "value": "2023-11"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K5PKJZRJ",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://tiny-sorbet-aefcf4.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/sphere-website"
+          }
+        ],
+        "mediums": [],
+        "order": 80,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://tiny-sorbet-aefcf4.netlify.app/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "sphere-website",
+        "status": "operational",
+        "summary": "A vanilla Three.js site built around a spinning 3D sphere. The hello world of 3D on the web.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "three-js",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Sphere Website",
+        "why": "I wanted to get my hands dirty with Three.js and WebGL for the first time. A sphere is the hello world of 3D."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "date": {
+          "display": "Sep 2025",
+          "label": null,
+          "sortKey": 20250900,
+          "value": "2025-09"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K8C2VT2X",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://tierlistify.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/tierlistify"
+          }
+        ],
+        "mediums": [],
+        "order": 90,
+        "preview": {
+          "kind": "phones",
+          "urls": [
+            "https://tierlistify.netlify.app/init",
+            "https://tierlistify.netlify.app/creation/1776295779582"
+          ]
+        },
+        "richDescription": null,
+        "slug": "tierlistify",
+        "status": "operational",
+        "summary": "Rank anything, made for your phone. Drag items into tiers with your thumb and share the result.",
+        "tags": [
+          "mobile-ux",
+          "touch-interactions",
+          "drag-drop",
+          "progressive-web-app",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1340,
+          "lqip": "data:image/webp;base64,UklGRo4BAABXRUJQVlA4IIIBAAAwBwCdASogADkAPu1orlCppaQiqBgMATAdiUAYHDdDHIx4tXbZPauE9r4xeWYctQGW3dqcYznFWNsoCfOUSE3elYAA/vTUA/IX6piBqGFSBoALOMygxyrjfR80DSN5bXcg1p4HYG3v3Krwb51vWmwOSlVqjrAVPUeoVqa8qvTIlXYtVUiPe3xHmGLh205sPm6Ie4Rth+2xj5/wSh/8AwxM8f6cPqk/mHnJ+E/4f9QooDjtOm3FZReaveqdGjeiNqYhd27YHqJqfGJcsShjbIVwdUwIXSviD/J+pgc7xGNXcLoVLLABlF3mgA1PcBDt/6ZMZtNnR3+37r11M4CQ04zFvFdVhGHcD/DXL8Cryd+XxH57jVNkvyV7Ya6XX14cUenlWGXXwaP6JSCUeTGlTgdrSVq65fGabk2oZS52MjCs+qEnDPVfYiyZJXGFSaWzBvBP2i3B4uEqWwljxedK7MkzWWWtPG9ildKD4puGmtgPrV+Px7H1WZDjKLlINSMAAAAAAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w754.webp",
+              "width": 754
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w754.webp",
+          "width": 754
+        },
+        "title": "tierlistify",
+        "why": "I thought the Tiermaker mobile site could use some improvement. Dragging things between tiers on a phone was frustrating, so I built one where touch is the main way you use it, not an afterthought, with a clean UI that stays out of the way of the ranking."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "date": {
+          "display": "Oct 2025",
+          "label": null,
+          "sortKey": 20251000,
+          "value": "2025-10"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4KB32HRG8",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://friendex.online"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/friendex"
+          }
+        ],
+        "mediums": [],
+        "order": 100,
+        "preview": {
+          "kind": "phones",
+          "urls": [
+            "https://friendex.online/",
+            "https://friendex.online/demo"
+          ]
+        },
+        "richDescription": null,
+        "slug": "friendex",
+        "status": "operational",
+        "summary": "A pokédex for your friends. A zany, mobile-first app for collecting and organizing what you know about the people in your life.",
+        "tags": [
+          "mobile-first",
+          "social-app",
+          "web-development",
+          "responsive-ui",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "firebase-auth"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1340,
+          "lqip": "data:image/webp;base64,UklGRrgBAABXRUJQVlA4IKwBAADwCACdASogADkAPu1sqlCppiOirBVbMTAdiWQAv8UAOfbU4Fzbiu8SHO4nfll/TP7jL0vbNF3wlsFvAsrxRLVRGsByNYw05XVTLUHa6KJNoAD+9jGby6nArHxwwyK6hgmv4Bf76NmczMxBOP05zSLoWuFFFgK/dq9e1KNifFRrL0oizZMfQAzPiUJrMIRT7sxW7TiiuhWnM5B80Eg2GN3miOYKyQbKmiHmda1dvPlz7Ai2gruzGWSpN7+e+CgnEFjNpofw+Eu7C2LJXqgaGA47MDSLA7yElinLhaXsR7z1ySjFxpHbpgw4j+9nYa8VE/iLkDe4FrRWR/1RFrP3H4hme9VZ5VDf5xYJn4pR3C8lcBmWEBIDrfwQERI3wFpM760HnzYZabyj5+ZeugnOVckGGbljYH3QwML02uBGWZ7/1H+tZpIW6xqepfOYmtg0uw+Yk9SPb/o+zq9RKJoHLdIxLxy59K+ecV2BZw9LMevR4sCVsGwfkpLGm3CIJpuYXZLNlYX4UkxRJFGDzWc/8d/u54c4YrcWizgOYE6PYn2s7H/xi+FmGB4xwADQAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w754.webp",
+              "width": 754
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w754.webp",
+          "width": 754
+        },
+        "title": "Friendex",
+        "why": "I wanted a fun way to remember the details about my friends that felt like a game, not a contacts app. The pokédex idea makes filling it in feel like collecting, and I designed it phone-first because that's what you have on you when you're out with people."
+      },
+      {
+        "category": {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        "date": {
+          "display": "Jun 2025",
+          "label": null,
+          "sortKey": 20250600,
+          "value": "2025-06"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPK4HZAB8",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://rpg-quests.netlify.app/"
+          }
+        ],
+        "mediums": [],
+        "order": 110,
+        "preview": {
+          "kind": "phones",
+          "urls": [
+            "https://rpg-quests.netlify.app/",
+            "https://rpg-quests.netlify.app/demo"
+          ]
+        },
+        "richDescription": null,
+        "slug": "rpg-quests",
+        "status": "operational",
+        "summary": "Write a journal entry and get it back as video game quests, so you can live your life like an RPG.",
+        "tags": [
+          "ai-integration",
+          "productivity-tools",
+          "gamification",
+          "journaling"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "tailwind-css",
+          "framer-motion",
+          "nest-js",
+          "node-js",
+          "llm-apis"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1340,
+          "lqip": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAAAQBwCdASogADkAPtlgoU2oJiMiN/VcAQAbCWUAz6AQ2lB4Q6tryvJ350EwDOWYb9VFHSEczc4cB8kiIucT/RhoAAD+83JjdfMDjBFyNj5+0Wt+LYcpOFRnK+9zUiPhKEv3F/wXlE5xrVYeFnN5e3bxWjPzGKgd9DZvxZIwwju++QBZ17CBlK2WfeOe4aC8n5qIY50mFUl6czOBb5K4mjlJnxKpZ1iu+tcKqMaPKd14/WiATrcYXojaZYx10e4yUwbAAckqpu3Bsu3j1Rc91x0nf/3iUahRFozRHKrHoiFvUrpBMdPTK1TGMGlLIX6iB2nCUZsL/u8hwIAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/01c0234e61a8773063a694b1b78ec9bc85023118db52a89178c56ca5e88d988a/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/01c0234e61a8773063a694b1b78ec9bc85023118db52a89178c56ca5e88d988a/w754.webp",
+              "width": 754
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/01c0234e61a8773063a694b1b78ec9bc85023118db52a89178c56ca5e88d988a/w754.webp",
+          "width": 754
+        },
+        "title": "RPG Quests",
+        "why": "I wanted journaling and getting things done to feel more like playing a game. Turning what you write into quests gives you something to chase, and finishing one feels like leveling up instead of crossing off a chore."
+      },
+      {
+        "category": {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPKCDGZG6",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://yieldpassionfruit.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/universe"
+          }
+        ],
+        "mediums": [],
+        "order": 120,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://yieldpassionfruit.netlify.app"
+          ]
+        },
+        "richDescription": null,
+        "slug": "passionfruit",
+        "status": "operational",
+        "summary": "Keep track of every project you're working on in one place, without it feeling like a work tracker.",
+        "tags": [
+          "project-management",
+          "productivity-tools",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAACQBACdASogABQAPu1iqU2ppaOiMAgBMB2JZ0wAU0AR/4RYEzPSCsgbdO28WQAA/u8v+pXyIz1WZfhBhcswfzz99zkR5/hMCsLaNxxbhGSl/hTPuZkWPaJ7azDvg7qdpPR0mqKUWY5oO5IRd5WCahj+DFusGNDAOzh5XTPtzWyfq/dU6aj0UAAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/0986d9d0bb48963b8f78ef7622b5e3fe093d3171df06aff2018e99bfff2206f9/w2940.webp",
+          "width": 2940
+        },
+        "title": "Passionfruit",
+        "why": "I have a lot of hobbies that I bounce between. I was getting overwhelmed by how many projects I had going, so I built Passionfruit to keep track of them in a way that wouldn't stifle my creativity."
+      },
+      {
+        "category": {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        "date": {
+          "display": "Mar 2026",
+          "label": null,
+          "sortKey": 20260300,
+          "value": "2026-03"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPPK73ASA",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://yieldpassionfruit.netlify.app/life-graph"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/universe/blob/main/src/pages/LifeGraphPage.tsx"
+          }
+        ],
+        "mediums": [],
+        "order": 130,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://yieldpassionfruit.netlify.app/life-graph"
+          ]
+        },
+        "richDescription": null,
+        "slug": "life-graph",
+        "status": "operational",
+        "summary": "Your life's goals as a 3D network: what depends on what, what to prioritize, and how it all connects.",
+        "tags": [
+          "ai-integration",
+          "3d-design",
+          "interactive-design",
+          "data-visualization",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "three-js",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Life Network",
+        "why": "I wanted to see how my goals relate to each other and what has to happen first. It's generic so you can map your own. It's meant to include basic foundational behaviors like sleeping and eating well, since that's how you're at your best."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPRWGBHV7",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://live.saucedog.art/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/the-circle"
+          }
+        ],
+        "mediums": [],
+        "order": 140,
+        "preview": {
+          "kind": "none",
+          "urls": []
+        },
+        "richDescription": null,
+        "slug": "the-circle",
+        "status": "operational",
+        "summary": "One persistent global room where up to 8 people can be on camera and mic at once over a WebRTC mesh. Everyone else watches as the audience. No accounts, no room codes, no database.",
+        "tags": [
+          "real-time",
+          "web-development",
+          "open-source"
+        ],
+        "tech": [
+          "react",
+          "typescript",
+          "django",
+          "websockets",
+          "webrtc",
+          "redis",
+          "docker"
+        ],
+        "thumbnail": null,
+        "title": "The Circle",
+        "why": "I wanted something that felt truly live. Not a chat box, but actual video with strangers. Wiring up WebRTC peer connections, Django Channels signaling, and Redis room state from scratch was the challenge. (Visit it directly. It won't work inside an iframe.)"
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPSNPT1ED",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/desktop"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/nickel-tools"
+          }
+        ],
+        "mediums": [],
+        "order": 150,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nickeltools.dev/desktop"
+          ]
+        },
+        "richDescription": null,
+        "slug": "nickel-tools",
+        "status": "operational",
+        "summary": "A desktop OS in your browser: app grid, app tray, draggable windows, and a swipeable mobile mode. Every little web thing I make lives here.",
+        "tags": [
+          "interactive-design",
+          "responsive-ui",
+          "touch-interactions",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "next-js"
+        ],
+        "thumbnail": null,
+        "title": "Nickel Tools",
+        "why": "I wanted a website that was \"a website of websites\" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since pretty much everyone already knows how to get around one."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        "date": {
+          "display": "Mar 2020",
+          "label": null,
+          "sortKey": 20200300,
+          "value": "2020-03"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPX5QXA59",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nick5616.github.io/routine/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/routine"
+          }
+        ],
+        "mediums": [],
+        "order": 170,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nick5616.github.io/routine/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "routine",
+        "status": "operational",
+        "summary": "A daily routine page that generates analogous color schemes on the fly, every one of them WCAG AAA compliant.",
+        "tags": [
+          "design-system",
+          "accessibility",
+          "color-theory-algorithms",
+          "open-source"
+        ],
+        "tech": [
+          "javascript"
+        ],
+        "thumbnail": null,
+        "title": "Routine",
+        "why": "I wanted to play with algorithmic color theory while making something I'd actually use. Getting palettes to stay harmonious and still pass the strictest contrast level was the fun constraint."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQ0TMAXQG",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/smart-piano"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/nickel-tools"
+          }
+        ],
+        "mediums": [],
+        "order": 180,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nickeltools.dev/smart-piano"
+          ]
+        },
+        "richDescription": null,
+        "slug": "smart-piano",
+        "status": "operational",
+        "summary": "An online piano that looks at the key you're in and what you just played, then suggests good next notes.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "web-audio-api",
+          "next-js"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAABwBACdASogABQAPu1qqk8ppiOiMBgIATAdiUAWHYIcTAZ1IGpKrEfvhuAtuAD+x4Na037nTTPej4iUEDhoJmBuxNODxFd/hRGrpo04z3Q6LjyHCvdlGj+fH9WK5vN29hqutd2LXpeOATm6YToBechGGwit/Z607pymEuU+DpBIzjAV4ksxbdDuFdbas05UhKQHgRE0Em21bUaklJ9GSA4xDs2oEZ8jWh5KIAxfgGb6MJsAAAA=",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/3ac26289931b32beb9c69a7ee3040ce27b4152795224dd73328836fd5fc97790/w2940.webp",
+          "width": 2940
+        },
+        "title": "Smart Piano",
+        "why": "I wanted a way to learn music theory by playing instead of memorizing scales. The suggestions help you make something that sounds nice even if you're not an expert yet."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQ7K5A63B",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/smart-midi-recorder/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "order": 200,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://music.nickeltools.dev/smart-midi-recorder/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "smart-midi-recorder",
+        "status": "operational",
+        "summary": "Records what you play on a MIDI keyboard and shows the key, the scale, and good next notes in real time to help you improvise.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "real-time",
+          "midi",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "html",
+          "css"
+        ],
+        "thumbnail": null,
+        "title": "Smart MIDI Recorder",
+        "why": "I play piano and wanted help improvising with more confidence. It surfaces the \"right\" notes for the key I'm in while still capturing everything I play."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQA2P6997",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/pitch-hero/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "order": 210,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://music.nickeltools.dev/pitch-hero/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "pitch-hero",
+        "status": "operational",
+        "summary": "Sing or play a MIDI keyboard to hit scrolling notes as they cross the target line. Scores your pitch accuracy in real time from your mic or keyboard.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "real-time",
+          "midi",
+          "pitch-detection",
+          "gamification",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "canvas-api",
+          "html",
+          "css"
+        ],
+        "thumbnail": null,
+        "title": "Pitch Hero",
+        "why": "I wanted pitch training to feel like a rhythm game instead of an exercise. I built the pitch detection and the scrolling note renderer from scratch on the Web Audio API."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQAJV6DRW",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/song-visualizer/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "order": 220,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://music.nickeltools.dev/song-visualizer/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "song-visualizer",
+        "status": "operational",
+        "summary": "Turns music into animated particles, waveforms, geometry, and spectrum effects. Upload an MP3 or use your mic, then tweak the color, speed, and intensity.",
+        "tags": [
+          "audio-processing",
+          "interactive-design",
+          "real-time",
+          "animation",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "canvas-api",
+          "html",
+          "css"
+        ],
+        "thumbnail": null,
+        "title": "Song Visualizer",
+        "why": "I wanted to see my music, not just hear it. Hooking the Web Audio API up to a canvas and watching a track turn into motion in real time never gets old."
+      },
+      {
+        "category": {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        "date": {
+          "display": "Dec 2025",
+          "label": null,
+          "sortKey": 20251200,
+          "value": "2025-12"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQGNATEH6",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/nick5616/VoiceLab"
+          }
+        ],
+        "mediums": [],
+        "order": 230,
+        "preview": {
+          "kind": "none",
+          "urls": []
+        },
+        "richDescription": null,
+        "slug": "voice-lab",
+        "status": "operational",
+        "summary": "A Python desktop app for singers that tracks vocal performance across takes. Measures pitch, resonance, weight, brightness, and consistency.",
+        "tags": [
+          "machine-learning",
+          "audio-processing",
+          "pitch-detection",
+          "open-source"
+        ],
+        "tech": [
+          "python"
+        ],
+        "thumbnail": null,
+        "title": "VoiceLab",
+        "why": "I wanted objective feedback on my singing practice instead of relying only on my ear. Tracking the numbers across takes makes it easy to see what's actually improving."
+      },
+      {
+        "category": {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        "date": {
+          "display": "Oct 2026",
+          "label": null,
+          "sortKey": 20261000,
+          "value": "2026-10"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQQ7X5GZ0",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/nick5616/CHAOS"
+          }
+        ],
+        "mediums": [],
+        "order": 240,
+        "preview": {
+          "kind": "none",
+          "urls": []
+        },
+        "richDescription": null,
+        "slug": "chaos",
+        "status": "operational",
+        "summary": "Counter-Strike Highlight Analysis and Organization System. Point it at hours of gameplay footage and it finds the moments worth keeping (kills, funny voice chat, good conversations) and clips them for you. Runs entirely on your own machine.",
+        "tags": [
+          "machine-learning",
+          "computer-vision",
+          "ocr",
+          "speech-to-text",
+          "audio-processing",
+          "video-processing",
+          "batch-processing",
+          "open-source"
+        ],
+        "tech": [
+          "python",
+          "pyqt6",
+          "opencv",
+          "pytorch",
+          "whisper",
+          "ffmpeg"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABwBACdASogABQAPu1opk2ppiMiMBgMATAdiWkAACnWyo0LSM4aGk9wAJWAAAD+8iocRuE8JKwI8tX+94jLfWg8RFP3Viv8DLfSye7q+kYZfVHaEvfevLDgEi/3Gd0Z9CfTiNrFIj9OQZCgfWAe8wAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/df0a9bdf18997f3dfd79364d8e9acb7b57b73635285fc8c9408ff5159cad75c6/w2940.webp",
+          "width": 2940
+        },
+        "title": "CHAOS",
+        "why": "I have 700+ GB of my own Counter-Strike footage from 10+ years of playing and making videos, and scrubbing through it by hand was never going to happen. The rewrite made it a lot faster and more accurate. Classical computer vision does most of the work and OCR only runs on small crops. It samples every couple of seconds, then binary searches for the exact frame of a kill, which was the big speed win. An audio tagger catches laughter in voice chat, Whisper adds burned-in subtitles, and a resource planner sizes the workers from each model's measured memory so it doesn't eat my whole computer. It can resume where it left off, recompute only what changed, and throttle itself while I'm gaming. No LLMs, no cloud calls."
+      },
+      {
+        "category": {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        "date": {
+          "display": "Dec 2025",
+          "label": null,
+          "sortKey": 20251200,
+          "value": "2025-12"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQRWYTEV9",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://batch-analyzer.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/batch-item-analyzer"
+          }
+        ],
+        "mediums": [],
+        "order": 260,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://batch-analyzer.netlify.app/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "batch-analyzer",
+        "status": "operational",
+        "summary": "Ask the same questions (like 'How many books are in this image?') about a whole batch of product images at once. Bring your own LLM.",
+        "tags": [
+          "image-processing",
+          "batch-processing",
+          "ai-integration",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "llm-apis"
+        ],
+        "thumbnail": null,
+        "title": "Batch Analyzer",
+        "why": "While doing product image analysis work, I kept asking the same questions about image after image. This lets you write the questions once and run them across an entire batch, with whichever model you want."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "date": {
+          "display": "Nov 2023",
+          "label": null,
+          "sortKey": 20231100,
+          "value": "2023-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQYG5MT01",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://star-wars-spending-viz.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/sw-viz-fe"
+          },
+          {
+            "label": null,
+            "rel": "backend-source",
+            "url": "https://github.com/nick5616/sw-viz-be"
+          }
+        ],
+        "mediums": [],
+        "order": 270,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://star-wars-spending-viz.netlify.app"
+          ]
+        },
+        "richDescription": null,
+        "slug": "sw-viz",
+        "status": "operational",
+        "summary": "An interactive chart of what Star Wars starships cost, from X-wings to Star Destroyers, using the SWAPI dataset.",
+        "tags": [
+          "data-visualization",
+          "web-development",
+          "open-source"
+        ],
+        "tech": [
+          "react",
+          "typescript",
+          "nivo",
+          "nest-js",
+          "node-js"
+        ],
+        "thumbnail": null,
+        "title": "Star Wars Ship Costs Visualizer",
+        "why": "A fun excuse to mix Star Wars with data viz. I pulled the ship data from the Star Wars API, cleaned it up on a Nest backend, and charted it so you can compare ships side by side."
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "date": {
+          "display": "Sep 2025",
+          "label": null,
+          "sortKey": 20250900,
+          "value": "2025-09"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR0R6823Y",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://sre.nickeltools.dev"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/lit-htmxperiments"
+          }
+        ],
+        "mediums": [],
+        "order": 280,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://sre.nickeltools.dev"
+          ]
+        },
+        "richDescription": null,
+        "slug": "sre-dashboard",
+        "status": "operational",
+        "summary": "A dashboard for monitoring services, incidents, and logs. A Python/Flask backend serves hypermedia through HTMX, and the frontend is Lit web components.",
+        "tags": [
+          "sre",
+          "dashboard",
+          "data-visualization",
+          "developer-tools",
+          "open-source"
+        ],
+        "tech": [
+          "python",
+          "lit",
+          "htmx",
+          "flask"
+        ],
+        "thumbnail": null,
+        "title": "SRE Dashboard",
+        "why": "I wanted to try a stack that leans into the platform instead of abstracting it away. HTMX lets the server own state and send back HTML fragments, which cuts out a lot of client-side complexity. Lit is what web components always should have been: lightweight, declarative, and framework-agnostic. I don't think enough people know how powerful the native component model has gotten."
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR2J8TKQS",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://github.com/microsoft/FactoryOrchestrator"
+          }
+        ],
+        "mediums": [],
+        "order": 290,
+        "preview": {
+          "kind": "none",
+          "urls": []
+        },
+        "richDescription": null,
+        "slug": "factory-orchestrator",
+        "status": "operational",
+        "summary": "A test harness device makers use on the factory floor to flash and test Windows on their hardware. I helped build it at Microsoft and helped open-source it.",
+        "tags": [
+          "open-source",
+          "developer-tools"
+        ],
+        "tech": [
+          "csharp",
+          "uwp",
+          "xaml"
+        ],
+        "thumbnail": null,
+        "title": "Factory Orchestrator",
+        "why": "This was my Microsoft internship. Besides the app itself, I worked with Ted, a tech writer, on the product docs and the open-source announcement. It's still my go-to story for working with someone outside engineering."
+      },
+      {
+        "category": {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        "date": {
+          "display": "May 2026",
+          "label": null,
+          "sortKey": 20260500,
+          "value": "2026-05"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNR90HBQTZ",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://wizardwars.saucedog.art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/wizard-wars"
+          }
+        ],
+        "mediums": [],
+        "order": 320,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://wizardwars.saucedog.art"
+          ]
+        },
+        "richDescription": null,
+        "slug": "wizard-wars",
+        "status": "operational",
+        "summary": "A 3D multiplayer wizard first-person shooter that runs in your browser. Nothing to download, just open it and play.",
+        "tags": [
+          "multiplayer",
+          "real-time",
+          "3d-design",
+          "physics",
+          "open-source"
+        ],
+        "tech": [
+          "webrtc",
+          "three-js",
+          "react",
+          "react-three-fiber"
+        ],
+        "thumbnail": null,
+        "title": "Wizard Wars",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        "date": {
+          "display": "Sometime in like Oct 2025",
+          "label": "Sometime in like Oct 2025",
+          "sortKey": 20251000,
+          "value": "2025-10"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2W1HSWM4Q",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/pokemon-or-technology"
+          }
+        ],
+        "mediums": [],
+        "order": 350,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nickeltools.dev/pokemon-or-technology"
+          ]
+        },
+        "richDescription": null,
+        "slug": "pokemon-or-technology",
+        "status": "operational",
+        "summary": "Test your knowledge! Can you tell a Pokémon name from a technology term?",
+        "tags": [
+          "quiz"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "next-js"
+        ],
+        "thumbnail": null,
+        "title": "Pokemon or Technology",
+        "why": "One day I noticed Pokémon and technology have similar sounding names, so I made this quiz game."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "date": {
+          "display": "Oct 2019",
+          "label": null,
+          "sortKey": 20191000,
+          "value": "2019-10"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2W9XFNK1D",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://new-media-college-class.netlify.app/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/newMediaWebsite"
+          }
+        ],
+        "mediums": [],
+        "order": 360,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://new-media-college-class.netlify.app/"
+          ]
+        },
+        "richDescription": null,
+        "slug": "new-media-website",
+        "status": "operational",
+        "summary": "My first real website, from a 2019 college class. It explores the media I consume and polls my classmates on theirs.",
+        "tags": [
+          "open-source"
+        ],
+        "tech": [
+          "html",
+          "css",
+          "javascript"
+        ],
+        "thumbnail": null,
+        "title": "New Media Class Website",
+        "why": "It was a class assignment, but it was also genuinely my first real website. Everyone starts somewhere."
+      }
+    ],
+    "filters": {
+      "tags": [
+        "open-source",
+        "interactive-design",
+        "3d-design",
+        "real-time",
+        "ai-integration",
+        "audio-processing",
+        "data-visualization",
+        "music-theory-algorithms",
+        "touch-interactions",
+        "web-development",
+        "batch-processing",
+        "developer-tools",
+        "gamification",
+        "machine-learning",
+        "midi",
+        "physics",
+        "pitch-detection",
+        "productivity-tools",
+        "responsive-ui",
+        "accessibility",
+        "animation",
+        "color-theory-algorithms",
+        "computer-vision",
+        "dashboard",
+        "design-system",
+        "drag-drop",
+        "image-processing",
+        "journaling",
+        "mobile-first",
+        "mobile-ux",
+        "multiplayer",
+        "ocr",
+        "progressive-web-app",
+        "project-management",
+        "quiz",
+        "social-app",
+        "speech-to-text",
+        "sre",
+        "video-processing"
+      ],
+      "tech": [
+        "react",
+        "typescript",
+        "three-js",
+        "webgl",
+        "javascript",
+        "react-three-fiber",
+        "css",
+        "html",
+        "web-audio-api",
+        "next-js",
+        "python",
+        "canvas-api",
+        "docker",
+        "go",
+        "llm-apis",
+        "nest-js",
+        "node-js",
+        "webrtc",
+        "csharp",
+        "django",
+        "ffmpeg",
+        "firebase-auth",
+        "flask",
+        "framer-motion",
+        "google-cloud-platform",
+        "google-cloud-storage",
+        "htmx",
+        "lit",
+        "nivo",
+        "opencv",
+        "pyqt6",
+        "pytorch",
+        "redis",
+        "tailwind-css",
+        "uwp",
+        "websockets",
+        "whisper",
+        "xaml"
+      ]
+    },
+    "pipelineVersion": "0.5.0",
+    "profile": {
+      "headline": "Software engineer",
+      "links": {
+        "email": "nicolebelovoskey@gmail.com",
+        "github": "https://github.com/nick5616",
+        "linkedin": "https://linkedin.com/in/nicolebelovoskey"
+      },
+      "name": "Nicole Belovoskey",
+      "summary": "Software developer with experience across big tech at Microsoft and DoorDash, as well as several early-stage startups. Bachelor's degree in Computer Science from Texas A&M University."
+    },
+    "taxonomy": {
+      "categories": [
+        {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        {
+          "icon": "🤖",
+          "label": "AI / Productivity",
+          "slug": "ai-productivity"
+        },
+        {
+          "icon": "🎮",
+          "label": "Gaming",
+          "slug": "gaming"
+        },
+        {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        {
+          "icon": "📊",
+          "label": "Creative Productivity",
+          "slug": "creative-productivity"
+        },
+        {
+          "icon": "🧪",
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        }
+      ],
+      "mediums": [],
+      "tags": [
+        {
+          "label": "Machine Learning",
+          "slug": "machine-learning"
+        },
+        {
+          "label": "Computer Vision",
+          "slug": "computer-vision"
+        },
+        {
+          "label": "OCR",
+          "slug": "ocr"
+        },
+        {
+          "label": "Speech-to-Text",
+          "slug": "speech-to-text"
+        },
+        {
+          "label": "Video Processing",
+          "slug": "video-processing"
+        },
+        {
+          "label": "Image Processing",
+          "slug": "image-processing"
+        },
+        {
+          "label": "Audio Processing",
+          "slug": "audio-processing"
+        },
+        {
+          "label": "Pitch Detection",
+          "slug": "pitch-detection"
+        },
+        {
+          "label": "MIDI",
+          "slug": "midi"
+        },
+        {
+          "label": "Batch Processing",
+          "slug": "batch-processing"
+        },
+        {
+          "label": "Music Theory Algorithms",
+          "slug": "music-theory-algorithms"
+        },
+        {
+          "label": "Color Theory Algorithms",
+          "slug": "color-theory-algorithms"
+        },
+        {
+          "label": "AI Integration",
+          "slug": "ai-integration"
+        },
+        {
+          "label": "Mobile-First",
+          "slug": "mobile-first"
+        },
+        {
+          "label": "Mobile UX",
+          "slug": "mobile-ux"
+        },
+        {
+          "label": "Responsive UI",
+          "slug": "responsive-ui"
+        },
+        {
+          "label": "Touch Interactions",
+          "slug": "touch-interactions"
+        },
+        {
+          "label": "Drag & Drop",
+          "slug": "drag-drop"
+        },
+        {
+          "label": "Progressive Web App",
+          "slug": "progressive-web-app"
+        },
+        {
+          "label": "Web Development",
+          "slug": "web-development"
+        },
+        {
+          "label": "3D Design",
+          "slug": "3d-design"
+        },
+        {
+          "label": "Interactive Design",
+          "slug": "interactive-design"
+        },
+        {
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        {
+          "label": "Accessibility",
+          "slug": "accessibility"
+        },
+        {
+          "label": "Real-time",
+          "slug": "real-time"
+        },
+        {
+          "label": "Data Visualization",
+          "slug": "data-visualization"
+        },
+        {
+          "label": "Dashboard",
+          "slug": "dashboard"
+        },
+        {
+          "label": "SRE",
+          "slug": "sre"
+        },
+        {
+          "label": "Social App",
+          "slug": "social-app"
+        },
+        {
+          "label": "Productivity Tools",
+          "slug": "productivity-tools"
+        },
+        {
+          "label": "Project Management",
+          "slug": "project-management"
+        },
+        {
+          "label": "Journaling",
+          "slug": "journaling"
+        },
+        {
+          "label": "Gamification",
+          "slug": "gamification"
+        },
+        {
+          "label": "Quiz",
+          "slug": "quiz"
+        },
+        {
+          "label": "Multiplayer",
+          "slug": "multiplayer"
+        },
+        {
+          "label": "Physics",
+          "slug": "physics"
+        },
+        {
+          "label": "Animation",
+          "slug": "animation"
+        },
+        {
+          "label": "Open Source",
+          "slug": "open-source"
+        },
+        {
+          "label": "Developer Tools",
+          "slug": "developer-tools"
+        }
+      ],
+      "tech": [
+        {
+          "label": "TypeScript",
+          "slug": "typescript"
+        },
+        {
+          "label": "JavaScript",
+          "slug": "javascript"
+        },
+        {
+          "label": "Python",
+          "slug": "python"
+        },
+        {
+          "label": "Go",
+          "slug": "go"
+        },
+        {
+          "label": "C#",
+          "slug": "csharp"
+        },
+        {
+          "label": "HTML",
+          "slug": "html"
+        },
+        {
+          "label": "CSS",
+          "slug": "css"
+        },
+        {
+          "label": "React",
+          "slug": "react"
+        },
+        {
+          "label": "Next.js",
+          "slug": "next-js"
+        },
+        {
+          "label": "Nest.js",
+          "slug": "nest-js"
+        },
+        {
+          "label": "Node.js",
+          "slug": "node-js"
+        },
+        {
+          "label": "Tailwind CSS",
+          "slug": "tailwind-css"
+        },
+        {
+          "label": "Framer Motion",
+          "slug": "framer-motion"
+        },
+        {
+          "label": "Firebase Auth",
+          "slug": "firebase-auth"
+        },
+        {
+          "label": "Nivo",
+          "slug": "nivo"
+        },
+        {
+          "label": "Lit",
+          "slug": "lit"
+        },
+        {
+          "label": "HTMX",
+          "slug": "htmx"
+        },
+        {
+          "label": "Flask",
+          "slug": "flask"
+        },
+        {
+          "label": "Django",
+          "slug": "django"
+        },
+        {
+          "label": "PyQt6",
+          "slug": "pyqt6"
+        },
+        {
+          "label": "UWP",
+          "slug": "uwp"
+        },
+        {
+          "label": "XAML",
+          "slug": "xaml"
+        },
+        {
+          "label": "Three.js",
+          "slug": "three-js"
+        },
+        {
+          "label": "React-Three-Fiber",
+          "slug": "react-three-fiber"
+        },
+        {
+          "label": "WebGL",
+          "slug": "webgl"
+        },
+        {
+          "label": "Canvas API",
+          "slug": "canvas-api"
+        },
+        {
+          "label": "Web Audio API",
+          "slug": "web-audio-api"
+        },
+        {
+          "label": "LLM APIs",
+          "slug": "llm-apis"
+        },
+        {
+          "label": "PyTorch",
+          "slug": "pytorch"
+        },
+        {
+          "label": "OpenCV",
+          "slug": "opencv"
+        },
+        {
+          "label": "Whisper",
+          "slug": "whisper"
+        },
+        {
+          "label": "FFmpeg",
+          "slug": "ffmpeg"
+        },
+        {
+          "label": "WebSockets",
+          "slug": "websockets"
+        },
+        {
+          "label": "WebRTC",
+          "slug": "webrtc"
+        },
+        {
+          "label": "Redis",
+          "slug": "redis"
+        },
+        {
+          "label": "Docker",
+          "slug": "docker"
+        },
+        {
+          "label": "Google Cloud Platform",
+          "slug": "google-cloud-platform"
+        },
+        {
+          "label": "Google Cloud Storage",
+          "slug": "google-cloud-storage"
+        }
+      ]
+    },
+    "view": "software-portfolio",
+    "viewVersion": 1
+  },
+  "design": {
+    "entries": [
+      {
+        "category": {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        "date": {
+          "display": "Jan 2025",
+          "label": null,
+          "sortKey": 20250100,
+          "value": "2025-01"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4JMPHT7TH",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nicolebelovoskey.com"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/3d-portfolio-website"
+          }
+        ],
+        "mediums": [],
+        "order": 10,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://nicolebelovoskey.com"
+          ]
+        },
+        "slug": "portfolio",
+        "status": "operational",
+        "summary": "My art and software portfolio as a first-person 3D world you can walk around in, with games and little experiences hidden inside. Built in Three.js.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "open-source"
+        ],
+        "tech": [
+          "three-js",
+          "webgl",
+          "react-three-fiber",
+          "typescript",
+          "javascript",
+          "go",
+          "google-cloud-platform"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACwBACdASogABQAPuleo02pJSMiMAwBIB0JYwDE2CBTPXWnvBJQ9ESheMP4fHgAAP4vIMRaKd53pGi3AxPOLfL4r2XzbqyQpHjXe/9oTZ34fKvPPXHxAbqnQDFjR07soa2RHj2EW11DldkvsCUNYl5ebjZIGtejNVYC1jy0KuGHaY2W8As6HdTsbRF/HO9FwbnRliGzd+fplrzq9bpakAAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/82c76768c1b042f4976aa2d3645323f1ec8631b009e1ea54bae838b67b025c52/w2940.webp",
+          "width": 2940
+        },
+        "title": "nicolebelovoskey.com",
+        "why": "I wanted my portfolio to feel like a place you visit instead of a list of links you skim. Walking through it should feel like exploring, and it shows the technical side and the creative side of me in one place."
+      },
+      {
+        "category": {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K2DF8BKK",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://sphere.saucedog.art"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/plasma-sphere"
+          }
+        ],
+        "mediums": [],
+        "order": 20,
+        "preview": {
+          "kind": "laser-room",
+          "urls": [
+            "https://sphere.saucedog.art"
+          ]
+        },
+        "slug": "plasma-sphere",
+        "status": "operational",
+        "summary": "Like that one toy. Hold click and drag on the ball to attract the electricity! Desktop and mobile.",
+        "tags": [
+          "3d-design",
+          "interactive-design",
+          "touch-interactions",
+          "physics",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "three-js",
+          "webgl"
+        ],
+        "thumbnail": null,
+        "title": "Plasma Sphere",
+        "why": "I absolutely adore electricity and wanted to create a 3D environment that allows you to play with it. I've been fascinated with physical phenomena like electricity and magnetism, and how the basis of computers is manipulating an electron using a difference in electromagnetic force to make a transistor, which can be used to make logic gates, which can be used to make circuits, which can be used to make arithmetic logic units. With the inclusion of a clock and memory, you can create an entire computer architecture. On the newly formed computer, you can run programs directly on the hardware (baremetal) using binary instructions written for that computer architecture, or you could write a hardware abstraction layer that transpiles a common higher level language like assembly into the language the computer speaks. You can also write a language that's more readable to coders, that compiles into assembly, which is then translated into instructions for your computer! Using that higher level language, developers can move quickly and develop operating systems for a computer. Operating systems make it easier to write programs for the computer, because they handle the allocation of computer resources (they talk to the computer so your program doesn't have to worry about that). They also provide the illusion of isolation, meaning a software program written for an OS does not know other programs exist, and doesn't need to worry about playing nice with the hundreds of other applications running on the computer. The browser is a program on the OS. And this website is written for the browser! And it's all powered by 100 billion electrons jumping from one side of a microscopic germanium-doped silicon trough to the other."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "date": {
+          "display": "Sep 2025",
+          "label": null,
+          "sortKey": 20250900,
+          "value": "2025-09"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4K8C2VT2X",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://tierlistify.netlify.app"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/tierlistify"
+          }
+        ],
+        "mediums": [],
+        "order": 30,
+        "preview": {
+          "kind": "phones",
+          "urls": [
+            "https://tierlistify.netlify.app/init",
+            "https://tierlistify.netlify.app/creation/1776295779582"
+          ]
+        },
+        "slug": "tierlistify",
+        "status": "operational",
+        "summary": "Rank anything, made for your phone. Drag items into tiers with your thumb and share the result.",
+        "tags": [
+          "mobile-ux",
+          "touch-interactions",
+          "drag-drop",
+          "progressive-web-app",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1340,
+          "lqip": "data:image/webp;base64,UklGRo4BAABXRUJQVlA4IIIBAAAwBwCdASogADkAPu1orlCppaQiqBgMATAdiUAYHDdDHIx4tXbZPauE9r4xeWYctQGW3dqcYznFWNsoCfOUSE3elYAA/vTUA/IX6piBqGFSBoALOMygxyrjfR80DSN5bXcg1p4HYG3v3Krwb51vWmwOSlVqjrAVPUeoVqa8qvTIlXYtVUiPe3xHmGLh205sPm6Ie4Rth+2xj5/wSh/8AwxM8f6cPqk/mHnJ+E/4f9QooDjtOm3FZReaveqdGjeiNqYhd27YHqJqfGJcsShjbIVwdUwIXSviD/J+pgc7xGNXcLoVLLABlF3mgA1PcBDt/6ZMZtNnR3+37r11M4CQ04zFvFdVhGHcD/DXL8Cryd+XxH57jVNkvyV7Ya6XX14cUenlWGXXwaP6JSCUeTGlTgdrSVq65fGabk2oZS52MjCs+qEnDPVfYiyZJXGFSaWzBvBP2i3B4uEqWwljxedK7MkzWWWtPG9ildKD4puGmtgPrV+Px7H1WZDjKLlINSMAAAAAAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w754.webp",
+              "width": 754
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/fef47bbb0734ba74b432ec1150bac4bc6e5748f741c941f1e1215144e9d6dda4/w754.webp",
+          "width": 754
+        },
+        "title": "tierlistify",
+        "why": "I thought the Tiermaker mobile site could use some improvement. Dragging things between tiers on a phone was frustrating, so I built one where touch is the main way you use it, not an afterthought, with a clean UI that stays out of the way of the ranking."
+      },
+      {
+        "category": {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        "date": {
+          "display": "Oct 2025",
+          "label": null,
+          "sortKey": 20251000,
+          "value": "2025-10"
+        },
+        "featured": false,
+        "id": "01M66G34NR9MM0DAN4KB32HRG8",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://friendex.online"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/friendex"
+          }
+        ],
+        "mediums": [],
+        "order": 40,
+        "preview": {
+          "kind": "phones",
+          "urls": [
+            "https://friendex.online/",
+            "https://friendex.online/demo"
+          ]
+        },
+        "slug": "friendex",
+        "status": "operational",
+        "summary": "A pokédex for your friends. A zany, mobile-first app for collecting and organizing what you know about the people in your life.",
+        "tags": [
+          "mobile-first",
+          "social-app",
+          "web-development",
+          "responsive-ui",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "firebase-auth"
+        ],
+        "thumbnail": {
+          "alt": null,
+          "height": 1340,
+          "lqip": "data:image/webp;base64,UklGRrgBAABXRUJQVlA4IKwBAADwCACdASogADkAPu1sqlCppiOirBVbMTAdiWQAv8UAOfbU4Fzbiu8SHO4nfll/TP7jL0vbNF3wlsFvAsrxRLVRGsByNYw05XVTLUHa6KJNoAD+9jGby6nArHxwwyK6hgmv4Bf76NmczMxBOP05zSLoWuFFFgK/dq9e1KNifFRrL0oizZMfQAzPiUJrMIRT7sxW7TiiuhWnM5B80Eg2GN3miOYKyQbKmiHmda1dvPlz7Ai2gruzGWSpN7+e+CgnEFjNpofw+Eu7C2LJXqgaGA47MDSLA7yElinLhaXsR7z1ySjFxpHbpgw4j+9nYa8VE/iLkDe4FrRWR/1RFrP3H4hme9VZ5VDf5xYJn4pR3C8lcBmWEBIDrfwQERI3wFpM760HnzYZabyj5+ZeugnOVckGGbljYH3QwML02uBGWZ7/1H+tZpIW6xqepfOYmtg0uw+Yk9SPb/o+zq9RKJoHLdIxLxy59K+ecV2BZw9LMevR4sCVsGwfkpLGm3CIJpuYXZLNlYX4UkxRJFGDzWc/8d/u54c4YrcWizgOYE6PYn2s7H/xi+FmGB4xwADQAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w754.webp",
+              "width": 754
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/ac3e0a04be17da1b81d5c513984df12fb5d4c6061f43925a13542c07b5eddea8/w754.webp",
+          "width": 754
+        },
+        "title": "Friendex",
+        "why": "I wanted a fun way to remember the details about my friends that felt like a game, not a contacts app. The pokédex idea makes filling it in feel like collecting, and I designed it phone-first because that's what you have on you when you're out with people."
+      },
+      {
+        "category": {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        "date": {
+          "display": "Nov 2025",
+          "label": null,
+          "sortKey": 20251100,
+          "value": "2025-11"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPSNPT1ED",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/desktop"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/nickel-tools"
+          }
+        ],
+        "mediums": [],
+        "order": 50,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nickeltools.dev/desktop"
+          ]
+        },
+        "slug": "nickel-tools",
+        "status": "operational",
+        "summary": "A desktop OS in your browser: app grid, app tray, draggable windows, and a swipeable mobile mode. Every little web thing I make lives here.",
+        "tags": [
+          "interactive-design",
+          "responsive-ui",
+          "touch-interactions",
+          "open-source"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "next-js"
+        ],
+        "thumbnail": null,
+        "title": "Nickel Tools",
+        "why": "I wanted a website that was \"a website of websites\" so I could/can give any little web thing I build a home 💖 I also wanted somewhere to put my art. A desktop OS seemed like the perfect container since pretty much everyone already knows how to get around one."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPTCS677C",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nickeltools.dev/advanced-color-scheme-generator"
+          }
+        ],
+        "mediums": [],
+        "order": 60,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nickeltools.dev/advanced-color-scheme-generator"
+          ]
+        },
+        "slug": "color-engine",
+        "status": "operational",
+        "summary": "Generates color palettes from color theory harmonies and exports them as theme JSON you can drop straight into a project.",
+        "tags": [
+          "color-theory-algorithms",
+          "design-system",
+          "accessibility"
+        ],
+        "tech": [
+          "typescript",
+          "react",
+          "canvas-api",
+          "next-js"
+        ],
+        "thumbnail": null,
+        "title": "Advanced Color Scheme Generator",
+        "why": "I was tired of picking palettes by hand. I wanted something that starts from real color theory and keeps contrast in check, so what comes out is usable in a design system and not just pretty."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        "date": {
+          "display": "Mar 2020",
+          "label": null,
+          "sortKey": 20200300,
+          "value": "2020-03"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNPX5QXA59",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://nick5616.github.io/routine/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/routine"
+          }
+        ],
+        "mediums": [],
+        "order": 70,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://nick5616.github.io/routine/"
+          ]
+        },
+        "slug": "routine",
+        "status": "operational",
+        "summary": "A daily routine page that generates analogous color schemes on the fly, every one of them WCAG AAA compliant.",
+        "tags": [
+          "design-system",
+          "accessibility",
+          "color-theory-algorithms",
+          "open-source"
+        ],
+        "tech": [
+          "javascript"
+        ],
+        "thumbnail": null,
+        "title": "Routine",
+        "why": "I wanted to play with algorithmic color theory while making something I'd actually use. Getting palettes to stay harmonious and still pass the strictest contrast level was the fun constraint."
+      },
+      {
+        "category": {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        "date": {
+          "display": "Apr 2026",
+          "label": null,
+          "sortKey": 20260400,
+          "value": "2026-04"
+        },
+        "featured": false,
+        "id": "01M66G34NS7EMZVPRNQA2P6997",
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://music.nickeltools.dev/pitch-hero/"
+          },
+          {
+            "label": null,
+            "rel": "source",
+            "url": "https://github.com/nick5616/song-visualizer"
+          }
+        ],
+        "mediums": [],
+        "order": 80,
+        "preview": {
+          "kind": "desktop",
+          "urls": [
+            "https://music.nickeltools.dev/pitch-hero/"
+          ]
+        },
+        "slug": "pitch-hero",
+        "status": "operational",
+        "summary": "Sing or play a MIDI keyboard to hit scrolling notes as they cross the target line. Scores your pitch accuracy in real time from your mic or keyboard.",
+        "tags": [
+          "music-theory-algorithms",
+          "interactive-design",
+          "real-time",
+          "midi",
+          "pitch-detection",
+          "gamification",
+          "open-source"
+        ],
+        "tech": [
+          "javascript",
+          "web-audio-api",
+          "canvas-api",
+          "html",
+          "css"
+        ],
+        "thumbnail": null,
+        "title": "Pitch Hero",
+        "why": "I wanted pitch training to feel like a rhythm game instead of an exercise. I built the pitch detection and the scrolling note renderer from scratch on the Web Audio API."
+      }
+    ],
+    "filters": {
+      "tags": [
+        "open-source",
+        "interactive-design",
+        "touch-interactions",
+        "3d-design",
+        "accessibility",
+        "color-theory-algorithms",
+        "design-system",
+        "responsive-ui",
+        "drag-drop",
+        "gamification",
+        "midi",
+        "mobile-first",
+        "mobile-ux",
+        "music-theory-algorithms",
+        "physics",
+        "pitch-detection",
+        "progressive-web-app",
+        "real-time",
+        "social-app",
+        "web-development"
+      ],
+      "tech": [
+        "typescript",
+        "javascript",
+        "react",
+        "canvas-api",
+        "next-js",
+        "three-js",
+        "webgl",
+        "css",
+        "firebase-auth",
+        "go",
+        "google-cloud-platform",
+        "html",
+        "react-three-fiber",
+        "web-audio-api"
+      ]
+    },
+    "pipelineVersion": "0.5.0",
+    "taxonomy": {
+      "categories": [
+        {
+          "icon": "💻",
+          "label": "Engineering",
+          "slug": "engineering"
+        },
+        {
+          "icon": "🎹",
+          "label": "Music",
+          "slug": "music"
+        },
+        {
+          "icon": "🌐",
+          "label": "Immersive Web",
+          "slug": "immersive-web"
+        },
+        {
+          "icon": "👥",
+          "label": "Social",
+          "slug": "social"
+        },
+        {
+          "icon": "⚗️",
+          "label": "Experiments",
+          "slug": "experiments"
+        },
+        {
+          "icon": "🎨",
+          "label": "Design System",
+          "slug": "design-system"
+        }
+      ],
+      "mediums": [],
+      "tags": [
+        {
+          "label": "Pitch Detection",
+          "slug": "pitch-detection"
+        },
+        {
+          "label": "MIDI",
+          "slug": "midi"
+        },
+        {
+          "label": "Music Theory Algorithms",
+          "slug": "music-theory-algorithms"
+        },
+        {
+          "label": "Color Theory Algorithms",
+          "slug": "color-theory-algorithms"
+        },
+        {
+          "label": "Mobile-First",
+          "slug": "mobile-first"
+        },
+        {
+          "label": "Mobile UX",
+          "slug": "mobile-ux"
+        },
+        {
+          "label": "Responsive UI",
+          "slug": "responsive-ui"
+        },
+        {
+          "label": "Touch Interactions",
+          "slug": "touch-interactions"
+        },
+        {
+          "label": "Drag & Drop",
+          "slug": "drag-drop"
+        },
+        {
+          "label": "Progressive Web App",
+          "slug": "progressive-web-app"
+        },
+        {
+          "label": "Web Development",
+          "slug": "web-development"
+        },
+        {
+          "label": "3D Design",
+          "slug": "3d-design"
+        },
+        {
+          "label": "Interactive Design",
+          "slug": "interactive-design"
+        },
+        {
+          "label": "Design System",
+          "slug": "design-system"
+        },
+        {
+          "label": "Accessibility",
+          "slug": "accessibility"
+        },
+        {
+          "label": "Real-time",
+          "slug": "real-time"
+        },
+        {
+          "label": "Social App",
+          "slug": "social-app"
+        },
+        {
+          "label": "Gamification",
+          "slug": "gamification"
+        },
+        {
+          "label": "Physics",
+          "slug": "physics"
+        },
+        {
+          "label": "Open Source",
+          "slug": "open-source"
+        }
+      ],
+      "tech": [
+        {
+          "label": "TypeScript",
+          "slug": "typescript"
+        },
+        {
+          "label": "JavaScript",
+          "slug": "javascript"
+        },
+        {
+          "label": "Go",
+          "slug": "go"
+        },
+        {
+          "label": "HTML",
+          "slug": "html"
+        },
+        {
+          "label": "CSS",
+          "slug": "css"
+        },
+        {
+          "label": "React",
+          "slug": "react"
+        },
+        {
+          "label": "Next.js",
+          "slug": "next-js"
+        },
+        {
+          "label": "Firebase Auth",
+          "slug": "firebase-auth"
+        },
+        {
+          "label": "Three.js",
+          "slug": "three-js"
+        },
+        {
+          "label": "React-Three-Fiber",
+          "slug": "react-three-fiber"
+        },
+        {
+          "label": "WebGL",
+          "slug": "webgl"
+        },
+        {
+          "label": "Canvas API",
+          "slug": "canvas-api"
+        },
+        {
+          "label": "Web Audio API",
+          "slug": "web-audio-api"
+        },
+        {
+          "label": "Google Cloud Platform",
+          "slug": "google-cloud-platform"
+        }
+      ]
+    },
+    "view": "design-portfolio",
+    "viewVersion": 1
+  },
+  "art": {
+    "entries": [
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": null,
+        "date": {
+          "display": "Feb 2023",
+          "label": null,
+          "sortKey": 20230200,
+          "value": "2023-02"
+        },
+        "featured": false,
+        "id": "01M66G34NTT7MTF0B2WAZ98KME",
+        "image": {
+          "alt": null,
+          "height": 1838,
+          "lqip": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAACQBACdASogABQAPu1kq06ppaQiKA1RMB2JZAC/OEXfrZS+xE53YLGpc+MwD6AA/ubSl3r7Dndvwh4wBjsh51bDeKJWxnV0YrpVt/LMSaByfrIP4oea3sHcX9T4faxX8rDqg5CKGZ78XXS3GqzlxuEiiF2k/U/nIqlURT2z+SwW0YuOVLaj2s/ZzbPVgV3Wmg3bxw1P/ZnTjcb42nGK32f0cE1pLvo44w3lWyPN5BFI2VXvBoq34K3FxXKeMLAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w2940.webp",
+              "width": 2940
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/4f41d1cb5c6fa0507bcc3f6a069f42e5ddd1c1228b7c5a738b51c7e33ac47a43/w2940.webp",
+          "width": 2940
+        },
+        "key": null,
+        "kind": "project",
+        "links": [
+          {
+            "label": null,
+            "rel": "live",
+            "url": "https://saucedog.art"
+          }
+        ],
+        "mediums": [
+          "digital-art",
+          "illustration",
+          "character-design",
+          "visual-storytelling"
+        ],
+        "memberCount": null,
+        "order": 10,
+        "section": "primary",
+        "slug": "saucedog-art",
+        "status": "operational",
+        "summary": "My art portfolio from 2022 to 2023: digital art, illustration, and character design.",
+        "tags": [
+          "portfolio"
+        ],
+        "tech": [],
+        "title": "saucedog.art",
+        "why": "This covers a stretch where I was learning a lot of new techniques and figuring out my style, so it got a site of its own."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 3000,
+          "lqip": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4IAwBAACwBwCdASogAB8APu1eqU4ppKOiMBgMATAdiWwAnTKEeZ+Z8ZrQBdmfoAdKIjQEZ7OTNt6WzYz3OBO/T6WbJQBxy8AvPuEAAP7r44NeArnWAmWLRnDer8XTfT4vIYpbqXb48Bf7fUeFZc+54rUKBaMriDfPKfpX4//rJ1g3HFPuzReA//1Bn4puUiC7/IJINvf0/4gOjDkY0dsRzQ98g6nv9QWeiAENJ/11XgmaTNz0BQT9lK8bTJ6wfJx+SCS8yXj1DMgXnP3D/QlgipYqKnhRp1h09muICWVyXHc9n0QLbf+8KC+KVKOihXveJ28K/PDRoJjOSsp7wsSI0WLF7f6lK6WtK5RPwypBQAAA",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w3054.webp",
+              "width": 3054
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/a9a8a80b04429b59c222c8685715bc7b335d34f2711975ef55441e95ecab4bb9/w3054.webp",
+          "width": 3054
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJ6MNB84X",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "digital-illustration",
+          "procreate",
+          "photoshop",
+          "digital-painting"
+        ],
+        "memberCount": 22,
+        "order": 20,
+        "section": "primary",
+        "slug": "digitalart",
+        "status": null,
+        "summary": "Digital illustrations and paintings, mostly made in Procreate and Photoshop.",
+        "tags": [],
+        "tech": [],
+        "title": "Digital Art Gallery",
+        "why": "Digital is where I experiment the most with color, composition, and style, since trying something and undoing it costs nothing."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 643,
+          "lqip": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAADwBACdASogABkAPu1sqk8ppqOiMBgIATAdiWYAqSOvAKqnU9DSdIB5MO94ShAWKMAA+KkLVBBESalz0E9UXagy5ZFR9yRxd9SGLwt1zU4myBxi9p0xbdXOe7v01lgoDHPsY/pf0oPgD2DOboWs3KZEah0YiljVnybPuawsJH3FWbzHNc26m+Ae+boAAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/aa15ac0ba8376c9e99e88f692670481c3fdd8fca3fa5b75c3a4b5d25d1976e6d/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/aa15ac0ba8376c9e99e88f692670481c3fdd8fca3fa5b75c3a4b5d25d1976e6d/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/aa15ac0ba8376c9e99e88f692670481c3fdd8fca3fa5b75c3a4b5d25d1976e6d/w815.webp",
+              "width": 815
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/aa15ac0ba8376c9e99e88f692670481c3fdd8fca3fa5b75c3a4b5d25d1976e6d/w815.webp",
+          "width": 815
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJEA08RG0",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "acrylic-paint",
+          "watercolor",
+          "traditional-media",
+          "canvas"
+        ],
+        "memberCount": 8,
+        "order": 30,
+        "section": "primary",
+        "slug": "paintings",
+        "status": null,
+        "summary": "Paintings in acrylic, watercolor, and other physical media.",
+        "tags": [],
+        "tech": [],
+        "title": "Paintings",
+        "why": "Real paint is slower and more physical than digital, and these are me experimenting with color and texture that way."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 893,
+          "lqip": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAABQBgCdASogADEAPu1kqE6ppaOiLAsxMB2JZzcAA/nBWMG+he80fmqA+Vt53NDTg6iIVLAEd8Si9/s/gAD+1zUM5GI9E/B/eYgI3C3cn6Xs7CEe7niOdSqbQ2EdHQ27ooSILnzxbMPo67It7c7dVT50jH8pD699DPxHMrFlo2tx1QsUpZDnBWMBXTXV/3TZrNZu2pQlUVD2LKWdREgS5FCK5uaUpw9Sf2r15ZE8n6NCRO8yjFvlvK2lRhhnIhZ0wAA=",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/8764289daf3d9f0974bba2fa248785d175235631cabc3688e26c20dd03ac608f/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/8764289daf3d9f0974bba2fa248785d175235631cabc3688e26c20dd03ac608f/w586.webp",
+              "width": 586
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/8764289daf3d9f0974bba2fa248785d175235631cabc3688e26c20dd03ac608f/w586.webp",
+          "width": 586
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJF3Y2GWC",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [
+          "pencil",
+          "pen-ink",
+          "charcoal",
+          "sketching",
+          "figure-drawing"
+        ],
+        "memberCount": 30,
+        "order": 40,
+        "section": "primary",
+        "slug": "sketches",
+        "status": null,
+        "summary": "Sketches, studies, figure drawing, and quick drawings. The raw material behind everything else.",
+        "tags": [],
+        "tech": [],
+        "title": "Sketches",
+        "why": "Sketches are where ideas start. I keep the loose, unfinished stuff around because it shows how I actually work."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 884,
+          "lqip": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAACwBQCdASogADAAPtFcoE2oJaMiOrmYAQAaCWcAy6cuZ5gCwF5mucslGVYCgobDGsPrnN0xCgAA+Sq3URXpa6e5emMgG0S9ZdPhS9I9wJlgGi5P1kDZO0/kHcehNofdhMDGMjwwR//8UhBH4UWHkTqzAtiP+JhXmAh0F5cT42ExfH6odnclzaUVIFChwfD2iBFHmQ3bVx54gcjwUeKjj91TcK7wJzgqv3Tu3jWpf6wOUjpNuAAAAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/02fba1d7eee8aee118b98e1587bfd904da9b8c7c2e3920375e39d35af55257d3/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/02fba1d7eee8aee118b98e1587bfd904da9b8c7c2e3920375e39d35af55257d3/w592.webp",
+              "width": 592
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/02fba1d7eee8aee118b98e1587bfd904da9b8c7c2e3920375e39d35af55257d3/w592.webp",
+          "width": 592
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJBBFNFSE",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "memberCount": 16,
+        "order": 50,
+        "section": "collections",
+        "slug": "lefthanded",
+        "status": null,
+        "summary": "Art made using only my left hand.",
+        "tags": [],
+        "tech": [],
+        "title": "Left-Handed Art",
+        "why": "I'm working on becoming ambidextrous, and drawing is a good way to practice."
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 3742,
+          "lqip": "data:image/webp;base64,UklGRhQBAABXRUJQVlA4IAgBAACQBwCdASogACgAPu1kp02ppaOiKq35MB2JQBXKqCsUHzknbnWW/xKLpfNftRrTZxrNFjXw6etKPXN/vPIQszsy915yqLYA/ujYhEtGrGbA6s3OYKHWCmQEip7sANMsr1ItgNaKpOu3rRUOWv2IAHsQAAbUapNVgMoFFHZTtyIHB9xqS9lcdB3J3t5rMUDDn5t3q3DyuRIxKV9VRgIWMkgJrxDxyRujZGPeE8sgmIPST0TbS53PMP67RsKm2285/oM6V2dwGZHQedMPS+Fd6dWxt33/j4ECZppj0xmSBhtCC8g6lu2V0s976dIRNynoocI+qqmM36niKmkY0lVyG0GfiSxXtFgAAAA=",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w800.webp",
+              "width": 800
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w1600.webp",
+              "width": 1600
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w2048.webp",
+              "width": 2048
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w3024.webp",
+              "width": 3024
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/c5bff50e0a27cd9f014a279cf8121de28299b1a3d30a5874b870729b1eea7a25/w3024.webp",
+          "width": 3024
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJC5BH2KJ",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "memberCount": 20,
+        "order": 60,
+        "section": "collections",
+        "slug": "miscellaneous",
+        "status": null,
+        "summary": "Art that doesn't fit anywhere else: experiments, one-offs, and whatever I felt like making.",
+        "tags": [],
+        "tech": [],
+        "title": "Miscellaneous",
+        "why": ""
+      },
+      {
+        "category": {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        },
+        "cover": {
+          "alt": null,
+          "height": 840,
+          "lqip": "data:image/webp;base64,UklGRuYAAABXRUJQVlA4INoAAAAwBgCdASogACwAPs1YoU2npaMiOrzIAPAZiWcACBXYgXENOdiXL89TrkAOVt+YjT0s5okRWfebVcgAAP7z9XfHvEgT3bOF+AxcnRxdP/m6emW9S9/CBdfXAW+K6lSqbsbyIC1bp+Jfg3WCWpvaUmYTRgFfOmxJHZsoAJ+82Z5xrix/CMZjCuBsB0YHqhm22r0RQl7HeZoGwadeozjOjzdD6NQF01MLCl2puiMCA4j+Mg13U0upNlqChkuRf6IMi5kT3+Lj363D2v9mKOWSHRvrFOJAxw23R2AAAA==",
+          "srcset": [
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/cf7e15a59d81fee54e1c734ae1ae245023104e670542ef2327f78a31ce16f86b/w320.webp",
+              "width": 320
+            },
+            {
+              "url": "https://storage.googleapis.com/canon-public/derived/cf7e15a59d81fee54e1c734ae1ae245023104e670542ef2327f78a31ce16f86b/w623.webp",
+              "width": 623
+            }
+          ],
+          "url": "https://storage.googleapis.com/canon-public/derived/cf7e15a59d81fee54e1c734ae1ae245023104e670542ef2327f78a31ce16f86b/w623.webp",
+          "width": 623
+        },
+        "date": null,
+        "featured": false,
+        "id": "01M6417DT93PPWK2XAJCJFXT4K",
+        "image": null,
+        "key": null,
+        "kind": "collection",
+        "links": [],
+        "mediums": [],
+        "memberCount": 20,
+        "order": 70,
+        "section": "collections",
+        "slug": "notesappart",
+        "status": null,
+        "summary": "Drawings made in notes apps and other tools that were never meant for art. Working inside their limits is half the fun.",
+        "tags": [],
+        "tech": [],
+        "title": "Notes App Art",
+        "why": ""
+      }
+    ],
+    "pipelineVersion": "0.5.0",
+    "taxonomy": {
+      "categories": [
+        {
+          "icon": "🎨",
+          "label": "Art",
+          "slug": "art"
+        }
+      ],
+      "mediums": [
+        {
+          "label": "Digital Art",
+          "slug": "digital-art"
+        },
+        {
+          "label": "Digital Illustration",
+          "slug": "digital-illustration"
+        },
+        {
+          "label": "Digital Painting",
+          "slug": "digital-painting"
+        },
+        {
+          "label": "Illustration",
+          "slug": "illustration"
+        },
+        {
+          "label": "Character Design",
+          "slug": "character-design"
+        },
+        {
+          "label": "Visual Storytelling",
+          "slug": "visual-storytelling"
+        },
+        {
+          "label": "Procreate",
+          "slug": "procreate"
+        },
+        {
+          "label": "Photoshop",
+          "slug": "photoshop"
+        },
+        {
+          "label": "Acrylic Paint",
+          "slug": "acrylic-paint"
+        },
+        {
+          "label": "Watercolor",
+          "slug": "watercolor"
+        },
+        {
+          "label": "Traditional Media",
+          "slug": "traditional-media"
+        },
+        {
+          "label": "Canvas",
+          "slug": "canvas"
+        },
+        {
+          "label": "Pencil",
+          "slug": "pencil"
+        },
+        {
+          "label": "Pen & Ink",
+          "slug": "pen-ink"
+        },
+        {
+          "label": "Charcoal",
+          "slug": "charcoal"
+        },
+        {
+          "label": "Sketching",
+          "slug": "sketching"
+        },
+        {
+          "label": "Figure Drawing",
+          "slug": "figure-drawing"
+        }
+      ],
+      "tags": [
+        {
+          "label": "Portfolio",
+          "slug": "portfolio"
+        }
+      ],
+      "tech": []
+    },
+    "view": "art-portfolio",
+    "viewVersion": 1
+  }
+}
