@@ -1,26 +1,23 @@
-// The fixed vocabularies for project metadata in content.ts. Entries can only
-// use values listed here (TypeScript rejects anything else), which keeps
-// spelling consistent and makes every field reliably filterable.
-//
-// To add a new option, append it to the relevant list below.
+// The vocabularies for project metadata. Content itself is edited in Canon
+// (see content.ts); these lists type the labels its views carry and order
+// the category palette. Games/Gaming and Social Tools/Social App were merged
+// into Gaming and Social in Canon.
 
 export const CATEGORIES = [
   "Engineering",
   "Music",
   "Art",
   "Immersive Web",
-  "Social Tools",
+  "Social",
   "AI / Productivity",
-  "Games",
+  "Gaming",
   "Experiments",
   "Design System",
   "Utility",
   "Creative Productivity",
   "Education",
-  "Gaming",
   "Machine Learning",
   "Video",
-  "Social App",
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 

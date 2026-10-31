@@ -12,7 +12,6 @@ import {
     Music,
     Palette,
     Shapes,
-    Smartphone,
     Sparkles,
     Users,
     Wrench,
@@ -46,9 +45,8 @@ const CATEGORY_GLYPHS: Record<Category, LucideIcon> = {
     Music: Music,
     Art: Palette,
     "Immersive Web": Globe,
-    "Social Tools": Users,
+    Social: Users,
     "AI / Productivity": Sparkles,
-    Games: Gamepad2,
     Gaming: Gamepad2,
     Experiments: FlaskConical,
     "Design System": Shapes,
@@ -57,7 +55,6 @@ const CATEGORY_GLYPHS: Record<Category, LucideIcon> = {
     Education: GraduationCap,
     "Machine Learning": BrainCircuit,
     Video: Clapperboard,
-    "Social App": Smartphone,
 };
 
 const APP_GLYPHS: Record<string, LucideIcon> = {

@@ -4,7 +4,9 @@
     "private": true,
     "scripts": {
         "dev": "next dev -p 3001",
+        "prebuild": "node scripts/fetch-canon-views.mjs",
         "build": "next build",
+        "canon:views": "node scripts/fetch-canon-views.mjs",
         "start": "next start",
         "lint": "eslint"
     },
